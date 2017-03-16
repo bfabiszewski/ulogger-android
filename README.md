@@ -18,11 +18,11 @@ Together they make a complete self owned and controlled client–server solution
 
 led | tracking | synchronization
 -|-------- | ---------------
-![status green](https://placehold.it/10/00ff00/000000?text=+) | off | synchronized
+![status green](https://placehold.it/10/00ff00/000000?text=+) |  on, recently updated | synchronized
 ![status yellow](https://placehold.it/10/ffe600/000000?text=+) | on, long time since last update | synchronization delay
-![status red](https://placehold.it/10/ff0000/000000?text=+) | on, recently updated | synchronization error
+![status red](https://placehold.it/10/ff0000/000000?text=+) | off | synchronization error
 
 - clicking on current track's name will show track statistics
 
 ## License
-- GPL, either version 3, or any later
+- GPL, either version 3 or any later
