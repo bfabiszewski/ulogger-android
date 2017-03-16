@@ -1,0 +1,16 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<vector android:height="24dp" android:viewportHeight="100.0"
+    android:viewportWidth="100.0" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#1D71B8" android:pathData="M50,0C31.62,0 16.67,14.95 16.67,33.33c0,17.68 30.3,63.78 31.6,65.73C48.65,99.64 49.3,100 50,100s1.35,-0.36 1.74,-0.94c1.29,-1.95 31.6,-48.05 31.6,-65.73C83.33,14.95 68.38,0 50,0z"/>
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M73.17,44.22c0,6.46 0.2,11.71 0.4,15.85H60.25l-0.71,-7.17h-0.3c-1.62,2.93 -5.75,7.97 -12.62,7.97c-2.63,0 -5.55,-0.7 -7.37,-3.13h-0.3l1.21,22.31H26.43V10.7h15.34V37.05c0,6.86 2.02,11.51 7.88,11.51c4.74,0 7.57,-4.04 8.18,-7.17V10.7h15.34V44.22z"
+        android:strokeColor="#1D71B8" android:strokeWidth="1"/>
+</vector>

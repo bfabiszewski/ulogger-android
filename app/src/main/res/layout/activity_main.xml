@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+        tools:targetApi="lollipop" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/toggle_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_start"
+            android:onClick="toggleLogging" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_upload"
+            android:onClick="uploadData" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_newtrack"
+            android:onClick="newTrack" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:onClick="trackSummary"
+        android:layout_marginTop="20dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_directions_walk_white_24dp"
+            android:drawableStart="@drawable/ic_directions_walk_white_24dp"
+            android:drawablePadding="5dp"
+            android:text="@string/label_track"
+            android:textSize="@dimen/label_font_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/newtrack_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/label_font_size"
+            android:layout_marginLeft="@dimen/status_indent"
+            android:layout_marginStart="@dimen/status_indent" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:drawableStart="@drawable/ic_favorite_border_white_24dp"
+        android:drawableLeft="@drawable/ic_favorite_border_white_24dp"
+        android:drawablePadding="5dp"
+        android:text="@string/label_status"
+        android:textSize="@dimen/label_font_size"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/loc_led"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_location"
+            android:textSize="@dimen/label_font_size"
+            android:paddingStart="3dip"
+            android:paddingLeft="3dip"
+            android:paddingRight="3dip"
+            android:drawableStart="@drawable/led"
+            android:drawableLeft="@drawable/led"
+            android:drawablePadding="7dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/location_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dash"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/label_font_size"
+        android:layout_marginLeft="@dimen/status_indent"
+        android:layout_marginStart="@dimen/status_indent" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/sync_led"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_synchronization"
+            android:textSize="@dimen/label_font_size"
+            android:paddingStart="3dip"
+            android:paddingLeft="3dip"
+            android:paddingRight="3dip"
+            android:drawableStart="@drawable/led"
+            android:drawableLeft="@drawable/led"
+            android:drawablePadding="7dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/sync_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dash"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/label_font_size"
+        android:layout_marginLeft="@dimen/status_indent"
+        android:layout_marginStart="@dimen/status_indent" />
+
+    <TextView
+        android:id="@+id/sync_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/colorPink"
+        android:textSize="@dimen/label_font_size"
+        android:layout_marginLeft="@dimen/status_indent"
+        android:layout_marginStart="@dimen/status_indent" />
+
+</LinearLayout>

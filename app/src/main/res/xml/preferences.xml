@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <net.fabiszewski.ulogger.TrimmedEditTextPreference
+        android:key="prefUsername"
+        android:title="@string/pref_username_title"
+        android:summary="@string/pref_username_summary"
+        android:inputType="textVisiblePassword|textNoSuggestions" />
+    <EditTextPreference
+        android:key="prefPass"
+        android:title="@string/pref_pass_title"
+        android:summary="@string/pref_pass_summary"
+        android:inputType="textPassword" />
+    <net.fabiszewski.ulogger.TrimmedEditTextPreference
+        android:key="prefHost"
+        android:title="@string/pref_host_title"
+        android:summary="@string/pref_host_summary"
+        android:inputType="textUri"
+        android:hint="https://www.example.com"/>
+    <ListPreference
+        android:key="prefMinTime"
+        android:title="@string/pref_mintime_title"
+        android:summary="@string/pref_mintime_summary"
+        android:entries="@array/minTimeEntries"
+        android:entryValues="@array/minTimeValues"
+        android:defaultValue="@string/pref_mintime_default" />
+    <ListPreference
+        android:key="prefMinDistance"
+        android:title="@string/pref_mindistance_title"
+        android:summary="@string/pref_mindistance_summary"
+        android:entries="@array/minDistanceEntries"
+        android:entryValues="@array/minDistanceValues"
+        android:defaultValue="@string/pref_mindistance_default" />
+    <ListPreference
+        android:key="prefMinAccuracy"
+        android:title="@string/pref_minaccuracy_title"
+        android:summary="@string/pref_minaccuracy_summary"
+        android:entries="@array/minAccuracyEntries"
+        android:entryValues="@array/minAccuracyValues"
+        android:defaultValue="@string/pref_minaccuracy_default" />
+    <CheckBoxPreference
+        android:key="prefLiveSync"
+        android:title="@string/pref_livesync_title"
+        android:summary="@string/pref_livesync_summary"
+        android:defaultValue="@string/pref_livesync_default" />
+    <CheckBoxPreference
+        android:key="prefAutoStart"
+        android:title="@string/pref_autostart_title"
+        android:summary="@string/pref_autostart_summary"
+        android:defaultValue="@string/pref_autostart_default" />
+    <net.fabiszewski.ulogger.ProviderPreference
+        android:key="prefProvider"
+        android:title="@string/pref_provider_title"
+        android:summary="@string/pref_provider_summary"
+        android:entries="@array/providersEntries"
+        android:entryValues="@array/providersValues"
+        android:defaultValue="@string/pref_provider_default" />
+    <ListPreference
+        android:key="prefUnits"
+        android:title="@string/pref_units_title"
+        android:summary="@string/pref_units_summary"
+        android:entries="@array/unitsEntries"
+        android:entryValues="@array/unitsEntries"
+        android:defaultValue="@string/pref_units_metric" />
+</PreferenceScreen>

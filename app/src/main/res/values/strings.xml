@@ -1,0 +1,95 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+    <string name="app_name" translatable="false">μlogger</string>
+    <string name="app_name_ascii" translatable="false">ulogger</string>
+    <string name="homepage">%s home page</string>
+    <string name="app_link" translatable="false"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">%s</a>]]></string>
+    <string name="ulogger_server">μlogger server</string>
+    <string name="ulogger_server_link" translatable="false"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">%s</a>]]></string>
+    <string name="button_start">Start</string>
+    <string name="button_stop">Stop</string>
+    <string name="button_newtrack">New track</string>
+    <string name="button_upload">Upload</string>
+    <string name="is_running">%s is running</string>
+    <string name="title_newtrack">New track</string>
+    <string name="label_track">Current track</string>
+    <string name="label_newtrack_name">New track name</string>
+    <string name="label_name">Name</string>
+    <string name="label_last_update">Last update: %s</string>
+    <string name="label_synchronized">synchronized</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="ok">OK</string>
+    <string name="settings">Settings</string>
+    <string name="pref_username_title">User name</string>
+    <string name="pref_username_summary">User login on remote server</string>
+    <string name="pref_pass_title">Password</string>
+    <string name="pref_pass_summary">User password on remote server</string>
+    <string name="pref_host_title">Server URL</string>
+    <string name="pref_host_summary">Base URL of the remote server</string>
+    <string name="pref_mintime_title">Minimum time</string>
+    <string name="pref_mintime_summary">Minimum time between location updates</string>
+    <string name="pref_mintime_default" translatable="false">30</string>
+    <string name="pref_mindistance_title">Minimum distance</string>
+    <string name="pref_mindistance_summary">Minimum distance between location updates</string>
+    <string name="pref_mindistance_default" translatable="false">100</string>
+    <string name="pref_minaccuracy_title">Minimum accuracy</string>
+    <string name="pref_minaccuracy_summary">Minimum accuracy of position</string>
+    <string name="pref_minaccuracy_default" translatable="false">100</string>
+    <string name="pref_livesync_title">Live synchronization</string>
+    <string name="pref_livesync_summary">Live uploading of positions to the server. Requires valid user name, password and server url.</string>
+    <string name="pref_livesync_default" translatable="false">false</string>
+    <string name="pref_autostart_title">Auto start</string>
+    <string name="pref_autostart_summary">Application will start on system boot</string>
+    <string name="pref_autostart_default" translatable="false">false</string>
+    <string name="pref_provider_title">Location provider</string>
+    <string name="pref_provider_summary">Location may be supplied by gps provider, by network or by both. Both providers will give best results, but use more battery.</string>
+    <string name="pref_provider_default" translatable="false">3</string>
+    <string name="pref_units_title">Units</string>
+    <string name="pref_units_summary">Preferred units for displaying track summary</string>
+    <string name="pref_units_default" translatable="false">metric</string>
+    <string name="label_status">Status</string>
+    <string name="label_location">Location</string>
+    <string name="label_synchronization">Synchronization</string>
+    <string name="dash" translatable="false">-</string>
+    <string name="tracking_stopped">Tracking stopped</string>
+    <string name="tracking_started">Tracking started</string>
+    <string name="uploading_started">Uploading started</string>
+    <string name="nothing_to_synchronize">Nothing to synchronize</string>
+    <string name="no_positions">Current track has no positions</string>
+    <string name="warning">Warning</string>
+    <string name="notsync_warning">Current track contains not synchronized positions. Setting new track will delete all this data.</string>
+    <string name="empty_trackname_warning">Please set up new track first</string>
+    <string name="logger_running_warning">Please stop current tracking first</string>
+    <string name="about">About</string>
+    <string name="about_description">Simple location logger with support for live tracking and position uploading to own %s.</string>
+    <string name="about_description2">For more information and help please see %s.</string>
+    <string name="about_version">Version %s</string>
+    <string name="about_license">License: GPL</string>
+    <string name="about_credits" translatable="false">2017 © Bartek Fabiszewski</string>
+    <string name="uploading_failed">Uploading failed:</string>
+    <string name="uploading_done">Uploading done</string>
+    <string name="track_summary">Track summary</string>
+    <string name="summary_distance">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d position</item>
+        <item quantity="other">%d positions</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">Please provide valid server url</string>
+    <string name="provide_user_pass_url">Please enter user, password and server url first</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d position behind</item>
+        <item quantity="other">%d positions behind</item>
+    </plurals>
+</resources>
