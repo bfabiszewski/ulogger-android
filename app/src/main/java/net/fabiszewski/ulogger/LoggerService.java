@@ -186,6 +186,16 @@ public class LoggerService extends Service {
     }
 
     /**
+     * Set realtime of last update in milliseconds
+     *
+     * @param timeMs Time
+     */
+    public static void lastUpdateRealtime(long timeMs) {
+
+        lastUpdateRealtime = timeMs;
+    }
+
+    /**
      * Main service thread class handling location updates.
      */
     private class LoggerThread extends HandlerThread {

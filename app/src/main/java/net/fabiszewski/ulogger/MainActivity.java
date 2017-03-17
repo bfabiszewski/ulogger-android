@@ -386,7 +386,9 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 db.newTrack(trackName);
+                LoggerService.lastUpdateRealtime(0);
                 updateTrackLabel(trackName);
+                updateStatus();
                 dialog.cancel();
             }
         });
