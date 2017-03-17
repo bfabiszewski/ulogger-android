@@ -57,11 +57,11 @@ public class WebSyncService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "[websync start]");
+        if (Logger.DEBUG) { Log.d(TAG, "[websync start]"); }
 
         if (pi != null) {
             // cancel pending alarm
-            Log.d(TAG, "[websync cancel alarm]");
+            if (Logger.DEBUG) { Log.d(TAG, "[websync cancel alarm]"); }
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             am.cancel(pi);
             pi = null;
@@ -103,11 +103,11 @@ public class WebSyncService extends IntentService {
                 trackId = web.startTrack(trackName);
                 db.setTrackId(trackId);
             } catch (IOException e) {
-                Log.d(TAG, "[websync io exception: " + e + "]");
+                if (Logger.DEBUG) { Log.d(TAG, "[websync io exception: " + e + "]"); }
                 // schedule retry
                 handleError(e.getMessage());
             } catch (WebAuthException e) {
-                Log.d(TAG, "[websync auth exception: " + e + "]");
+                if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
                 isAuthorized = false;
                 // schedule retry
                 handleError(e.getMessage());
@@ -136,11 +136,11 @@ public class WebSyncService extends IntentService {
             }
         } catch (IOException e) {
             // handle web errors
-            Log.d(TAG, "[websync io exception: " + e + "]");
+            if (Logger.DEBUG) { Log.d(TAG, "[websync io exception: " + e + "]"); }
             // schedule retry
             handleError(e.getMessage());
         } catch (WebAuthException e) {
-            Log.d(TAG, "[websync auth exception: " + e + "]");
+            if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
             isAuthorized = false;
             // schedule retry
             handleError(e.getMessage());
@@ -156,14 +156,14 @@ public class WebSyncService extends IntentService {
      * @param message Error message
      */
     private void handleError(String message) {
-        Log.d(TAG, "[websync retry: " + message + "]");
+        if (Logger.DEBUG) { Log.d(TAG, "[websync retry: " + message + "]"); }
         db.setError(message);
         Intent intent = new Intent(BROADCAST_SYNC_FAILED);
         intent.putExtra("message", message);
         sendBroadcast(intent);
         // retry only if tracking is on
         if (LoggerService.isRunning()) {
-            Log.d(TAG, "[websync set alarm]");
+            if (Logger.DEBUG) { Log.d(TAG, "[websync set alarm]"); }
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
             pi = PendingIntent.getService(this, 0, syncIntent, FLAG_ONE_SHOT);
@@ -203,7 +203,7 @@ public class WebSyncService extends IntentService {
      */
     @Override
     public void onDestroy() {
-        Log.d(TAG, "[websync stop]");
+        if (Logger.DEBUG) { Log.d(TAG, "[websync stop]"); }
         if (db != null) {
             db.close();
         }

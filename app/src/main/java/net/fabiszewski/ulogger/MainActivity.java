@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "[onResume]");
+        if (Logger.DEBUG) { Log.d(TAG, "[onResume]"); }
 
         if (LoggerService.isRunning()) {
             toggleButton.setText(TXT_STOP);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onPause() {
-        Log.d(TAG, "[onPause]");
+        if (Logger.DEBUG) { Log.d(TAG, "[onPause]"); }
         unregisterReceiver(mBroadcastReceiver);
         super.onPause();
     }
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "[onDestroy]");
+        if (Logger.DEBUG) { Log.d(TAG, "[onDestroy]"); }
         if (db != null) {
             db.close();
         }
@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
         int count = db.countUnsynced();
         if (count > 0) {
             String error = db.getError();
-            Log.d(TAG, "[sync error: " + error + "]");
+            if (Logger.DEBUG) { Log.d(TAG, "[sync error: " + error + "]"); }
             if (error != null) {
                 syncError = true;
                 syncErrorLabel.setText(error);
@@ -529,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
      * @param color Color
      */
     private void setSyncLed(int color) {
-        Log.d(TAG, "[setSyncLed " + color + "]");
+        if (Logger.DEBUG) { Log.d(TAG, "[setSyncLed " + color + "]"); }
         setLedColor(syncLed, color);
     }
 
@@ -541,7 +541,7 @@ public class MainActivity extends AppCompatActivity {
      * @param color Color
      */
     private void setLocLed(int color) {
-        Log.d(TAG, "[setLocLed " + color + "]");
+        if (Logger.DEBUG) { Log.d(TAG, "[setLocLed " + color + "]"); }
         setLedColor(locLed, color);
     }
 
@@ -564,7 +564,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_UPDATED)) {
-                Log.d(TAG, "[broadcast received " + intent + "]");
+                if (Logger.DEBUG) { Log.d(TAG, "[broadcast received " + intent + "]"); }
                 updateLocationLabel(LoggerService.lastUpdateRealtime());
                 setLocLed(LED_GREEN);
             } else if (intent.getAction().equals(WebSyncService.BROADCAST_SYNC_DONE)) {

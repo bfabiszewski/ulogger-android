@@ -103,7 +103,7 @@ class WebHelper {
      */
     private String postWithParams(Map<String, String> params) throws IOException, WebAuthException {
         URL url = new URL(host + "/" + CLIENT_SCRIPT);
-        Log.d(TAG, "[postWithParams: " + url + " : " + params +"]");
+        if (Logger.DEBUG) { Log.d(TAG, "[postWithParams: " + url + " : " + params +"]"); }
         String response = null;
 
         String dataString = "";
@@ -143,7 +143,7 @@ class WebHelper {
                         || responseCode == 307) {
                     URL base = connection.getURL();
                     String location = connection.getHeaderField("Location");
-                    Log.d(TAG, "[postWithParams redirect: " + location + "]");
+                    if (Logger.DEBUG) { Log.d(TAG, "[postWithParams redirect: " + location + "]"); }
                     if (location == null || redirectTries == 0) {
                         throw new IOException("Illegal redirect: " + responseCode);
                     }
@@ -178,7 +178,7 @@ class WebHelper {
                 connection.disconnect();
             }
         }
-        Log.d(TAG, "[postWithParams response: " + response + "]");
+        if (Logger.DEBUG) { Log.d(TAG, "[postWithParams response: " + response + "]"); }
         return response;
     }
 
@@ -189,7 +189,7 @@ class WebHelper {
      * @throws WebAuthException Authorization error
      */
     void postPosition(Map<String, String> params) throws IOException, WebAuthException {
-        Log.d(TAG, "[postPosition]");
+        if (Logger.DEBUG) { Log.d(TAG, "[postPosition]"); }
         params.put(PARAM_ACTION, ACTION_ADDPOS);
         String response = postWithParams(params);
         boolean error = true;
@@ -197,7 +197,7 @@ class WebHelper {
             JSONObject json = new JSONObject(response);
             error = json.getBoolean("error");
         } catch (JSONException e) {
-            Log.d(TAG, "[postPosition json failed: " + e +"]");
+            if (Logger.DEBUG) { Log.d(TAG, "[postPosition json failed: " + e +"]"); }
         }
         if (error) {
             throw new IOException("response error");
@@ -212,7 +212,7 @@ class WebHelper {
      * @throws WebAuthException Authorization error
      */
     int startTrack(String name) throws IOException, WebAuthException {
-        Log.d(TAG, "[startTrack: " + name +"]");
+        if (Logger.DEBUG) { Log.d(TAG, "[startTrack: " + name +"]"); }
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_ACTION, ACTION_ADDTRACK);
         params.put(PARAM_TRACK, name);
@@ -226,7 +226,7 @@ class WebHelper {
                 return json.getInt("trackid");
             }
         } catch (JSONException e) {
-            Log.d(TAG, "[startTrack json failed: " + e +"]");
+            if (Logger.DEBUG) { Log.d(TAG, "[startTrack json failed: " + e +"]"); }
             throw new IOException(e);
         }
     }
@@ -238,7 +238,7 @@ class WebHelper {
      * @throws JSONException Response parsing error
      */
     void authorize() throws IOException, WebAuthException, JSONException {
-        Log.d(TAG, "[authorize]");
+        if (Logger.DEBUG) { Log.d(TAG, "[authorize]"); }
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_ACTION, ACTION_AUTH);
         params.put(PARAM_USER, user);

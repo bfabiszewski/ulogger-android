@@ -43,7 +43,7 @@ class DbAccess {
      * Get singleton instance
      * @return DbAccess singleton
      */
-    public static synchronized DbAccess getInstance() {
+    static synchronized DbAccess getInstance() {
         if (sInstance == null) {
             sInstance = new DbAccess();
         }
@@ -54,13 +54,11 @@ class DbAccess {
      * Opens database
      * @param context Context
      */
-    public synchronized void open(Context context) {
+    synchronized void open(Context context) {
         if(openCount.incrementAndGet() == 1) {
             mDbHelper = DbHelper.getInstance(context.getApplicationContext());
             db = mDbHelper.getWritableDatabase();
-            Log.d(TAG, "[db open: " + db + "]");
         }
-        Log.d(TAG, "[db open,  counter: " + openCount + "]");
     }
 
     /**
@@ -68,7 +66,8 @@ class DbAccess {
      *
      * @param loc Location
      */
-    public void writeLocation(Location loc) {
+    void writeLocation(Location loc) {
+        if (Logger.DEBUG) { Log.d(TAG, "[writeLocation]"); }
         ContentValues values = new ContentValues();
         values.put(DbContract.Positions.COLUMN_TIME, loc.getTime() / 1000);
         values.put(DbContract.Positions.COLUMN_LATITUDE, loc.getLatitude());
@@ -86,7 +85,6 @@ class DbAccess {
             values.put(DbContract.Positions.COLUMN_ACCURACY, loc.getAccuracy());
         }
         values.put(DbContract.Positions.COLUMN_PROVIDER, loc.getProvider());
-        Log.d(TAG, "[writeLocation]");
 
         db.insert(DbContract.Positions.TABLE_NAME, null, values);
     }
@@ -96,7 +94,7 @@ class DbAccess {
      *
      * @return Result set
      */
-    public Cursor getUnsynced() {
+    Cursor getUnsynced() {
         return db.query(DbContract.Positions.TABLE_NAME,
                 new String[] {"*"},
                 DbContract.Positions.COLUMN_SYNCED + "=?",
@@ -110,7 +108,7 @@ class DbAccess {
      *
      * @return Error message or null if none
      */
-    public String getError() {
+    String getError() {
         Cursor query = db.query(DbContract.Positions.TABLE_NAME,
                 new String[] {DbContract.Positions.COLUMN_ERROR},
                 DbContract.Positions.COLUMN_SYNCED + "=?",
@@ -131,7 +129,7 @@ class DbAccess {
      *
      * @param error Error message
      */
-    public void setError(String error) {
+    void setError(String error) {
         ContentValues values = new ContentValues();
         values.put(DbContract.Positions.COLUMN_ERROR, error);
         db.update(DbContract.Positions.TABLE_NAME,
@@ -148,7 +146,7 @@ class DbAccess {
      *
      * @param id Position id
      */
-    public void setSynced(int id) {
+    void setSynced(int id) {
         ContentValues values = new ContentValues();
         values.put(DbContract.Positions.COLUMN_SYNCED, "1");
         values.putNull(DbContract.Positions.COLUMN_ERROR);
@@ -163,7 +161,7 @@ class DbAccess {
      *
      * @return Count
      */
-    public int countUnsynced() {
+    int countUnsynced() {
         Cursor count = db.query(DbContract.Positions.TABLE_NAME,
                 new String[] {"COUNT(*)"},
                 DbContract.Positions.COLUMN_SYNCED + "=?",
@@ -183,7 +181,7 @@ class DbAccess {
      *
      * @return True if synchronization needed, false otherwise
      */
-    public boolean needsSync() {
+    boolean needsSync() {
         return (countUnsynced() > 0);
     }
 
@@ -192,7 +190,7 @@ class DbAccess {
      *
      * @return UTC timestamp in seconds
      */
-    public long getLastTimestamp() {
+    long getLastTimestamp() {
         Cursor query = db.query(DbContract.Positions.TABLE_NAME,
                 new String[] {DbContract.Positions.COLUMN_TIME},
                 null, null, null, null,
@@ -211,7 +209,7 @@ class DbAccess {
      *
      * @return Track id, zero if no track with valid id in database
      */
-    public int getTrackId() {
+    int getTrackId() {
         Cursor track = db.query(DbContract.Track.TABLE_NAME,
                 new String[] {DbContract.Track.COLUMN_ID},
                 DbContract.Track.COLUMN_ID + " IS NOT NULL",
@@ -230,7 +228,7 @@ class DbAccess {
      *
      * @return Track name, null if no track in database
      */
-    public String getTrackName() {
+    String getTrackName() {
         Cursor track = db.query(DbContract.Track.TABLE_NAME,
                 new String[] {DbContract.Track.COLUMN_NAME},
                 null, null, null, null, null,
@@ -248,7 +246,7 @@ class DbAccess {
      *
      * @param id New track id
      */
-    public void setTrackId(int id) {
+    void setTrackId(int id) {
         ContentValues values = new ContentValues();
         values.put(DbContract.Track.COLUMN_ID, id);
         db.update(DbContract.Track.TABLE_NAME,
@@ -262,7 +260,7 @@ class DbAccess {
      *
      * @param name New track name
      */
-    public void newTrack(String name) {
+    void newTrack(String name) {
         truncateTrack();
         truncatePositions();
         ContentValues values = new ContentValues();
@@ -275,7 +273,7 @@ class DbAccess {
      *
      * @return TrackSummary object
      */
-    public TrackSummary getTrackSummary() {
+    TrackSummary getTrackSummary() {
         Cursor positions = db.query(DbContract.Positions.TABLE_NAME,
                 new String[] {"*"},
                 null, null, null, null,
@@ -325,10 +323,8 @@ class DbAccess {
     /**
      * Closes database
      */
-    public synchronized void close() {
-        Log.d(TAG, "[db close,  counter: " + openCount + "]");
+    synchronized void close() {
         if(openCount.decrementAndGet() == 0) {
-            Log.d(TAG, "[db close: " + db + "]");
             if (db != null) {
                 db.close();
             }

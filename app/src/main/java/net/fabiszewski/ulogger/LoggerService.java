@@ -72,7 +72,7 @@ public class LoggerService extends Service {
      */
     @Override
     public void onCreate() {
-        Log.d(TAG, "[onCreate]");
+        if (Logger.DEBUG) { Log.d(TAG, "[onCreate]"); }
         thread = new LoggerThread();
         syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
 
@@ -115,8 +115,7 @@ public class LoggerService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Log.d(TAG, "[onStartCommand]");
+        if (Logger.DEBUG) { Log.d(TAG, "[onStartCommand]"); }
 
         // start websync service if needed
         liveSync = prefs.getBoolean("prefLiveSync", false);
@@ -145,8 +144,7 @@ public class LoggerService extends Service {
      */
     @Override
     public void onDestroy() {
-
-        Log.d(TAG, "[onDestroy]");
+        if (Logger.DEBUG) { Log.d(TAG, "[onDestroy]"); }
 
         if (canAccessLocation()) {
             //noinspection MissingPermission
@@ -202,13 +200,13 @@ public class LoggerService extends Service {
 
         @Override
         public void interrupt() {
-            Log.d(TAG, "[interrupt]");
+            if (Logger.DEBUG) { Log.d(TAG, "[interrupt]"); }
             cleanup();
         }
 
         @Override
         public void finalize() throws Throwable {
-            Log.d(TAG, "[finalize]");
+            if (Logger.DEBUG) { Log.d(TAG, "[finalize]"); }
             cleanup();
             super.finalize();
         }
@@ -219,7 +217,7 @@ public class LoggerService extends Service {
 
         @Override
         public void run() {
-            Log.d(TAG, "[run]");
+            if (Logger.DEBUG) { Log.d(TAG, "[run]"); }
             showNotification(mNotificationManager, NOTIFICATION_ID);
             super.run();
         }
@@ -232,7 +230,7 @@ public class LoggerService extends Service {
      * @param mId Notification Id
      */
     private void showNotification(NotificationManager mNotificationManager, int mId) {
-        Log.d(TAG, "[showNotification " + mId + "]");
+        if (Logger.DEBUG) { Log.d(TAG, "[showNotification " + mId + "]"); }
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -257,7 +255,7 @@ public class LoggerService extends Service {
         @Override
         public void onLocationChanged(Location loc) {
 
-            Log.d(TAG, "[location changed: " + loc + "]");
+            if (Logger.DEBUG) { Log.d(TAG, "[location changed: " + loc + "]"); }
 
             if (!skipLocation(loc)) {
 
@@ -284,7 +282,7 @@ public class LoggerService extends Service {
         private boolean skipLocation(Location loc) {
             // accuracy radius too high
             if (loc.hasAccuracy() && loc.getAccuracy() > maxAccuracy) {
-                Log.d(TAG, "[location accuracy above limit: " + loc.getAccuracy() + " > " + maxAccuracy + "]");
+                if (Logger.DEBUG) { Log.d(TAG, "[location accuracy above limit: " + loc.getAccuracy() + " > " + maxAccuracy + "]"); }
                 // reset gps provider to get better accuracy even if time and distance criteria don't change
                 if (loc.getProvider().equals(LocationManager.GPS_PROVIDER)) {
                     restartUpdates(LocationManager.GPS_PROVIDER);
@@ -297,7 +295,7 @@ public class LoggerService extends Service {
                 long elapsedMillis = SystemClock.elapsedRealtime() - lastUpdateRealtime;
                 if (lastLocation.getProvider().equals(LocationManager.GPS_PROVIDER) && elapsedMillis < maxTimeMillis) {
                     // skip network provider
-                    Log.d(TAG, "[location network provider skipped]");
+                    if (Logger.DEBUG) { Log.d(TAG, "[location network provider skipped]"); }
                     return true;
                 }
             }
@@ -309,8 +307,7 @@ public class LoggerService extends Service {
          * @param provider Location provider
          */
         private void restartUpdates(String provider) {
-
-            Log.d(TAG, "[location restart provider " + provider + "]");
+            if (Logger.DEBUG) { Log.d(TAG, "[location restart provider " + provider + "]"); }
 
             if (providerExists(provider) && canAccessLocation()) {
                 //noinspection MissingPermission
@@ -327,7 +324,7 @@ public class LoggerService extends Service {
          */
         @Override
         public void onProviderDisabled(String provider) {
-            Log.d(TAG, "[location provider " + provider + " disabled]");
+            if (Logger.DEBUG) { Log.d(TAG, "[location provider " + provider + " disabled]"); }
         }
 
         /**
@@ -336,7 +333,7 @@ public class LoggerService extends Service {
          */
         @Override
         public void onProviderEnabled(String provider) {
-            Log.d(TAG, "[location provider " + provider + " enabled]");
+            if (Logger.DEBUG) { Log.d(TAG, "[location provider " + provider + " enabled]"); }
         }
 
         /**
@@ -347,23 +344,24 @@ public class LoggerService extends Service {
          */
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            // todo remove debug output
-            final String statusString;
-            switch (status) {
-                case OUT_OF_SERVICE:
-                    statusString = "out of service";
-                    break;
-                case TEMPORARILY_UNAVAILABLE:
-                    statusString = "temporarily unavailable";
-                    break;
-                case AVAILABLE:
-                    statusString = "available";
-                    break;
-                default:
-                    statusString = "unknown";
-                    break;
+            if (Logger.DEBUG) {
+                final String statusString;
+                switch (status) {
+                    case OUT_OF_SERVICE:
+                        statusString = "out of service";
+                        break;
+                    case TEMPORARILY_UNAVAILABLE:
+                        statusString = "temporarily unavailable";
+                        break;
+                    case AVAILABLE:
+                        statusString = "available";
+                        break;
+                    default:
+                        statusString = "unknown";
+                        break;
+                }
+                Log.d(TAG, "[location status for " + provider + " changed: " + statusString + "]");
             }
-            Log.d(TAG, "[location status for " + provider + " changed: " + statusString + "]");
         }
     }
 }
