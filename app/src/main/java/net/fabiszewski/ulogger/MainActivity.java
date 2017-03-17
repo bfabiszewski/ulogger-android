@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view View
      */
     public void uploadData(@SuppressWarnings("UnusedParameters") View view) {
-        if (!SettingsActivity.isValidServerSetup()) {
+        if (!SettingsActivity.isValidServerSetup(this)) {
             showToast(getString(R.string.provide_user_pass_url), Toast.LENGTH_LONG);
         } else if (db.needsSync()) {
             Intent syncIntent = new Intent(MainActivity.this, WebSyncService.class);

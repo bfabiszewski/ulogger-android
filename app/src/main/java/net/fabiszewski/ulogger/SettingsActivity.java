@@ -10,6 +10,7 @@
 package net.fabiszewski.ulogger;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,8 +28,6 @@ import android.widget.Toast;
 
 public class SettingsActivity extends PreferenceActivity {
 
-    private static SharedPreferences prefs;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +37,6 @@ public class SettingsActivity extends PreferenceActivity {
         } else {
             onCreatePreferenceFragment();
         }
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
     }
 
@@ -74,9 +72,10 @@ public class SettingsActivity extends PreferenceActivity {
     private final static Preference.OnPreferenceChangeListener liveSyncChanged = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
+            final Context context = preference.getContext();
             if (Boolean.parseBoolean(newValue.toString())) {
-                if (!isValidServerSetup()) {
-                    Toast.makeText(preference.getContext(), R.string.provide_user_pass_url, Toast.LENGTH_LONG).show();
+                if (!isValidServerSetup(context)) {
+                    Toast.makeText(context, R.string.provide_user_pass_url, Toast.LENGTH_LONG).show();
                     return false;
                 }
             }
@@ -85,7 +84,8 @@ public class SettingsActivity extends PreferenceActivity {
 
     };
 
-    static boolean isValidServerSetup() {
+    static boolean isValidServerSetup(Context context) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final String host = prefs.getString("prefHost", null);
         final String user = prefs.getString("prefUsername", null);
         final String pass = prefs.getString("prefPass", null);
