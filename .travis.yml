@@ -10,4 +10,6 @@ android:
     - build-tools-25.0.0
     - tools
     - android-${ANDROID_API_LEVEL}
+    - extra-android-m2repository
+    - extra-android-support
     - sys-img-armeabi-v7a-android-${ANDROID_API_LEVEL}
