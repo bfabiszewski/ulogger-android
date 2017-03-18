@@ -322,14 +322,22 @@ public class MainActivity extends AppCompatActivity {
         final String server_link = getString(R.string.ulogger_server_link, getString(R.string.ulogger_server));
         final String app_link = getString(R.string.app_link, getString(R.string.homepage, getString(R.string.app_name)));
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            //noinspection deprecation
-            descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description, server_link)));
-            //noinspection deprecation
-            description2Label.setText(Html.fromHtml(getString(R.string.about_description2, app_link)));
+            descriptionLabel.setText(fromHtmlDepreciated(getString(R.string.about_description, server_link)));
+            description2Label.setText(fromHtmlDepreciated(getString(R.string.about_description2, app_link)));
         } else {
             descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description, server_link), android.text.Html.FROM_HTML_MODE_LEGACY));
             description2Label.setText(Html.fromHtml(getString(R.string.about_description2, app_link), android.text.Html.FROM_HTML_MODE_LEGACY));
         }
+    }
+
+    /**
+     * Depreciated fromHtml method for build version < 24
+     * @param text Message text
+     * @return Text with parsed html
+     */
+    @SuppressWarnings("deprecation")
+    private static CharSequence fromHtmlDepreciated(String text) {
+        return Html.fromHtml(text);
     }
 
     /**
