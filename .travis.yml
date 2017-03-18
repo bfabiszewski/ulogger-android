@@ -1,15 +1,18 @@
 language: android
 jdk: oraclejdk8
-env:
-  global:
-    - ANDROID_API_LEVEL=25
 android:
   components:
-    - platform-tools
     - tools
     - build-tools-25.0.0
-    - tools
-    - android-${ANDROID_API_LEVEL}
+    - platform-tools
     - extra-android-m2repository
-    - extra-android-support
-    - sys-img-armeabi-v7a-android-${ANDROID_API_LEVEL}
+    - extra-google-android-support
+    - android-25
+script:
+  - ./gradlew build 
+after_failure:
+  - cat app/build/reports/checkstyle.html
+  - cat app/build/reports/lint-results.xml
+  - cat app/build/reports/lint-results.html
+  - cat app/build/reports/findbugs.html
+  - cat app/build/reports/pmd.html
