@@ -7,7 +7,7 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-25.0.2
+    - build-tools-25.0.0
     - tools
     - android-${ANDROID_API_LEVEL}
     - sys-img-armeabi-v7a-android-${ANDROID_API_LEVEL}
