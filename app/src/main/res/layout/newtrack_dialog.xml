@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:inputType="textShortMessage"
         android:text="@string/label_name"
+        android:selectAllOnFocus="true"
         android:ems="10" />
 
     <TableRow
