@@ -1,4 +1,4 @@
-# μlogger
+# ![ulogger_logo_small](https://cloud.githubusercontent.com/assets/3366666/24080878/0288f046-0ca8-11e7-9ffd-753e5c417756.png) μlogger [![Build Status](https://travis-ci.org/bfabiszewski/ulogger-android.svg?branch=master)](https://travis-ci.org/bfabiszewski/ulogger-android)
 
 μlogger [*micro-logger*] is an android application for continuous logging of location coordinates, designed to record hiking, biking tracks and other outdoor activities. 
 Application works in background. Track points are saved at chosen intervals and may be uploaded to dedicated server in real time.
@@ -12,6 +12,11 @@ Together they make a complete self owned and controlled client–server solution
 - synchronizes location with web server in real time, in case of problems keeps retrying;
 - alternatively works in offline mode; positions may be uploaded to the servers manually;
 - configurable tracking settings
+
+## Screenshots
+![api10_main3](https://cloud.githubusercontent.com/assets/3366666/24080737/3214e570-0ca5-11e7-88d6-d635cab4a5c3.png)
+![api10_summary](https://cloud.githubusercontent.com/assets/3366666/24080746/5818c5a2-0ca5-11e7-907c-dee16f740bba.png)
+![api24_settings](https://cloud.githubusercontent.com/assets/3366666/24080751/5ba597f4-0ca5-11e7-9583-adb7b61322cc.png)
 
 ## Help
 - μlogger's current status is shown by two leds, one for location tracking and one for web synchronization: 
