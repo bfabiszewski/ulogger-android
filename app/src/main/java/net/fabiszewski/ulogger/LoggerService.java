@@ -55,7 +55,6 @@ public class LoggerService extends Service {
     private LocationManager locManager;
     private LocationListener locListener;
     private DbAccess db;
-    private SharedPreferences prefs;
     private int maxAccuracy;
     private float minDistance;
     private long minTimeMillis;
@@ -65,6 +64,10 @@ public class LoggerService extends Service {
 
     private static Location lastLocation = null;
     private static long lastUpdateRealtime = 0;
+
+    private final int NOTIFICATION_ID = (int) (System.currentTimeMillis() / 1000L);
+    private NotificationManager mNotificationManager;
+
 
 
     /**
@@ -85,7 +88,7 @@ public class LoggerService extends Service {
         db.open(this);
         locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locListener = new mLocationListener();
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         minTimeMillis = Long.parseLong(prefs.getString("prefMinTime", getString(R.string.pref_mintime_default))) * 1000;
         minDistance = Float.parseFloat(prefs.getString("prefMinDistance", getString(R.string.pref_mindistance_default)));
         maxAccuracy = Integer.parseInt(prefs.getString("prefMinAccuracy", getString(R.string.pref_minaccuracy_default)));
@@ -103,6 +106,13 @@ public class LoggerService extends Service {
                 locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTimeMillis, minDistance, locListener, looper);
             }
         }
+
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // start websync service if needed
+        liveSync = prefs.getBoolean("prefLiveSync", false);
+        if (liveSync && db.needsSync()) {
+            startService(syncIntent);
+        }
     }
 
     /**
@@ -116,12 +126,7 @@ public class LoggerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Logger.DEBUG) { Log.d(TAG, "[onStartCommand]"); }
-
-        // start websync service if needed
-        liveSync = prefs.getBoolean("prefLiveSync", false);
-        if (liveSync && db.needsSync()) {
-            startService(syncIntent);
-        }
+        showNotification(mNotificationManager, NOTIFICATION_ID);
 
         return START_STICKY;
     }
@@ -156,6 +161,8 @@ public class LoggerService extends Service {
 
         isRunning = false;
 
+        mNotificationManager.cancel(NOTIFICATION_ID);
+
         if (thread != null) {
             thread.interrupt();
         }
@@ -186,49 +193,36 @@ public class LoggerService extends Service {
     }
 
     /**
-     * Set realtime of last update in milliseconds
-     *
-     * @param timeMs Time
+     * Reset realtime of last update
      */
-    public static void lastUpdateRealtime(long timeMs) {
+    public static void resetUpdateRealtime() {
 
-        lastUpdateRealtime = timeMs;
+        lastUpdateRealtime = 0;
     }
 
     /**
      * Main service thread class handling location updates.
      */
     private class LoggerThread extends HandlerThread {
-
-        private final String TAG = LoggerThread.class.getSimpleName();
-        private final int NOTIFICATION_ID = (int) (System.currentTimeMillis() / 1000L);
-        private final NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         LoggerThread() {
             super("LoggerThread");
         }
+        private final String TAG = LoggerThread.class.getSimpleName();
 
         @Override
         public void interrupt() {
             if (Logger.DEBUG) { Log.d(TAG, "[interrupt]"); }
-            cleanup();
         }
 
         @Override
         public void finalize() throws Throwable {
             if (Logger.DEBUG) { Log.d(TAG, "[finalize]"); }
-            cleanup();
             super.finalize();
-        }
-
-        private void cleanup() {
-            mNotificationManager.cancel(NOTIFICATION_ID);
         }
 
         @Override
         public void run() {
             if (Logger.DEBUG) { Log.d(TAG, "[run]"); }
-            showNotification(mNotificationManager, NOTIFICATION_ID);
             super.run();
         }
     }

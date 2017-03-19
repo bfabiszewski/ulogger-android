@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 db.newTrack(trackName);
-                LoggerService.lastUpdateRealtime(0);
+                LoggerService.resetUpdateRealtime();
                 updateTrackLabel(trackName);
                 updateStatus();
                 dialog.cancel();
