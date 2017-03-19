@@ -75,13 +75,15 @@ class WebHelper {
     private static final String PARAM_TRACK = "track";
 
     private final String userAgent;
+    private final Context context;
 
 
     /**
      * Constructor
-     * @param context Context
+     * @param ctx Context
      */
-    WebHelper(Context context) {
+    WebHelper(Context ctx) {
+        context = ctx;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         user = prefs.getString("prefUsername", "NULL");
         pass = prefs.getString("prefPass", "NULL");
@@ -145,7 +147,7 @@ class WebHelper {
                     String location = connection.getHeaderField("Location");
                     if (Logger.DEBUG) { Log.d(TAG, "[postWithParams redirect: " + location + "]"); }
                     if (location == null || redirectTries == 0) {
-                        throw new IOException("Illegal redirect: " + responseCode);
+                        throw new IOException(context.getString(R.string.e_illegal_redirect, responseCode));
                     }
                     redirect = true;
                     redirectTries--;
@@ -153,14 +155,14 @@ class WebHelper {
                     String h1 = base.getHost();
                     String h2 = url.getHost();
                     if (h1 != null && !h1.equalsIgnoreCase(h2)) {
-                        throw new IOException("Illegal redirect: " + responseCode);
+                        throw new IOException(context.getString(R.string.e_illegal_redirect, responseCode));
                     }
                 }
                 else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    throw new WebAuthException("Authorization failure: " + responseCode);
+                    throw new WebAuthException(context.getString(R.string.e_auth_failure, responseCode));
                 }
                 else if (responseCode != HttpURLConnection.HTTP_OK) {
-                    throw new IOException("HTTP error code: " + responseCode);
+                    throw new IOException(context.getString(R.string.e_http_code, responseCode));
                 }
             } while (redirect);
 
@@ -200,7 +202,7 @@ class WebHelper {
             if (Logger.DEBUG) { Log.d(TAG, "[postPosition json failed: " + e +"]"); }
         }
         if (error) {
-            throw new IOException("response error");
+            throw new IOException(context.getString(R.string.e_server_response));
         }
     }
 
@@ -221,7 +223,7 @@ class WebHelper {
             JSONObject json = new JSONObject(response);
             boolean error = json.getBoolean("error");
             if (error) {
-                throw new IOException("Server error");
+                throw new IOException(context.getString(R.string.e_server_response));
             } else {
                 return json.getInt("trackid");
             }
@@ -247,7 +249,7 @@ class WebHelper {
         JSONObject json = new JSONObject(response);
         boolean error = json.getBoolean("error");
         if (error) {
-            throw new WebAuthException("Server error");
+            throw new WebAuthException(context.getString(R.string.e_server_response));
         }
     }
 

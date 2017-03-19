@@ -88,6 +88,13 @@
     <string name="unit_mile">mi.</string>
     <string name="provide_valid_url">Please provide valid server url</string>
     <string name="provide_user_pass_url">Please enter user, password and server url first</string>
+    <string name="e_illegal_redirect">Illegal redirect: %d</string>
+    <string name="e_auth_failure">Authorization failure: %d</string>
+    <string name="e_http_code">HTTP error code: %d</string>
+    <string name="e_server_response">Server response error</string>
+    <string name="e_unknown_host">Unknown host: %s</string>
+    <string name="e_bad_url">Bad URL: %s</string>
+    <string name="e_connect">Connection error: %s</string>
     <plurals name="label_positions_behind">
         <item quantity="one">%d position behind</item>
         <item quantity="other">%d positions behind</item>

@@ -20,6 +20,11 @@ import android.util.Log;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.MalformedURLException;
+import java.net.NoRouteToHostException;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,7 +80,7 @@ public class WebSyncService extends IntentService {
             try {
                 web.authorize();
             } catch (WebAuthException|IOException|JSONException e) {
-                handleError(e.getMessage());
+                handleError(e);
                 return;
             }
 
@@ -105,12 +110,12 @@ public class WebSyncService extends IntentService {
             } catch (IOException e) {
                 if (Logger.DEBUG) { Log.d(TAG, "[websync io exception: " + e + "]"); }
                 // schedule retry
-                handleError(e.getMessage());
+                handleError(e);
             } catch (WebAuthException e) {
                 if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
                 isAuthorized = false;
                 // schedule retry
-                handleError(e.getMessage());
+                handleError(e);
             }
         }
         return trackId;
@@ -124,6 +129,8 @@ public class WebSyncService extends IntentService {
     private void doSync(int trackId) {
         // iterate over positions in db
         Cursor cursor = db.getUnsynced();
+        // suppress as it requires target api 19
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             while (cursor.moveToNext()) {
                 int rowId = cursor.getInt(cursor.getColumnIndex(DbContract.Positions._ID));
@@ -138,12 +145,12 @@ public class WebSyncService extends IntentService {
             // handle web errors
             if (Logger.DEBUG) { Log.d(TAG, "[websync io exception: " + e + "]"); }
             // schedule retry
-            handleError(e.getMessage());
+            handleError(e);
         } catch (WebAuthException e) {
             if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
             isAuthorized = false;
             // schedule retry
-            handleError(e.getMessage());
+            handleError(e);
         } finally {
             cursor.close();
         }
@@ -153,10 +160,21 @@ public class WebSyncService extends IntentService {
      * Actions performed in case of synchronization error.
      * Send broadcast to main activity, schedule retry if tracking is on.
      *
-     * @param message Error message
+     * @param e Exception
      */
-    private void handleError(String message) {
+    private void handleError(Exception e) {
+        String message;
+        if (e instanceof UnknownHostException) {
+            message = getString(R.string.e_unknown_host, e.getMessage());
+        } else if (e instanceof MalformedURLException || e instanceof URISyntaxException) {
+            message = getString(R.string.e_bad_url, e.getMessage());
+        } else if (e instanceof ConnectException || e instanceof NoRouteToHostException) {
+            message = getString(R.string.e_connect, e.getMessage());
+        } else {
+            message = e.getMessage();
+        }
         if (Logger.DEBUG) { Log.d(TAG, "[websync retry: " + message + "]"); }
+
         db.setError(message);
         Intent intent = new Intent(BROADCAST_SYNC_FAILED);
         intent.putExtra("message", message);
