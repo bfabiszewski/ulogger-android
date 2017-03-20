@@ -27,6 +27,6 @@ addons:
       name: "bfabiszewski/ulogger-android"
       description: "ulogger-android build submitted via Travis CI"
     notification_email: scan.coverity@fabiszewski.net
-    build_command_prepend: ./gradlew clean
-    build_command: ./gradlew build
+    build_command_prepend: ./gradlew --no-daemon clean
+    build_command: ./gradlew --no-daemon build
     branch_pattern: master
