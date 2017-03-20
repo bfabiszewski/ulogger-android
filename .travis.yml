@@ -16,3 +16,17 @@ after_failure:
   - cat app/build/reports/lint-results.html
   - cat app/build/reports/findbugs.html
   - cat app/build/reports/pmd.html
+env:
+  global:
+   - secure: "XITIh3JC8Guja0RgWYiD63oRsW7znxWPlEvrApRnXJ56vlH8jh9PUu2U0/u72J+bKsCrSy3RVaqAf2u2NGcIKkBND1K3inh/98P8N8t6/wOmU4JikUU8pwFaIYZHGSewd6r58MEZ6lGp/pqH5RjrOQ9acXqRlidxnp6/5wgyApVEGSXrYV/b1UvDAUpdBoVWGV5UFBepKPp8crH6xnuxFkHs0LvlKZLRXXiYaoEGWb8AG/VcA/fcmC2/oaIll67DD5H2R8+qRfkghusYr2tECGqb7PF8RRYMYNEdxljWJPWhCJi1MWEljeXSuWVOu0agJKCsXU2Ff67PwxCHviVeidVtGfOvrFx0QfuxZTC4H/xAz4rLatzGAlrRjmto26sCwscGAkwirvvT4cFajlqdPco6v+9g9fCPBqriu9oHOf7ApMJgWzWdGOqpnqeZow0HBUmFAJ/ZK+kZT9Alc7yZyzQoP+P3lWQ8hlMu7cq37vcs5aYeIImoEOPUDdOApe1+we/Hz3MbaAWIBl35ZqX3nDdSGzejvRfhGgi/VHHHiy0Kq12aTwxVSLJ359pCI4A7S0RruDuposSCv8upcLh+o4YaCUmh9ULI/Dizlz2S4wbogmTsykuR/H16g7V58IkZb1faRg2f+T3mgU6VNjY6Vg90QPfOCrCfiu8JxKOyRDk="
+before_install:
+      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+addons:
+  coverity_scan:
+    project:
+      name: "bfabiszewski/ulogger-android"
+      description: "ulogger-android build submitted via Travis CI"
+    notification_email: scan.coverity@fabiszewski.net
+    build_command_prepend: ./gradlew clean
+    build_command: ./gradlew build
+    branch_pattern: master
