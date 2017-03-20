@@ -28,5 +28,5 @@ addons:
       description: "ulogger-android build submitted via Travis CI"
     notification_email: scan.coverity@fabiszewski.net
     build_command_prepend: rm -rf ./build
-    build_command: ./gradlew --no-daemon assemble
+    build_command: ./gradlew -Dorg.gradle.jvmargs= --no-daemon assemble
     branch_pattern: master
