@@ -63,7 +63,7 @@ class DbHelper extends SQLiteOpenHelper {
      * @param context Context
      * @return DbHelper instance
      */
-    public static synchronized DbHelper getInstance(Context context) {
+    static DbHelper getInstance(Context context) {
 
         if (sInstance == null) {
             sInstance = new DbHelper(context.getApplicationContext());

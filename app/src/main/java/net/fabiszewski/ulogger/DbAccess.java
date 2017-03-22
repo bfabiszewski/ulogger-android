@@ -16,8 +16,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.util.Log;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Gateway class for database access
  *
@@ -25,13 +23,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 class DbAccess {
 
-    private static final AtomicInteger openCount = new AtomicInteger();
+    private static int openCount;
     private static DbAccess sInstance;
 
     private static SQLiteDatabase db;
     private static DbHelper mDbHelper;
     private static final String TAG = DbAccess.class.getSimpleName();
-
 
     /**
      * Private constructor
@@ -54,10 +51,13 @@ class DbAccess {
      * Opens database
      * @param context Context
      */
-    synchronized void open(Context context) {
-        if(openCount.incrementAndGet() == 1) {
-            mDbHelper = DbHelper.getInstance(context.getApplicationContext());
-            db = mDbHelper.getWritableDatabase();
+    void open(Context context) {
+        synchronized (DbAccess.class) {
+            if (openCount++ == 0) {
+                if (Logger.DEBUG) { Log.d(TAG, "[open]"); }
+                mDbHelper = DbHelper.getInstance(context.getApplicationContext());
+                db = mDbHelper.getWritableDatabase();
+            }
         }
     }
 
@@ -323,13 +323,17 @@ class DbAccess {
     /**
      * Closes database
      */
-    synchronized void close() {
-        if(openCount.decrementAndGet() == 0) {
-            if (db != null) {
-                db.close();
-            }
-            if (mDbHelper != null) {
-                mDbHelper.close();
+    void close() {
+        synchronized (DbAccess.class) {
+            if (--openCount == 0) {
+                if (Logger.DEBUG) { Log.d(TAG, "[close]"); }
+
+                if (db != null) {
+                    db.close();
+                }
+                if (mDbHelper != null) {
+                    mDbHelper.close();
+                }
             }
         }
     }
