@@ -58,6 +58,7 @@ class DbAccess {
                 mDbHelper = DbHelper.getInstance(context.getApplicationContext());
                 db = mDbHelper.getWritableDatabase();
             }
+            if (Logger.DEBUG) { Log.d(TAG, "[+openCount = " + openCount + "]"); }
         }
     }
 
@@ -335,6 +336,7 @@ class DbAccess {
                     mDbHelper.close();
                 }
             }
+            if (Logger.DEBUG) { Log.d(TAG, "[-openCount = " + openCount + "]"); }
         }
     }
 

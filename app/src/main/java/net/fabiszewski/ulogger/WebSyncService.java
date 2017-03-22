@@ -56,6 +56,16 @@ public class WebSyncService extends IntentService {
         super("WebSyncService");
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (Logger.DEBUG) { Log.d(TAG, "[websync create]"); }
+
+        web = new WebHelper(this);
+        db = DbAccess.getInstance();
+        db.open(this);
+    }
+
     /**
      * Handle synchronization intent
      * @param intent Intent
@@ -71,10 +81,6 @@ public class WebSyncService extends IntentService {
             am.cancel(pi);
             pi = null;
         }
-
-        web = new WebHelper(this);
-        db = DbAccess.getInstance();
-        db.open(this);
 
         if (!isAuthorized) {
             try {

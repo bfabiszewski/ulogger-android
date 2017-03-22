@@ -91,14 +91,6 @@ public class MainActivity extends AppCompatActivity {
         locLabel = (TextView) findViewById(R.id.location_status);
         locLed = (TextView) findViewById(R.id.loc_led);
 
-        db = DbAccess.getInstance();
-        db.open(this);
-        String trackName = db.getTrackName();
-        if (trackName != null) {
-            updateTrackLabel(trackName);
-        }
-        registerBroadcastReceiver();
-        updateStatus();
     }
 
     /**
@@ -108,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (Logger.DEBUG) { Log.d(TAG, "[onResume]"); }
+
+        db = DbAccess.getInstance();
+        db.open(this);
+        String trackName = db.getTrackName();
+        if (trackName != null) {
+            updateTrackLabel(trackName);
+        }
 
         if (LoggerService.isRunning()) {
             toggleButton.setText(TXT_STOP);
@@ -127,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         if (Logger.DEBUG) { Log.d(TAG, "[onPause]"); }
         unregisterReceiver(mBroadcastReceiver);
+        if (db != null) {
+            db.close();
+        }
         super.onPause();
     }
 
@@ -136,9 +138,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         if (Logger.DEBUG) { Log.d(TAG, "[onDestroy]"); }
-        if (db != null) {
-            db.close();
-        }
         super.onDestroy();
     }
 
