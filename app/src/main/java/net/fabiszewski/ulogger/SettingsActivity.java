@@ -45,9 +45,13 @@ public class SettingsActivity extends PreferenceActivity {
     private void onCreatePreferenceActivity() {
         addPreferencesFromResource(R.xml.preferences);
         final Preference prefHost = findPreference("prefHost");
-        prefHost.setOnPreferenceChangeListener(hostChanged);
+        if (prefHost != null) {
+            prefHost.setOnPreferenceChangeListener(hostChanged);
+        }
         final Preference prefLiveSync = findPreference("prefLiveSync");
-        prefLiveSync.setOnPreferenceChangeListener(liveSyncChanged);
+        if (prefLiveSync != null) {
+            prefLiveSync.setOnPreferenceChangeListener(liveSyncChanged);
+        }
     }
 
     /**
@@ -110,9 +114,13 @@ public class SettingsActivity extends PreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
             final Preference prefHost = findPreference("prefHost");
-            prefHost.setOnPreferenceChangeListener(hostChanged);
+            if (prefHost != null) {
+                prefHost.setOnPreferenceChangeListener(hostChanged);
+            }
             final Preference prefLiveSync = findPreference("prefLiveSync");
-            prefLiveSync.setOnPreferenceChangeListener(liveSyncChanged);
+            if (prefLiveSync != null) {
+                prefLiveSync.setOnPreferenceChangeListener(liveSyncChanged);
+            }
         }
 
     }
