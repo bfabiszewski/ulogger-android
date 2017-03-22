@@ -382,6 +382,12 @@ public class MainActivity extends AppCompatActivity {
         final String dateSuffix = sdf.format(Calendar.getInstance().getTime());
         final String autoName = "Auto_" + dateSuffix;
         editText.setText(autoName);
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText.selectAll();
+            }
+        });
         dialog.show();
 
         final Button submit = (Button) dialog.findViewById(R.id.newtrack_button_submit);
