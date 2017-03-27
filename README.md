@@ -18,6 +18,10 @@ Together they make a complete self owned and controlled client–server solution
 ![api10_summary](https://cloud.githubusercontent.com/assets/3366666/24080746/5818c5a2-0ca5-11e7-907c-dee16f740bba.png)
 ![api24_settings](https://cloud.githubusercontent.com/assets/3366666/24080751/5ba597f4-0ca5-11e7-9583-adb7b61322cc.png)
 
+## Download
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/app/net.fabiszewski.ulogger)
 ## Help
 - μlogger's current status is shown by two leds, one for location tracking and one for web synchronization: 
 
