@@ -9,6 +9,7 @@
 
 package net.fabiszewski.ulogger;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,11 +19,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -51,11 +55,20 @@ import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String UPDATED_PREFS = "extra_updated_prefs";
+
     private final String TAG = MainActivity.class.getSimpleName();
 
     private final static int LED_GREEN = 1;
     private final static int LED_RED = 2;
     private final static int LED_YELLOW = 3;
+
+    private final static int PERMISSION_LOCATION = 1;
+    private final static int RESULT_PREFS_UPDATED = 1;
+
+    private String pref_units;
+    private long pref_minTimeMillis;
+    private boolean pref_liveSync;
 
     private final static double KM_MILE = 0.621371;
 
@@ -79,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        updatePreferences();
         TXT_START = getString(R.string.button_start);
         TXT_STOP = getString(R.string.button_stop);
         setContentView(R.layout.activity_main);
@@ -90,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         syncLed = (TextView) findViewById(R.id.sync_led);
         locLabel = (TextView) findViewById(R.id.location_status);
         locLed = (TextView) findViewById(R.id.loc_led);
-
     }
 
     /**
@@ -164,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_settings:
                 Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(i);
+                startActivityForResult(i, RESULT_PREFS_UPDATED);
                 return true;
             case R.id.menu_about:
                 showAbout();
@@ -177,28 +190,93 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Callback on permission request result
+     * Called after user granted/rejected location permission
+     *
+     * @param requestCode Permission code
+     * @param permissions Permissions
+     * @param grantResults Result
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_LOCATION:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // onPause closed db
+                    db.open(this);
+                    startLogger();
+                    db.close();
+                }
+                break;
+        }
+    }
+
+    /**
+     * Callback on activity result.
+     * Called after user updated preferences
+     *
+     * @param requestCode Activity code
+     * @param resultCode Result
+     * @param data Data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RESULT_PREFS_UPDATED:
+                // Preferences updated
+                updatePreferences();
+                if (LoggerService.isRunning()) {
+                    // restart logging
+                    Intent intent = new Intent(MainActivity.this, LoggerService.class);
+                    intent.putExtra(UPDATED_PREFS, true);
+                    startService(intent);
+                }
+                break;
+        }
+    }
+
+    /**
+     * Reread user preferences
+     */
+    private void updatePreferences() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        pref_units = prefs.getString("prefUnits", getString(R.string.pref_units_default));
+        pref_minTimeMillis = Long.parseLong(prefs.getString("prefMinTime", getString(R.string.pref_mintime_default))) * 1000;
+        pref_liveSync = prefs.getBoolean("prefLiveSync", false);
+    }
+
+    /**
      * Called when the user clicks the Start/Stop button
      * @param view View
      */
     public void toggleLogging(@SuppressWarnings("UnusedParameters") View view) {
-        Intent intent = new Intent(MainActivity.this, LoggerService.class);
         if (LoggerService.isRunning()) {
-            // stop tracking
-            stopService(intent);
-            toggleButton.setText(TXT_START);
-            setLocLed(LED_RED);
-            showToast(getString(R.string.tracking_stopped));
+            stopLogger();
         } else {
-            // start tracking
-            if (db.getTrackName() != null) {
-                startService(intent);
-                toggleButton.setText(TXT_STOP);
-                setLocLed(LED_YELLOW);
-                showToast(getString(R.string.tracking_started));
-            } else {
-                showEmptyTrackNameWarning();
-            }
+            startLogger();
         }
+    }
+
+    /**
+     * Start logger service
+     */
+    private void startLogger() {
+        // start tracking
+        if (db.getTrackName() != null) {
+            Intent intent = new Intent(MainActivity.this, LoggerService.class);
+            startService(intent);
+        } else {
+            showEmptyTrackNameWarning();
+        }
+    }
+
+    /**
+     * Stop logger service
+     */
+    private void stopLogger() {
+        // stop tracking
+        Intent intent = new Intent(MainActivity.this, LoggerService.class);
+        stopService(intent);
     }
 
     /**
@@ -260,11 +338,9 @@ public class MainActivity extends AppCompatActivity {
         final TextView summaryDistance = (TextView) alertDialog.findViewById(R.id.summary_distance);
         final TextView summaryDuration = (TextView) alertDialog.findViewById(R.id.summary_duration);
         final TextView summaryPositions = (TextView) alertDialog.findViewById(R.id.summary_positions);
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        final String unit = prefs.getString("prefUnits", getString(R.string.pref_units_default));
         double distance = (double) summary.getDistance() / 1000;
         String unitName = getString(R.string.unit_kilometer);
-        if (unit.equals(getString(R.string.pref_units_imperial))) {
+        if (pref_units.equals(getString(R.string.pref_units_imperial))) {
             distance *= KM_MILE;
             unitName = getString(R.string.unit_mile);
         }
@@ -462,18 +538,16 @@ public class MainActivity extends AppCompatActivity {
         }
         locLabel.setText(timeString);
         // Change led if more than 2 update periods elapsed since last location update
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        final long minTimeMillis = Long.parseLong(prefs.getString("prefMinTime", getString(R.string.pref_mintime_default))) * 1000;
-        if (LoggerService.isRunning() && (timestamp == 0 || elapsed > minTimeMillis * 2)) {
+        if (LoggerService.isRunning() && (timestamp == 0 || elapsed > pref_minTimeMillis * 2)) {
             setLocLed(LED_YELLOW);
         }
     }
 
     /**
-     * Update synchronization status label
+     * Update synchronization status label and led
      * @param unsynced Count of not synchronized positions
      */
-    private void updateSyncLabel(int unsynced) {
+    private void updateSyncStatus(int unsynced) {
         String text;
         if (unsynced > 0) {
             text = getResources().getQuantityString(R.plurals.label_positions_behind, unsynced, unsynced);
@@ -497,15 +571,16 @@ public class MainActivity extends AppCompatActivity {
         updateLocationLabel(LoggerService.lastUpdateRealtime());
         // get sync status
         int count = db.countUnsynced();
-        if (count > 0) {
-            String error = db.getError();
+        String error = db.getError();
+        if (error != null) {
             if (Logger.DEBUG) { Log.d(TAG, "[sync error: " + error + "]"); }
-            if (error != null) {
-                syncError = true;
-                syncErrorLabel.setText(error);
-            }
+            syncError = true;
+            syncErrorLabel.setText(error);
+        } else if (syncError) {
+            syncError = false;
+            syncErrorLabel.setText(null);
         }
-        updateSyncLabel(count);
+        updateSyncStatus(count);
     }
 
     /**
@@ -566,7 +641,15 @@ public class MainActivity extends AppCompatActivity {
      */
     private void registerBroadcastReceiver() {
         IntentFilter filter = new IntentFilter();
+        filter.addAction(LoggerService.BROADCAST_LOCATION_STARTED);
+        filter.addAction(LoggerService.BROADCAST_LOCATION_STOPPED);
         filter.addAction(LoggerService.BROADCAST_LOCATION_UPDATED);
+        filter.addAction(LoggerService.BROADCAST_LOCATION_DISABLED);
+        filter.addAction(LoggerService.BROADCAST_LOCATION_GPS_DISABLED);
+        filter.addAction(LoggerService.BROADCAST_LOCATION_NETWORK_DISABLED);
+        filter.addAction(LoggerService.BROADCAST_LOCATION_GPS_ENABLED);
+        filter.addAction(LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED);
+        filter.addAction(LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED);
         filter.addAction(WebSyncService.BROADCAST_SYNC_DONE);
         filter.addAction(WebSyncService.BROADCAST_SYNC_FAILED);
         registerReceiver(mBroadcastReceiver, filter);
@@ -578,13 +661,18 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (Logger.DEBUG) {
+                Log.d(TAG, "[broadcast received " + intent + "]");
+            }
             if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_UPDATED)) {
-                if (Logger.DEBUG) { Log.d(TAG, "[broadcast received " + intent + "]"); }
                 updateLocationLabel(LoggerService.lastUpdateRealtime());
                 setLocLed(LED_GREEN);
+                if (!pref_liveSync) {
+                    updateSyncStatus(db.countUnsynced());
+                }
             } else if (intent.getAction().equals(WebSyncService.BROADCAST_SYNC_DONE)) {
                 final int unsyncedCount = db.countUnsynced();
-                updateSyncLabel(unsyncedCount);
+                updateSyncStatus(unsyncedCount);
                 setSyncLed(LED_GREEN);
                 // reset error flag and label
                 if (syncError) {
@@ -597,7 +685,7 @@ public class MainActivity extends AppCompatActivity {
                     isUploading = false;
                 }
             } else if (intent.getAction().equals((WebSyncService.BROADCAST_SYNC_FAILED))) {
-                updateSyncLabel(db.countUnsynced());
+                updateSyncStatus(db.countUnsynced());
                 setSyncLed(LED_RED);
                 // set error flag and label
                 String message = intent.getStringExtra("message");
@@ -608,6 +696,29 @@ public class MainActivity extends AppCompatActivity {
                     showToast(getString(R.string.uploading_failed) + "\n" + message, Toast.LENGTH_LONG);
                     isUploading = false;
                 }
+            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_STARTED)) {
+                toggleButton.setText(TXT_STOP);
+                showToast(getString(R.string.tracking_started));
+                setLocLed(LED_YELLOW);
+            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_STOPPED)) {
+                toggleButton.setText(TXT_START);
+                showToast(getString(R.string.tracking_stopped));
+                setLocLed(LED_RED);
+            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_GPS_DISABLED)) {
+                showToast(getString(R.string.gps_disabled_warning), Toast.LENGTH_LONG);
+            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_NETWORK_DISABLED)) {
+                showToast(getString(R.string.net_disabled_warning), Toast.LENGTH_LONG);
+            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_DISABLED)) {
+                showToast(getString(R.string.location_disabled), Toast.LENGTH_LONG);
+                setLocLed(LED_RED);
+            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED)) {
+                showToast(getString(R.string.using_network), Toast.LENGTH_LONG);
+            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_GPS_ENABLED)) {
+                showToast(getString(R.string.using_gps), Toast.LENGTH_LONG);
+            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED)) {
+                showToast(getString(R.string.location_permission_denied), Toast.LENGTH_LONG);
+                setLocLed(LED_RED);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
             }
         }
     };

@@ -45,11 +45,19 @@ import static android.location.LocationProvider.TEMPORARILY_UNAVAILABLE;
 public class LoggerService extends Service {
 
     private static final String TAG = LoggerService.class.getSimpleName();
+    public static final String BROADCAST_LOCATION_STARTED = "net.fabiszewski.ulogger.broadcast.location_started";
+    public static final String BROADCAST_LOCATION_STOPPED = "net.fabiszewski.ulogger.broadcast.location_stopped";
     public static final String BROADCAST_LOCATION_UPDATED = "net.fabiszewski.ulogger.broadcast.location_updated";
+    public static final String BROADCAST_LOCATION_PERMISSION_DENIED = "net.fabiszewski.ulogger.broadcast.location_permission_denied";
+    public static final String BROADCAST_LOCATION_NETWORK_DISABLED = "net.fabiszewski.ulogger.broadcast.network_disabled";
+    public static final String BROADCAST_LOCATION_GPS_DISABLED = "net.fabiszewski.ulogger.broadcast.gps_disabled";
+    public static final String BROADCAST_LOCATION_NETWORK_ENABLED = "net.fabiszewski.ulogger.broadcast.network_enabled";
+    public static final String BROADCAST_LOCATION_GPS_ENABLED = "net.fabiszewski.ulogger.broadcast.gps_enabled";
+    public static final String BROADCAST_LOCATION_DISABLED = "net.fabiszewski.ulogger.broadcast.location_disabled";
     private boolean liveSync = false;
     private Intent syncIntent;
 
-    private static boolean isRunning = false;
+    private static volatile boolean isRunning = false;
     private LoggerThread thread;
     private Looper looper;
     private LocationManager locManager;
@@ -63,12 +71,12 @@ public class LoggerService extends Service {
     final private long maxTimeMillis = minTimeMillis + minTimeTolerance;
 
     private static Location lastLocation = null;
-    private static long lastUpdateRealtime = 0;
+    private static volatile long lastUpdateRealtime = 0;
 
     private final int NOTIFICATION_ID = (int) (System.currentTimeMillis() / 1000L);
     private NotificationManager mNotificationManager;
-
-
+    private boolean useGps;
+    private boolean useNet;
 
     /**
      * Basic initializations.
@@ -76,42 +84,35 @@ public class LoggerService extends Service {
     @Override
     public void onCreate() {
         if (Logger.DEBUG) { Log.d(TAG, "[onCreate]"); }
-        thread = new LoggerThread();
-        syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
-
-        isRunning = true;
-
-        thread.start();
-        looper = thread.getLooper();
-
-        db = DbAccess.getInstance();
-        db.open(this);
-        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locListener = new mLocationListener();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        minTimeMillis = Long.parseLong(prefs.getString("prefMinTime", getString(R.string.pref_mintime_default))) * 1000;
-        minDistance = Float.parseFloat(prefs.getString("prefMinDistance", getString(R.string.pref_mindistance_default)));
-        maxAccuracy = Integer.parseInt(prefs.getString("prefMinAccuracy", getString(R.string.pref_minaccuracy_default)));
-
-        boolean useGps = prefs.getBoolean("prefUseGps", true);
-        boolean useNet = prefs.getBoolean("prefUseNet", true);
-
-        if (canAccessLocation()) {
-            if (useNet && providerExists(LocationManager.NETWORK_PROVIDER)) {
-                //noinspection MissingPermission
-                locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTimeMillis, minDistance, locListener, looper);
-            }
-            if (useGps && providerExists(LocationManager.GPS_PROVIDER)) {
-                //noinspection MissingPermission
-                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTimeMillis, minDistance, locListener, looper);
-            }
-        }
 
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // start websync service if needed
-        liveSync = prefs.getBoolean("prefLiveSync", false);
-        if (liveSync && db.needsSync()) {
-            startService(syncIntent);
+        mNotificationManager.cancelAll();
+
+        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locListener = new mLocationListener();
+
+        // read user preferences
+        updatePreferences();
+
+        boolean hasLocationUpdates = requestLocationUpdates();
+
+        if (hasLocationUpdates) {
+            isRunning = true;
+            sendBroadcast(BROADCAST_LOCATION_STARTED);
+
+            syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
+
+            thread = new LoggerThread();
+            thread.start();
+            looper = thread.getLooper();
+
+            db = DbAccess.getInstance();
+            db.open(this);
+
+            // start websync service if needed
+            if (liveSync && db.needsSync()) {
+                startService(syncIntent);
+            }
         }
     }
 
@@ -126,9 +127,31 @@ public class LoggerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Logger.DEBUG) { Log.d(TAG, "[onStartCommand]"); }
-        showNotification(mNotificationManager, NOTIFICATION_ID);
+
+        final boolean prefsUpdated = (intent != null) && intent.getBooleanExtra(MainActivity.UPDATED_PREFS, false);
+        if (prefsUpdated) {
+            handlePrefsUpdated();
+        } else if (isRunning) {
+            // first start
+            showNotification(mNotificationManager, NOTIFICATION_ID);
+        } else {
+            // onCreate failed to start updates
+            stopSelf();
+        }
 
         return START_STICKY;
+    }
+
+    /**
+     * When user updated preferences, restart location updates, stop service on failure
+     */
+    private void handlePrefsUpdated() {
+        // restart updates
+        updatePreferences();
+        if (isRunning && !restartUpdates()) {
+            // no valid providers after preferences update
+            stopSelf();
+        }
     }
 
     /**
@@ -140,8 +163,75 @@ public class LoggerService extends Service {
         return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
+    /**
+     * Check if given provider exists on device
+     * @param provider Provider
+     * @return True if exists, false otherwise
+     */
     private boolean providerExists(String provider) {
         return locManager.getAllProviders().contains(provider);
+    }
+
+    /**
+     * Reread preferences
+     */
+    private void updatePreferences() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        minTimeMillis = Long.parseLong(prefs.getString("prefMinTime", getString(R.string.pref_mintime_default))) * 1000;
+        minDistance = Float.parseFloat(prefs.getString("prefMinDistance", getString(R.string.pref_mindistance_default)));
+        maxAccuracy = Integer.parseInt(prefs.getString("prefMinAccuracy", getString(R.string.pref_minaccuracy_default)));
+        useGps = prefs.getBoolean("prefUseGps", providerExists(LocationManager.GPS_PROVIDER));
+        useNet = prefs.getBoolean("prefUseNet", providerExists(LocationManager.NETWORK_PROVIDER));
+        liveSync = prefs.getBoolean("prefLiveSync", false);
+    }
+
+    /**
+     * Restart request for location updates
+     *
+     * @return True if succeeded, false otherwise (eg. disabled all providers)
+     */
+    private boolean restartUpdates() {
+        if (Logger.DEBUG) { Log.d(TAG, "[location updates restart]"); }
+
+        locManager.removeUpdates(locListener);
+        return requestLocationUpdates();
+    }
+
+    /**
+     * Request location updates
+     * @return True if succeeded from at least one provider
+     */
+    private boolean requestLocationUpdates() {
+        boolean hasLocationUpdates = false;
+        if (canAccessLocation()) {
+            if (useNet) {
+                //noinspection MissingPermission
+                locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTimeMillis, minDistance, locListener, looper);
+                if (locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    hasLocationUpdates = true;
+                    if (Logger.DEBUG) { Log.d(TAG, "[Using net provider]"); }
+                }
+            }
+            if (useGps) {
+                //noinspection MissingPermission
+                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTimeMillis, minDistance, locListener, looper);
+                if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    hasLocationUpdates = true;
+                    if (Logger.DEBUG) { Log.d(TAG, "[Using gps provider]"); }
+                }
+            }
+            if (!hasLocationUpdates) {
+                // no location provider available
+                sendBroadcast(BROADCAST_LOCATION_DISABLED);
+                if (Logger.DEBUG) { Log.d(TAG, "[No available location updates]"); }
+            }
+        } else {
+            // can't access location
+            sendBroadcast(BROADCAST_LOCATION_PERMISSION_DENIED);
+            if (Logger.DEBUG) { Log.d(TAG, "[Location permission denied]"); }
+        }
+
+        return hasLocationUpdates;
     }
 
     /**
@@ -162,11 +252,13 @@ public class LoggerService extends Service {
         isRunning = false;
 
         mNotificationManager.cancel(NOTIFICATION_ID);
+        sendBroadcast(BROADCAST_LOCATION_STOPPED);
 
         if (thread != null) {
             thread.interrupt();
         }
         thread = null;
+
     }
 
     @Override
@@ -252,6 +344,15 @@ public class LoggerService extends Service {
     }
 
     /**
+     * Send broadcast message
+     * @param broadcast Broadcast message
+     */
+    private void sendBroadcast(String broadcast) {
+        Intent intent = new Intent(broadcast);
+        sendBroadcast(intent);
+    }
+
+    /**
      * Location listener class
      */
     private class mLocationListener implements LocationListener {
@@ -270,8 +371,7 @@ public class LoggerService extends Service {
                     lastUpdateRealtime = loc.getElapsedRealtimeNanos() / 1000000;
                 }
                 db.writeLocation(loc);
-                Intent intent = new Intent(BROADCAST_LOCATION_UPDATED);
-                sendBroadcast(intent);
+                sendBroadcast(BROADCAST_LOCATION_UPDATED);
                 if (liveSync) {
                     startService(syncIntent);
                 }
@@ -289,7 +389,7 @@ public class LoggerService extends Service {
                 if (Logger.DEBUG) { Log.d(TAG, "[location accuracy above limit: " + loc.getAccuracy() + " > " + maxAccuracy + "]"); }
                 // reset gps provider to get better accuracy even if time and distance criteria don't change
                 if (loc.getProvider().equals(LocationManager.GPS_PROVIDER)) {
-                    restartUpdates(LocationManager.GPS_PROVIDER);
+                    restartUpdates();
                 }
                 return true;
             }
@@ -307,28 +407,17 @@ public class LoggerService extends Service {
         }
 
         /**
-         * Restart request for location updates for given provider
-         * @param provider Location provider
-         */
-        private void restartUpdates(String provider) {
-            if (Logger.DEBUG) { Log.d(TAG, "[location restart provider " + provider + "]"); }
-
-            if (providerExists(provider) && canAccessLocation()) {
-                //noinspection MissingPermission
-                locManager.removeUpdates(locListener);
-                //noinspection MissingPermission
-                locManager.requestLocationUpdates(provider, minTimeMillis, minDistance, locListener, looper);
-            }
-
-        }
-
-        /**
          * Callback on provider disabled
          * @param provider Provider
          */
         @Override
         public void onProviderDisabled(String provider) {
             if (Logger.DEBUG) { Log.d(TAG, "[location provider " + provider + " disabled]"); }
+            if (provider.equals(LocationManager.GPS_PROVIDER)) {
+                sendBroadcast(BROADCAST_LOCATION_GPS_DISABLED);
+            } else if (provider.equals(LocationManager.NETWORK_PROVIDER)) {
+                sendBroadcast(BROADCAST_LOCATION_NETWORK_DISABLED);
+            }
         }
 
         /**
@@ -338,6 +427,11 @@ public class LoggerService extends Service {
         @Override
         public void onProviderEnabled(String provider) {
             if (Logger.DEBUG) { Log.d(TAG, "[location provider " + provider + " enabled]"); }
+            if (provider.equals(LocationManager.GPS_PROVIDER)) {
+                sendBroadcast(BROADCAST_LOCATION_GPS_ENABLED);
+            } else if (provider.equals(LocationManager.NETWORK_PROVIDER)) {
+                sendBroadcast(BROADCAST_LOCATION_NETWORK_ENABLED);
+            }
         }
 
         /**

@@ -61,8 +61,7 @@
         android:title="@string/pref_provider_title"
         android:summary="@string/pref_provider_summary"
         android:entries="@array/providersEntries"
-        android:entryValues="@array/providersValues"
-        android:defaultValue="@string/pref_provider_default" />
+        android:entryValues="@array/providersValues" />
     <ListPreference
         android:key="prefUnits"
         android:title="@string/pref_units_title"

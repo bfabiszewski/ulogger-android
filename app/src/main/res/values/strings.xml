@@ -52,7 +52,6 @@
     <string name="pref_autostart_default" translatable="false">false</string>
     <string name="pref_provider_title">Location provider</string>
     <string name="pref_provider_summary">Location may be supplied by gps provider, by network or by both. Both providers will give best results, but use more battery.</string>
-    <string name="pref_provider_default" translatable="false">3</string>
     <string name="pref_units_title">Units</string>
     <string name="pref_units_summary">Preferred units for displaying track summary</string>
     <string name="pref_units_default" translatable="false">metric</string>
@@ -95,6 +94,12 @@
     <string name="e_unknown_host">Unknown host: %s</string>
     <string name="e_bad_url">Bad URL: %s</string>
     <string name="e_connect">Connection error: %s</string>
+    <string name="gps_disabled_warning">Warning: gps provider is disabled</string>
+    <string name="net_disabled_warning">Warning: network provider is disabled</string>
+    <string name="location_disabled">You must enable at least one location provider</string>
+    <string name="location_permission_denied">You must accept permission for location updates</string>
+    <string name="using_network">Using network provider</string>
+    <string name="using_gps">Using gps provider</string>
     <plurals name="label_positions_behind">
         <item quantity="one">%d position behind</item>
         <item quantity="other">%d positions behind</item>
