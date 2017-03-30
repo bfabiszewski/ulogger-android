@@ -88,6 +88,7 @@ public class SettingsActivity extends PreferenceActivity {
 
     };
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     static boolean isValidServerSetup(Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final String host = prefs.getString("prefHost", null);
