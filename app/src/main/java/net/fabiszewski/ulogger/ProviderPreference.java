@@ -67,7 +67,7 @@ class ProviderPreference extends ListPreference {
         missingProviders = new ArrayList<>();
         final boolean existsGPS = locManager.getAllProviders().contains(LocationManager.GPS_PROVIDER);
         final boolean existsNet = locManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER);
-        Log.d(TAG, "[Providers available: " + locManager.getAllProviders());
+        if (Logger.DEBUG) { Log.d(TAG, "[Providers available: " + locManager.getAllProviders()); }
         defaultValue = VALUE_ALL;
         if (!existsGPS) {
             missingProviders.add(VALUE_GPS);
@@ -83,7 +83,7 @@ class ProviderPreference extends ListPreference {
         setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Log.d(TAG, "[preference changed: " + newValue + "]");
+                if (Logger.DEBUG) { Log.d(TAG, "[preference changed: " + newValue + "]"); }
                 int providersMask = Integer.valueOf((String) newValue);
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -106,10 +106,10 @@ class ProviderPreference extends ListPreference {
         entries = getEntries();
         entryValues = getEntryValues();
         currentIndex = findIndexOfValue(getValue());
-        Log.d(TAG, "[current value: " + currentIndex + "]");
+        if (Logger.DEBUG) { Log.d(TAG, "[current value: " + currentIndex + "]"); }
         if (currentIndex == -1) {
             currentIndex = findIndexOfValue(String.valueOf(defaultValue));
-            Log.d(TAG, "[using default: " + currentIndex + "]");
+            if (Logger.DEBUG) { Log.d(TAG, "[using default: " + currentIndex + "]"); }
         }
 
         ListAdapter listAdapter = new CustomAdapter(getContext(), getEntries());

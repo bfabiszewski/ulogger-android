@@ -458,7 +458,7 @@ public class LoggerService extends Service {
                         statusString = "unknown";
                         break;
                 }
-                Log.d(TAG, "[location status for " + provider + " changed: " + statusString + "]");
+                if (Logger.DEBUG) { Log.d(TAG, "[location status for " + provider + " changed: " + statusString + "]"); }
             }
         }
     }
