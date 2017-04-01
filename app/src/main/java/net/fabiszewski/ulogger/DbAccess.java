@@ -12,6 +12,7 @@ package net.fabiszewski.ulogger;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.util.Log;
@@ -91,6 +92,18 @@ class DbAccess {
     }
 
     /**
+     * Get result set containing all positions.
+     *
+     * @return Result set
+     */
+    Cursor getPositions() {
+        return db.query(DbContract.Positions.TABLE_NAME,
+                new String[] {"*"},
+                null, null, null, null,
+                DbContract.Positions._ID);
+    }
+
+    /**
      * Get result set containing positions marked as not synchronized.
      *
      * @return Result set
@@ -158,6 +171,15 @@ class DbAccess {
     }
 
     /**
+     * Get number of all positions in track
+     *
+     * @return Count
+     */
+    int countPositions() {
+        return (int) DatabaseUtils.queryNumEntries(db, DbContract.Positions.TABLE_NAME);
+    }
+
+    /**
      * Get number of not synchronized items.
      *
      * @return Count
@@ -184,6 +206,25 @@ class DbAccess {
      */
     boolean needsSync() {
         return (countUnsynced() > 0);
+    }
+
+    /**
+     * Get first saved location time.
+     *
+     * @return UTC timestamp in seconds
+     */
+    long getFirstTimestamp() {
+        Cursor query = db.query(DbContract.Positions.TABLE_NAME,
+                new String[] {DbContract.Positions.COLUMN_TIME},
+                null, null, null, null,
+                DbContract.Positions._ID + " ASC",
+                "1");
+        long timestamp = 0;
+        if (query.moveToFirst()) {
+            timestamp = query.getInt(0);
+        }
+        query.close();
+        return timestamp;
     }
 
     /**

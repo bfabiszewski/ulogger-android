@@ -11,15 +11,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_about"
-        android:icon="@drawable/ic_info_white_24dp"
-        android:tint="@android:color/background_light"
-        android:title="@string/about"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/menu_settings"
         android:icon="@drawable/ic_settings_white_24dp"
         android:tint="@android:color/background_light"
         android:title="@string/settings"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_export"
+        android:icon="@drawable/ic_file_download_white_24dp"
+        android:tint="@android:color/background_light"
+        android:title="@string/export"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_about"
+        android:icon="@drawable/ic_info_white_24dp"
+        android:tint="@android:color/background_light"
+        android:title="@string/about"
         app:showAsAction="ifRoom" />
 </menu>

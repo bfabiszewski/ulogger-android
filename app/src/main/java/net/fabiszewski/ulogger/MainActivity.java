@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int LED_YELLOW = 3;
 
     private final static int PERMISSION_LOCATION = 1;
+    private final static int PERMISSION_WRITE = 2;
     private final static int RESULT_PREFS_UPDATED = 1;
 
     private String pref_units;
@@ -182,6 +183,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_about:
                 showAbout();
                 return true;
+            case R.id.menu_export:
+                startExport();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -199,16 +203,23 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        // onPause closed db
+        db.open(this);
         switch (requestCode) {
             case PERMISSION_LOCATION:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // onPause closed db
                     db.open(this);
                     startLogger();
-                    db.close();
+                }
+                break;
+            case PERMISSION_WRITE:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    startExport();
                 }
                 break;
         }
+        db.close();
     }
 
     /**
@@ -277,6 +288,19 @@ public class MainActivity extends AppCompatActivity {
         // stop tracking
         Intent intent = new Intent(MainActivity.this, LoggerService.class);
         stopService(intent);
+    }
+
+    /**
+     * Start export service
+     */
+    private void startExport() {
+        if (db.countPositions() > 0) {
+            Intent exportIntent = new Intent(MainActivity.this, GpxExportService.class);
+            startService(exportIntent);
+            showToast(getString(R.string.export_started));
+        } else {
+            showToast(getString(R.string.nothing_to_export));
+        }
     }
 
     /**
@@ -650,6 +674,9 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(LoggerService.BROADCAST_LOCATION_GPS_ENABLED);
         filter.addAction(LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED);
         filter.addAction(LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED);
+        filter.addAction(GpxExportService.BROADCAST_WRITE_PERMISSION_DENIED);
+        filter.addAction(GpxExportService.BROADCAST_EXPORT_FAILED);
+        filter.addAction(GpxExportService.BROADCAST_EXPORT_DONE);
         filter.addAction(WebSyncService.BROADCAST_SYNC_DONE);
         filter.addAction(WebSyncService.BROADCAST_SYNC_FAILED);
         registerReceiver(mBroadcastReceiver, filter);
@@ -661,9 +688,7 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (Logger.DEBUG) {
-                Log.d(TAG, "[broadcast received " + intent + "]");
-            }
+            if (Logger.DEBUG) { Log.d(TAG, "[broadcast received " + intent + "]"); }
             if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_UPDATED)) {
                 updateLocationLabel(LoggerService.lastUpdateRealtime());
                 setLocLed(LED_GREEN);
@@ -715,10 +740,21 @@ public class MainActivity extends AppCompatActivity {
                 showToast(getString(R.string.using_network), Toast.LENGTH_LONG);
             } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_GPS_ENABLED)) {
                 showToast(getString(R.string.using_gps), Toast.LENGTH_LONG);
+            } else if (intent.getAction().equals(GpxExportService.BROADCAST_EXPORT_DONE)) {
+                showToast(getString(R.string.export_done), Toast.LENGTH_LONG);
+            } else if (intent.getAction().equals(GpxExportService.BROADCAST_EXPORT_FAILED)) {
+                String message = getString(R.string.export_failed);
+                if (intent.hasExtra("message")) {
+                    message += "\n" + intent.getStringExtra("message");
+                }
+                showToast(message, Toast.LENGTH_LONG);
             } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED)) {
                 showToast(getString(R.string.location_permission_denied), Toast.LENGTH_LONG);
                 setLocLed(LED_RED);
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
+            } else if (intent.getAction().equals(GpxExportService.BROADCAST_WRITE_PERMISSION_DENIED)) {
+                showToast(getString(R.string.write_permission_denied), Toast.LENGTH_LONG);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
             }
         }
     };
