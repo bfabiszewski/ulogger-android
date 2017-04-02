@@ -7,18 +7,14 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">μlogger</string>
     <string name="app_name_ascii" translatable="false">ulogger</string>
-    <string name="homepage">%s home page</string>
-    <string name="app_link" translatable="false"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">%s</a>]]></string>
-    <string name="ulogger_server">μlogger server</string>
-    <string name="ulogger_server_link" translatable="false"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">%s</a>]]></string>
     <string name="button_start">Start</string>
     <string name="button_stop">Stop</string>
     <string name="button_newtrack">New track</string>
     <string name="button_upload">Upload</string>
-    <string name="is_running">%s is running</string>
+    <string name="is_running" comment="substituted app_name">%s is running</string>
     <string name="title_newtrack">New track</string>
     <string name="label_track">Current track</string>
     <string name="label_newtrack_name">New track name</string>
@@ -55,6 +51,8 @@
     <string name="pref_units_title">Units</string>
     <string name="pref_units_summary">Preferred units for displaying track summary</string>
     <string name="pref_units_default" translatable="false">metric</string>
+    <string name="pref_units_metric">Metric</string>
+    <string name="pref_units_imperial">Imperial</string>
     <string name="label_status">Status</string>
     <string name="label_location">Location</string>
     <string name="label_synchronization">Synchronization</string>
@@ -69,17 +67,19 @@
     <string name="empty_trackname_warning">Please set up new track first</string>
     <string name="logger_running_warning">Please stop current tracking first</string>
     <string name="about">About</string>
-    <string name="about_description">Simple location logger with support for live tracking and position uploading to own %s.</string>
-    <string name="about_description2">For more information and help please see %s.</string>
+    <string name="about_description">Simple location logger with support for live tracking and position uploading to own <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">For more information and help please see <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>μlogger homepage<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_version">Version %s</string>
     <string name="about_license">License: GPL</string>
     <string name="about_credits" translatable="false">2017 © Bartek Fabiszewski</string>
     <string name="uploading_failed">Uploading failed:</string>
     <string name="uploading_done">Uploading done</string>
     <string name="track_summary">Track summary</string>
-    <string name="summary_distance">%1$s %2$s</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
     <plurals name="summary_positions">
         <item quantity="one">%d position</item>
+        <item quantity="few">%d positions</item>
+        <item quantity="many">%d positions</item>
         <item quantity="other">%d positions</item>
     </plurals>
     <string name="summary_duration">%1$d h %2$d min</string>
@@ -111,6 +111,8 @@
     <string name="export_started">Export started</string>
     <plurals name="label_positions_behind">
         <item quantity="one">%d position behind</item>
+        <item quantity="few">%d positions behind</item>
+        <item quantity="many">%d positions behind</item>
         <item quantity="other">%d positions behind</item>
     </plurals>
 </resources>

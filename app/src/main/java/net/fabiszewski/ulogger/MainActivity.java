@@ -418,14 +418,12 @@ public class MainActivity extends AppCompatActivity {
         versionLabel.setText(getString(R.string.about_version, BuildConfig.VERSION_NAME));
         final TextView descriptionLabel = (TextView) alertDialog.findViewById(R.id.about_description);
         final TextView description2Label = (TextView) alertDialog.findViewById(R.id.about_description2);
-        final String server_link = getString(R.string.ulogger_server_link, getString(R.string.ulogger_server));
-        final String app_link = getString(R.string.app_link, getString(R.string.homepage, getString(R.string.app_name)));
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            descriptionLabel.setText(fromHtmlDepreciated(getString(R.string.about_description, server_link)));
-            description2Label.setText(fromHtmlDepreciated(getString(R.string.about_description2, app_link)));
+            descriptionLabel.setText(fromHtmlDepreciated(getString(R.string.about_description)));
+            description2Label.setText(fromHtmlDepreciated(getString(R.string.about_description2)));
         } else {
-            descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description, server_link), android.text.Html.FROM_HTML_MODE_LEGACY));
-            description2Label.setText(Html.fromHtml(getString(R.string.about_description2, app_link), android.text.Html.FROM_HTML_MODE_LEGACY));
+            descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description), android.text.Html.FROM_HTML_MODE_LEGACY));
+            description2Label.setText(Html.fromHtml(getString(R.string.about_description2), android.text.Html.FROM_HTML_MODE_LEGACY));
         }
     }
 

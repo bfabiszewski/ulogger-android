@@ -19,16 +19,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="@string/about_description"
-        android:autoLink="web" />
+        android:text="@string/about_description" />
     <TextView
         android:id="@+id/about_description2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="16sp"
-        android:text="@string/about_description2"
-        android:autoLink="web" />
+        android:text="@string/about_description2" />
     <TextView
         android:id="@+id/about_version"
         android:layout_width="match_parent"
