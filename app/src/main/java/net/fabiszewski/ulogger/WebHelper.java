@@ -175,6 +175,17 @@ class WebHelper {
                 sb.append(inputLine);
             }
             response = sb.toString();
+        } catch (IOException e) {
+            int responseCode;
+            if (connection != null && (responseCode = connection.getResponseCode()) > 0) {
+                if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    // eg. IOException: Received authentication challenge is null
+                    throw new WebAuthException(context.getString(R.string.e_auth_failure, responseCode));
+                } else {
+                    throw new IOException(context.getString(R.string.e_http_code, responseCode));
+                }
+            }
+            throw e;
         } finally {
             if (connection != null) {
                 connection.disconnect();
