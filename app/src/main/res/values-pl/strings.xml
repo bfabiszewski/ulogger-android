@@ -40,14 +40,15 @@
     <string name="label_name">Nazwa</string>
     <string name="label_newtrack_name">Nazwa nowej trasy</string>
     <plurals name="label_positions_behind">
-        <item quantity="one">%d pozycja do tyłu</item>
-        <item quantity="few">%d pozycje do tyłu</item>
-        <item quantity="many">%d pozycji do tyłu</item>
-        <item quantity="other">%d pozycji do tyłu</item>
+        <item quantity="one">Została %d pozycja</item>
+        <item quantity="few">Zostały %d pozycje</item>
+        <item quantity="many">Zostało %d pozycji</item>
+        <item quantity="other">Zostało %d pozycji</item>
     </plurals>
+    <string name="label_positions_behind_few">Zostały %d pozycje</string>
     <string name="label_status">Status</string>
     <string name="label_synchronization">Synchronizacja</string>
-    <string name="label_synchronized">wszystko wysłane</string>
+    <string name="label_synchronized">Wszystko wysłane</string>
     <string name="label_track">Bieżąca trasa</string>
     <string name="location_disabled">Należy włączyć przynajmniej jedną usługę lokalizacji</string>
     <string name="location_permission_denied">Należy zaakceptować zgodę na dostęp do lokalizacji</string>
@@ -92,6 +93,7 @@
         <item quantity="many">%d pozycji</item>
         <item quantity="other">%d pozycji</item>
     </plurals>
+    <string name="summary_positions_few">%d pozycje</string>
     <string name="title_newtrack">Nowa trasa</string>
     <string name="track_summary">Podsumowanie trasy</string>
     <string name="tracking_started">Zapis włączony</string>

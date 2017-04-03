@@ -375,7 +375,12 @@ public class MainActivity extends AppCompatActivity {
         final long h = summary.getDuration() / 3600;
         final long m = summary.getDuration() % 3600 / 60;
         summaryDuration.setText(getString(R.string.summary_duration, h, m));
-        summaryPositions.setText(getResources().getQuantityString(R.plurals.summary_positions, (int) summary.getPositionsCount(), (int) summary.getPositionsCount()));
+        int positionsCount = (int) summary.getPositionsCount();
+        if (needsPluralFewHack(positionsCount)) {
+            summaryPositions.setText(getResources().getString(R.string.summary_positions_few, positionsCount));
+        } else {
+            summaryPositions.setText(getResources().getQuantityString(R.plurals.summary_positions, positionsCount, positionsCount));
+        }
     }
 
     /**
@@ -572,7 +577,11 @@ public class MainActivity extends AppCompatActivity {
     private void updateSyncStatus(int unsynced) {
         String text;
         if (unsynced > 0) {
-            text = getResources().getQuantityString(R.plurals.label_positions_behind, unsynced, unsynced);
+            if (needsPluralFewHack(unsynced)) {
+                text = getString(R.string.label_positions_behind_few, unsynced);
+            } else {
+                text = getResources().getQuantityString(R.plurals.label_positions_behind, unsynced, unsynced);
+            }
             if (syncError) {
                 setSyncLed(LED_RED);
             } else {
@@ -756,4 +765,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    /**
+     * Check if count matches "few" plurals and language is Polish
+     * Hack for API <= 10 where "few" plural is missing for some languages
+     * todo: this simple hack currently supports only language "pl"
+     *
+     * @param i Count
+     * @return True if hack is needed, false otherwise
+     */
+    private boolean needsPluralFewHack(int i) {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
+                && Locale.getDefault().getLanguage().equalsIgnoreCase("pl")
+                && (i % 10 >= 2 && i % 10 <= 4)
+                && (i % 100 < 12 || i % 100 > 14);
+    }
 }

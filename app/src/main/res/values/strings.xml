@@ -7,7 +7,7 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">μlogger</string>
     <string name="app_name_ascii" translatable="false">ulogger</string>
     <string name="button_start">Start</string>
@@ -20,7 +20,7 @@
     <string name="label_newtrack_name">New track name</string>
     <string name="label_name">Name</string>
     <string name="label_last_update">Last update: %s</string>
-    <string name="label_synchronized">synchronized</string>
+    <string name="label_synchronized">Synchronized</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="ok">OK</string>
@@ -82,6 +82,8 @@
         <item quantity="many">%d positions</item>
         <item quantity="other">%d positions</item>
     </plurals>
+    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
+    <string name="summary_positions_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions</string>
     <string name="summary_duration">%1$d h %2$d min</string>
     <string name="unit_kilometer">km</string>
     <string name="unit_mile">mi.</string>
@@ -115,4 +117,6 @@
         <item quantity="many">%d positions behind</item>
         <item quantity="other">%d positions behind</item>
     </plurals>
+    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
+    <string name="label_positions_behind_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions behind</string>
 </resources>
