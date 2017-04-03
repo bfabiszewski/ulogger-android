@@ -12,6 +12,7 @@ Together they make a complete self owned and controlled client–server solution
 - synchronizes location with web server in real time, in case of problems keeps retrying;
 - alternatively works in offline mode; positions may be uploaded to the servers manually;
 - configurable tracking settings
+- export to GPX format
 
 ## Screenshots
 ![api10_main3](https://cloud.githubusercontent.com/assets/3366666/24080737/3214e570-0ca5-11e7-88d6-d635cab4a5c3.png)
