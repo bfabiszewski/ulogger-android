@@ -182,11 +182,11 @@ public class GpxExportService extends IntentService {
             throws IOException, IllegalArgumentException, IllegalStateException {
 
         Cursor cursor = db.getPositions();
-        serializer.startTag(null, "trkseg");
 
         // suppress as it requires target api 19
         //noinspection TryFinallyCanBeTryWithResources
         try {
+            serializer.startTag(null, "trkseg");
             while (cursor.moveToNext()) {
                 serializer.startTag(null, "trkpt");
                 serializer.attribute(null, "lat", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE)));
@@ -200,11 +200,10 @@ public class GpxExportService extends IntentService {
                 writeTag(serializer, "name", cursor.getString(cursor.getColumnIndex(DbContract.Positions._ID)));
                 serializer.endTag(null, "trkpt");
             }
+            serializer.endTag(null, "trkseg");
         } finally {
             cursor.close();
         }
-
-        serializer.endTag(null, "trkseg");
     }
 
     /**
