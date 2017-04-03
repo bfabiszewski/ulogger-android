@@ -94,6 +94,7 @@ public class GpxExportService extends IntentService {
             return;
         }
 
+        FileOutputStream fileOutputStream = null;
         try {
             String trackName = db.getTrackName();
             if (trackName == null) {
@@ -111,7 +112,7 @@ public class GpxExportService extends IntentService {
                 file = getFile(dir, trackName + "_" + (++i));
             }
 
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream = new FileOutputStream(file);
 
             XmlSerializer serializer = Xml.newSerializer();
             StringWriter writer = new StringWriter();
@@ -146,14 +147,25 @@ public class GpxExportService extends IntentService {
             serializer.endTag("", "gpx");
             serializer.endDocument();
             serializer.flush();
+
             String dataWrite = writer.toString();
             fileOutputStream.write(dataWrite.getBytes());
-            fileOutputStream.close();
+            fileOutputStream.flush();
+
             if (Logger.DEBUG) { Log.d(TAG, "[export gpx file written to " + file.getPath()); }
             sendBroadcast(BROADCAST_EXPORT_DONE, null);
         } catch (IOException|IllegalArgumentException|IllegalStateException e) {
             if (Logger.DEBUG) { Log.d(TAG, "[export gpx exception: " + e + "]"); }
             sendBroadcast(BROADCAST_EXPORT_FAILED, e.getMessage());
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    if (Logger.DEBUG) { Log.d(TAG, "[export gpx exception: " + e + "]"); }
+                    sendBroadcast(BROADCAST_EXPORT_FAILED, e.getMessage());
+                }
+            }
         }
 
     }
@@ -172,20 +184,25 @@ public class GpxExportService extends IntentService {
         Cursor cursor = db.getPositions();
         serializer.startTag(null, "trkseg");
 
-        while (cursor.moveToNext()) {
-            serializer.startTag(null, "trkpt");
-            serializer.attribute(null, "lat", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE)));
-            serializer.attribute(null, "lon", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE)));
-            if (!cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE))) {
-                writeTag(serializer, "ele", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE)));
+        // suppress as it requires target api 19
+        //noinspection TryFinallyCanBeTryWithResources
+        try {
+            while (cursor.moveToNext()) {
+                serializer.startTag(null, "trkpt");
+                serializer.attribute(null, "lat", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE)));
+                serializer.attribute(null, "lon", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE)));
+                if (!cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE))) {
+                    writeTag(serializer, "ele", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE)));
+                }
+                long timestamp = cursor.getLong(cursor.getColumnIndex(DbContract.Positions.COLUMN_TIME));
+                String time = DateFormat.format("yyyy-MM-ddThh:mm:ss", timestamp * 1000).toString();
+                writeTag(serializer, "time", time);
+                writeTag(serializer, "name", cursor.getString(cursor.getColumnIndex(DbContract.Positions._ID)));
+                serializer.endTag(null, "trkpt");
             }
-            long timestamp = cursor.getLong(cursor.getColumnIndex(DbContract.Positions.COLUMN_TIME));
-            String time = DateFormat.format("yyyy-MM-ddThh:mm:ss", timestamp * 1000).toString();
-            writeTag(serializer, "time", time);
-            writeTag(serializer, "name", cursor.getString(cursor.getColumnIndex(DbContract.Positions._ID)));
-            serializer.endTag(null, "trkpt");
+        } finally {
+            cursor.close();
         }
-        cursor.close();
 
         serializer.endTag(null, "trkseg");
     }
