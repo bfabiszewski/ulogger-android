@@ -1,0 +1,112 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_start">開始</string>
+    <string name="button_stop">停止</string>
+    <string name="button_newtrack">新しいトラック</string>
+    <string name="button_upload">アップロード</string>
+    <string name="is_running" comment="substituted app_name">%s が実行中</string>
+    <string name="title_newtrack">新しいトラック</string>
+    <string name="label_track">現在のトラック</string>
+    <string name="label_newtrack_name">新しいトラック名</string>
+    <string name="label_name">名前</string>
+    <string name="label_last_update">最終更新: %s</string>
+    <string name="label_synchronized">同期しました</string>
+    <string name="cancel">キャンセル</string>
+    <string name="submit">送信</string>
+    <string name="ok">OK</string>
+    <string name="settings">設定</string>
+    <string name="pref_username_title">ユーザー名</string>
+    <string name="pref_username_summary">リモートサーバーのユーザーログイン</string>
+    <string name="pref_pass_title">パスワード</string>
+    <string name="pref_pass_summary">リモートサーバーのユーザーパスワード</string>
+    <string name="pref_host_title">サーバー URL</string>
+    <string name="pref_host_summary">リモートサーバーのベース URL</string>
+    <string name="pref_mintime_title">最小時間</string>
+    <string name="pref_mintime_summary">位置を更新する間隔の最小時間</string>
+    <string name="pref_mindistance_title">最小距離</string>
+    <string name="pref_mindistance_summary">場所を更新する間隔の最小距離</string>
+    <string name="pref_minaccuracy_title">最小精度</string>
+    <string name="pref_minaccuracy_summary">場所の最小精度</string>
+    <string name="pref_livesync_title">ライブ同期</string>
+    <string name="pref_livesync_summary">場所のサーバーへのライブアップロード。 有効なユーザー名、パスワード、サーバー URL が必要です。</string>
+    <string name="pref_autostart_title">自動開始</string>
+    <string name="pref_autostart_summary">システム起動時にアプリケーションが開始します</string>
+    <string name="pref_provider_title">位置プロバイダー</string>
+    <string name="pref_provider_summary">GPS プロバイダー、ネットワーク、または両方で位置が提供されます。 両方のプロバイダーを使用すると最良の結果を得られますが、バッテリーを多く使用します。</string>
+    <string name="pref_units_title">単位</string>
+    <string name="pref_units_summary">トラックサマリーを表示するために優先する単位</string>
+    <string name="pref_units_metric">メートル</string>
+    <string name="pref_units_imperial">ヤード</string>
+    <string name="label_status">ステータス</string>
+    <string name="label_location">位置</string>
+    <string name="label_synchronization">同期</string>
+    <string name="tracking_stopped">トラックを停止しました</string>
+    <string name="tracking_started">トラックを開始しました</string>
+    <string name="uploading_started">アップロードを開始しました</string>
+    <string name="nothing_to_synchronize">同期するものはありません</string>
+    <string name="no_positions">現在のトラックは場所がありません</string>
+    <string name="warning">警告</string>
+    <string name="notsync_warning">現在のトラックには同期していない場所が含まれています。 新しいトラックを設定すると、このすべてのデータが削除されます。</string>
+    <string name="empty_trackname_warning">まず新しいトラックを設定してください</string>
+    <string name="logger_running_warning">まず現在のトラックを停止してください</string>
+    <string name="about">アプリについて</string>
+    <string name="about_description">ライブトラッキングと独自の <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger サーバー<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g> に位置のアップロードをサポートする、シンプルロケーションロガー。</string>
+    <string name="about_description2">詳細はこちらをご覧ください <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>μlogger ホームページ<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>。</string>
+    <string name="about_version">バージョン %s</string>
+    <string name="about_license">ライセンス: GPL</string>
+    <string name="uploading_failed">アップロードに失敗しました:</string>
+    <string name="uploading_done">アップロード完了</string>
+    <string name="track_summary">トラックサマリー</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d 場所</item>
+        <item quantity="few">%d 場所</item>
+        <item quantity="many">%d 場所</item>
+        <item quantity="other">%d 場所</item>
+    </plurals>
+    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
+    <string name="summary_positions_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d 場所</string>
+    <string name="summary_duration">%1$d 時間 %2$d 分</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">正しいサーバー URL を入力してください</string>
+    <string name="provide_user_pass_url">まずユーザー、パスワード、サーバー URL を入力してください</string>
+    <string name="e_illegal_redirect">不正なリダイレクト: %d</string>
+    <string name="e_auth_failure">認証に失敗: %d</string>
+    <string name="e_http_code">HTTP エラーコード: %d</string>
+    <string name="e_server_response">サーバーレスポンスエラー</string>
+    <string name="e_unknown_host">不明なホスト: %s</string>
+    <string name="e_bad_url">URL が不正: %s</string>
+    <string name="e_connect">接続エラー: %s</string>
+    <string name="gps_disabled_warning">警告: GPS プロバイダーが無効になっています</string>
+    <string name="net_disabled_warning">警告: ネットワークプロバイダーが無効になっています</string>
+    <string name="location_disabled">少なくとも一つ位置プロバイダーを有効にする必要があります</string>
+    <string name="location_permission_denied">位置の更新のため、アクセス許可が必要です</string>
+    <string name="write_permission_denied">外部ストレージに書き込むため、アクセス許可が必要です</string>
+    <string name="using_network">ネットワークプロバイダーの使用</string>
+    <string name="using_gps">GPS プロバイダーの使用</string>
+    <string name="export">GPX にエクスポート</string>
+    <string name="nothing_to_export">エクスポートするものはありません</string>
+    <string name="export_done">ダウンロードフォルダーにトラックを保存しました</string>
+    <string name="export_failed">エクスポートに失敗しました</string>
+    <string name="e_output_dir">出力フォルダーの作成に失敗しました</string>
+    <string name="e_external_not_writable">外部ストレージに書き込みできません</string>
+    <string name="unknown_track">不明なトラック</string>
+    <string name="export_started">エクスポートが開始しました</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d 場所残り</item>
+        <item quantity="few">%d 場所残り</item>
+        <item quantity="many">%d 場所残り</item>
+        <item quantity="other">%d 場所残り</item>
+    </plurals>
+    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
+    <string name="label_positions_behind_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d 場所残り</string>
+</resources>
