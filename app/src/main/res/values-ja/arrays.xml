@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+    <string-array name="minTimeEntries">
+        <item>10 秒</item>
+        <item>30 秒</item>
+        <item>1 分</item>
+        <item>5 分</item>
+        <item>15 分</item>
+        <item>30 分</item>
+        <item>1 時間</item>
+    </string-array>
+
+    <string-array name="minDistanceEntries">
+        <item>最小なし</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+    </string-array>
+
+    <string-array name="minAccuracyEntries">
+        <item>10 m</item>
+        <item>25 m</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+    </string-array>
+
+    <string-array name="providersEntries">
+        <item>GPS</item>
+        <item>ネットワーク</item>
+        <item>ネットワークと GPS</item>
+    </string-array>
+
+</resources>
