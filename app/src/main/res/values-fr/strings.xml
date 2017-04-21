@@ -1,0 +1,112 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_start">Enregistrer</string>
+    <string name="button_stop">Arrêter</string>
+    <string name="button_newtrack">Nouvelle piste</string>
+    <string name="button_upload">Uploader</string>
+    <string name="is_running" comment="substituted app_name">%s est lancé</string>
+    <string name="title_newtrack">Nouvelle piste</string>
+    <string name="label_track">Piste actuelle</string>
+    <string name="label_newtrack_name">Nom de la nouvelle piste</string>
+    <string name="label_name">Nom</string>
+    <string name="label_last_update">Dernière mise à jour: %s</string>
+    <string name="label_synchronized">Synchronisé</string>
+    <string name="cancel">Annuler</string>
+    <string name="submit">Envoyer</string>
+    <string name="ok">Ok</string>
+    <string name="settings">Réglages</string>
+    <string name="pref_username_title">Nom d\'utilisateur</string>
+    <string name="pref_username_summary">Nom d\'utilisateur sur le serveur distant</string>
+    <string name="pref_pass_title">Mot de passe</string>
+    <string name="pref_pass_summary">Mot de passe sur le serveur distant</string>
+    <string name="pref_host_title">Adresse du serveur</string>
+    <string name="pref_host_summary">Adresse racine sur le serveur distant</string>
+    <string name="pref_mintime_title">Temps minimum</string>
+    <string name="pref_mintime_summary">Temps minimum entre les mises à jour de localisation</string>
+    <string name="pref_mindistance_title">Distance minimum</string>
+    <string name="pref_mindistance_summary">Distance minimum entre les mises à jour de localisation</string>
+    <string name="pref_minaccuracy_title">Précision minimum</string>
+    <string name="pref_minaccuracy_summary">Précision minimum de la position</string>
+    <string name="pref_livesync_title">Synchronisation directe</string>
+    <string name="pref_livesync_summary">Mise à jour directe de la position sur le serveur. Nécessite un nom d\'utilisateur, un mot de passe et une adresse de serveur valide.</string>
+    <string name="pref_autostart_title">Enregistrement automatique</string>
+    <string name="pref_autostart_summary">L\'application enregistrera au démarrage du téléphone</string>
+    <string name="pref_provider_title">Fournisseur de localisation</string>
+    <string name="pref_provider_summary">La localisation peut être fournie par le fournisseur GPS, le réseau ou les deux. Utiliser les deux fournisseurs donnera de meilleurs résultats mais utilisera plus de batterie.</string>
+    <string name="pref_units_title">Unités</string>
+    <string name="pref_units_summary">Unités préférées pour afficher le résumé de la piste</string>
+    <string name="pref_units_metric">Mètre</string>
+    <string name="pref_units_imperial">Impérial</string>
+    <string name="label_status">Statut</string>
+    <string name="label_location">Localisation</string>
+    <string name="label_synchronization">Synchronisation</string>
+    <string name="tracking_stopped">Enregistrement arrêté</string>
+    <string name="tracking_started">Enregistrement démarré</string>
+    <string name="uploading_started">Envoi démarré</string>
+    <string name="nothing_to_synchronize">Rien à synchroniser</string>
+    <string name="no_positions">La piste actuelle n\'a pas de localisation</string>
+    <string name="warning">Attention</string>
+    <string name="notsync_warning">La piste actuelle contient des localisations non synchronisées. Définir une nouvelle piste supprimera ces données.</string>
+    <string name="empty_trackname_warning">Merci de définir une nouvelle piste</string>
+    <string name="logger_running_warning">Merci d\'arrêter le tracking actuel</string>
+    <string name="about">A propos</string>
+    <string name="about_description">Simple moniteur de localisation avec suivi en direct et envoi de la position sur son propre <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>serveur μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Pour plus d\'informations et soutien, aller sur <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>page d\'accueil de μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Version %s</string>
+    <string name="about_license">License : GPL</string>
+    <string name="uploading_failed">Envoi échoué :</string>
+    <string name="uploading_done">Envoi effectué</string>
+    <string name="track_summary">Résumé de la piste</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d position</item>
+        <item quantity="few">%d positions</item>
+        <item quantity="many">%d positions</item>
+        <item quantity="other">%d positions</item>
+    </plurals>
+    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
+    <string name="summary_positions_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions</string>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">Merci de remplir une adresse de serveur correcte</string>
+    <string name="provide_user_pass_url">Merci d\'entrer un nom d\'utilisateur, un mot de passe et une adresse de serveur</string>
+    <string name="e_illegal_redirect">Redirection illégale : %d</string>
+    <string name="e_auth_failure">Erreur d\'authentification : %d</string>
+    <string name="e_http_code">Code d\'erreur HTTP : %d</string>
+    <string name="e_server_response">Erreur de réponse du serveur</string>
+    <string name="e_unknown_host">Hôte inconnu : %s</string>
+    <string name="e_bad_url">URL incorrect : %s</string>
+    <string name="e_connect">Erreur de connexion : %s</string>
+    <string name="gps_disabled_warning">Attention : GPS désactivé</string>
+    <string name="net_disabled_warning">Attention : réseau désactivé</string>
+    <string name="location_disabled">Vous devez autoriser au moins un fournisseur de localisation</string>
+    <string name="location_permission_denied">Vous devez accepter la permission pour la mise à jour de localisation</string>
+    <string name="write_permission_denied">Vous devez accepter la permission d\'accès sur un stockage externe</string>
+    <string name="using_network">Utilisant le fournisseur de réseau</string>
+    <string name="using_gps">Utilisant le GPS</string>
+    <string name="export">Exporter en GPX</string>
+    <string name="nothing_to_export">Rien à exporter</string>
+    <string name="export_done">Piste sauvegardée avec succès dans le dossier de téléchargement</string>
+    <string name="export_failed">Export échoué</string>
+    <string name="e_output_dir">Echec lors de la création du dossier d\'export</string>
+    <string name="e_external_not_writable">Impossible d\'écrire sur le stockage externe</string>
+    <string name="unknown_track">Piste inconnue</string>
+    <string name="export_started">Export débuté</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d position derrière</item>
+        <item quantity="few">%d positions derrière</item>
+        <item quantity="many">%d positions derrière</item>
+        <item quantity="other">%d positions derrière</item>
+    </plurals>
+    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
+    <string name="label_positions_behind_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions derrière</string>
+</resources>
