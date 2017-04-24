@@ -11,6 +11,7 @@ package net.fabiszewski.ulogger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -31,6 +32,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Web server communication
@@ -77,6 +81,10 @@ class WebHelper {
     private final String userAgent;
     private final Context context;
 
+    private static boolean tlsSocketInitialized = false;
+    // Socket timeout in milliseconds
+    static final int SOCKET_TIMEOUT = 30 * 1000;
+
 
     /**
      * Constructor
@@ -87,12 +95,26 @@ class WebHelper {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         user = prefs.getString("prefUsername", "NULL");
         pass = prefs.getString("prefPass", "NULL");
-        host = prefs.getString("prefHost", "NULL");
-        userAgent = context.getString(R.string.app_name_ascii) + "; " + System.getProperty("http.agent");
+        host = prefs.getString("prefHost", "NULL").replaceAll("/+$", "");
+        userAgent = context.getString(R.string.app_name_ascii) + "/" + BuildConfig.VERSION_NAME + "; " + System.getProperty("http.agent");
 
         if (cookieManager == null) {
             cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
+        }
+
+        // On API < 19 connection fails if SSL is disabled on server
+        // Try with TLS enabled socket
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT && !tlsSocketInitialized) {
+            try {
+                if (Logger.DEBUG) { Log.d(TAG, "[init TLS socket factory]"); }
+                SSLSocketFactory tlsFactory = new TlsSocketFactory(context);
+                HttpsURLConnection.setDefaultSSLSocketFactory(tlsFactory);
+                tlsSocketInitialized = true;
+            } catch (Exception e) {
+                if (Logger.DEBUG) { Log.d(TAG, "[TLS socket setup error (ignored): " + e.getMessage() + "]"); }
+            }
+
         }
     }
 
@@ -105,7 +127,7 @@ class WebHelper {
      */
     private String postWithParams(Map<String, String> params) throws IOException, WebAuthException {
         URL url = new URL(host + "/" + CLIENT_SCRIPT);
-        if (Logger.DEBUG) { Log.d(TAG, "[postWithParams: " + url + " : " + params +"]"); }
+        if (Logger.DEBUG) { Log.d(TAG, "[postWithParams: " + url + " : " + params + "]"); }
         String response = null;
 
         String dataString = "";
@@ -121,6 +143,8 @@ class WebHelper {
         byte[] data = dataString.getBytes();
 
         HttpURLConnection connection = null;
+        InputStream in = null;
+        OutputStream out = null;
         try {
             boolean redirect;
             int redirectTries = 5;
@@ -131,10 +155,13 @@ class WebHelper {
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 connection.setRequestProperty("Content-Length", Integer.toString(data.length));
-                connection.setRequestProperty("User-agent", userAgent);
-                connection.setInstanceFollowRedirects(true);
+                connection.setRequestProperty("User-Agent", userAgent);
+                connection.setInstanceFollowRedirects(false);
+                connection.setConnectTimeout(SOCKET_TIMEOUT);
+                connection.setReadTimeout(SOCKET_TIMEOUT);
+                connection.setUseCaches(true);
 
-                OutputStream out = new BufferedOutputStream(connection.getOutputStream());
+                out = new BufferedOutputStream(connection.getOutputStream());
                 out.write(data);
                 out.flush();
 
@@ -157,6 +184,13 @@ class WebHelper {
                     if (h1 != null && !h1.equalsIgnoreCase(h2)) {
                         throw new IOException(context.getString(R.string.e_illegal_redirect, responseCode));
                     }
+                    try {
+                        out.close();
+                        connection.getInputStream().close();
+                        connection.disconnect();
+                    } catch (final IOException e) {
+                        if (Logger.DEBUG) { Log.d(TAG, "[connection cleanup failed (ignored)]"); }
+                    }
                 }
                 else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     throw new WebAuthException(context.getString(R.string.e_auth_failure, responseCode));
@@ -166,7 +200,7 @@ class WebHelper {
                 }
             } while (redirect);
 
-            InputStream in = new BufferedInputStream(connection.getInputStream());
+            in = new BufferedInputStream(connection.getInputStream());
 
             StringBuilder sb = new StringBuilder();
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -175,20 +209,19 @@ class WebHelper {
                 sb.append(inputLine);
             }
             response = sb.toString();
-        } catch (IOException e) {
-            int responseCode;
-            if (connection != null && (responseCode = connection.getResponseCode()) > 0) {
-                if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    // eg. IOException: Received authentication challenge is null
-                    throw new WebAuthException(context.getString(R.string.e_auth_failure, responseCode));
-                } else {
-                    throw new IOException(context.getString(R.string.e_http_code, responseCode));
-                }
-            }
-            throw e;
         } finally {
-            if (connection != null) {
-                connection.disconnect();
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            } catch (final IOException e) {
+                if (Logger.DEBUG) { Log.d(TAG, "[connection cleanup failed (ignored)]"); }
             }
         }
         if (Logger.DEBUG) { Log.d(TAG, "[postWithParams response: " + response + "]"); }
@@ -210,7 +243,7 @@ class WebHelper {
             JSONObject json = new JSONObject(response);
             error = json.getBoolean("error");
         } catch (JSONException e) {
-            if (Logger.DEBUG) { Log.d(TAG, "[postPosition json failed: " + e +"]"); }
+            if (Logger.DEBUG) { Log.d(TAG, "[postPosition json failed: " + e + "]"); }
         }
         if (error) {
             throw new IOException(context.getString(R.string.e_server_response));
@@ -225,7 +258,7 @@ class WebHelper {
      * @throws WebAuthException Authorization error
      */
     int startTrack(String name) throws IOException, WebAuthException {
-        if (Logger.DEBUG) { Log.d(TAG, "[startTrack: " + name +"]"); }
+        if (Logger.DEBUG) { Log.d(TAG, "[startTrack: " + name + "]"); }
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_ACTION, ACTION_ADDTRACK);
         params.put(PARAM_TRACK, name);
@@ -239,7 +272,7 @@ class WebHelper {
                 return json.getInt("trackid");
             }
         } catch (JSONException e) {
-            if (Logger.DEBUG) { Log.d(TAG, "[startTrack json failed: " + e +"]"); }
+            if (Logger.DEBUG) { Log.d(TAG, "[startTrack json failed: " + e + "]"); }
             throw new IOException(e);
         }
     }
