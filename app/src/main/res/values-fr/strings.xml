@@ -66,7 +66,7 @@
     <string name="uploading_done">Envoi effectué</string>
     <string name="track_summary">Résumé de la piste</string>
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
-    <plurals name="summary_positions">
+    <plurals name="summary_positions" tools:ignore="UnusedQuantity">
         <item quantity="one">%d position</item>
         <item quantity="few">%d positions</item>
         <item quantity="many">%d positions</item>
@@ -101,7 +101,7 @@
     <string name="e_external_not_writable">Impossible d\'écrire sur le stockage externe</string>
     <string name="unknown_track">Piste inconnue</string>
     <string name="export_started">Export débuté</string>
-    <plurals name="label_positions_behind">
+    <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
         <item quantity="one">%d position derrière</item>
         <item quantity="few">%d positions derrière</item>
         <item quantity="many">%d positions derrière</item>

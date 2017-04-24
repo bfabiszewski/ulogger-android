@@ -66,7 +66,7 @@
     <string name="uploading_done">アップロード完了</string>
     <string name="track_summary">トラックサマリー</string>
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
-    <plurals name="summary_positions">
+    <plurals name="summary_positions" tools:ignore="UnusedQuantity">
         <item quantity="one">%d 場所</item>
         <item quantity="few">%d 場所</item>
         <item quantity="many">%d 場所</item>
@@ -101,7 +101,7 @@
     <string name="e_external_not_writable">外部ストレージに書き込みできません</string>
     <string name="unknown_track">不明なトラック</string>
     <string name="export_started">エクスポートが開始しました</string>
-    <plurals name="label_positions_behind">
+    <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
         <item quantity="one">%d 場所残り</item>
         <item quantity="few">%d 場所残り</item>
         <item quantity="many">%d 場所残り</item>
