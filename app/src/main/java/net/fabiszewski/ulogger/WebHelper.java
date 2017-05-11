@@ -297,4 +297,14 @@ class WebHelper {
         }
     }
 
+    /**
+     * Check whether given url is valid.
+     * Uses relaxed pattern (@see WebPatterns#WEB_URL_RELAXED)
+     * @param url URL
+     * @return True if valid, false otherwise
+     */
+    static boolean isValidURL(String url) {
+        return WebPatterns.WEB_URL_RELAXED.matcher(url).matches();
+    }
+
 }

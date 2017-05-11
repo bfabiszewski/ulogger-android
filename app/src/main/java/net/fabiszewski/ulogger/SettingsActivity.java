@@ -18,7 +18,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.util.Patterns;
 import android.widget.Toast;
 
 /**
@@ -44,31 +43,11 @@ public class SettingsActivity extends PreferenceActivity {
     @SuppressWarnings("deprecation")
     private void onCreatePreferenceActivity() {
         addPreferencesFromResource(R.xml.preferences);
-        final Preference prefHost = findPreference("prefHost");
-        if (prefHost != null) {
-            prefHost.setOnPreferenceChangeListener(hostChanged);
-        }
         final Preference prefLiveSync = findPreference("prefLiveSync");
         if (prefLiveSync != null) {
             prefLiveSync.setOnPreferenceChangeListener(liveSyncChanged);
         }
     }
-
-    /**
-     * On change listener to validate server url
-     */
-    private final static Preference.OnPreferenceChangeListener hostChanged = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            if (Patterns.WEB_URL.matcher(newValue.toString().trim()).matches()) {
-                return true;
-            } else {
-                Toast.makeText(preference.getContext(), R.string.provide_valid_url, Toast.LENGTH_LONG).show();
-                return false;
-            }
-        }
-
-    };
 
     /**
      * On change listener to validate whether live synchronization is allowed
@@ -114,10 +93,6 @@ public class SettingsActivity extends PreferenceActivity {
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
-            final Preference prefHost = findPreference("prefHost");
-            if (prefHost != null) {
-                prefHost.setOnPreferenceChangeListener(hostChanged);
-            }
             final Preference prefLiveSync = findPreference("prefLiveSync");
             if (prefLiveSync != null) {
                 prefLiveSync.setOnPreferenceChangeListener(liveSyncChanged);
