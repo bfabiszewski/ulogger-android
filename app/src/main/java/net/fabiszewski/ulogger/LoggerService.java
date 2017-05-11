@@ -133,7 +133,7 @@ public class LoggerService extends Service {
             handlePrefsUpdated();
         } else if (isRunning) {
             // first start
-            showNotification(mNotificationManager, NOTIFICATION_ID);
+            showNotification(NOTIFICATION_ID);
         } else {
             // onCreate failed to start updates
             stopSelf();
@@ -322,10 +322,9 @@ public class LoggerService extends Service {
     /**
      * Show notification
      *
-     * @param mNotificationManager Notification manager
      * @param mId Notification Id
      */
-    private void showNotification(NotificationManager mNotificationManager, int mId) {
+    private void showNotification(int mId) {
         if (Logger.DEBUG) { Log.d(TAG, "[showNotification " + mId + "]"); }
 
         NotificationCompat.Builder mBuilder =
