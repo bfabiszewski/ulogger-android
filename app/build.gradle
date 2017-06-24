@@ -16,9 +16,10 @@ android {
     defaultConfig {
         applicationId "net.fabiszewski.ulogger"
         minSdkVersion 10
+        //noinspection OldTargetApi
         targetSdkVersion 25
-        versionCode 105
-        versionName "1.5"
+        versionCode 106
+        versionName "1.6"
     }
 
     buildTypes {
