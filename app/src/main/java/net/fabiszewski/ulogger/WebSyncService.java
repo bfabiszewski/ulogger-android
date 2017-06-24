@@ -203,22 +203,22 @@ public class WebSyncService extends IntentService {
      */
     private Map<String, String> cursorToMap(Cursor cursor) {
         Map<String, String> params = new HashMap<>();
-        params.put(WebHelper.PARAM_TIME, cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_TIME)));
-        params.put(WebHelper.PARAM_LAT, cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE)));
-        params.put(WebHelper.PARAM_LON, cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE)));
-        if (!cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE))) {
-            params.put(WebHelper.PARAM_ALT, cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE)));
+        params.put(WebHelper.PARAM_TIME, DbAccess.getTime(cursor));
+        params.put(WebHelper.PARAM_LAT, DbAccess.getLatitude(cursor));
+        params.put(WebHelper.PARAM_LON, DbAccess.getLongitude(cursor));
+        if (DbAccess.hasAltitude(cursor)) {
+            params.put(WebHelper.PARAM_ALT, DbAccess.getAltitude(cursor));
         }
-        if (!cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_SPEED))) {
-            params.put(WebHelper.PARAM_SPEED, cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_SPEED)));
+        if (DbAccess.hasSpeed(cursor)) {
+            params.put(WebHelper.PARAM_SPEED, DbAccess.getSpeed(cursor));
         }
-        if (!cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_BEARING))) {
-            params.put(WebHelper.PARAM_BEARING, cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_BEARING)));
+        if (DbAccess.hasBearing(cursor)) {
+            params.put(WebHelper.PARAM_BEARING, DbAccess.getBearing(cursor));
         }
-        if (!cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_ACCURACY))) {
-            params.put(WebHelper.PARAM_ACCURACY, cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_ACCURACY)));
+        if (DbAccess.hasAccuracy(cursor)) {
+            params.put(WebHelper.PARAM_ACCURACY, DbAccess.getAccuracy(cursor));
         }
-        params.put(WebHelper.PARAM_PROVIDER, cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_PROVIDER)));
+        params.put(WebHelper.PARAM_PROVIDER, DbAccess.getProvider(cursor));
         return params;
     }
 

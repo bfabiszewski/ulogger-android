@@ -17,7 +17,6 @@ import android.database.Cursor;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Xml;
 
@@ -40,8 +39,10 @@ public class GpxExportService extends IntentService {
     public static final String BROADCAST_EXPORT_DONE = "net.fabiszewski.ulogger.broadcast.write_ok";
 
     private static final String ns_gpx = "http://www.topografix.com/GPX/1/1";
+    private static final String ns_ulogger = "https://github.com/bfabiszewski/ulogger-android/1";
     private static final String ns_xsi = "http://www.w3.org/2001/XMLSchema-instance";
-    private static final String schemaLocation = ns_gpx + " http://www.topografix.com/GPX/1/1/gpx.xsd";
+    private static final String schemaLocation = ns_gpx + " http://www.topografix.com/GPX/1/1/gpx.xsd " +
+            ns_ulogger + " https://raw.githubusercontent.com/bfabiszewski/ulogger-server/master/scripts/gpx_extensions1.xsd";
 
     private static final String ULOGGER_DIR = "ulogger_tracks";
     private static final String GPX_EXTENSION = ".gpx";
@@ -123,6 +124,7 @@ public class GpxExportService extends IntentService {
             serializer.startDocument("UTF-8", true);
             serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
             serializer.setPrefix("xsi", ns_xsi);
+            serializer.setPrefix("ulogger", ns_ulogger);
             serializer.startTag("", "gpx");
             serializer.attribute(null, "xmlns", ns_gpx);
             serializer.attribute(ns_xsi, "schemaLocation", schemaLocation);
@@ -132,7 +134,7 @@ public class GpxExportService extends IntentService {
 
             // metadata
             long trackTimestamp = db.getFirstTimestamp();
-            String trackTime = DateFormat.format("yyyy-MM-ddThh:mm:ss", trackTimestamp * 1000).toString();
+            String trackTime = DbAccess.getTimeISO8601(trackTimestamp);
             serializer.startTag(null, "metadata");
                 writeTag(serializer, "name", trackName);
                 writeTag(serializer, "time", trackTime);
@@ -189,15 +191,28 @@ public class GpxExportService extends IntentService {
             serializer.startTag(null, "trkseg");
             while (cursor.moveToNext()) {
                 serializer.startTag(null, "trkpt");
-                serializer.attribute(null, "lat", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE)));
-                serializer.attribute(null, "lon", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE)));
-                if (!cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE))) {
-                    writeTag(serializer, "ele", cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE)));
+                serializer.attribute(null, "lat", DbAccess.getLatitude(cursor));
+                serializer.attribute(null, "lon", DbAccess.getLongitude(cursor));
+                if (DbAccess.hasAltitude(cursor)) {
+                    writeTag(serializer, "ele", DbAccess.getAltitude(cursor));
                 }
-                long timestamp = cursor.getLong(cursor.getColumnIndex(DbContract.Positions.COLUMN_TIME));
-                String time = DateFormat.format("yyyy-MM-ddThh:mm:ss", timestamp * 1000).toString();
-                writeTag(serializer, "time", time);
-                writeTag(serializer, "name", cursor.getString(cursor.getColumnIndex(DbContract.Positions._ID)));
+                writeTag(serializer, "time", DbAccess.getTimeISO8601(cursor));
+                writeTag(serializer, "name", DbAccess.getID(cursor));
+
+                // ulogger extensions (accuracy, speed, bearing, provider)
+                serializer.startTag(null, "extensions");
+                if (DbAccess.hasAccuracy(cursor)) {
+                    writeTag(serializer, "accuracy", DbAccess.getAccuracy(cursor), ns_ulogger);
+                }
+                if (DbAccess.hasSpeed(cursor)) {
+                    writeTag(serializer, "speed", DbAccess.getSpeed(cursor), ns_ulogger);
+                }
+                if (DbAccess.hasBearing(cursor)) {
+                    writeTag(serializer, "bearing", DbAccess.getBearing(cursor), ns_ulogger);
+                }
+                writeTag(serializer, "provider", DbAccess.getProvider(cursor), ns_ulogger);
+                serializer.endTag(null, "extensions");
+
                 serializer.endTag(null, "trkpt");
             }
             serializer.endTag(null, "trkseg");
@@ -207,7 +222,7 @@ public class GpxExportService extends IntentService {
     }
 
     /**
-     * Write tag
+     * Write tag without namespace
      *
      * @param serializer XmlSerializer
      * @param name Tag name
@@ -218,9 +233,25 @@ public class GpxExportService extends IntentService {
      */
     private void writeTag(@NonNull XmlSerializer serializer, @NonNull String name, @NonNull String text)
             throws IOException, IllegalArgumentException, IllegalStateException {
-        serializer.startTag(null, name);
+        writeTag(serializer, name, text, null);
+    }
+
+    /**
+     * Write tag
+     *
+     * @param serializer XmlSerializer
+     * @param name Tag name
+     * @param text Tag text
+     * @param ns Namespace
+     * @throws IOException IO exception
+     * @throws IllegalArgumentException Xml illegal argument
+     * @throws IllegalStateException Xml illegal state
+     */
+    private void writeTag(@NonNull XmlSerializer serializer, @NonNull String name, @NonNull String text, String ns)
+            throws IOException, IllegalArgumentException, IllegalStateException {
+        serializer.startTag(ns, name);
         serializer.text(text);
-        serializer.endTag(null, name);
+        serializer.endTag(ns, name);
     }
 
     /**

@@ -17,6 +17,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.TimeZone;
+
 /**
  * Gateway class for database access
  *
@@ -381,4 +386,141 @@ class DbAccess {
         }
     }
 
+    /**
+     * Get accuracy from positions cursor
+     * @param cursor Cursor
+     * @return String accuracy
+     */
+    static String getAccuracy(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_ACCURACY));
+    }
+
+    /**
+     * Check if cursor contains accuracy data
+     * @param cursor Cursor
+     * @return True if has accuracy data
+     */
+    static boolean hasAccuracy(Cursor cursor) {
+        return !cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_ACCURACY));
+    }
+
+    /**
+     * Get speed from positions cursor
+     * @param cursor Cursor
+     * @return String speed
+     */
+    static String getSpeed(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_SPEED));
+    }
+
+    /**
+     * Check if cursor contains speed data
+     * @param cursor Cursor
+     * @return True if has speed data
+     */
+    static boolean hasSpeed(Cursor cursor) {
+        return !cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_SPEED));
+    }
+
+    /**
+     * Get bearing from positions cursor
+     * @param cursor Cursor
+     * @return String bearing
+     */
+    static String getBearing(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_BEARING));
+    }
+
+    /**
+     * Check if cursor contains bearing data
+     * @param cursor Cursor
+     * @return True if has bearing data
+     */
+    static boolean hasBearing(Cursor cursor) {
+        return !cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_BEARING));
+    }
+
+    /**
+     * Get altitude from positions cursor
+     * @param cursor Cursor
+     * @return String altitude
+     */
+    static String getAltitude(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE));
+    }
+
+    /**
+     * Check if cursor contains altitude data
+     * @param cursor Cursor
+     * @return True if has altitude data
+     */
+    static boolean hasAltitude(Cursor cursor) {
+        return !cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_ALTITUDE));
+    }
+
+    /**
+     * Get provider from positions cursor
+     * @param cursor Cursor
+     * @return String provider
+     */
+    static String getProvider(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_PROVIDER));
+    }
+
+    /**
+     * Get latitude from positions cursor
+     * @param cursor Cursor
+     * @return String latitude
+     */
+    static String getLatitude(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
+    }
+
+    /**
+     * Get longitude from positions cursor
+     * @param cursor Cursor
+     * @return String longitude
+     */
+    static String getLongitude(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
+    }
+
+    /**
+     * Get time from positions cursor
+     * @param cursor Cursor
+     * @return String time
+     */
+    static String getTime(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_TIME));
+    }
+
+    /**
+     * Get ISO 8601 formatted time from positions cursor
+     * @param cursor Cursor
+     * @return String time
+     */
+    static String getTimeISO8601(Cursor cursor) {
+        long timestamp = cursor.getLong(cursor.getColumnIndex(DbContract.Positions.COLUMN_TIME));
+        return getTimeISO8601(timestamp);
+    }
+
+    /**
+     * Get ID from positions cursor
+     * @param cursor Cursor
+     * @return String ID
+     */
+    static String getID(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions._ID));
+    }
+
+    /**
+     * Format unix timestamp as ISO 8601 time
+     * @param timestamp Timestamp
+     * @return Formatted time
+     */
+    static String getTimeISO8601(long timestamp) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return df.format(timestamp * 1000);
+    }
 }
