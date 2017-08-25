@@ -42,7 +42,8 @@ class ProviderPreference extends ListPreference {
 
     private final static int VALUE_GPS = 1;
     private final static int VALUE_NET = 2;
-    private final static int VALUE_ALL = (VALUE_GPS | VALUE_NET);
+    private final static int VALUE_PASSIVE = 4;
+    private final static int VALUE_ALL = (VALUE_GPS | VALUE_NET | VALUE_PASSIVE);
 
     private final LayoutInflater mInflater;
 
@@ -67,6 +68,7 @@ class ProviderPreference extends ListPreference {
         missingProviders = new ArrayList<>();
         final boolean existsGPS = locManager.getAllProviders().contains(LocationManager.GPS_PROVIDER);
         final boolean existsNet = locManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER);
+        final boolean existPassive = locManager.getAllProviders().contains(LocationManager.PASSIVE_PROVIDER);
         if (Logger.DEBUG) { Log.d(TAG, "[Providers available: " + locManager.getAllProviders()); }
         defaultValue = VALUE_ALL;
         if (!existsGPS) {
@@ -79,6 +81,11 @@ class ProviderPreference extends ListPreference {
             missingProviders.add(VALUE_ALL);
             defaultValue ^= VALUE_NET;
         }
+        if (!existPassive) {
+            missingProviders.add(VALUE_PASSIVE);
+            missingProviders.add(VALUE_ALL);
+            defaultValue ^= VALUE_PASSIVE;
+        }
 
         setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
@@ -89,6 +96,7 @@ class ProviderPreference extends ListPreference {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean("prefUseGps", (providersMask & VALUE_GPS) == VALUE_GPS);
                 editor.putBoolean("prefUseNet", (providersMask & VALUE_NET) == VALUE_NET);
+                editor.putBoolean("prefUsePassive", (providersMask & VALUE_PASSIVE) == VALUE_PASSIVE);
                 editor.apply();
                 return true;
             }

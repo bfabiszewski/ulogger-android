@@ -44,5 +44,9 @@
         <item>GPS</item>
         <item>Réseau</item>
         <item>Réseau et GPS</item>
+        <item>Passif</item>
+        <item>Passif et GPS</item>
+        <item>Passif et Réseau</item>
+        <item>Passif et GPS et Réseau</item>
     </string-array>
 </resources>

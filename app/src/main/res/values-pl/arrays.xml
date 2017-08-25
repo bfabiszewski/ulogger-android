@@ -44,6 +44,10 @@
         <item>GPS</item>
         <item>Sieć</item>
         <item>Sieć i GPS</item>
+        <item>Passive</item>
+        <item>Passive and GPS</item>
+        <item>Passive and Network</item>
+        <item>Passive and GPS and Network</item>
     </string-array>
 
 </resources>

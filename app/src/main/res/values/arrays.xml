@@ -75,12 +75,20 @@
         <item>GPS</item>
         <item>Network</item>
         <item>Network and GPS</item>
+        <item>Passive</item>
+        <item>Passive and GPS</item>
+        <item>Passive and Network</item>
+        <item>Passive and GPS and Network</item>
     </string-array>
 
     <string-array name="providersValues" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
     </string-array>
 
     <string-array name="unitsEntries" translatable="false">

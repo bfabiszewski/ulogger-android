@@ -77,6 +77,7 @@ public class LoggerService extends Service {
     private NotificationManager mNotificationManager;
     private boolean useGps;
     private boolean useNet;
+    private boolean usePassive;
 
     /**
      * Basic initializations.
@@ -182,6 +183,7 @@ public class LoggerService extends Service {
         maxAccuracy = Integer.parseInt(prefs.getString("prefMinAccuracy", getString(R.string.pref_minaccuracy_default)));
         useGps = prefs.getBoolean("prefUseGps", providerExists(LocationManager.GPS_PROVIDER));
         useNet = prefs.getBoolean("prefUseNet", providerExists(LocationManager.NETWORK_PROVIDER));
+        usePassive = prefs.getBoolean("prefUsePassive", providerExists(LocationManager.PASSIVE_PROVIDER));
         liveSync = prefs.getBoolean("prefLiveSync", false);
     }
 
@@ -210,6 +212,14 @@ public class LoggerService extends Service {
                 if (locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                     hasLocationUpdates = true;
                     if (Logger.DEBUG) { Log.d(TAG, "[Using net provider]"); }
+                }
+            }
+            if (usePassive) {
+                //noinspection MissingPermission
+                locManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, minTimeMillis, minDistance, locListener, looper);
+                if (locManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+                    hasLocationUpdates = true;
+                    if (Logger.DEBUG) { Log.d(TAG, "[Using passive provider]"); }
                 }
             }
             if (useGps) {
