@@ -120,8 +120,16 @@ public class WebSyncService extends IntentService {
             } catch (WebAuthException e) {
                 if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
                 isAuthorized = false;
-                // schedule retry
-                handleError(e);
+                try {
+                    // reauthorize and retry
+                    web.authorize();
+                    isAuthorized = true;
+                    trackId = web.startTrack(trackName);
+                    db.setTrackId(trackId);
+                } catch (WebAuthException|IOException|JSONException e2) {
+                    // schedule retry
+                    handleError(e2);
+                }
             }
         }
         return trackId;
@@ -155,8 +163,15 @@ public class WebSyncService extends IntentService {
         } catch (WebAuthException e) {
             if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
             isAuthorized = false;
-            // schedule retry
-            handleError(e);
+            try {
+                // reauthorize and retry
+                web.authorize();
+                isAuthorized = true;
+                doSync(trackId);
+            } catch (WebAuthException|IOException|JSONException e2) {
+                // schedule retry
+                handleError(e2);
+            }
         } finally {
             cursor.close();
         }
