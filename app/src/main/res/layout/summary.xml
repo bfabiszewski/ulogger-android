@@ -46,4 +46,17 @@
         android:text=""
         android:textSize="@dimen/label_font_size" />
 
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:paddingTop="40dip">
+
+        <Button
+            android:id="@+id/summary_button_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok" />
+    </TableRow>
+
 </LinearLayout>

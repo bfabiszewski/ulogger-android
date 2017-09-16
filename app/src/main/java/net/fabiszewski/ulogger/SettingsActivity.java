@@ -138,6 +138,28 @@ public class SettingsActivity extends PreferenceActivity {
     };
 
     /**
+     * On click listener to warn if server setup has changed
+     */
+    private final static Preference.OnPreferenceClickListener serverSetupClicked = new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            final Context context = preference.getContext();
+            DbAccess db = DbAccess.getInstance();
+            db.open(context);
+            if (db.getTrackId() > 0) {
+                // track saved on server
+                Alert.showInfo(context,
+                        context.getString(R.string.warning),
+                        context.getString(R.string.track_server_setup_warning)
+                );
+
+            }
+            return true;
+        }
+
+    };
+
+    /**
      * Check whether server setup parameters are set
      * @param context Context
      * @return boolean True if set

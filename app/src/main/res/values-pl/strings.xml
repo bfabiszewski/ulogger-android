@@ -108,4 +108,5 @@
     <string name="warning">Uwaga</string>
     <string name="write_permission_denied">Należy wyrazić zgodę na zapis do zewnętrznego nośnika</string>
     <string name="using_network">Uzyskano dostęp do lokalizacji z sieci</string>
+    <string name="track_server_setup_warning">Uwaga! Po zmianie ustawień serwera synchronizacja bieżącej trasy może się nie powieść.</string>
 </resources>

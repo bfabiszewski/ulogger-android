@@ -10,9 +10,7 @@
 package net.fabiszewski.ulogger;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,6 +45,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static net.fabiszewski.ulogger.Alert.*;
 
 /**
  * Main activity of ulogger
@@ -345,23 +345,20 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        @SuppressLint("InflateParams")
-        View summaryView = getLayoutInflater().inflate(R.layout.summary, null, false);
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.track_summary));
-        alertDialog.setView(summaryView);
-        alertDialog.setIcon(R.drawable.ic_equalizer_white_24dp);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-
-        final TextView summaryDistance = (TextView) alertDialog.findViewById(R.id.summary_distance);
-        final TextView summaryDuration = (TextView) alertDialog.findViewById(R.id.summary_duration);
-        final TextView summaryPositions = (TextView) alertDialog.findViewById(R.id.summary_positions);
+        final AlertDialog dialog = showAlert(MainActivity.this,
+                getString(R.string.track_summary),
+                R.layout.summary,
+                R.drawable.ic_equalizer_white_24dp);
+        final Button okButton = (Button) dialog.findViewById(R.id.summary_button_ok);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        final TextView summaryDistance = (TextView) dialog.findViewById(R.id.summary_distance);
+        final TextView summaryDuration = (TextView) dialog.findViewById(R.id.summary_duration);
+        final TextView summaryPositions = (TextView) dialog.findViewById(R.id.summary_positions);
         double distance = (double) summary.getDistance() / 1000;
         String unitName = getString(R.string.unit_kilometer);
         if (pref_units.equals(getString(R.string.pref_units_imperial))) {
@@ -406,23 +403,14 @@ public class MainActivity extends AppCompatActivity {
      * Display About dialog
      */
     private void showAbout() {
-        @SuppressLint("InflateParams")
-        View view = getLayoutInflater().inflate(R.layout.about, null, false);
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.app_name));
-        alertDialog.setView(view);
-        alertDialog.setIcon(R.drawable.ic_ulogger_logo_24dp);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-        final TextView versionLabel = (TextView) alertDialog.findViewById(R.id.about_version);
+        final AlertDialog dialog = showAlert(MainActivity.this,
+                getString(R.string.app_name),
+                R.layout.about,
+                R.drawable.ic_ulogger_logo_24dp);
+        final TextView versionLabel = (TextView) dialog.findViewById(R.id.about_version);
         versionLabel.setText(getString(R.string.about_version, BuildConfig.VERSION_NAME));
-        final TextView descriptionLabel = (TextView) alertDialog.findViewById(R.id.about_description);
-        final TextView description2Label = (TextView) alertDialog.findViewById(R.id.about_description2);
+        final TextView descriptionLabel = (TextView) dialog.findViewById(R.id.about_description);
+        final TextView description2Label = (TextView) dialog.findViewById(R.id.about_description2);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             descriptionLabel.setText(fromHtmlDepreciated(getString(R.string.about_description)));
             description2Label.setText(fromHtmlDepreciated(getString(R.string.about_description2)));
@@ -430,6 +418,13 @@ public class MainActivity extends AppCompatActivity {
             descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description), android.text.Html.FROM_HTML_MODE_LEGACY));
             description2Label.setText(Html.fromHtml(getString(R.string.about_description2), android.text.Html.FROM_HTML_MODE_LEGACY));
         }
+        final Button okButton = (Button) dialog.findViewById(R.id.about_button_ok);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -446,23 +441,16 @@ public class MainActivity extends AppCompatActivity {
      * Display warning before deleting not synchronized track
      */
     private void showNotSyncedWarning() {
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.warning));
-        alertDialog.setMessage(getString(R.string.notsync_warning));
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+        showConfirm(MainActivity.this,
+                getString(R.string.warning),
+                getString(R.string.notsync_warning),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         showTrackDialog();
                     }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
+                }
+        );
     }
 
     /**
@@ -476,9 +464,9 @@ public class MainActivity extends AppCompatActivity {
      * Display track name dialog
      */
     private void showTrackDialog() {
-        final Dialog dialog = new Dialog(MainActivity.this);
-        dialog.setTitle(R.string.title_newtrack);
-        dialog.setContentView(R.layout.newtrack_dialog);
+        final AlertDialog dialog = showAlert(MainActivity.this,
+                getString(R.string.title_newtrack),
+                R.layout.newtrack_dialog);
         final EditText editText = (EditText) dialog.findViewById(R.id.newtrack_edittext);
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
@@ -491,7 +479,6 @@ public class MainActivity extends AppCompatActivity {
                 editText.selectAll();
             }
         });
-        dialog.show();
 
         final Button submit = (Button) dialog.findViewById(R.id.newtrack_button_submit);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -711,7 +698,7 @@ public class MainActivity extends AppCompatActivity {
                     syncErrorLabel.setText(null);
                     syncError = false;
                 }
-                // show message if manual uploading
+                // showConfirm message if manual uploading
                 if (isUploading && unsyncedCount == 0) {
                     showToast(getString(R.string.uploading_done));
                     isUploading = false;
@@ -723,7 +710,7 @@ public class MainActivity extends AppCompatActivity {
                 String message = intent.getStringExtra("message");
                 syncErrorLabel.setText(message);
                 syncError = true;
-                // show message if manual uploading
+                // showConfirm message if manual uploading
                 if (isUploading) {
                     showToast(getString(R.string.uploading_failed) + "\n" + message, Toast.LENGTH_LONG);
                     isUploading = false;

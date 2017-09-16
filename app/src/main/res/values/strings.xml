@@ -119,4 +119,5 @@
     </plurals>
     <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
     <string name="label_positions_behind_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions behind</string>
+    <string name="track_server_setup_warning">If you change server setup you may not be able to synchronize current track.</string>
 </resources>

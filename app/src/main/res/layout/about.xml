@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2017 Bartek Fabiszewski
   ~ http://www.fabiszewski.net
   ~
@@ -9,41 +8,57 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="20dip">
 
     <TextView
         android:id="@+id/about_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/about_description" />
+        android:text="@string/about_description"
+        android:textSize="16sp" />
+
     <TextView
         android:id="@+id/about_description2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textSize="16sp"
-        android:text="@string/about_description2" />
+        android:text="@string/about_description2"
+        android:textSize="16sp" />
+
     <TextView
         android:id="@+id/about_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dip"
-        android:textSize="16sp"
-        android:text="@string/about_version"/>
+        android:text="@string/about_version"
+        android:textSize="16sp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/about_license"/>
+        android:text="@string/about_license"
+        android:textSize="16sp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autoLink="web"
         android:paddingTop="15dip"
-        android:textSize="16sp"
         android:text="@string/about_credits"
-        android:autoLink="web" />
+        android:textSize="16sp" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="30dip">
+
+        <Button
+            android:id="@+id/about_button_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok" />
+    </TableRow>
 </LinearLayout>
