@@ -27,6 +27,12 @@ import android.widget.Toast;
 
 public class SettingsActivity extends PreferenceActivity {
 
+    private static Preference prefLiveSync = null;
+    private static Preference prefUsername = null;
+    private static Preference prefPass = null;
+    private static Preference prefHost = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +49,62 @@ public class SettingsActivity extends PreferenceActivity {
     @SuppressWarnings("deprecation")
     private void onCreatePreferenceActivity() {
         addPreferencesFromResource(R.xml.preferences);
-        final Preference prefLiveSync = findPreference("prefLiveSync");
+        prefLiveSync = findPreference("prefLiveSync");
+        prefUsername = findPreference("prefUsername");
+        prefPass = findPreference("prefPass");
+        prefHost = findPreference("prefHost");
+        setListeners();
+    }
+
+    // API >= 11
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void onCreatePreferenceFragment() {
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new MyPreferenceFragment())
+                .commit();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class MyPreferenceFragment extends PreferenceFragment {
+
+        @Override
+        public void onCreate(final Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preferences);
+            prefLiveSync = findPreference("prefLiveSync");
+            prefUsername = findPreference("prefUsername");
+            prefPass = findPreference("prefPass");
+            prefHost = findPreference("prefHost");
+            setListeners();
+        }
+    }
+
+    /**
+     * Set various listeners
+     */
+    private static void setListeners() {
+        // on change listeners
         if (prefLiveSync != null) {
             prefLiveSync.setOnPreferenceChangeListener(liveSyncChanged);
         }
+        if (prefUsername != null) {
+            prefUsername.setOnPreferenceChangeListener(serverSetupChanged);
+        }
+        if (prefPass != null) {
+            prefPass.setOnPreferenceChangeListener(serverSetupChanged);
+        }
+        if (prefHost != null) {
+            prefHost.setOnPreferenceChangeListener(serverSetupChanged);
+        }
+        // on click listeners
+        if (prefUsername != null) {
+            prefUsername.setOnPreferenceClickListener(serverSetupClicked);
+        }
+        if (prefHost != null) {
+            prefHost.setOnPreferenceClickListener(serverSetupClicked);
+        }
     }
+
 
     /**
      * On change listener to validate whether live synchronization is allowed
@@ -67,6 +124,24 @@ public class SettingsActivity extends PreferenceActivity {
 
     };
 
+    /**
+     * On change listener to destroy session cookies if server setup has changed
+     */
+    private final static Preference.OnPreferenceChangeListener serverSetupChanged = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            // remove session cookies
+            WebHelper.deauthorize();
+            return true;
+        }
+
+    };
+
+    /**
+     * Check whether server setup parameters are set
+     * @param context Context
+     * @return boolean True if set
+     */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     static boolean isValidServerSetup(Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -76,28 +151,5 @@ public class SettingsActivity extends PreferenceActivity {
         return ((host != null && !host.isEmpty())
                 && (user != null && !user.isEmpty())
                 && (pass != null && !pass.isEmpty()));
-    }
-
-    // API >= 11
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void onCreatePreferenceFragment() {
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new MyPreferenceFragment())
-                .commit();
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class MyPreferenceFragment extends PreferenceFragment {
-
-        @Override
-        public void onCreate(final Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
-            final Preference prefLiveSync = findPreference("prefLiveSync");
-            if (prefLiveSync != null) {
-                prefLiveSync.setOnPreferenceChangeListener(liveSyncChanged);
-            }
-        }
-
     }
 }

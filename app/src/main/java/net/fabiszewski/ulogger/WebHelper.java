@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.CookieStore;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -294,6 +295,16 @@ class WebHelper {
         boolean error = json.getBoolean("error");
         if (error) {
             throw new WebAuthException(context.getString(R.string.e_server_response));
+        }
+    }
+
+    /**
+     * Remove authorization by removing session cookie
+     */
+    static void deauthorize() {
+        if (cookieManager != null) {
+            CookieStore store = cookieManager.getCookieStore();
+            store.removeAll();
         }
     }
 
