@@ -18,8 +18,8 @@ android {
         minSdkVersion 10
         //noinspection OldTargetApi
         targetSdkVersion 25
-        versionCode 106
-        versionName "1.6"
+        versionCode 107
+        versionName "1.7"
     }
 
     buildTypes {
