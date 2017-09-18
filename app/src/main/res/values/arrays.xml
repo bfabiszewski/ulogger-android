@@ -17,6 +17,7 @@
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
+        <item>other</item>
     </string-array>
 
     <string-array name="minTimeValues" translatable="false">
@@ -27,6 +28,7 @@
         <item>900</item>
         <item>1800</item>
         <item>3600</item>
+        <item>other</item>
     </string-array>
 
     <string-array name="minDistanceEntries">
@@ -37,6 +39,7 @@
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
+        <item>other</item>
     </string-array>
 
     <string-array name="minDistanceValues" translatable="false">
@@ -47,6 +50,7 @@
         <item>500</item>
         <item>1000</item>
         <item>5000</item>
+        <item>other</item>
     </string-array>
 
     <string-array name="minAccuracyEntries">
@@ -58,6 +62,7 @@
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
+        <item>other</item>
     </string-array>
 
     <string-array name="minAccuracyValues" translatable="false">
@@ -69,6 +74,7 @@
         <item>500</item>
         <item>1000</item>
         <item>5000</item>
+        <item>other</item>
     </string-array>
 
     <string-array name="providersEntries">

@@ -17,6 +17,7 @@
         <item>15 minut</item>
         <item>30 minut</item>
         <item>1 godzina</item>
+        <item>inny</item>
     </string-array>
 
     <string-array name="minDistanceEntries">
@@ -27,6 +28,7 @@
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
+        <item>inna</item>
     </string-array>
 
     <string-array name="minAccuracyEntries">
@@ -38,6 +40,7 @@
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
+        <item>inna</item>
     </string-array>
 
     <string-array name="providersEntries">

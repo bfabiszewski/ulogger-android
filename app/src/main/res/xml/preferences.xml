@@ -8,7 +8,9 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ulogger="http://schemas.android.com/apk/res/net.fabiszewski.ulogger">
+
     <net.fabiszewski.ulogger.UrlEditTextPreference
         android:key="prefUsername"
         android:title="@string/pref_username_title"
@@ -25,27 +27,30 @@
         android:summary="@string/pref_host_summary"
         android:inputType="textUri"
         android:hint="https://www.example.com"/>
-    <ListPreference
+    <net.fabiszewski.ulogger.ListPreferenceWithEditText
         android:key="prefMinTime"
         android:title="@string/pref_mintime_title"
         android:summary="@string/pref_mintime_summary"
         android:entries="@array/minTimeEntries"
         android:entryValues="@array/minTimeValues"
-        android:defaultValue="@string/pref_mintime_default" />
-    <ListPreference
+        android:defaultValue="@string/pref_mintime_default"
+        ulogger:otherSummary="@string/pref_mintime_other" />
+    <net.fabiszewski.ulogger.ListPreferenceWithEditText
         android:key="prefMinDistance"
         android:title="@string/pref_mindistance_title"
         android:summary="@string/pref_mindistance_summary"
         android:entries="@array/minDistanceEntries"
         android:entryValues="@array/minDistanceValues"
-        android:defaultValue="@string/pref_mindistance_default" />
-    <ListPreference
+        android:defaultValue="@string/pref_mindistance_default"
+        ulogger:otherSummary="@string/pref_mindistance_other" />
+    <net.fabiszewski.ulogger.ListPreferenceWithEditText
         android:key="prefMinAccuracy"
         android:title="@string/pref_minaccuracy_title"
         android:summary="@string/pref_minaccuracy_summary"
         android:entries="@array/minAccuracyEntries"
         android:entryValues="@array/minAccuracyValues"
-        android:defaultValue="@string/pref_minaccuracy_default" />
+        android:defaultValue="@string/pref_minaccuracy_default"
+        ulogger:otherSummary="@string/pref_minaccuracy_other" />
     <CheckBoxPreference
         android:key="prefLiveSync"
         android:title="@string/pref_livesync_title"
