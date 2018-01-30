@@ -233,7 +233,9 @@ public class WebSyncService extends IntentService {
         if (DbAccess.hasAccuracy(cursor)) {
             params.put(WebHelper.PARAM_ACCURACY, DbAccess.getAccuracy(cursor));
         }
-        params.put(WebHelper.PARAM_PROVIDER, DbAccess.getProvider(cursor));
+        if (DbAccess.hasProvider(cursor)) {
+            params.put(WebHelper.PARAM_PROVIDER, DbAccess.getProvider(cursor));
+        }
         return params;
     }
 

@@ -210,7 +210,9 @@ public class GpxExportService extends IntentService {
                 if (DbAccess.hasBearing(cursor)) {
                     writeTag(serializer, "bearing", DbAccess.getBearing(cursor), ns_ulogger);
                 }
-                writeTag(serializer, "provider", DbAccess.getProvider(cursor), ns_ulogger);
+                if (DbAccess.hasProvider(cursor)) {
+                    writeTag(serializer, "provider", DbAccess.getProvider(cursor), ns_ulogger);
+                }
                 serializer.endTag(null, "extensions");
 
                 serializer.endTag(null, "trkpt");

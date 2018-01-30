@@ -468,6 +468,15 @@ class DbAccess {
     }
 
     /**
+     * Check if cursor contains provider data
+     * @param cursor Cursor
+     * @return True if has provider data
+     */
+    static boolean hasProvider(Cursor cursor) {
+        return !cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_PROVIDER));
+    }
+
+    /**
      * Get latitude from positions cursor
      * @param cursor Cursor
      * @return String latitude
