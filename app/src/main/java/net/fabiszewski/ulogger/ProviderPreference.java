@@ -65,9 +65,9 @@ class ProviderPreference extends ListPreference {
 
         LocationManager locManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         missingProviders = new ArrayList<>();
-        final boolean existsGPS = locManager.getAllProviders().contains(LocationManager.GPS_PROVIDER);
-        final boolean existsNet = locManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER);
-        if (Logger.DEBUG) { Log.d(TAG, "[Providers available: " + locManager.getAllProviders()); }
+        final boolean existsGPS = locManager != null && locManager.getAllProviders().contains(LocationManager.GPS_PROVIDER);
+        final boolean existsNet = locManager != null && locManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER);
+        if (Logger.DEBUG) { Log.d(TAG, "[Providers available: " + (locManager != null ? locManager.getAllProviders() : null)); }
         defaultValue = VALUE_ALL;
         if (!existsGPS) {
             missingProviders.add(VALUE_GPS);

@@ -86,7 +86,9 @@ public class LoggerService extends Service {
         if (Logger.DEBUG) { Log.d(TAG, "[onCreate]"); }
 
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.cancelAll();
+        if (mNotificationManager != null) {
+            mNotificationManager.cancelAll();
+        }
 
         locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locListener = new mLocationListener();

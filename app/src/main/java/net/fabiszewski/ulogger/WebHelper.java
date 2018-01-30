@@ -129,7 +129,7 @@ class WebHelper {
     private String postWithParams(Map<String, String> params) throws IOException, WebAuthException {
         URL url = new URL(host + "/" + CLIENT_SCRIPT);
         if (Logger.DEBUG) { Log.d(TAG, "[postWithParams: " + url + " : " + params + "]"); }
-        String response = null;
+        String response;
 
         String dataString = "";
         for (Map.Entry<String, String> p : params.entrySet()) {

@@ -78,7 +78,9 @@ public class WebSyncService extends IntentService {
             // cancel pending alarm
             if (Logger.DEBUG) { Log.d(TAG, "[websync cancel alarm]"); }
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            am.cancel(pi);
+            if (am != null) {
+                am.cancel(pi);
+            }
             pi = null;
         }
 
@@ -206,7 +208,9 @@ public class WebSyncService extends IntentService {
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
             pi = PendingIntent.getService(this, 0, syncIntent, FLAG_ONE_SHOT);
-            am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + FIVE_MINUTES, pi);
+            if (am != null) {
+                am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + FIVE_MINUTES, pi);
+            }
         }
     }
 
