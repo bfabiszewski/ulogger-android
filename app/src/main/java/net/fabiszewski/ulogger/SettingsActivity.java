@@ -14,10 +14,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -26,6 +28,7 @@ import android.widget.Toast;
  */
 
 public class SettingsActivity extends PreferenceActivity {
+    private static final String TAG = SettingsActivity.class.getSimpleName();
 
     private static Preference prefLiveSync = null;
     private static Preference prefUsername = null;
@@ -132,10 +135,25 @@ public class SettingsActivity extends PreferenceActivity {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             // remove session cookies
             WebHelper.deauthorize();
+            // disable live synchronization if any server preference is removed
+            if (newValue.toString().trim().length() == 0) {
+                disableLiveSync(preference.getContext());
+            }
             return true;
         }
 
     };
+
+    private static void disableLiveSync(Context context) {
+        if (Logger.DEBUG) { Log.d(TAG, "[disabling live sync]"); }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("prefLiveSync", false);
+        editor.apply();
+        if (prefLiveSync != null && prefLiveSync instanceof CheckBoxPreference) {
+            ((CheckBoxPreference) prefLiveSync).setChecked(false);
+        }
+    }
 
     /**
      * On click listener to warn if server setup has changed

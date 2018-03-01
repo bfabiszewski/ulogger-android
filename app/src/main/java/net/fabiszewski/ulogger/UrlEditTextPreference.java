@@ -63,7 +63,8 @@ class UrlEditTextPreference extends EditTextPreference {
     }
 
     private void onPositiveButtonClicked() {
-        if (WebHelper.isValidURL(getEditText().getText().toString().trim())) {
+        final String url = getEditText().getText().toString().trim();
+        if (url.length() == 0 || WebHelper.isValidURL(url)) {
             getEditText().setError(null);
             onClick(getDialog(), DialogInterface.BUTTON_POSITIVE);
             getDialog().dismiss();
