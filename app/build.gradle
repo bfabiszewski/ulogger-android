@@ -10,16 +10,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 26
 
     defaultConfig {
         applicationId "net.fabiszewski.ulogger"
-        minSdkVersion 10
-        //noinspection OldTargetApi
-        targetSdkVersion 25
-        versionCode 108
-        versionName "1.8"
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 200
+        versionName "2.0"
     }
 
     buildTypes {
@@ -36,7 +34,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
 }
