@@ -10,6 +10,8 @@
 package net.fabiszewski.ulogger;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -27,6 +29,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -73,7 +76,7 @@ public class LoggerService extends Service {
     private static Location lastLocation = null;
     private static volatile long lastUpdateRealtime = 0;
 
-    private final int NOTIFICATION_ID = (int) (System.currentTimeMillis() / 1000L);
+    private final int NOTIFICATION_ID = 1526756640;
     private NotificationManager mNotificationManager;
     private boolean useGps;
     private boolean useNet;
@@ -135,7 +138,8 @@ public class LoggerService extends Service {
             handlePrefsUpdated();
         } else if (isRunning) {
             // first start
-            showNotification(NOTIFICATION_ID);
+            final Notification notification = showNotification(NOTIFICATION_ID);
+            startForeground(NOTIFICATION_ID, notification);
         } else {
             // onCreate failed to start updates
             stopSelf();
@@ -326,11 +330,15 @@ public class LoggerService extends Service {
      *
      * @param mId Notification Id
      */
-    private void showNotification(int mId) {
+    private Notification showNotification(int mId) {
         if (Logger.DEBUG) { Log.d(TAG, "[showNotification " + mId + "]"); }
 
+        final String channelId = String.valueOf(mId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel(channelId);
+        }
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_stat_notify_24dp)
                         .setContentTitle(getString(R.string.app_name))
                         .setContentText(String.format(getString(R.string.is_running), getString(R.string.app_name)));
@@ -341,7 +349,15 @@ public class LoggerService extends Service {
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
-        mNotificationManager.notify(mId, mBuilder.build());
+        Notification mNotification = mBuilder.build();
+        mNotificationManager.notify(mId, mNotification);
+        return mNotification;
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private void createNotificationChannel(String channelId) {
+        NotificationChannel chan = new NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
+        mNotificationManager.createNotificationChannel(chan);
     }
 
     /**
