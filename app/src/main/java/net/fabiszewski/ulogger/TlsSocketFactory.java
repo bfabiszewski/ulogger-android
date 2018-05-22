@@ -145,22 +145,22 @@ class TlsSocketFactory extends SSLSocketFactory {
     }
 
     @Override
-    public Socket createSocket(String host, int port) throws IOException {
+    public Socket createSocket(String host, int port) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override
-    public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException {
+    public Socket createSocket(String host, int port, InetAddress localHost, int localPort) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override
-    public Socket createSocket(InetAddress host, int port) throws IOException {
+    public Socket createSocket(InetAddress host, int port) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override
-    public Socket createSocket(InetAddress host, int port, InetAddress localHost, int localPort) throws IOException {
+    public Socket createSocket(InetAddress host, int port, InetAddress localHost, int localPort) {
         throw new UnsupportedOperationException("Not implemented");
     }
 }

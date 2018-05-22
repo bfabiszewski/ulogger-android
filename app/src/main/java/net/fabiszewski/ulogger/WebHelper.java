@@ -126,6 +126,7 @@ class WebHelper {
      * @throws IOException Connection error
      * @throws WebAuthException Authorization error
      */
+    @SuppressWarnings("StringConcatenationInLoop")
     private String postWithParams(Map<String, String> params) throws IOException, WebAuthException {
         URL url = new URL(host + "/" + CLIENT_SCRIPT);
         if (Logger.DEBUG) { Log.d(TAG, "[postWithParams: " + url + " : " + params + "]"); }

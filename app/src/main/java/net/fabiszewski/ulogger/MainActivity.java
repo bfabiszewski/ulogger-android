@@ -97,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
         TXT_START = getString(R.string.button_start);
         TXT_STOP = getString(R.string.button_stop);
         setContentView(R.layout.activity_main);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        toggleButton = (Button) findViewById(R.id.toggle_button);
-        syncErrorLabel = (TextView) findViewById(R.id.sync_error);
-        syncLabel = (TextView) findViewById(R.id.sync_status);
-        syncLed = (TextView) findViewById(R.id.sync_led);
-        locLabel = (TextView) findViewById(R.id.location_status);
-        locLed = (TextView) findViewById(R.id.loc_led);
+        toggleButton = findViewById(R.id.toggle_button);
+        syncErrorLabel = findViewById(R.id.sync_error);
+        syncLabel = findViewById(R.id.sync_status);
+        syncLed = findViewById(R.id.sync_led);
+        locLabel = findViewById(R.id.location_status);
+        locLed = findViewById(R.id.loc_led);
     }
 
     /**
@@ -349,16 +349,16 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.track_summary),
                 R.layout.summary,
                 R.drawable.ic_equalizer_white_24dp);
-        final Button okButton = (Button) dialog.findViewById(R.id.summary_button_ok);
+        final Button okButton = dialog.findViewById(R.id.summary_button_ok);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-        final TextView summaryDistance = (TextView) dialog.findViewById(R.id.summary_distance);
-        final TextView summaryDuration = (TextView) dialog.findViewById(R.id.summary_duration);
-        final TextView summaryPositions = (TextView) dialog.findViewById(R.id.summary_positions);
+        final TextView summaryDistance = dialog.findViewById(R.id.summary_distance);
+        final TextView summaryDuration = dialog.findViewById(R.id.summary_duration);
+        final TextView summaryPositions = dialog.findViewById(R.id.summary_positions);
         double distance = (double) summary.getDistance() / 1000;
         String unitName = getString(R.string.unit_kilometer);
         if (pref_units.equals(getString(R.string.pref_units_imperial))) {
@@ -373,11 +373,7 @@ public class MainActivity extends AppCompatActivity {
         final long m = summary.getDuration() % 3600 / 60;
         summaryDuration.setText(getString(R.string.summary_duration, h, m));
         int positionsCount = (int) summary.getPositionsCount();
-        if (needsPluralFewHack(positionsCount)) {
-            summaryPositions.setText(getResources().getString(R.string.summary_positions_few, positionsCount));
-        } else {
-            summaryPositions.setText(getResources().getQuantityString(R.plurals.summary_positions, positionsCount, positionsCount));
-        }
+        summaryPositions.setText(getResources().getQuantityString(R.plurals.summary_positions, positionsCount, positionsCount));
     }
 
     /**
@@ -407,10 +403,10 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.app_name),
                 R.layout.about,
                 R.drawable.ic_ulogger_logo_24dp);
-        final TextView versionLabel = (TextView) dialog.findViewById(R.id.about_version);
+        final TextView versionLabel = dialog.findViewById(R.id.about_version);
         versionLabel.setText(getString(R.string.about_version, BuildConfig.VERSION_NAME));
-        final TextView descriptionLabel = (TextView) dialog.findViewById(R.id.about_description);
-        final TextView description2Label = (TextView) dialog.findViewById(R.id.about_description2);
+        final TextView descriptionLabel = dialog.findViewById(R.id.about_description);
+        final TextView description2Label = dialog.findViewById(R.id.about_description2);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             descriptionLabel.setText(fromHtmlDepreciated(getString(R.string.about_description)));
             description2Label.setText(fromHtmlDepreciated(getString(R.string.about_description2)));
@@ -418,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
             descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description), android.text.Html.FROM_HTML_MODE_LEGACY));
             description2Label.setText(Html.fromHtml(getString(R.string.about_description2), android.text.Html.FROM_HTML_MODE_LEGACY));
         }
-        final Button okButton = (Button) dialog.findViewById(R.id.about_button_ok);
+        final Button okButton = dialog.findViewById(R.id.about_button_ok);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -467,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog dialog = showAlert(MainActivity.this,
                 getString(R.string.title_newtrack),
                 R.layout.newtrack_dialog);
-        final EditText editText = (EditText) dialog.findViewById(R.id.newtrack_edittext);
+        final EditText editText = dialog.findViewById(R.id.newtrack_edittext);
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
         final String dateSuffix = sdf.format(Calendar.getInstance().getTime());
@@ -480,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Button submit = (Button) dialog.findViewById(R.id.newtrack_button_submit);
+        final Button submit = dialog.findViewById(R.id.newtrack_button_submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -496,7 +492,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Button cancel = (Button) dialog.findViewById(R.id.newtrack_button_cancel);
+        final Button cancel = dialog.findViewById(R.id.newtrack_button_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -510,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
      * @param trackName Track name
      */
     private void updateTrackLabel(String trackName) {
-        final TextView trackLabel = (TextView) findViewById(R.id.newtrack_label);
+        final TextView trackLabel = findViewById(R.id.newtrack_label);
         trackLabel.setText(trackName);
     }
 
@@ -564,11 +560,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateSyncStatus(int unsynced) {
         String text;
         if (unsynced > 0) {
-            if (needsPluralFewHack(unsynced)) {
-                text = getString(R.string.label_positions_behind_few, unsynced);
-            } else {
-                text = getResources().getQuantityString(R.plurals.label_positions_behind, unsynced, unsynced);
-            }
+            text = getResources().getQuantityString(R.plurals.label_positions_behind, unsynced, unsynced);
             if (syncError) {
                 setSyncLed(LED_RED);
             } else {
@@ -683,88 +675,93 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (Logger.DEBUG) { Log.d(TAG, "[broadcast received " + intent + "]"); }
-            if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_UPDATED)) {
-                updateLocationLabel(LoggerService.lastUpdateRealtime());
-                setLocLed(LED_GREEN);
-                if (!pref_liveSync) {
+            if (intent == null || intent.getAction() == null) {
+                return;
+            }
+            switch (intent.getAction()) {
+                case LoggerService.BROADCAST_LOCATION_UPDATED:
+                    updateLocationLabel(LoggerService.lastUpdateRealtime());
+                    setLocLed(LED_GREEN);
+                    if (!pref_liveSync) {
+                        updateSyncStatus(db.countUnsynced());
+                    }
+                    break;
+                case WebSyncService.BROADCAST_SYNC_DONE:
+                    final int unsyncedCount = db.countUnsynced();
+                    updateSyncStatus(unsyncedCount);
+                    setSyncLed(LED_GREEN);
+                    // reset error flag and label
+                    if (syncError) {
+                        syncErrorLabel.setText(null);
+                        syncError = false;
+                    }
+                    // showConfirm message if manual uploading
+                    if (isUploading && unsyncedCount == 0) {
+                        showToast(getString(R.string.uploading_done));
+                        isUploading = false;
+                    }
+                    break;
+                case (WebSyncService.BROADCAST_SYNC_FAILED): {
                     updateSyncStatus(db.countUnsynced());
+                    setSyncLed(LED_RED);
+                    // set error flag and label
+                    String message = intent.getStringExtra("message");
+                    syncErrorLabel.setText(message);
+                    syncError = true;
+                    // showConfirm message if manual uploading
+                    if (isUploading) {
+                        showToast(getString(R.string.uploading_failed) + "\n" + message, Toast.LENGTH_LONG);
+                        isUploading = false;
+                    }
+                    break;
                 }
-            } else if (intent.getAction().equals(WebSyncService.BROADCAST_SYNC_DONE)) {
-                final int unsyncedCount = db.countUnsynced();
-                updateSyncStatus(unsyncedCount);
-                setSyncLed(LED_GREEN);
-                // reset error flag and label
-                if (syncError) {
-                    syncErrorLabel.setText(null);
-                    syncError = false;
+                case LoggerService.BROADCAST_LOCATION_STARTED:
+                    toggleButton.setText(TXT_STOP);
+                    showToast(getString(R.string.tracking_started));
+                    setLocLed(LED_YELLOW);
+                    break;
+                case LoggerService.BROADCAST_LOCATION_STOPPED:
+                    toggleButton.setText(TXT_START);
+                    showToast(getString(R.string.tracking_stopped));
+                    setLocLed(LED_RED);
+                    break;
+                case LoggerService.BROADCAST_LOCATION_GPS_DISABLED:
+                    showToast(getString(R.string.gps_disabled_warning), Toast.LENGTH_LONG);
+                    break;
+                case LoggerService.BROADCAST_LOCATION_NETWORK_DISABLED:
+                    showToast(getString(R.string.net_disabled_warning), Toast.LENGTH_LONG);
+                    break;
+                case LoggerService.BROADCAST_LOCATION_DISABLED:
+                    showToast(getString(R.string.location_disabled), Toast.LENGTH_LONG);
+                    setLocLed(LED_RED);
+                    break;
+                case LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED:
+                    showToast(getString(R.string.using_network), Toast.LENGTH_LONG);
+                    break;
+                case LoggerService.BROADCAST_LOCATION_GPS_ENABLED:
+                    showToast(getString(R.string.using_gps), Toast.LENGTH_LONG);
+                    break;
+                case GpxExportService.BROADCAST_EXPORT_DONE:
+                    showToast(getString(R.string.export_done), Toast.LENGTH_LONG);
+                    break;
+                case GpxExportService.BROADCAST_EXPORT_FAILED: {
+                    String message = getString(R.string.export_failed);
+                    if (intent.hasExtra("message")) {
+                        message += "\n" + intent.getStringExtra("message");
+                    }
+                    showToast(message, Toast.LENGTH_LONG);
+                    break;
                 }
-                // showConfirm message if manual uploading
-                if (isUploading && unsyncedCount == 0) {
-                    showToast(getString(R.string.uploading_done));
-                    isUploading = false;
-                }
-            } else if (intent.getAction().equals((WebSyncService.BROADCAST_SYNC_FAILED))) {
-                updateSyncStatus(db.countUnsynced());
-                setSyncLed(LED_RED);
-                // set error flag and label
-                String message = intent.getStringExtra("message");
-                syncErrorLabel.setText(message);
-                syncError = true;
-                // showConfirm message if manual uploading
-                if (isUploading) {
-                    showToast(getString(R.string.uploading_failed) + "\n" + message, Toast.LENGTH_LONG);
-                    isUploading = false;
-                }
-            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_STARTED)) {
-                toggleButton.setText(TXT_STOP);
-                showToast(getString(R.string.tracking_started));
-                setLocLed(LED_YELLOW);
-            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_STOPPED)) {
-                toggleButton.setText(TXT_START);
-                showToast(getString(R.string.tracking_stopped));
-                setLocLed(LED_RED);
-            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_GPS_DISABLED)) {
-                showToast(getString(R.string.gps_disabled_warning), Toast.LENGTH_LONG);
-            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_NETWORK_DISABLED)) {
-                showToast(getString(R.string.net_disabled_warning), Toast.LENGTH_LONG);
-            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_DISABLED)) {
-                showToast(getString(R.string.location_disabled), Toast.LENGTH_LONG);
-                setLocLed(LED_RED);
-            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED)) {
-                showToast(getString(R.string.using_network), Toast.LENGTH_LONG);
-            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_GPS_ENABLED)) {
-                showToast(getString(R.string.using_gps), Toast.LENGTH_LONG);
-            } else if (intent.getAction().equals(GpxExportService.BROADCAST_EXPORT_DONE)) {
-                showToast(getString(R.string.export_done), Toast.LENGTH_LONG);
-            } else if (intent.getAction().equals(GpxExportService.BROADCAST_EXPORT_FAILED)) {
-                String message = getString(R.string.export_failed);
-                if (intent.hasExtra("message")) {
-                    message += "\n" + intent.getStringExtra("message");
-                }
-                showToast(message, Toast.LENGTH_LONG);
-            } else if (intent.getAction().equals(LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED)) {
-                showToast(getString(R.string.location_permission_denied), Toast.LENGTH_LONG);
-                setLocLed(LED_RED);
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
-            } else if (intent.getAction().equals(GpxExportService.BROADCAST_WRITE_PERMISSION_DENIED)) {
-                showToast(getString(R.string.write_permission_denied), Toast.LENGTH_LONG);
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
+                case LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED:
+                    showToast(getString(R.string.location_permission_denied), Toast.LENGTH_LONG);
+                    setLocLed(LED_RED);
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
+                    break;
+                case GpxExportService.BROADCAST_WRITE_PERMISSION_DENIED:
+                    showToast(getString(R.string.write_permission_denied), Toast.LENGTH_LONG);
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
+                    break;
             }
         }
     };
-
-    /**
-     * Check if count matches "few" plurals and language is Polish
-     * Hack for API <= 10 where "few" plural is missing for some languages
-     * todo: this simple hack currently supports only language "pl"
-     *
-     * @param i Count
-     * @return True if hack is needed, false otherwise
-     */
-    private boolean needsPluralFewHack(int i) {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
-                && Locale.getDefault().getLanguage().equalsIgnoreCase("pl")
-                && (i % 10 >= 2 && i % 10 <= 4)
-                && (i % 100 < 12 || i % 100 > 14);
-    }
 }

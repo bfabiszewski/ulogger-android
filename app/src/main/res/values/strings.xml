@@ -7,7 +7,7 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">μlogger</string>
     <string name="app_name_ascii" translatable="false">ulogger</string>
     <string name="button_start">Start</string>
@@ -82,8 +82,6 @@
         <item quantity="many">%d positions</item>
         <item quantity="other">%d positions</item>
     </plurals>
-    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
-    <string name="summary_positions_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions</string>
     <string name="summary_duration">%1$d h %2$d min</string>
     <string name="unit_kilometer">km</string>
     <string name="unit_mile">mi.</string>
@@ -117,8 +115,6 @@
         <item quantity="many">%d positions behind</item>
         <item quantity="other">%d positions behind</item>
     </plurals>
-    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
-    <string name="label_positions_behind_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions behind</string>
     <string name="track_server_setup_warning">If you change server setup you may not be able to synchronize current track.</string>
     <string name="pref_mintime_other">Minimum time interval in seconds</string>
     <string name="pref_mindistance_other">Minimum distance in meters</string>

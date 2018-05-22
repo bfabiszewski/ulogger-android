@@ -207,6 +207,7 @@ public class LoggerService extends Service {
      * Request location updates
      * @return True if succeeded from at least one provider
      */
+    @SuppressWarnings({"MissingPermission"})
     private boolean requestLocationUpdates() {
         boolean hasLocationUpdates = false;
         if (canAccessLocation()) {

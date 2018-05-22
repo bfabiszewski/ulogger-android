@@ -138,6 +138,7 @@ class ProviderPreference extends ListPreference {
         }
 
         @Override
+        @SuppressWarnings("SameReturnValue")
         public boolean areAllItemsEnabled() {
             return false;
         }

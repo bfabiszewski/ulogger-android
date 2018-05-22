@@ -33,7 +33,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean autoStart = prefs.getBoolean("prefAutoStart", false);
-        if (autoStart && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+        if (autoStart && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             Intent i = new Intent(context, LoggerService.class);
             context.startService(i);
         }

@@ -9,10 +9,8 @@
 
 package net.fabiszewski.ulogger;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -39,35 +37,15 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            onCreatePreferenceActivity();
-        } else {
-            onCreatePreferenceFragment();
-        }
-
+        onCreatePreferenceFragment();
     }
 
-    // API = 10
-    @SuppressWarnings("deprecation")
-    private void onCreatePreferenceActivity() {
-        addPreferencesFromResource(R.xml.preferences);
-        prefLiveSync = findPreference("prefLiveSync");
-        prefUsername = findPreference("prefUsername");
-        prefPass = findPreference("prefPass");
-        prefHost = findPreference("prefHost");
-        setListeners();
-    }
-
-    // API >= 11
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void onCreatePreferenceFragment() {
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new MyPreferenceFragment())
                 .commit();
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class MyPreferenceFragment extends PreferenceFragment {
 
         @Override

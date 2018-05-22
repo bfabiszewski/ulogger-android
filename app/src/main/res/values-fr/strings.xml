@@ -72,8 +72,6 @@
         <item quantity="many">%d positions</item>
         <item quantity="other">%d positions</item>
     </plurals>
-    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
-    <string name="summary_positions_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions</string>
     <string name="summary_duration">%1$d h %2$d min</string>
     <string name="unit_kilometer">km</string>
     <string name="unit_mile">mi.</string>
@@ -107,6 +105,4 @@
         <item quantity="many">%d positions derrière</item>
         <item quantity="other">%d positions derrière</item>
     </plurals>
-    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
-    <string name="label_positions_behind_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d positions derrière</string>
 </resources>

@@ -87,12 +87,14 @@ class ListPreferenceWithEditText extends ListPreference implements Preference.On
         final AlertDialog dialog = showAlert(context,
                 preference.getTitle(),
                 R.layout.other_dialog);
-        final TextView textView = (TextView) dialog.findViewById(R.id.other_textview);
+        final TextView textView = dialog.findViewById(R.id.other_textview);
         textView.setText(otherSummary);
-        final EditText editText = (EditText) dialog.findViewById(R.id.other_edittext);
+        textView.setContentDescription(otherSummary);
+        final EditText editText = dialog.findViewById(R.id.other_edittext);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         editText.setText(prefs.getString(key, ""));
-        final Button submit = (Button) dialog.findViewById(R.id.other_button_submit);
+        editText.setHint(prefs.getString(key, ""));
+        final Button submit = dialog.findViewById(R.id.other_button_submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +110,7 @@ class ListPreferenceWithEditText extends ListPreference implements Preference.On
             }
         });
 
-        final Button cancel = (Button) dialog.findViewById(R.id.other_button_cancel);
+        final Button cancel = dialog.findViewById(R.id.other_button_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

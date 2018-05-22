@@ -72,8 +72,6 @@
         <item quantity="many">%d 場所</item>
         <item quantity="other">%d 場所</item>
     </plurals>
-    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
-    <string name="summary_positions_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d 場所</string>
     <string name="summary_duration">%1$d 時間 %2$d 分</string>
     <string name="unit_kilometer">km</string>
     <string name="unit_mile">mi.</string>
@@ -107,6 +105,4 @@
         <item quantity="many">%d 場所残り</item>
         <item quantity="other">%d 場所残り</item>
     </plurals>
-    <!-- hack for api <= 10 and missing "few" plurals, currently used only for Polish locale -->
-    <string name="label_positions_behind_few" comment="few positions hack" tools:ignore="PluralsCandidate">%d 場所残り</string>
 </resources>

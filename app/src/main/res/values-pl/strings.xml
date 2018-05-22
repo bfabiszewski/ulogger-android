@@ -45,7 +45,6 @@
         <item quantity="many">Zostało %d pozycji</item>
         <item quantity="other">Zostało %d pozycji</item>
     </plurals>
-    <string name="label_positions_behind_few">Zostały %d pozycje</string>
     <string name="label_status">Status</string>
     <string name="label_synchronization">Synchronizacja</string>
     <string name="label_synchronized">Wszystko wysłane</string>
@@ -93,7 +92,6 @@
         <item quantity="many">%d pozycji</item>
         <item quantity="other">%d pozycji</item>
     </plurals>
-    <string name="summary_positions_few">%d pozycje</string>
     <string name="title_newtrack">Nowa trasa</string>
     <string name="track_summary">Podsumowanie trasy</string>
     <string name="tracking_started">Zapis włączony</string>
