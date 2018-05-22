@@ -11,7 +11,6 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -23,49 +22,63 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-        tools:targetApi="lollipop" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
+
 
     <LinearLayout
-        android:orientation="horizontal"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryDark"
+        android:divider="@drawable/separator"
+        android:orientation="horizontal"
+        android:showDividers="middle">
 
         <Button
             android:id="@+id/toggle_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="toggleLogging"
             android:text="@string/button_start"
-            android:onClick="toggleLogging" />
+            android:textColor="?android:attr/textColorAlertDialogListItem"
+            android:background="@drawable/button_background"
+            android:textStyle="bold" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="uploadData"
             android:text="@string/button_upload"
-            android:onClick="uploadData" />
+            android:textColor="?android:attr/textColorAlertDialogListItem"
+            android:background="@drawable/button_background"
+            android:textStyle="bold" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="newTrack"
             android:text="@string/button_newtrack"
-            android:onClick="newTrack" />
+            android:textColor="?android:attr/textColorAlertDialogListItem"
+            android:background="@drawable/button_background"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:focusable="true"
         android:onClick="trackSummary"
-        android:layout_marginTop="20dp"
-        >
+        android:layout_marginTop="20dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

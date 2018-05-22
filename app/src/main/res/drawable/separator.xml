@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetTop="10dp"
+    android:insetBottom="10dp">
+
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <size android:width="1px" />
+        <solid android:color="?attr/colorAccent" />
+    </shape>
+
+</inset>

@@ -46,17 +46,20 @@
         android:text=""
         android:textSize="@dimen/label_font_size" />
 
-    <TableRow
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:paddingTop="40dip">
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingTop="40dip"
+        style="?android:attr/buttonBarStyle" >
 
         <Button
             android:id="@+id/summary_button_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ok" />
-    </TableRow>
+            android:text="@string/ok"
+            style="?android:attr/buttonBarButtonStyle"/>
+    </LinearLayout>
 
 </LinearLayout>
