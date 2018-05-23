@@ -13,7 +13,7 @@
 
     <shape xmlns:android="http://schemas.android.com/apk/res/android">
         <size android:width="1px" />
-        <solid android:color="?attr/colorAccent" />
+        <solid android:color="@color/colorBlue" />
     </shape>
 
 </inset>
