@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" translatable="false">μlogger</string>
+    <string name="app_name_ascii" translatable="false">ulogger</string>
+    <string name="button_start">Iniciar</string>
+    <string name="button_stop">Detener</string>
+    <string name="button_newtrack">Nuevo registro</string>
+    <string name="button_upload">Subir</string>
+    <string name="is_running" comment="substituted app_name">%s está en ejecución</string>
+    <string name="title_newtrack">Nuevo registro</string>
+    <string name="label_track">Registro actual</string>
+    <string name="label_newtrack_name">Nombre del nuevo registro</string>
+    <string name="label_name">Nombre</string>
+    <string name="label_last_update">Última actualización: %s</string>
+    <string name="label_synchronized">Sincronizado</string>
+    <string name="cancel">Cancelar</string>
+    <string name="submit">Enviar</string>
+    <string name="ok">OK</string>
+    <string name="settings">Ajustes</string>
+    <string name="pref_username_title">Nombre de usuario</string>
+    <string name="pref_username_summary">Nombre de usuario en el servidor remoto</string>
+    <string name="pref_pass_title">Contraseña</string>
+    <string name="pref_pass_summary">Contraseña del usuario en el servidor remoto</string>
+    <string name="pref_host_title">URL del servidor</string>
+    <string name="pref_host_summary">URL base del servidor remoto</string>
+    <string name="pref_mintime_title">Tiempo mínimo</string>
+    <string name="pref_mintime_summary">Tiempo mínimo entre actualizaciones de ubicación</string>
+    <string name="pref_mintime_default" translatable="false">30</string>
+    <string name="pref_mindistance_title">Distancia mínima</string>
+    <string name="pref_mindistance_summary">Distancia mínima entre actualizaciones de ubicación</string>
+    <string name="pref_mindistance_default" translatable="false">100</string>
+    <string name="pref_minaccuracy_title">Precisión mínima</string>
+    <string name="pref_minaccuracy_summary">Precisión mínima de la posición</string>
+    <string name="pref_minaccuracy_default" translatable="false">100</string>
+    <string name="pref_livesync_title">Sincronización continua</string>
+    <string name="pref_livesync_summary">Subida continua de posiciones al servidor. Requiere un usuario, contraseña y url de servidor válidos.</string>
+    <string name="pref_livesync_default" translatable="false">false</string>
+    <string name="pref_autostart_title">Inicio automático</string>
+    <string name="pref_autostart_summary">La aplicación se iniciará al arrancar el sistema</string>
+    <string name="pref_autostart_default" translatable="false">false</string>
+    <string name="pref_provider_title">Proveedor de ubicación</string>
+    <string name="pref_provider_summary">La ubicación puede ser proporcionada por el proveedor de gps, de la red o por ambos. Usar ambos proveedores proporcionará los mejores resultados, pero un mayor consumo de batería.</string>
+    <string name="pref_units_title">Unidades</string>
+    <string name="pref_units_summary">Tipo de unidad preferido para mostrar el resumen de los registros</string>
+    <string name="pref_units_default" translatable="false">metric</string>
+    <string name="pref_units_metric">Métricas</string>
+    <string name="pref_units_imperial">Imperiales</string>
+    <string name="label_status">Estado</string>
+    <string name="label_location">Ubicación</string>
+    <string name="label_synchronization">Sincronización</string>
+    <string name="dash" translatable="false">-</string>
+    <string name="tracking_stopped">Registro parado</string>
+    <string name="tracking_started">Registro iniciado</string>
+    <string name="uploading_started">Subida iniciada</string>
+    <string name="nothing_to_synchronize">Nada para sincronizar</string>
+    <string name="no_positions">El registro actual no tiene posiciones</string>
+    <string name="warning">Alerta</string>
+    <string name="notsync_warning">El registro actual contiene posiciones no sincronizadas. Crear un nuevo registro eliminará todos estos datos.</string>
+    <string name="empty_trackname_warning">Por favor, configura un nuevo registro primero</string>
+    <string name="logger_running_warning">Por favor, para el registro actual primero</string>
+    <string name="about">Acerca de</string>
+    <string name="about_description">Aplicación de registro de ubicaciones sencilla, con soporte para registro continuo y subida de posiciones a tu propio <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>servidor μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Para más información y ayuda, por favor consulta la <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>página de μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Versión %s</string>
+    <string name="about_license">Licencia: GPL</string>
+    <string name="about_credits" translatable="false">2017 © Bartek Fabiszewski</string>
+    <string name="uploading_failed">La subida a fallado:</string>
+    <string name="uploading_done">Subida completada</string>
+    <string name="track_summary">Resumen del registro</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d posición</item>
+        <item quantity="few">%d posiciones</item>
+        <item quantity="many">%d posiciones</item>
+        <item quantity="other">%d posiciones</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">Por favor, indica una url de servidor válida</string>
+    <string name="provide_user_pass_url">Por favor, indica primero el usuario, contraseña y url del servidor</string>
+    <string name="e_illegal_redirect">Redirección ilegal: %d</string>
+    <string name="e_auth_failure">Fallo de autenticación: %d</string>
+    <string name="e_http_code">Código de error HTTP: %d</string>
+    <string name="e_server_response">Error de respuesta del servidor</string>
+    <string name="e_unknown_host">Host desconocido: %s</string>
+    <string name="e_bad_url">URL incorrecta: %s</string>
+    <string name="e_connect">Error de conexión: %s</string>
+    <string name="gps_disabled_warning">Alerta: el proveedor de gps está desactivado</string>
+    <string name="net_disabled_warning">Alerta: el proveedor de red está desactivado</string>
+    <string name="location_disabled">Debes especificar al menos un proveedor de ubicación</string>
+    <string name="location_permission_denied">Debes aceptar la solicitud de permisos de ubicación</string>
+    <string name="write_permission_denied">Debes aceptar los permisos para escribir en almacenamiento externo</string>
+    <string name="using_network">Utilizando proveedor de red</string>
+    <string name="using_gps">Utilizando proveedor gps</string>
+    <string name="export">Exportar a GPX</string>
+    <string name="nothing_to_export">No hay nada que exportar</string>
+    <string name="export_done">El registro se ha guardado correctamente en la carpeta de descargas</string>
+    <string name="export_failed">Ha fallado la exportación</string>
+    <string name="e_output_dir">Ha fallado al crear la carpeta de exportación</string>
+    <string name="e_external_not_writable">El almacenamiento externo no permite escribir en él</string>
+    <string name="unknown_track">Registro desconocido</string>
+    <string name="export_started">Exportación iniciada</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d posición pendiente</item>
+        <item quantity="few">%d posiciones pendiente</item>
+        <item quantity="many">%d posiciones pendiente</item>
+        <item quantity="other">%d posiciones pendiente</item>
+    </plurals>
+    <string name="track_server_setup_warning">Si cambias la configuración del servidor no será posible sincronizar el registro en curso.</string>
+    <string name="pref_mintime_other">Mínimo intervalo de tiempo en segundos</string>
+    <string name="pref_mindistance_other">Mínima distancia en metros</string>
+    <string name="pref_minaccuracy_other">Mínima precisión en metros</string>
+</resources>
