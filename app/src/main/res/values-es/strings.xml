@@ -38,12 +38,10 @@
     <string name="pref_livesync_summary">Subida continua de posiciones al servidor. Requiere un usuario, contraseña y url de servidor válidos.</string>
     <string name="pref_autostart_title">Inicio automático</string>
     <string name="pref_autostart_summary">La aplicación se iniciará al arrancar el sistema</string>
-    <string name="pref_autostart_default">false</string>
     <string name="pref_provider_title">Proveedor de ubicación</string>
     <string name="pref_provider_summary">La ubicación puede ser proporcionada por el proveedor de gps, de la red o por ambos. Usar ambos proveedores proporcionará los mejores resultados, pero un mayor consumo de batería.</string>
     <string name="pref_units_title">Unidades</string>
     <string name="pref_units_summary">Tipo de unidad preferido para mostrar el resumen de los registros</string>
-    <string name="pref_units_default">metric</string>
     <string name="pref_units_metric">Métricas</string>
     <string name="pref_units_imperial">Imperiales</string>
     <string name="label_status">Estado</string>
