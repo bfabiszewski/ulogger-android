@@ -7,8 +7,8 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" translatable="false">μlogger</string>
-    <string name="app_name_ascii" translatable="false">ulogger</string>
+    <string name="app_name">μlogger</string>
+    <string name="app_name_ascii">ulogger</string>
     <string name="button_start">Iniciar</string>
     <string name="button_stop">Detener</string>
     <string name="button_newtrack">Nuevo registro</string>
@@ -32,30 +32,30 @@
     <string name="pref_host_summary">URL base del servidor remoto</string>
     <string name="pref_mintime_title">Tiempo mínimo</string>
     <string name="pref_mintime_summary">Tiempo mínimo entre actualizaciones de ubicación</string>
-    <string name="pref_mintime_default" translatable="false">30</string>
+    <string name="pref_mintime_default">30</string>
     <string name="pref_mindistance_title">Distancia mínima</string>
     <string name="pref_mindistance_summary">Distancia mínima entre actualizaciones de ubicación</string>
-    <string name="pref_mindistance_default" translatable="false">100</string>
+    <string name="pref_mindistance_default">100</string>
     <string name="pref_minaccuracy_title">Precisión mínima</string>
     <string name="pref_minaccuracy_summary">Precisión mínima de la posición</string>
-    <string name="pref_minaccuracy_default" translatable="false">100</string>
+    <string name="pref_minaccuracy_default">100</string>
     <string name="pref_livesync_title">Sincronización continua</string>
     <string name="pref_livesync_summary">Subida continua de posiciones al servidor. Requiere un usuario, contraseña y url de servidor válidos.</string>
-    <string name="pref_livesync_default" translatable="false">false</string>
+    <string name="pref_livesync_default">false</string>
     <string name="pref_autostart_title">Inicio automático</string>
     <string name="pref_autostart_summary">La aplicación se iniciará al arrancar el sistema</string>
-    <string name="pref_autostart_default" translatable="false">false</string>
+    <string name="pref_autostart_default">false</string>
     <string name="pref_provider_title">Proveedor de ubicación</string>
     <string name="pref_provider_summary">La ubicación puede ser proporcionada por el proveedor de gps, de la red o por ambos. Usar ambos proveedores proporcionará los mejores resultados, pero un mayor consumo de batería.</string>
     <string name="pref_units_title">Unidades</string>
     <string name="pref_units_summary">Tipo de unidad preferido para mostrar el resumen de los registros</string>
-    <string name="pref_units_default" translatable="false">metric</string>
+    <string name="pref_units_default">metric</string>
     <string name="pref_units_metric">Métricas</string>
     <string name="pref_units_imperial">Imperiales</string>
     <string name="label_status">Estado</string>
     <string name="label_location">Ubicación</string>
     <string name="label_synchronization">Sincronización</string>
-    <string name="dash" translatable="false">-</string>
+    <string name="dash">-</string>
     <string name="tracking_stopped">Registro parado</string>
     <string name="tracking_started">Registro iniciado</string>
     <string name="uploading_started">Subida iniciada</string>
@@ -70,7 +70,7 @@
     <string name="about_description2">Para más información y ayuda, por favor consulta la <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>página de μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_version">Versión %s</string>
     <string name="about_license">Licencia: GPL</string>
-    <string name="about_credits" translatable="false">2017 © Bartek Fabiszewski</string>
+    <string name="about_credits">2017 © Bartek Fabiszewski</string>
     <string name="uploading_failed">La subida a fallado:</string>
     <string name="uploading_done">Subida completada</string>
     <string name="track_summary">Resumen del registro</string>

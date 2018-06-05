@@ -20,7 +20,7 @@
         <item>otro</item>
     </string-array>
 
-    <string-array name="minTimeValues" translatable="false">
+    <string-array name="minTimeValues">
         <item>10</item>
         <item>30</item>
         <item>60</item>
@@ -42,7 +42,7 @@
         <item>otro</item>
     </string-array>
 
-    <string-array name="minDistanceValues" translatable="false">
+    <string-array name="minDistanceValues">
         <item>0</item>
         <item>50</item>
         <item>100</item>
@@ -65,7 +65,7 @@
         <item>otro</item>
     </string-array>
 
-    <string-array name="minAccuracyValues" translatable="false">
+    <string-array name="minAccuracyValues">
         <item>10</item>
         <item>25</item>
         <item>50</item>
@@ -80,16 +80,16 @@
     <string-array name="providersEntries">
         <item>GPS</item>
         <item>Red</item>
-        <item>Red and GPS</item>
+        <item>Red y GPS</item>
     </string-array>
 
-    <string-array name="providersValues" translatable="false">
+    <string-array name="providersValues">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
-    <string-array name="unitsEntries" translatable="false">
+    <string-array name="unitsEntries">
         <item>@string/pref_units_metric</item>
         <item>@string/pref_units_imperial</item>
     </string-array>
