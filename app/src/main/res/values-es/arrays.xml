@@ -20,36 +20,14 @@
         <item>otro</item>
     </string-array>
 
-    <string-array name="minTimeValues">
-        <item>10</item>
-        <item>30</item>
-        <item>60</item>
-        <item>300</item>
-        <item>900</item>
-        <item>1800</item>
-        <item>3600</item>
-        <item>otro</item>
-    </string-array>
-
     <string-array name="minDistanceEntries">
-        <item>no minimum</item>
+        <item>sin mínimo</item>
         <item>50 m</item>
         <item>100 m</item>
         <item>250 m</item>
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
-        <item>otro</item>
-    </string-array>
-
-    <string-array name="minDistanceValues">
-        <item>0</item>
-        <item>50</item>
-        <item>100</item>
-        <item>250</item>
-        <item>500</item>
-        <item>1000</item>
-        <item>5000</item>
         <item>otro</item>
     </string-array>
 
@@ -65,32 +43,10 @@
         <item>otro</item>
     </string-array>
 
-    <string-array name="minAccuracyValues">
-        <item>10</item>
-        <item>25</item>
-        <item>50</item>
-        <item>100</item>
-        <item>250</item>
-        <item>500</item>
-        <item>1000</item>
-        <item>5000</item>
-        <item>otro</item>
-    </string-array>
-
     <string-array name="providersEntries">
         <item>GPS</item>
         <item>Red</item>
         <item>Red y GPS</item>
     </string-array>
 
-    <string-array name="providersValues">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="unitsEntries">
-        <item>@string/pref_units_metric</item>
-        <item>@string/pref_units_imperial</item>
-    </string-array>
 </resources>
