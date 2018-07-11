@@ -53,6 +53,7 @@
     <string name="pref_units_default" translatable="false">metric</string>
     <string name="pref_units_metric">Metric</string>
     <string name="pref_units_imperial">Imperial</string>
+    <string name="pref_units_nautical">Nautical</string>
     <string name="label_status">Status</string>
     <string name="label_location">Location</string>
     <string name="label_synchronization">Synchronization</string>
@@ -119,4 +120,5 @@
     <string name="pref_mintime_other">Minimum time interval in seconds</string>
     <string name="pref_mindistance_other">Minimum distance in meters</string>
     <string name="pref_minaccuracy_other">Minimum accuracy in meters</string>
+    <string name="unit_nmile">nm</string>
 </resources>

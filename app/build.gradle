@@ -16,8 +16,8 @@ android {
         applicationId "net.fabiszewski.ulogger"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 201
-        versionName "2.1"
+        versionCode 202
+        versionName "2.1.1"
     }
 
     buildTypes {
