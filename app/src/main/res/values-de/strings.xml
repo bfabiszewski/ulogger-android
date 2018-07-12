@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">μlogger</string>
     <string name="button_start">Start</string>
     <string name="button_stop">Stop</string>
     <string name="button_newtrack">Neuer Track</string>
@@ -89,4 +88,16 @@
     <string name="pref_mindistance_other">Mindestentfernung in Metern</string>
     <string name="pref_minaccuracy_other">Mindestgenauigkeit in Metern</string>
     <string name="unit_nmile">sm</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d Position</item>
+        <item quantity="few">%d Positionen</item>
+        <item quantity="many">%d Positionen</item>
+        <item quantity="other">%d Positionen</item>
+    </plurals>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d Position Rückstand</item>
+        <item quantity="few">%d Positionen Rückstand</item>
+        <item quantity="many">%d Positionen Rückstand</item>
+        <item quantity="other">%d Positionen Rückstand</item>
+    </plurals>
 </resources>
