@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean pref_liveSync;
 
     private final static double KM_MILE = 0.621371;
+    private final static double KM_NMILE = 0.5399568;
 
     private static boolean syncError = false;
     private boolean isUploading = false;
@@ -364,6 +365,10 @@ public class MainActivity extends AppCompatActivity {
         if (pref_units.equals(getString(R.string.pref_units_imperial))) {
             distance *= KM_MILE;
             unitName = getString(R.string.unit_mile);
+        }
+        else if (pref_units.equals(getString(R.string.pref_units_nautical))) {
+            distance *= KM_NMILE;
+            unitName = getString(R.string.unit_nmile);
         }
         final NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(2);
