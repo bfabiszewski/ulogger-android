@@ -105,4 +105,5 @@
         <item quantity="many">%d positions derrière</item>
         <item quantity="other">%d positions derrière</item>
     </plurals>
+    <string name="pref_units_nautical">Système nautique</string>
 </resources>
