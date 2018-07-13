@@ -110,4 +110,6 @@
     <string name="pref_mintime_other">Minimalny czas w sekundach</string>
     <string name="pref_mindistance_other">Minimalna odległość w metrach</string>
     <string name="pref_minaccuracy_other">Minimalna dokładność w metrach</string>
+    <string name="pref_units_nautical">Nawigacyjne</string>
+    <string name="unit_nmile">Mm</string>
 </resources>
