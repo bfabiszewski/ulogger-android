@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Bartek Fabiszewski
+ * Copyright (c) 2018 Bartek Fabiszewski
  * http://www.fabiszewski.net
  *
  * This file is part of μlogger-android.
@@ -9,10 +9,6 @@
 
 package net.fabiszewski.ulogger;
 
-/**
- * Turn on debug output by setting DEBUG to true
- */
-
 class Logger {
-    static final boolean DEBUG = false;
+    static final boolean DEBUG = true;
 }

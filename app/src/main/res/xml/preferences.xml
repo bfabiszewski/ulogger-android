@@ -9,7 +9,7 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ulogger="http://schemas.android.com/apk/res/net.fabiszewski.ulogger">
+    xmlns:ulogger="http://schemas.android.com/apk/res-auto">
 
     <net.fabiszewski.ulogger.TrimmedEditTextPreference
         android:key="prefUsername"

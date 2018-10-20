@@ -9,6 +9,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,7 +29,9 @@
         android:inputType="textShortMessage"
         android:text="@string/label_name"
         android:hint="@string/label_name"
-        android:ems="10" />
+        android:ems="10"
+        android:importantForAutofill="no"
+        tools:targetApi="o" />
 
     <LinearLayout
         android:orientation="horizontal"

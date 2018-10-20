@@ -128,7 +128,7 @@ public class SettingsActivity extends PreferenceActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("prefLiveSync", false);
         editor.apply();
-        if (prefLiveSync != null && prefLiveSync instanceof CheckBoxPreference) {
+        if (prefLiveSync instanceof CheckBoxPreference) {
             ((CheckBoxPreference) prefLiveSync).setChecked(false);
         }
     }

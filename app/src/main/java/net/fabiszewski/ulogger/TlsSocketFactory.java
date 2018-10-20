@@ -65,7 +65,7 @@ class TlsSocketFactory extends SSLSocketFactory {
 
         socket = factory.createSocket();
 
-        if (socket != null && socket instanceof SSLSocket) {
+        if (socket instanceof SSLSocket) {
             if (Logger.DEBUG) { Log.d(TAG, "[Preparing TLS socket]"); }
             SSLSocket sslSocket = (SSLSocket) socket;
 

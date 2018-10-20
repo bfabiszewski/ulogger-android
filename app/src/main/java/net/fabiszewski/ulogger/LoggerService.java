@@ -331,6 +331,7 @@ public class LoggerService extends Service {
      *
      * @param mId Notification Id
      */
+    @SuppressWarnings("SameParameterValue")
     private Notification showNotification(int mId) {
         if (Logger.DEBUG) { Log.d(TAG, "[showNotification " + mId + "]"); }
 
@@ -476,7 +477,7 @@ public class LoggerService extends Service {
                         statusString = "unknown";
                         break;
                 }
-                if (Logger.DEBUG) { Log.d(TAG, "[location status for " + provider + " changed: " + statusString + "]"); }
+                Log.d(TAG, "[location status for " + provider + " changed: " + statusString + "]");
             }
         }
     }

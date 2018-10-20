@@ -79,8 +79,6 @@
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
     <plurals name="summary_positions">
         <item quantity="one">%d position</item>
-        <item quantity="few">%d positions</item>
-        <item quantity="many">%d positions</item>
         <item quantity="other">%d positions</item>
     </plurals>
     <string name="summary_duration">%1$d h %2$d min</string>
@@ -112,8 +110,6 @@
     <string name="export_started">Export started</string>
     <plurals name="label_positions_behind">
         <item quantity="one">%d position behind</item>
-        <item quantity="few">%d positions behind</item>
-        <item quantity="many">%d positions behind</item>
         <item quantity="other">%d positions behind</item>
     </plurals>
     <string name="track_server_setup_warning">If you change server setup you may not be able to synchronize current track.</string>

@@ -351,12 +351,14 @@ public class MainActivity extends AppCompatActivity {
                 R.layout.summary,
                 R.drawable.ic_equalizer_white_24dp);
         final Button okButton = dialog.findViewById(R.id.summary_button_ok);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        if (okButton != null) {
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        }
         final TextView summaryDistance = dialog.findViewById(R.id.summary_distance);
         final TextView summaryDuration = dialog.findViewById(R.id.summary_duration);
         final TextView summaryPositions = dialog.findViewById(R.id.summary_positions);
@@ -373,12 +375,18 @@ public class MainActivity extends AppCompatActivity {
         final NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(2);
         final String distanceString = nf.format(distance);
-        summaryDistance.setText(getString(R.string.summary_distance, distanceString, unitName));
+        if (summaryDistance != null) {
+            summaryDistance.setText(getString(R.string.summary_distance, distanceString, unitName));
+        }
         final long h = summary.getDuration() / 3600;
         final long m = summary.getDuration() % 3600 / 60;
-        summaryDuration.setText(getString(R.string.summary_duration, h, m));
+        if (summaryDuration != null) {
+            summaryDuration.setText(getString(R.string.summary_duration, h, m));
+        }
         int positionsCount = (int) summary.getPositionsCount();
-        summaryPositions.setText(getResources().getQuantityString(R.plurals.summary_positions, positionsCount, positionsCount));
+        if (summaryPositions != null) {
+            summaryPositions.setText(getResources().getQuantityString(R.plurals.summary_positions, positionsCount, positionsCount));
+        }
     }
 
     /**
@@ -409,23 +417,29 @@ public class MainActivity extends AppCompatActivity {
                 R.layout.about,
                 R.drawable.ic_ulogger_logo_24dp);
         final TextView versionLabel = dialog.findViewById(R.id.about_version);
-        versionLabel.setText(getString(R.string.about_version, BuildConfig.VERSION_NAME));
+        if (versionLabel != null) {
+            versionLabel.setText(getString(R.string.about_version, BuildConfig.VERSION_NAME));
+        }
         final TextView descriptionLabel = dialog.findViewById(R.id.about_description);
         final TextView description2Label = dialog.findViewById(R.id.about_description2);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            descriptionLabel.setText(fromHtmlDepreciated(getString(R.string.about_description)));
-            description2Label.setText(fromHtmlDepreciated(getString(R.string.about_description2)));
-        } else {
-            descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description), android.text.Html.FROM_HTML_MODE_LEGACY));
-            description2Label.setText(Html.fromHtml(getString(R.string.about_description2), android.text.Html.FROM_HTML_MODE_LEGACY));
+        if (descriptionLabel != null && description2Label != null) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                descriptionLabel.setText(fromHtmlDepreciated(getString(R.string.about_description)));
+                description2Label.setText(fromHtmlDepreciated(getString(R.string.about_description2)));
+            } else {
+                descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description), android.text.Html.FROM_HTML_MODE_LEGACY));
+                description2Label.setText(Html.fromHtml(getString(R.string.about_description2), android.text.Html.FROM_HTML_MODE_LEGACY));
+            }
         }
         final Button okButton = dialog.findViewById(R.id.about_button_ok);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        if (okButton != null) {
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 
     /**
@@ -469,6 +483,9 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.title_newtrack),
                 R.layout.newtrack_dialog);
         final EditText editText = dialog.findViewById(R.id.newtrack_edittext);
+        if (editText == null) {
+            return;
+        }
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
         final String dateSuffix = sdf.format(Calendar.getInstance().getTime());
@@ -482,28 +499,32 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final Button submit = dialog.findViewById(R.id.newtrack_button_submit);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String trackName = editText.getText().toString();
-                if (trackName.length() == 0) {
-                    return;
+        if (submit != null) {
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String trackName = editText.getText().toString();
+                    if (trackName.length() == 0) {
+                        return;
+                    }
+                    db.newTrack(trackName);
+                    LoggerService.resetUpdateRealtime();
+                    updateTrackLabel(trackName);
+                    updateStatus();
+                    dialog.cancel();
                 }
-                db.newTrack(trackName);
-                LoggerService.resetUpdateRealtime();
-                updateTrackLabel(trackName);
-                updateStatus();
-                dialog.cancel();
-            }
-        });
+            });
+        }
 
         final Button cancel = dialog.findViewById(R.id.newtrack_button_cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
+        if (cancel != null) {
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+        }
     }
 
     /**

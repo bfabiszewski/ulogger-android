@@ -67,9 +67,6 @@
     <string name="track_summary">トラックサマリー</string>
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
     <plurals name="summary_positions" tools:ignore="UnusedQuantity">
-        <item quantity="one">%d 場所</item>
-        <item quantity="few">%d 場所</item>
-        <item quantity="many">%d 場所</item>
         <item quantity="other">%d 場所</item>
     </plurals>
     <string name="summary_duration">%1$d 時間 %2$d 分</string>
@@ -100,9 +97,6 @@
     <string name="unknown_track">不明なトラック</string>
     <string name="export_started">エクスポートが開始しました</string>
     <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
-        <item quantity="one">%d 場所残り</item>
-        <item quantity="few">%d 場所残り</item>
-        <item quantity="many">%d 場所残り</item>
         <item quantity="other">%d 場所残り</item>
     </plurals>
 </resources>

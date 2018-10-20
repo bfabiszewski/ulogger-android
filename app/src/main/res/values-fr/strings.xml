@@ -68,8 +68,6 @@
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
     <plurals name="summary_positions" tools:ignore="UnusedQuantity">
         <item quantity="one">%d position</item>
-        <item quantity="few">%d positions</item>
-        <item quantity="many">%d positions</item>
         <item quantity="other">%d positions</item>
     </plurals>
     <string name="summary_duration">%1$d h %2$d min</string>
@@ -101,8 +99,6 @@
     <string name="export_started">Export débuté</string>
     <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
         <item quantity="one">%d position derrière</item>
-        <item quantity="few">%d positions derrière</item>
-        <item quantity="many">%d positions derrière</item>
         <item quantity="other">%d positions derrière</item>
     </plurals>
     <string name="pref_units_nautical">Système nautique</string>

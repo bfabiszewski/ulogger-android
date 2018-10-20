@@ -6,7 +6,7 @@
   ~ Licensed under GPL, either version 3, or any later.
   ~ See <http://www.gnu.org/licenses/>
   -->
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="button_start">Iniciar</string>
     <string name="button_stop">Detener</string>
     <string name="button_newtrack">Nuevo registro</string>
