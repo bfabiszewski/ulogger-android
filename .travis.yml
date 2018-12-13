@@ -3,11 +3,11 @@ jdk: oraclejdk8
 android:
   components:
     - tools
-    - build-tools-27.0.3
+    - build-tools-28.0.3
     - platform-tools
     - extra-android-m2repository
     - extra-google-android-support
-    - android-27
+    - android-28
 script:
   - ./gradlew build 
 after_failure:
