@@ -136,13 +136,13 @@ public class LoggerService extends Service {
         final boolean prefsUpdated = (intent != null) && intent.getBooleanExtra(MainActivity.UPDATED_PREFS, false);
         if (prefsUpdated) {
             handlePrefsUpdated();
-        } else if (isRunning) {
-            // first start
+        } else {
             final Notification notification = showNotification(NOTIFICATION_ID);
             startForeground(NOTIFICATION_ID, notification);
-        } else {
-            // onCreate failed to start updates
-            stopSelf();
+            if (!isRunning) {
+                // onCreate failed to start updates
+                stopSelf();
+            }
         }
 
         return START_STICKY;

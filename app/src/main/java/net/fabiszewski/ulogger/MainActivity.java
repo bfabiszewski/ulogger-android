@@ -486,11 +486,7 @@ public class MainActivity extends AppCompatActivity {
         if (editText == null) {
             return;
         }
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.getDefault());
-        sdf.setTimeZone(TimeZone.getDefault());
-        final String dateSuffix = sdf.format(Calendar.getInstance().getTime());
-        final String autoName = "Auto_" + dateSuffix;
-        editText.setText(autoName);
+        editText.setText(DbAccess.getAutoTrackName());
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

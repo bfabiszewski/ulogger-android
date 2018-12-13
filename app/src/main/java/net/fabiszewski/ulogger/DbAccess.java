@@ -15,10 +15,12 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -289,6 +291,19 @@ class DbAccess {
     }
 
     /**
+     * Get auto-generated track name (Auto_[yyyy.MM.dd_HH.mm.ss]).
+     *
+     * @return Track name
+     */
+    @NonNull
+    static String getAutoTrackName() {
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getDefault());
+        final String dateSuffix = sdf.format(Calendar.getInstance().getTime());
+        return "Auto_" + dateSuffix;
+    }
+
+    /**
      * Update current track, set id.
      *
      * @param id New track id
@@ -313,6 +328,14 @@ class DbAccess {
         ContentValues values = new ContentValues();
         values.put(DbContract.Track.COLUMN_NAME, name);
         db.insert(DbContract.Track.TABLE_NAME, null, values);
+    }
+
+    /**
+     * Start new track with auto-generated name.
+     * @see DbAccess#newTrack(String)
+     */
+    void newAutoTrack() {
+        newTrack(getAutoTrackName());
     }
 
     /**

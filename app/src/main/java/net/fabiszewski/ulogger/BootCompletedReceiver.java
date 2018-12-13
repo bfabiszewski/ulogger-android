@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 
 /**
  * Receiver for boot completed broadcast
@@ -34,8 +35,14 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean autoStart = prefs.getBoolean("prefAutoStart", false);
         if (autoStart && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            DbAccess db = DbAccess.getInstance();
+            db.open(context);
+            if (db.getTrackName() == null) {
+                db.newAutoTrack();
+            }
+            db.close();
             Intent i = new Intent(context, LoggerService.class);
-            context.startService(i);
+            ContextCompat.startForegroundService(context, i);
         }
     }
 }
