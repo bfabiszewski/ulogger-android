@@ -14,7 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Receiver for boot completed broadcast
@@ -33,7 +34,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean autoStart = prefs.getBoolean("prefAutoStart", false);
+        boolean autoStart = prefs.getBoolean(SettingsActivity.KEY_AUTO_START, false);
         if (autoStart && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             DbAccess db = DbAccess.getInstance();
             db.open(context);

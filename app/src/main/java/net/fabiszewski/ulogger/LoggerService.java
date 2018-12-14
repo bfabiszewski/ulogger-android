@@ -29,11 +29,12 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
 
 import static android.location.LocationProvider.AVAILABLE;
 import static android.location.LocationProvider.OUT_OF_SERVICE;
@@ -183,12 +184,12 @@ public class LoggerService extends Service {
      */
     private void updatePreferences() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        minTimeMillis = Long.parseLong(prefs.getString("prefMinTime", getString(R.string.pref_mintime_default))) * 1000;
-        minDistance = Float.parseFloat(prefs.getString("prefMinDistance", getString(R.string.pref_mindistance_default)));
-        maxAccuracy = Integer.parseInt(prefs.getString("prefMinAccuracy", getString(R.string.pref_minaccuracy_default)));
-        useGps = prefs.getBoolean("prefUseGps", providerExists(LocationManager.GPS_PROVIDER));
-        useNet = prefs.getBoolean("prefUseNet", providerExists(LocationManager.NETWORK_PROVIDER));
-        liveSync = prefs.getBoolean("prefLiveSync", false);
+        minTimeMillis = Long.parseLong(prefs.getString(SettingsActivity.KEY_MIN_TIME, getString(R.string.pref_mintime_default))) * 1000;
+        minDistance = Float.parseFloat(prefs.getString(SettingsActivity.KEY_MIN_DISTANCE, getString(R.string.pref_mindistance_default)));
+        maxAccuracy = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_ACCURACY, getString(R.string.pref_minaccuracy_default)));
+        useGps = prefs.getBoolean(SettingsActivity.KEY_USE_GPS, providerExists(LocationManager.GPS_PROVIDER));
+        useNet = prefs.getBoolean(SettingsActivity.KEY_USE_NET, providerExists(LocationManager.NETWORK_PROVIDER));
+        liveSync = prefs.getBoolean(SettingsActivity.KEY_LIVE_SYNC, false);
     }
 
     /**
@@ -212,7 +213,6 @@ public class LoggerService extends Service {
         boolean hasLocationUpdates = false;
         if (canAccessLocation()) {
             if (useNet) {
-                //noinspection MissingPermission
                 locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTimeMillis, minDistance, locListener, looper);
                 if (locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                     hasLocationUpdates = true;
@@ -220,7 +220,6 @@ public class LoggerService extends Service {
                 }
             }
             if (useGps) {
-                //noinspection MissingPermission
                 locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTimeMillis, minDistance, locListener, looper);
                 if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     hasLocationUpdates = true;
@@ -249,7 +248,6 @@ public class LoggerService extends Service {
         if (Logger.DEBUG) { Log.d(TAG, "[onDestroy]"); }
 
         if (canAccessLocation()) {
-            //noinspection MissingPermission
             locManager.removeUpdates(locListener);
         }
         if (db != null) {

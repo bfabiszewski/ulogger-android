@@ -10,7 +10,6 @@
 package net.fabiszewski.ulogger;
 
 import android.Manifest;
-import android.support.v7.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,16 +19,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +30,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.text.HtmlCompat;
+import androidx.core.widget.TextViewCompat;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -252,9 +253,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void updatePreferences() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        pref_units = prefs.getString("prefUnits", getString(R.string.pref_units_default));
-        pref_minTimeMillis = Long.parseLong(prefs.getString("prefMinTime", getString(R.string.pref_mintime_default))) * 1000;
-        pref_liveSync = prefs.getBoolean("prefLiveSync", false);
+        pref_units = prefs.getString(SettingsActivity.KEY_UNITS, getString(R.string.pref_units_default));
+        pref_minTimeMillis = Long.parseLong(prefs.getString(SettingsActivity.KEY_MIN_TIME, getString(R.string.pref_mintime_default))) * 1000;
+        pref_liveSync = prefs.getBoolean(SettingsActivity.KEY_LIVE_SYNC, false);
     }
 
     /**
@@ -323,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view View
      */
     public void uploadData(@SuppressWarnings("UnusedParameters") View view) {
-        if (!SettingsActivity.isValidServerSetup(this)) {
+        if (!SettingsFragment.isValidServerSetup(this)) {
             showToast(getString(R.string.provide_user_pass_url), Toast.LENGTH_LONG);
         } else if (db.needsSync()) {
             Intent syncIntent = new Intent(MainActivity.this, WebSyncService.class);
@@ -423,13 +424,8 @@ public class MainActivity extends AppCompatActivity {
         final TextView descriptionLabel = dialog.findViewById(R.id.about_description);
         final TextView description2Label = dialog.findViewById(R.id.about_description2);
         if (descriptionLabel != null && description2Label != null) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                descriptionLabel.setText(fromHtmlDepreciated(getString(R.string.about_description)));
-                description2Label.setText(fromHtmlDepreciated(getString(R.string.about_description2)));
-            } else {
-                descriptionLabel.setText(Html.fromHtml(getString(R.string.about_description), android.text.Html.FROM_HTML_MODE_LEGACY));
-                description2Label.setText(Html.fromHtml(getString(R.string.about_description2), android.text.Html.FROM_HTML_MODE_LEGACY));
-            }
+            descriptionLabel.setText(HtmlCompat.fromHtml(getString(R.string.about_description), HtmlCompat.FROM_HTML_MODE_LEGACY));
+            description2Label.setText(HtmlCompat.fromHtml(getString(R.string.about_description2), HtmlCompat.FROM_HTML_MODE_LEGACY));
         }
         final Button okButton = dialog.findViewById(R.id.about_button_ok);
         if (okButton != null) {
@@ -440,16 +436,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    /**
-     * Depreciated fromHtml method for build version < 24
-     * @param text Message text
-     * @return Text with parsed html
-     */
-    @SuppressWarnings("deprecation")
-    private static CharSequence fromHtmlDepreciated(String text) {
-        return Html.fromHtml(text);
     }
 
     /**
@@ -621,12 +607,7 @@ public class MainActivity extends AppCompatActivity {
      * @param color Color (red, yellow or green)
      */
     private void setLedColor(TextView led, int color) {
-        Drawable l;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            l = led.getCompoundDrawables()[0];
-        } else {
-            l = led.getCompoundDrawablesRelative()[0];
-        }
+        Drawable l = TextViewCompat.getCompoundDrawablesRelative(led)[0];
         switch (color) {
             case LED_RED:
                 l.setColorFilter(ContextCompat.getColor(this, R.color.colorRed), PorterDuff.Mode.SRC_ATOP);

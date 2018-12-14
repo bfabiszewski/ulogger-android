@@ -94,9 +94,9 @@ class WebHelper {
     WebHelper(Context ctx) {
         context = ctx;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        user = prefs.getString("prefUsername", "NULL");
-        pass = prefs.getString("prefPass", "NULL");
-        host = prefs.getString("prefHost", "NULL").replaceAll("/+$", "");
+        user = prefs.getString(SettingsActivity.KEY_USERNAME, "NULL");
+        pass = prefs.getString(SettingsActivity.KEY_PASS, "NULL");
+        host = prefs.getString(SettingsActivity.KEY_HOST, "NULL").replaceAll("/+$", "");
         userAgent = context.getString(R.string.app_name_ascii) + "/" + BuildConfig.VERSION_NAME + "; " + System.getProperty("http.agent");
 
         if (cookieManager == null) {

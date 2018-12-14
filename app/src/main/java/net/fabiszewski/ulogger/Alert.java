@@ -11,10 +11,11 @@ package net.fabiszewski.ulogger;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
 
 class Alert {
 
@@ -77,9 +78,9 @@ class Alert {
      * @param iconResource Icon resource id
      * @return AlertDialog Dialog
      */
-    static AlertDialog showAlert(Context context, CharSequence title, int layoutResource, int iconResource) {
+    static AlertDialog showAlert(Activity context, CharSequence title, int layoutResource, int iconResource) {
         @SuppressLint("InflateParams")
-        View view = ((Activity) context).getLayoutInflater().inflate(layoutResource, null, false);
+        View view = context.getLayoutInflater().inflate(layoutResource, null, false);
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle(title);
         alertDialog.setView(view);
@@ -97,7 +98,7 @@ class Alert {
      * @param layoutResource Layout resource id
      * @return AlertDialog Dialog
      */
-    static AlertDialog showAlert(Context context, CharSequence title, int layoutResource) {
+    static AlertDialog showAlert(Activity context, CharSequence title, int layoutResource) {
         return showAlert(context, title, layoutResource, 0);
     }
 }

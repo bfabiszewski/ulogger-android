@@ -8,70 +8,85 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ulogger="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ulogger="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <net.fabiszewski.ulogger.TrimmedEditTextPreference
-        android:key="prefUsername"
-        android:title="@string/pref_username_title"
-        android:summary="@string/pref_username_summary"
-        android:inputType="textVisiblePassword|textNoSuggestions" />
-    <EditTextPreference
-        android:key="prefPass"
-        android:title="@string/pref_pass_title"
-        android:summary="@string/pref_pass_summary"
-        android:inputType="textPassword" />
-    <net.fabiszewski.ulogger.UrlEditTextPreference
-        android:key="prefHost"
-        android:title="@string/pref_host_title"
-        android:summary="@string/pref_host_summary"
-        android:inputType="textUri"
-        android:hint="https://www.example.com"/>
-    <net.fabiszewski.ulogger.ListPreferenceWithEditText
-        android:key="prefMinTime"
-        android:title="@string/pref_mintime_title"
-        android:summary="@string/pref_mintime_summary"
-        android:entries="@array/minTimeEntries"
-        android:entryValues="@array/minTimeValues"
-        android:defaultValue="@string/pref_mintime_default"
-        ulogger:otherSummary="@string/pref_mintime_other" />
-    <net.fabiszewski.ulogger.ListPreferenceWithEditText
-        android:key="prefMinDistance"
-        android:title="@string/pref_mindistance_title"
-        android:summary="@string/pref_mindistance_summary"
-        android:entries="@array/minDistanceEntries"
-        android:entryValues="@array/minDistanceValues"
-        android:defaultValue="@string/pref_mindistance_default"
-        ulogger:otherSummary="@string/pref_mindistance_other" />
-    <net.fabiszewski.ulogger.ListPreferenceWithEditText
-        android:key="prefMinAccuracy"
-        android:title="@string/pref_minaccuracy_title"
-        android:summary="@string/pref_minaccuracy_summary"
-        android:entries="@array/minAccuracyEntries"
-        android:entryValues="@array/minAccuracyValues"
-        android:defaultValue="@string/pref_minaccuracy_default"
-        ulogger:otherSummary="@string/pref_minaccuracy_other" />
-    <CheckBoxPreference
-        android:key="prefLiveSync"
-        android:title="@string/pref_livesync_title"
-        android:summary="@string/pref_livesync_summary"
-        android:defaultValue="@string/pref_livesync_default" />
-    <CheckBoxPreference
-        android:key="prefAutoStart"
-        android:title="@string/pref_autostart_title"
-        android:summary="@string/pref_autostart_summary"
-        android:defaultValue="@string/pref_autostart_default" />
-    <net.fabiszewski.ulogger.ProviderPreference
-        android:key="prefProvider"
-        android:title="@string/pref_provider_title"
-        android:summary="@string/pref_provider_summary"
-        android:entries="@array/providersEntries"
-        android:entryValues="@array/providersValues" />
-    <ListPreference
-        android:key="prefUnits"
-        android:title="@string/pref_units_title"
-        android:summary="@string/pref_units_summary"
-        android:entries="@array/unitsEntries"
-        android:entryValues="@array/unitsEntries"
-        android:defaultValue="@string/pref_units_metric" />
-</PreferenceScreen>
+    <PreferenceCategory>
+        <net.fabiszewski.ulogger.TrimmedEditTextPreference
+            android:key="prefUsername"
+            android:title="@string/pref_username_title"
+            android:dialogMessage="@string/pref_username_summary"
+            app:useSimpleSummaryProvider="true" />
+        <net.fabiszewski.ulogger.PasswordPreference
+            android:key="prefPass"
+            android:title="@string/pref_pass_title"
+            android:dialogMessage="@string/pref_pass_summary"
+            app:useSimpleSummaryProvider="true" />
+        <net.fabiszewski.ulogger.TrimmedEditTextPreference
+            android:key="prefHost"
+            android:title="@string/pref_host_title"
+            android:dialogMessage="@string/pref_host_summary"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+        <net.fabiszewski.ulogger.ListWithEditTextPreference
+            android:key="prefMinTime"
+            android:title="@string/pref_mintime_title"
+            android:dialogMessage="@string/pref_mintime_summary"
+            android:entries="@array/minTimeEntries"
+            android:entryValues="@array/minTimeValues"
+            android:defaultValue="@string/pref_mintime_default"
+            ulogger:otherSummary="@string/pref_mintime_other"
+            app:useSimpleSummaryProvider="true" />
+        <net.fabiszewski.ulogger.ListWithEditTextPreference
+            android:key="prefMinDistance"
+            android:title="@string/pref_mindistance_title"
+            android:dialogMessage="@string/pref_mindistance_summary"
+            android:entries="@array/minDistanceEntries"
+            android:entryValues="@array/minDistanceValues"
+            android:defaultValue="@string/pref_mindistance_default"
+            ulogger:otherSummary="@string/pref_mindistance_other"
+            app:useSimpleSummaryProvider="true" />
+        <net.fabiszewski.ulogger.ListWithEditTextPreference
+            android:key="prefMinAccuracy"
+            android:title="@string/pref_minaccuracy_title"
+            android:dialogMessage="@string/pref_minaccuracy_summary"
+            android:entries="@array/minAccuracyEntries"
+            android:entryValues="@array/minAccuracyValues"
+            android:defaultValue="@string/pref_minaccuracy_default"
+            ulogger:otherSummary="@string/pref_minaccuracy_other"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            android:key="prefLiveSync"
+            android:title="@string/pref_livesync_title"
+            android:summary="@string/pref_livesync_summary"
+            android:defaultValue="@string/pref_livesync_default" />
+        <ListPreference
+            android:key="prefProvider"
+            android:title="@string/pref_provider_title"
+            android:dialogMessage="@string/pref_provider_summary"
+            android:entries="@array/providersEntries"
+            android:entryValues="@array/providersValues"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+        <SwitchPreferenceCompat
+            android:key="prefAutoStart"
+            android:title="@string/pref_autostart_title"
+            android:summary="@string/pref_autostart_summary"
+            android:defaultValue="@string/pref_autostart_default" />
+
+        <ListPreference
+            android:key="prefUnits"
+            android:title="@string/pref_units_title"
+            android:dialogMessage="@string/pref_units_summary"
+            android:entries="@array/unitsEntries"
+            android:entryValues="@array/unitsEntries"
+            android:defaultValue="@string/pref_units_metric"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

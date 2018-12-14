@@ -10,10 +10,9 @@
 package net.fabiszewski.ulogger;
 
 import android.content.Context;
-import android.os.Build;
-import android.preference.EditTextPreference;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+
+import androidx.preference.EditTextPreference;
 
 /**
  * Trimmed edit text preference
@@ -22,7 +21,6 @@ import android.util.AttributeSet;
 
 class TrimmedEditTextPreference extends EditTextPreference {
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public TrimmedEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }

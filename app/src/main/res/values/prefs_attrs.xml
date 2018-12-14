@@ -10,7 +10,7 @@
 
 <resources>
 
-    <declare-styleable name="ListPreferenceWithEditText">
+    <declare-styleable name="ListWithEditTextPreference">
         <attr name="otherSummary" format="string" />
     </declare-styleable>
 

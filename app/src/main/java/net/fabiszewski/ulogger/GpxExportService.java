@@ -15,10 +15,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.Xml;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import org.xmlpull.v1.XmlSerializer;
 
