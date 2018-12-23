@@ -341,6 +341,8 @@ public class LoggerService extends Service {
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_stat_notify_24dp)
                         .setContentTitle(getString(R.string.app_name))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_SERVICE)
                         .setContentText(String.format(getString(R.string.is_running), getString(R.string.app_name)));
         Intent resultIntent = new Intent(this, MainActivity.class);
 
