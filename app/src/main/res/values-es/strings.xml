@@ -106,4 +106,7 @@
     <string name="pref_minaccuracy_other">Mínima precisión en metros</string>
     <string name="pref_units_nautical">Náuticas</string>
     <string name="unit_nmile">nm</string>
+    <string name="pref_cat_other">Otros</string>
+    <string name="pref_cat_server">Servidor</string>
+    <string name="pref_cat_location">Seguimento de ubicación</string>
 </resources>

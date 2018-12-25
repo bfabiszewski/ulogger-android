@@ -102,4 +102,12 @@
         <item quantity="other">%d positions derrière</item>
     </plurals>
     <string name="pref_units_nautical">Système nautique</string>
+    <string name="pref_cat_other">Autres</string>
+    <string name="pref_cat_server">Serveur</string>
+    <string name="pref_cat_location">Suivi de localisation</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_mintime_other">Intervalle de temps minimum en secondes</string>
+    <string name="pref_mindistance_other">Distance minimum en mètres</string>
+    <string name="pref_minaccuracy_other">Précision minimum en mètres</string>
+    <string name="track_server_setup_warning">Si vous modifiez la configuration du serveur, vous ne pourrez peut-être pas synchroniser la piste en cours.</string>
 </resources>

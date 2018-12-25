@@ -117,4 +117,7 @@
     <string name="pref_mindistance_other">Minimum distance in meters</string>
     <string name="pref_minaccuracy_other">Minimum accuracy in meters</string>
     <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">Tracking</string>
+    <string name="pref_cat_server">Server</string>
+    <string name="pref_cat_other">Other</string>
 </resources>

@@ -112,4 +112,7 @@
     <string name="pref_minaccuracy_other">Minimalna dokładność w metrach</string>
     <string name="pref_units_nautical">Nawigacyjne</string>
     <string name="unit_nmile">Mm</string>
+    <string name="pref_cat_server">Serwer</string>
+    <string name="pref_cat_other">Inne</string>
+    <string name="pref_cat_location">Śledzenie pozycji</string>
 </resources>

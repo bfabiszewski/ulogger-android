@@ -96,4 +96,10 @@
         <item quantity="one">%d Position Rückstand</item>
         <item quantity="other">%d Positionen Rückstand</item>
     </plurals>
+    <string name="pref_cat_server">Server</string>
+    <string name="pref_cat_other">Andere</string>
+    <string name="pref_cat_location">Positionsverfolgung</string>
+    <string name="summary_distance">%1$s %2$s</string>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="about_license">License: GPL</string>
 </resources>
