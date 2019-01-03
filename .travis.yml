@@ -16,7 +16,7 @@ after_success:
       pip install --user virtualenv
       virtualenv ~/env
       source ~/env/bin/activate
-      pip install --user transifex-client
+      pip install transifex-client
       echo -e "[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = api\npassword = ${TRANSIFEX_PASSWORD}\n" > ~/.transifexrc
       tx push -s --no-interactive
     fi
