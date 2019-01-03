@@ -1,0 +1,16 @@
+[main]
+host = https://www.transifex.com
+
+[ulogger-android.strings-xml]
+file_filter = ./app/src/main/res/values-<lang>/strings.xml
+minimum_perc = 0
+source_file = ./app/src/main/res/values/strings.xml
+source_lang = en
+type = ANDROID
+
+[ulogger-android.arrays-xml]
+file_filter = ./app/src/main/res/values-<lang>/arrays.xml
+minimum_perc = 0
+source_file = ./app/src/main/res/values/arrays.xml
+source_lang = en
+type = ANDROID

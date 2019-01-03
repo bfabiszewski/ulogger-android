@@ -9,7 +9,14 @@ android:
     - extra-google-android-support
     - android-28
 script:
-  - ./gradlew build 
+  - ./gradlew build
+after_success:
+  - |
+    if [ ! -z "$TRANSIFEX_PASSWORD" ]; then
+      pip install --user transifex-client
+      echo -e "[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = api\npassword = ${TRANSIFEX_PASSWORD}\n" > ~/.transifexrc
+      tx push -s --no-interactive
+    fi
 after_failure:
   - cat app/build/reports/checkstyle.html
   - cat app/build/reports/lint-results.xml

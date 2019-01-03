@@ -31,10 +31,22 @@
         <item>sonstiges</item>
     </string-array>
 
+    <string-array name="minAccuracyEntries">
+        <item>10 m</item>
+        <item>25 m</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+        <item>other</item>
+    </string-array>
+
     <string-array name="providersEntries">
         <item>GPS</item>
         <item>Netzwerk</item>
         <item>Netzwerk und GPS</item>
     </string-array>
 
-</resources>
+    </resources>

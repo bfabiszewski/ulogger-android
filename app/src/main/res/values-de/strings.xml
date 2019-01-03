@@ -1,10 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="button_start">Start</string>
     <string name="button_stop">Stop</string>
     <string name="button_newtrack">Neuer Track</string>
     <string name="button_upload">Upload</string>
-    <string name="is_running">%s läuft</string>
+    <string name="is_running" comment="substituted app_name">%s läuft</string>
     <string name="title_newtrack">Neuer Track</string>
     <string name="label_track">Aktueller Track</string>
     <string name="label_newtrack_name">Track-Name</string>
@@ -36,8 +44,8 @@
     <string name="pref_units_title">Einheiten</string>
     <string name="pref_units_summary">Bevorzeigte Einheiten für die Anzeige der Zusammenfassung.</string>
     <string name="pref_units_metric">Metrisch</string>
-    <string name="pref_units_nautical">Nautisch</string>
     <string name="pref_units_imperial">US-Meilen</string>
+    <string name="pref_units_nautical">Nautisch</string>
     <string name="label_status">Status</string>
     <string name="label_location">Position</string>
     <string name="label_synchronization">Synchronisation</string>
@@ -54,9 +62,16 @@
     <string name="about_description">Einfacher Positionslogger mit Live-Tracking und Live-Synchronisationsfunktion auf eigenen <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger Server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_description2">Mehr Information und Hilfe gibt es auf der <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>μlogger-Homepage<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_version">Version %s</string>
+    <string name="about_license">License: GPL</string>
     <string name="uploading_failed">Upload fehlgeschlagen:</string>
     <string name="uploading_done">Upload erfolgreich</string>
     <string name="track_summary">Track-Zusammenfassung</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d Position</item>
+        <item quantity="other">%d Positionen</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d min</string>
     <string name="unit_kilometer">km</string>
     <string name="unit_mile">mi</string>
     <string name="provide_valid_url">Bitte gültige Server-URL angeben</string>
@@ -83,23 +98,16 @@
     <string name="e_external_not_writable">Schreiben auf externen Speicher nicht möglich</string>
     <string name="unknown_track">Unbekannter Track</string>
     <string name="export_started">Export gestartet</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d Position Rückstand</item>
+        <item quantity="other">%d Positionen Rückstand</item>
+    </plurals>
     <string name="track_server_setup_warning">Wenn das Server-Setup verändert wird, funktioniert die aktuelle Synchronisation u.U. nicht mehr.</string>
     <string name="pref_mintime_other">Mindester Zeitabstand in Sekunden</string>
     <string name="pref_mindistance_other">Mindestentfernung in Metern</string>
     <string name="pref_minaccuracy_other">Mindestgenauigkeit in Metern</string>
     <string name="unit_nmile">sm</string>
-    <plurals name="summary_positions">
-        <item quantity="one">%d Position</item>
-        <item quantity="other">%d Positionen</item>
-    </plurals>
-    <plurals name="label_positions_behind">
-        <item quantity="one">%d Position Rückstand</item>
-        <item quantity="other">%d Positionen Rückstand</item>
-    </plurals>
+    <string name="pref_cat_location">Positionsverfolgung</string>
     <string name="pref_cat_server">Server</string>
     <string name="pref_cat_other">Andere</string>
-    <string name="pref_cat_location">Positionsverfolgung</string>
-    <string name="summary_distance">%1$s %2$s</string>
-    <string name="summary_duration">%1$d h %2$d min</string>
-    <string name="about_license">License: GPL</string>
 </resources>

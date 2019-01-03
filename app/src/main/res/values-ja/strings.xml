@@ -7,7 +7,7 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="button_start">開始</string>
     <string name="button_stop">停止</string>
     <string name="button_newtrack">新しいトラック</string>
@@ -45,6 +45,7 @@
     <string name="pref_units_summary">トラックサマリーを表示するために優先する単位</string>
     <string name="pref_units_metric">メートル</string>
     <string name="pref_units_imperial">ヤード</string>
+    <string name="pref_units_nautical">航海ユニット</string>
     <string name="label_status">ステータス</string>
     <string name="label_location">位置</string>
     <string name="label_synchronization">同期</string>
@@ -66,7 +67,7 @@
     <string name="uploading_done">アップロード完了</string>
     <string name="track_summary">トラックサマリー</string>
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
-    <plurals name="summary_positions" tools:ignore="UnusedQuantity">
+    <plurals name="summary_positions">
         <item quantity="other">%d 場所</item>
     </plurals>
     <string name="summary_duration">%1$d 時間 %2$d 分</string>
@@ -96,16 +97,15 @@
     <string name="e_external_not_writable">外部ストレージに書き込みできません</string>
     <string name="unknown_track">不明なトラック</string>
     <string name="export_started">エクスポートが開始しました</string>
-    <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
+    <plurals name="label_positions_behind">
         <item quantity="other">%d 場所残り</item>
     </plurals>
-    <string name="pref_cat_server">サーバ</string>
-    <string name="pref_cat_other">その他の</string>
-    <string name="pref_cat_location">位置追跡</string>
-    <string name="pref_units_nautical">航海ユニット</string>
-    <string name="unit_nmile">nm</string>
     <string name="track_server_setup_warning">サーバーの設定を変更すると、現在のトラックを同期できなくなる可能性があります。</string>
     <string name="pref_mintime_other">"秒単位の最小時間間隔 "</string>
     <string name="pref_mindistance_other">メートル単位の最小距離</string>
     <string name="pref_minaccuracy_other">メートル単位の最小精度</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">位置追跡</string>
+    <string name="pref_cat_server">サーバ</string>
+    <string name="pref_cat_other">その他の</string>
 </resources>

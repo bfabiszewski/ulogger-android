@@ -34,5 +34,8 @@ led | tracking | synchronization
 
 - clicking on current track's name will show track statistics
 
+## Translations
+- translations may be contributed via [Transifex](https://www.transifex.com/bfabiszewski/ulogger-android/).
+
 ## License
 - GPL, either version 3 or any later
