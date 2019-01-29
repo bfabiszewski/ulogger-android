@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 
 class PasswordPreference extends EditTextPreference implements EditTextPreference.OnBindEditTextListener {
@@ -52,7 +53,12 @@ class PasswordPreference extends EditTextPreference implements EditTextPreferenc
         return super.getSummary();
     }
 
-    private String getMaskedText(String text) {
+    /**
+     * Get string with each letter substituted by asterisk
+     * @param text Input string
+     * @return Masked string
+     */
+    private static String getMaskedText(String text) {
         return new String(new char[text.length()]).replace("\0", "*");
     }
 
@@ -65,5 +71,19 @@ class PasswordPreference extends EditTextPreference implements EditTextPreferenc
     @Override
     public void onBindEditText(@NonNull EditText editText) {
         editText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    }
+
+    /**
+     * Returns the {@link OnBindEditTextListener} used to configure the {@link EditText}
+     * displayed in the corresponding dialog view for this preference.
+     *
+     * @return The {@link OnBindEditTextListener} set for this preference, or {@code null} if
+     * there is no OnBindEditTextListener set
+     * @see OnBindEditTextListener
+     */
+    @Nullable
+    @Override
+    public OnBindEditTextListener getOnBindEditTextListener() {
+        return this;
     }
 }
