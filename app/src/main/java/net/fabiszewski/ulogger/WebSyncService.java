@@ -105,13 +105,17 @@ public class WebSyncService extends IntentService {
     /**
      * Get track id
      * If the track hasn't been registered on server yet,
-     * get set up new track on the server and get new id
+     * set up new track on the server and get new id
      * @return Track id
      */
     private int getTrackId() {
         int trackId = db.getTrackId();
         if (trackId == 0) {
             String trackName = db.getTrackName();
+            if (trackName == null) {
+                handleError(new IllegalStateException("no track"));
+                return trackId;
+            }
             try {
                 trackId = web.startTrack(trackName);
                 db.setTrackId(trackId);
@@ -193,6 +197,8 @@ public class WebSyncService extends IntentService {
             message = getString(R.string.e_bad_url, e.getMessage());
         } else if (e instanceof ConnectException || e instanceof NoRouteToHostException) {
             message = getString(R.string.e_connect, e.getMessage());
+        } else if (e instanceof IllegalStateException) {
+            message = getString(R.string.e_illegal_state, e.getMessage());
         } else {
             message = e.getMessage();
         }

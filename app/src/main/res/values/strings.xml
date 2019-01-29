@@ -86,6 +86,7 @@
     <string name="unit_mile">mi.</string>
     <string name="provide_valid_url">Please provide valid server url</string>
     <string name="provide_user_pass_url">Please enter user, password and server url first</string>
+    <string name="e_illegal_state">Illegal state error: %s</string>
     <string name="e_illegal_redirect">Illegal redirect: %d</string>
     <string name="e_auth_failure">Authorization failure: %d</string>
     <string name="e_http_code">HTTP error code: %d</string>

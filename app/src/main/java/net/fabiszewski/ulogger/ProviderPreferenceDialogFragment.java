@@ -66,13 +66,17 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
     protected void onPrepareDialogBuilder(@NonNull AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
         preference = (ListPreference) getPreference();
+        final Context context = getContext();
+        if (context == null) {
+            return;
+        }
 
         preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (Logger.DEBUG) { Log.d(TAG, "[preference changed: " + newValue + "]"); }
                 int providersMask = Integer.valueOf((String) newValue);
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(SettingsActivity.KEY_USE_GPS, (providersMask & VALUE_GPS) == VALUE_GPS);
                 editor.putBoolean(SettingsActivity.KEY_USE_NET, (providersMask & VALUE_NET) == VALUE_NET);
@@ -84,7 +88,7 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
         entries = preference.getEntries();
         entryValues = preference.getEntryValues();
         int defaultValue = VALUE_ALL;
-        LocationManager locManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         missingProviders = new ArrayList<>();
         final boolean existsGPS = locManager != null && locManager.getAllProviders().contains(LocationManager.GPS_PROVIDER);
         final boolean existsNet = locManager != null && locManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER);
@@ -130,11 +134,14 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
     @SuppressLint("PrivateResource")
     private int getSingleChoiceLayoutResource() {
         int resId = android.R.layout.select_dialog_singlechoice;
-        final TypedArray typedArray = getContext().obtainStyledAttributes(null, R.styleable.AlertDialog,
-                R.attr.alertDialogStyle, 0);
-        if (typedArray != null) {
-            resId = typedArray.getResourceId(R.styleable.AlertDialog_singleChoiceItemLayout, resId);
-            typedArray.recycle();
+        final Context context = getContext();
+        if (context != null) {
+            final TypedArray typedArray = context.obtainStyledAttributes(null, R.styleable.AlertDialog,
+                    R.attr.alertDialogStyle, 0);
+            if (typedArray != null) {
+                resId = typedArray.getResourceId(R.styleable.AlertDialog_singleChoiceItemLayout, resId);
+                typedArray.recycle();
+            }
         }
         return resId;
     }
