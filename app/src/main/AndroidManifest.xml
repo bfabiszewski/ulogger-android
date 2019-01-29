@@ -21,6 +21,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- For exporting tracks -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- For foreground services API >= 28 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- Needed if app targets API >= 21 -->
     <uses-feature android:name="android.hardware.location.gps" />
