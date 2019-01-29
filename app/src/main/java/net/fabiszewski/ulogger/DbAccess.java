@@ -18,6 +18,7 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -130,6 +131,7 @@ class DbAccess {
      *
      * @return Error message or null if none
      */
+    @Nullable
     String getError() {
         Cursor query = db.query(DbContract.Positions.TABLE_NAME,
                 new String[] {DbContract.Positions.COLUMN_ERROR},
@@ -278,6 +280,7 @@ class DbAccess {
      *
      * @return Track name, null if no track in database
      */
+    @Nullable
     String getTrackName() {
         Cursor track = db.query(DbContract.Track.TABLE_NAME,
                 new String[] {DbContract.Track.COLUMN_NAME},
@@ -342,27 +345,26 @@ class DbAccess {
     /**
      * Get track summary
      *
-     * @return TrackSummary object
+     * @return TrackSummary object, null if no positions
      */
+    @Nullable
     TrackSummary getTrackSummary() {
         Cursor positions = db.query(DbContract.Positions.TABLE_NAME,
                 new String[] {"*"},
                 null, null, null, null,
                 DbContract.Positions._ID);
-        double startLon, startLat, endLon, endLat;
-        long startTime, endTime;
-        long distance = 0;
         TrackSummary summary = null;
         if (positions.moveToFirst()) {
+            double distance = 0.0;
             long count = 1;
-            startLon = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
-            startLat = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
-            startTime = positions.getLong(positions.getColumnIndex(DbContract.Positions.COLUMN_TIME));
-            endTime = startTime;
+            double startLon = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
+            double startLat = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
+            long startTime = positions.getLong(positions.getColumnIndex(DbContract.Positions.COLUMN_TIME));
+            long endTime = startTime;
             while (positions.moveToNext()) {
                 count++;
-                endLon = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
-                endLat = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
+                double endLon = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
+                double endLat = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
                 endTime = positions.getLong(positions.getColumnIndex(DbContract.Positions.COLUMN_TIME));
                 float[] results = new float[1];
                 Location.distanceBetween(startLat, startLon, endLat, endLon, results);
@@ -371,7 +373,7 @@ class DbAccess {
                 startLat = endLat;
             }
             long duration = endTime - startTime;
-            summary = new TrackSummary(distance, duration, count);
+            summary = new TrackSummary(Math.round(distance), duration, count);
         }
         positions.close();
         return summary;
