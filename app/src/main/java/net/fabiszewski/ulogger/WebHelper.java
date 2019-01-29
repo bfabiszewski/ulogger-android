@@ -126,23 +126,23 @@ class WebHelper {
      * @throws IOException Connection error
      * @throws WebAuthException Authorization error
      */
-    @SuppressWarnings("StringConcatenationInLoop")
     private String postWithParams(Map<String, String> params) throws IOException, WebAuthException {
         URL url = new URL(host + "/" + CLIENT_SCRIPT);
         if (Logger.DEBUG) { Log.d(TAG, "[postWithParams: " + url + " : " + params + "]"); }
         String response;
 
-        String dataString = "";
+        StringBuilder dataString = new StringBuilder();
         for (Map.Entry<String, String> p : params.entrySet()) {
             String key = p.getKey();
             String value = p.getValue();
             if (dataString.length() > 0) {
-                dataString += "&";
+                dataString.append("&");
             }
-            dataString += URLEncoder.encode(key, "UTF-8") + "=";
-            dataString += URLEncoder.encode(value, "UTF-8");
+            dataString.append(URLEncoder.encode(key, "UTF-8"))
+                      .append("=")
+                      .append(URLEncoder.encode(value, "UTF-8"));
         }
-        byte[] data = dataString.getBytes();
+        byte[] data = dataString.toString().getBytes();
 
         HttpURLConnection connection = null;
         InputStream in = null;
