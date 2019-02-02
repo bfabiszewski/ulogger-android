@@ -5,6 +5,10 @@ Application works in background. Track points are saved at chosen intervals and 
 This client works with [μlogger web server](https://github.com/bfabiszewski/ulogger-server). 
 Together they make a complete self owned and controlled client–server solution.
 
+[<img src="https://f-droid.org/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/net.fabiszewski.ulogger/)
+
 ## Features
 - meant to be simple and small (*μ*);
 - low memory and battery impact;
