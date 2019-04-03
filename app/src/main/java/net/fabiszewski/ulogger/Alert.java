@@ -31,11 +31,7 @@ class Alert {
         AlertDialog alertDialog = initDialog(context, title, message);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), yesCallback);
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                (dialog, which) -> dialog.dismiss());
         alertDialog.show();
     }
 
@@ -48,11 +44,7 @@ class Alert {
     static void showInfo(Context context, CharSequence title, CharSequence message) {
         AlertDialog alertDialog = initDialog(context, title, message);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, context.getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                (dialog, which) -> dialog.dismiss());
         alertDialog.show();
     }
 

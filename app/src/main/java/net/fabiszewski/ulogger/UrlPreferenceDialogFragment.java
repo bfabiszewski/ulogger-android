@@ -13,7 +13,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -39,20 +38,17 @@ public class UrlPreferenceDialogFragment extends EditTextPreferenceDialogFragmen
             final EditText editText = dialog.findViewById(android.R.id.edit);
             Button positiveButton = dialog.getButton(Dialog.BUTTON_POSITIVE);
             if (editText != null && positiveButton != null) {
-                positiveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final String url = editText.getText().toString().trim();
-                        if (url.isEmpty() || WebHelper.isValidURL(url)) {
-                            editText.setError(null);
-                            EditTextPreference preference = (EditTextPreference) getPreference();
-                            preference.setText(url);
-                            dismiss();
-                        } else {
-                            final Context context = getContext();
-                            if (context != null) {
-                                editText.setError(getContext().getString(R.string.provide_valid_url));
-                            }
+                positiveButton.setOnClickListener(v -> {
+                    final String url = editText.getText().toString().trim();
+                    if (url.isEmpty() || WebHelper.isValidURL(url)) {
+                        editText.setError(null);
+                        EditTextPreference preference = (EditTextPreference) getPreference();
+                        preference.setText(url);
+                        dismiss();
+                    } else {
+                        final Context context = getContext();
+                        if (context != null) {
+                            editText.setError(getContext().getString(R.string.provide_valid_url));
                         }
                     }
                 });

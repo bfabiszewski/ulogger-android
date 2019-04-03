@@ -18,15 +18,15 @@ import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 /**
  * Export track to GPX format
@@ -96,25 +96,23 @@ public class GpxExportService extends IntentService {
             return;
         }
 
-        FileOutputStream fileOutputStream = null;
-        try {
-            String trackName = db.getTrackName();
-            if (trackName == null) {
-                trackName = getString(R.string.unknown_track);
-            }
-            File dir = getDir();
-            if (dir == null) {
-                if (Logger.DEBUG) { Log.d(TAG, "[export gpx failed to create output folder]"); }
-                sendBroadcast(BROADCAST_EXPORT_FAILED, getString(R.string.e_output_dir));
-                return;
-            }
-            File file = getFile(dir, trackName);
-            int i = 0;
-            while (file.exists()) {
-                file = getFile(dir, trackName + "_" + (++i));
-            }
+        String trackName = db.getTrackName();
+        if (trackName == null) {
+            trackName = getString(R.string.unknown_track);
+        }
+        File dir = getDir();
+        if (dir == null) {
+            if (Logger.DEBUG) { Log.d(TAG, "[export gpx failed to create output folder]"); }
+            sendBroadcast(BROADCAST_EXPORT_FAILED, getString(R.string.e_output_dir));
+            return;
+        }
+        File file = getFile(dir, trackName);
+        int i = 0;
+        while (file.exists()) {
+            file = getFile(dir, trackName + "_" + (++i));
+        }
 
-            fileOutputStream = new FileOutputStream(file);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 
             XmlSerializer serializer = Xml.newSerializer();
             StringWriter writer = new StringWriter();
@@ -160,15 +158,6 @@ public class GpxExportService extends IntentService {
         } catch (IOException|IllegalArgumentException|IllegalStateException e) {
             if (Logger.DEBUG) { Log.d(TAG, "[export gpx exception: " + e + "]"); }
             sendBroadcast(BROADCAST_EXPORT_FAILED, e.getMessage());
-        } finally {
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    if (Logger.DEBUG) { Log.d(TAG, "[export gpx exception: " + e + "]"); }
-                    sendBroadcast(BROADCAST_EXPORT_FAILED, e.getMessage());
-                }
-            }
         }
 
     }
@@ -184,11 +173,7 @@ public class GpxExportService extends IntentService {
     private void writePositions(@NonNull XmlSerializer serializer)
             throws IOException, IllegalArgumentException, IllegalStateException {
 
-        Cursor cursor = db.getPositions();
-
-        // suppress as it requires target api 19
-        //noinspection TryFinallyCanBeTryWithResources
-        try {
+        try (Cursor cursor = db.getPositions()) {
             serializer.startTag(null, "trkseg");
             while (cursor.moveToNext()) {
                 serializer.startTag(null, "trkpt");
@@ -219,8 +204,6 @@ public class GpxExportService extends IntentService {
                 serializer.endTag(null, "trkpt");
             }
             serializer.endTag(null, "trkseg");
-        } finally {
-            cursor.close();
         }
     }
 

@@ -12,16 +12,15 @@ package net.fabiszewski.ulogger;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,15 +30,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.text.HtmlCompat;
-import androidx.core.widget.TextViewCompat;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,7 +37,17 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static net.fabiszewski.ulogger.Alert.*;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
+import androidx.core.widget.TextViewCompat;
+
+import static net.fabiszewski.ulogger.Alert.showAlert;
+import static net.fabiszewski.ulogger.Alert.showConfirm;
 
 /**
  * Main activity of ulogger
@@ -353,12 +353,7 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.ic_equalizer_white_24dp);
         final Button okButton = dialog.findViewById(R.id.summary_button_ok);
         if (okButton != null) {
-            okButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
+            okButton.setOnClickListener(v -> dialog.dismiss());
         }
         final TextView summaryDistance = dialog.findViewById(R.id.summary_distance);
         final TextView summaryDuration = dialog.findViewById(R.id.summary_duration);
@@ -429,12 +424,7 @@ public class MainActivity extends AppCompatActivity {
         }
         final Button okButton = dialog.findViewById(R.id.about_button_ok);
         if (okButton != null) {
-            okButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
+            okButton.setOnClickListener(v -> dialog.dismiss());
         }
     }
 
@@ -445,11 +435,9 @@ public class MainActivity extends AppCompatActivity {
         showConfirm(MainActivity.this,
                 getString(R.string.warning),
                 getString(R.string.notsync_warning),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showTrackDialog();
-                    }
+                (dialog, which) -> {
+                    dialog.dismiss();
+                    showTrackDialog();
                 }
         );
     }
@@ -473,39 +461,26 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         editText.setText(DbAccess.getAutoTrackName());
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editText.selectAll();
-            }
-        });
+        editText.setOnClickListener(view -> editText.selectAll());
 
         final Button submit = dialog.findViewById(R.id.newtrack_button_submit);
         if (submit != null) {
-            submit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String trackName = editText.getText().toString();
-                    if (trackName.length() == 0) {
-                        return;
-                    }
-                    db.newTrack(trackName);
-                    LoggerService.resetUpdateRealtime();
-                    updateTrackLabel(trackName);
-                    updateStatus();
-                    dialog.cancel();
+            submit.setOnClickListener(v -> {
+                String trackName = editText.getText().toString();
+                if (trackName.length() == 0) {
+                    return;
                 }
+                db.newTrack(trackName);
+                LoggerService.resetUpdateRealtime();
+                updateTrackLabel(trackName);
+                updateStatus();
+                dialog.cancel();
             });
         }
 
         final Button cancel = dialog.findViewById(R.id.newtrack_button_cancel);
         if (cancel != null) {
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.cancel();
-                }
-            });
+            cancel.setOnClickListener(v -> dialog.cancel());
         }
     }
 

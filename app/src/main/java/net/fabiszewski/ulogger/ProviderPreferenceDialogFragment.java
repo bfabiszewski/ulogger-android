@@ -11,7 +11,6 @@ package net.fabiszewski.ulogger;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -31,7 +30,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 
 public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMessageFragment {
@@ -71,18 +69,15 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
             return;
         }
 
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (Logger.DEBUG) { Log.d(TAG, "[preference changed: " + newValue + "]"); }
-                int providersMask = Integer.valueOf((String) newValue);
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(SettingsActivity.KEY_USE_GPS, (providersMask & VALUE_GPS) == VALUE_GPS);
-                editor.putBoolean(SettingsActivity.KEY_USE_NET, (providersMask & VALUE_NET) == VALUE_NET);
-                editor.apply();
-                return true;
-            }
+        preference.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (Logger.DEBUG) { Log.d(TAG, "[preference changed: " + newValue + "]"); }
+            int providersMask = Integer.valueOf((String) newValue);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(SettingsActivity.KEY_USE_GPS, (providersMask & VALUE_GPS) == VALUE_GPS);
+            editor.putBoolean(SettingsActivity.KEY_USE_NET, (providersMask & VALUE_NET) == VALUE_NET);
+            editor.apply();
+            return true;
         });
 
         entries = preference.getEntries();
@@ -112,15 +107,12 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
 
         ListAdapter listAdapter = new CustomAdapter(getContext(), getSingleChoiceLayoutResource(), preference.getEntries());
 
-        builder.setSingleChoiceItems(listAdapter, currentIndex, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position) {
-                String value = preference.getEntryValues()[position].toString();
-                if (preference.callChangeListener(value)) {
-                    preference.setValue(value);
-                }
-                dialog.dismiss();
+        builder.setSingleChoiceItems(listAdapter, currentIndex, (dialog, position) -> {
+            String value = preference.getEntryValues()[position].toString();
+            if (preference.callChangeListener(value)) {
+                preference.setValue(value);
             }
+            dialog.dismiss();
         });
 
         builder.setPositiveButton(null, null);

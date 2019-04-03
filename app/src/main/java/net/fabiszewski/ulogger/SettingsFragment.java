@@ -92,57 +92,46 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     /**
      * On change listener to validate whether live synchronization is allowed
      */
-    private final Preference.OnPreferenceChangeListener liveSyncChanged = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            final Context context = preference.getContext();
-            if (Boolean.parseBoolean(newValue.toString())) {
-                if (!isValidServerSetup(context)) {
-                    Toast.makeText(context, R.string.provide_user_pass_url, Toast.LENGTH_LONG).show();
-                    return false;
-                }
+    private final Preference.OnPreferenceChangeListener liveSyncChanged = (preference, newValue) -> {
+        final Context context = preference.getContext();
+        if (Boolean.parseBoolean(newValue.toString())) {
+            if (!isValidServerSetup(context)) {
+                Toast.makeText(context, R.string.provide_user_pass_url, Toast.LENGTH_LONG).show();
+                return false;
             }
-            return true;
         }
+        return true;
     };
 
     /**
      * On change listener to destroy session cookies if server setup has changed
      */
-    private final Preference.OnPreferenceChangeListener serverSetupChanged = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            // remove session cookies
-            WebHelper.deauthorize();
-            // disable live synchronization if any server preference is removed
-            if (newValue.toString().trim().length() == 0) {
-                disableLiveSync(preference.getContext());
-            }
-            return true;
+    private final Preference.OnPreferenceChangeListener serverSetupChanged = (preference, newValue) -> {
+        // remove session cookies
+        WebHelper.deauthorize();
+        // disable live synchronization if any server preference is removed
+        if (newValue.toString().trim().length() == 0) {
+            disableLiveSync(preference.getContext());
         }
-
+        return true;
     };
 
     /**
      * On click listener to warn if server setup has changed
      */
-    private final Preference.OnPreferenceClickListener serverSetupClicked = new Preference.OnPreferenceClickListener() {
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
-            final Context context = preference.getContext();
-            DbAccess db = DbAccess.getInstance();
-            db.open(context);
-            if (db.getTrackId() > 0) {
-                // track saved on server
-                Alert.showInfo(context,
-                        context.getString(R.string.warning),
-                        context.getString(R.string.track_server_setup_warning)
-                );
+    private final Preference.OnPreferenceClickListener serverSetupClicked = preference -> {
+        final Context context = preference.getContext();
+        DbAccess db = DbAccess.getInstance();
+        db.open(context);
+        if (db.getTrackId() > 0) {
+            // track saved on server
+            Alert.showInfo(context,
+                    context.getString(R.string.warning),
+                    context.getString(R.string.track_server_setup_warning)
+            );
 
-            }
-            return true;
         }
-
+        return true;
     };
 
     /**

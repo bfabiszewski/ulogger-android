@@ -16,7 +16,6 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -138,27 +137,19 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         editText.setText(prefs.getString(key, ""));
         editText.setHint(prefs.getString(key, ""));
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newval = editText.getText().toString();
-                if (newval.length() > 0 && Integer.valueOf(newval) >= 0) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString(key, newval);
-                    editor.apply();
-                    setValue(newval);
-                    if (Logger.DEBUG) { Log.d(TAG, "[" + key + " set to " + newval + "]"); }
-                }
-                dialog.cancel();
+        submit.setOnClickListener(v -> {
+            String newval = editText.getText().toString();
+            if (newval.length() > 0 && Integer.valueOf(newval) >= 0) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(key, newval);
+                editor.apply();
+                setValue(newval);
+                if (Logger.DEBUG) { Log.d(TAG, "[" + key + " set to " + newval + "]"); }
             }
+            dialog.cancel();
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
+        cancel.setOnClickListener(v -> dialog.cancel());
     }
 
     /**

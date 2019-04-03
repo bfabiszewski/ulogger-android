@@ -148,10 +148,7 @@ public class WebSyncService extends IntentService {
      */
     private void doSync(int trackId) {
         // iterate over positions in db
-        Cursor cursor = db.getUnsynced();
-        // suppress as it requires target api 19
-        //noinspection TryFinallyCanBeTryWithResources
-        try {
+        try (Cursor cursor = db.getUnsynced()) {
             while (cursor.moveToNext()) {
                 int rowId = cursor.getInt(cursor.getColumnIndex(DbContract.Positions._ID));
                 Map<String, String> params = cursorToMap(cursor);
@@ -163,23 +160,25 @@ public class WebSyncService extends IntentService {
             }
         } catch (IOException e) {
             // handle web errors
-            if (Logger.DEBUG) { Log.d(TAG, "[websync io exception: " + e + "]"); }
+            if (Logger.DEBUG) {
+                Log.d(TAG, "[websync io exception: " + e + "]");
+            }
             // schedule retry
             handleError(e);
         } catch (WebAuthException e) {
-            if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
+            if (Logger.DEBUG) {
+                Log.d(TAG, "[websync auth exception: " + e + "]");
+            }
             isAuthorized = false;
             try {
                 // reauthorize and retry
                 web.authorize();
                 isAuthorized = true;
                 doSync(trackId);
-            } catch (WebAuthException|IOException|JSONException e2) {
+            } catch (WebAuthException | IOException | JSONException e2) {
                 // schedule retry
                 handleError(e2);
             }
-        } finally {
-            cursor.close();
         }
     }
 
