@@ -459,6 +459,7 @@ public class LoggerService extends Service {
          * @param status Status
          * @param extras Extras
          */
+        @SuppressWarnings({"unused", "UnusedAssignment"})
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             if (Logger.DEBUG) {
