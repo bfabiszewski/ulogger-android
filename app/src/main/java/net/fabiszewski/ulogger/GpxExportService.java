@@ -20,10 +20,12 @@ import android.util.Xml;
 
 import org.xmlpull.v1.XmlSerializer;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -112,12 +114,12 @@ public class GpxExportService extends IntentService {
             file = getFile(dir, trackName + "_" + (++i));
         }
 
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+        try (FileOutputStream stream = new FileOutputStream(file);
+             OutputStreamWriter writer = new OutputStreamWriter(stream, Charset.forName("UTF-8"));
+             BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
 
             XmlSerializer serializer = Xml.newSerializer();
-            StringWriter writer = new StringWriter();
-
-            serializer.setOutput(writer);
+            serializer.setOutput(bufferedWriter);
 
             // header
             serializer.startDocument("UTF-8", true);
@@ -148,10 +150,6 @@ public class GpxExportService extends IntentService {
             serializer.endTag("", "gpx");
             serializer.endDocument();
             serializer.flush();
-
-            String dataWrite = writer.toString();
-            fileOutputStream.write(dataWrite.getBytes());
-            fileOutputStream.flush();
 
             if (Logger.DEBUG) { Log.d(TAG, "[export gpx file written to " + file.getPath()); }
             sendBroadcast(BROADCAST_EXPORT_DONE, null);
