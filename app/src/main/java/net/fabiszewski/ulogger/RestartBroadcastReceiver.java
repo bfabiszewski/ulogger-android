@@ -13,9 +13,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 /**
  * Receiver for boot completed broadcast
