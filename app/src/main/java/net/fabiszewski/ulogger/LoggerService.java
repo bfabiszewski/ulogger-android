@@ -103,7 +103,7 @@ public class LoggerService extends Service {
         boolean hasLocationUpdates = requestLocationUpdates();
 
         if (hasLocationUpdates) {
-            isRunning = true;
+            setRunning(true);
             sendBroadcast(BROADCAST_LOCATION_STARTED);
 
             syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
@@ -254,7 +254,7 @@ public class LoggerService extends Service {
             db.close();
         }
 
-        isRunning = false;
+        setRunning(false);
 
         mNotificationManager.cancel(NOTIFICATION_ID);
         sendBroadcast(BROADCAST_LOCATION_STOPPED);
@@ -278,6 +278,19 @@ public class LoggerService extends Service {
      */
     public static boolean isRunning() {
         return isRunning;
+    }
+
+
+    /**
+     * Set service running state
+     * @param isRunning True if running, false otherwise
+     */
+    private void setRunning(boolean isRunning) {
+        LoggerService.isRunning = isRunning;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(SettingsActivity.KEY_LOGGER_RUNNING, isRunning);
+        editor.apply();
     }
 
     /**

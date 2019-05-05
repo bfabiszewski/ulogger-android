@@ -32,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_USERNAME = "prefUsername";
     public static final String KEY_USE_GPS = "prefUseGps";
     public static final String KEY_USE_NET = "prefUseNet";
+    public static final String KEY_LOGGER_RUNNING = "prefLoggerRunning";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

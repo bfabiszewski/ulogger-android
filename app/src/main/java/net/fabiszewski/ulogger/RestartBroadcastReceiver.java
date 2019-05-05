@@ -18,32 +18,57 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 /**
- * Receiver for boot completed broadcast
- *
+ * Receiver for app restart broadcast
  */
 
-public class BootCompletedReceiver extends BroadcastReceiver {
+public class RestartBroadcastReceiver extends BroadcastReceiver {
+
+    private static final String BOOT_COMPLETED = Intent.ACTION_BOOT_COMPLETED;
+    private static final String QUICKBOOT_POWERON = "android.intent.action.QUICKBOOT_POWERON";
+    private static final String MY_PACKAGE_REPLACED = Intent.ACTION_MY_PACKAGE_REPLACED;
 
     /**
      * Broadcast received on system boot completed.
      * Starts background logging service
      *
      * @param context Context
-     * @param intent Intent
+     * @param intent  Intent
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean autoStart = prefs.getBoolean(SettingsActivity.KEY_AUTO_START, false);
-        if (autoStart && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            DbAccess db = DbAccess.getInstance();
-            db.open(context);
-            if (db.getTrackName() == null) {
-                db.newAutoTrack();
+        if (intent != null && intent.getAction() != null) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            switch (intent.getAction()) {
+                case BOOT_COMPLETED:
+                case QUICKBOOT_POWERON:
+                    boolean autoStart = prefs.getBoolean(SettingsActivity.KEY_AUTO_START, false);
+                    if (autoStart) {
+                        startLoggerService(context);
+                    }
+                    break;
+                case MY_PACKAGE_REPLACED:
+                    boolean wasRunning = prefs.getBoolean(SettingsActivity.KEY_LOGGER_RUNNING, false);
+                    if (wasRunning) {
+                        startLoggerService(context);
+                    }
+                    break;
             }
-            db.close();
-            Intent i = new Intent(context, LoggerService.class);
-            ContextCompat.startForegroundService(context, i);
         }
+
+    }
+
+    /**
+     * Start logger service
+     * @param context Context
+     */
+    private void startLoggerService(Context context) {
+        DbAccess db = DbAccess.getInstance();
+        db.open(context);
+        if (db.getTrackName() == null) {
+            db.newAutoTrack();
+        }
+        db.close();
+        Intent intent = new Intent(context, LoggerService.class);
+        ContextCompat.startForegroundService(context, intent);
     }
 }
