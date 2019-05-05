@@ -30,13 +30,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +38,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.widget.TextViewCompat;
+
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static net.fabiszewski.ulogger.Alert.showAlert;
 import static net.fabiszewski.ulogger.Alert.showConfirm;
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
      * @param grantResults Result
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // onPause closed db
         db.open(this);
         switch (requestCode) {
@@ -234,17 +234,16 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case RESULT_PREFS_UPDATED:
-                // Preferences updated
-                updatePreferences();
-                if (LoggerService.isRunning()) {
-                    // restart logging
-                    Intent intent = new Intent(MainActivity.this, LoggerService.class);
-                    intent.putExtra(UPDATED_PREFS, true);
-                    startService(intent);
-                }
-                break;
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_PREFS_UPDATED) {
+            // Preferences updated
+            updatePreferences();
+            if (LoggerService.isRunning()) {
+                // restart logging
+                Intent intent = new Intent(MainActivity.this, LoggerService.class);
+                intent.putExtra(UPDATED_PREFS, true);
+                startService(intent);
+            }
         }
     }
 

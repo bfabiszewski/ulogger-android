@@ -11,7 +11,7 @@
     android:insetTop="10dp"
     android:insetBottom="10dp">
 
-    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <shape>
         <size android:width="1px" />
         <solid android:color="@color/colorBlue" />
     </shape>

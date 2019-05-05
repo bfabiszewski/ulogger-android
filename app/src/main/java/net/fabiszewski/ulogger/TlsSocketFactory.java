@@ -33,7 +33,6 @@ import javax.net.ssl.SSLSocketFactory;
  * to solve problem with connecting to SSL-disabled servers.
  */
 
-@SuppressWarnings("deprecation")
 class TlsSocketFactory extends SSLSocketFactory {
 
     private static final String TAG = TlsSocketFactory.class.getSimpleName();
