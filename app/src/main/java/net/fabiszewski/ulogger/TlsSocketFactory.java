@@ -40,6 +40,7 @@ class TlsSocketFactory extends SSLSocketFactory {
     private static SSLSocketFactory factory;
     private static String[] cipherSuites;
 
+    @SuppressWarnings({"deprecation", "RedundantSuppression"})
     TlsSocketFactory(Context context) {
         SSLSessionCache cache = new SSLSessionCache(context);
         factory = SSLCertificateSocketFactory.getDefault(WebHelper.SOCKET_TIMEOUT, cache);
