@@ -34,7 +34,7 @@ led | tracking | synchronization
 - clicking on current track's name will show track statistics
 
 ## Contribute translations
-[![Translate with transifex](https://img.shields.io/badge/translate-transifex-green.svg)](https://www.transifex.com/bfabiszewski/ulogger-android/)
+[![Translate with transifex](https://img.shields.io/badge/translate-transifex-green.svg)](https://www.transifex.com/bfabiszewski/ulogger/)
 
 
 ## Donate
