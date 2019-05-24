@@ -87,6 +87,7 @@ class WebHelper {
     // Socket timeout in milliseconds
     static final int SOCKET_TIMEOUT = 30 * 1000;
 
+    static boolean isAuthorized = false;
 
     /**
      * Constructor
@@ -94,10 +95,7 @@ class WebHelper {
      */
     WebHelper(Context ctx) {
         context = ctx;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        user = prefs.getString(SettingsActivity.KEY_USERNAME, "NULL");
-        pass = prefs.getString(SettingsActivity.KEY_PASS, "NULL");
-        host = prefs.getString(SettingsActivity.KEY_HOST, "NULL").replaceAll("/+$", "");
+        loadPreferences(ctx);
         userAgent = context.getString(R.string.app_name_ascii) + "/" + BuildConfig.VERSION_NAME + "; " + System.getProperty("http.agent");
 
         if (cookieManager == null) {
@@ -298,16 +296,39 @@ class WebHelper {
         if (error) {
             throw new WebAuthException(context.getString(R.string.e_server_response));
         }
+        isAuthorized = true;
     }
 
     /**
      * Remove authorization by removing session cookie
      */
     static void deauthorize() {
+        if (Logger.DEBUG) { Log.d(TAG, "[deauthorize]"); }
         if (cookieManager != null) {
             CookieStore store = cookieManager.getCookieStore();
             store.removeAll();
         }
+        isAuthorized = false;
+    }
+
+    /**
+     * Get settings from shared preferences
+     * @param context Context
+     */
+    private static void loadPreferences(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        user = prefs.getString(SettingsActivity.KEY_USERNAME, "NULL");
+        pass = prefs.getString(SettingsActivity.KEY_PASS, "NULL");
+        host = prefs.getString(SettingsActivity.KEY_HOST, "NULL").replaceAll("/+$", "");
+    }
+
+    /**
+     * Reload settings from shared preferences.
+     * @param context Context
+     */
+     static void updatePreferences(Context context) {
+        loadPreferences(context);
+        deauthorize();
     }
 
     /**

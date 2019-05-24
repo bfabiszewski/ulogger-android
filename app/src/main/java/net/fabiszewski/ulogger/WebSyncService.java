@@ -43,7 +43,6 @@ public class WebSyncService extends IntentService {
 
     private DbAccess db;
     private WebHelper web;
-    private static boolean isAuthorized = false;
     private static PendingIntent pi = null;
 
     final private static int FIVE_MINUTES = 1000 * 60 * 5;
@@ -74,25 +73,15 @@ public class WebSyncService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (Logger.DEBUG) { Log.d(TAG, "[websync start]"); }
 
-        if (pi != null) {
-            // cancel pending alarm
-            if (Logger.DEBUG) { Log.d(TAG, "[websync cancel alarm]"); }
-            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            if (am != null) {
-                am.cancel(pi);
-            }
-            pi = null;
-        }
+        cancelPending();
 
-        if (!isAuthorized) {
+        if (!WebHelper.isAuthorized) {
             try {
                 web.authorize();
             } catch (WebAuthException|IOException|JSONException e) {
                 handleError(e);
                 return;
             }
-
-            isAuthorized = true;
         }
 
         // get track id
@@ -125,11 +114,10 @@ public class WebSyncService extends IntentService {
                 handleError(e);
             } catch (WebAuthException e) {
                 if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
-                isAuthorized = false;
+                WebHelper.deauthorize();
                 try {
                     // reauthorize and retry
                     web.authorize();
-                    isAuthorized = true;
                     trackId = web.startTrack(trackName);
                     db.setTrackId(trackId);
                 } catch (WebAuthException|IOException|JSONException e2) {
@@ -169,11 +157,10 @@ public class WebSyncService extends IntentService {
             if (Logger.DEBUG) {
                 Log.d(TAG, "[websync auth exception: " + e + "]");
             }
-            isAuthorized = false;
+            WebHelper.deauthorize();
             try {
                 // reauthorize and retry
                 web.authorize();
-                isAuthorized = true;
                 doSync(trackId);
             } catch (WebAuthException | IOException | JSONException e2) {
                 // schedule retry
@@ -209,14 +196,43 @@ public class WebSyncService extends IntentService {
         sendBroadcast(intent);
         // retry only if tracking is on
         if (LoggerService.isRunning()) {
-            if (Logger.DEBUG) { Log.d(TAG, "[websync set alarm]"); }
-            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            Intent syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
-            pi = PendingIntent.getService(this, 0, syncIntent, FLAG_ONE_SHOT);
-            if (am != null) {
-                am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + FIVE_MINUTES, pi);
-            }
+            setPending();
         }
+    }
+
+    /**
+     * Set pending alarm
+     */
+    private void setPending() {
+        if (Logger.DEBUG) { Log.d(TAG, "[websync set alarm]"); }
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
+        pi = PendingIntent.getService(this, 0, syncIntent, FLAG_ONE_SHOT);
+        if (am != null) {
+            am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + FIVE_MINUTES, pi);
+        }
+    }
+
+    /**
+     * Cancel pending alarm
+     */
+    private void cancelPending() {
+        if (hasPending()) {
+            if (Logger.DEBUG) { Log.d(TAG, "[websync cancel alarm]"); }
+            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (am != null) {
+                am.cancel(pi);
+            }
+            pi = null;
+        }
+    }
+
+    /**
+     * Is pending alarm set
+     * @return True if has pending alarm set
+     */
+    private boolean hasPending() {
+        return pi != null;
     }
 
     /**

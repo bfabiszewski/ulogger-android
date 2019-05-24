@@ -566,11 +566,9 @@ public class MainActivity extends AppCompatActivity {
         String error = db.getError();
         if (error != null) {
             if (Logger.DEBUG) { Log.d(TAG, "[sync error: " + error + "]"); }
-            syncError = true;
-            syncErrorLabel.setText(error);
-        } else if (syncError) {
-            syncError = false;
-            syncErrorLabel.setText(null);
+            setSyncError(error);
+        } else {
+            resetSyncError();
         }
         updateSyncStatus(count);
     }
@@ -668,10 +666,7 @@ public class MainActivity extends AppCompatActivity {
                     updateSyncStatus(unsyncedCount);
                     setSyncLed(LED_GREEN);
                     // reset error flag and label
-                    if (syncError) {
-                        syncErrorLabel.setText(null);
-                        syncError = false;
-                    }
+                    resetSyncError();
                     // showConfirm message if manual uploading
                     if (isUploading && unsyncedCount == 0) {
                         showToast(getString(R.string.uploading_done));
@@ -683,8 +678,7 @@ public class MainActivity extends AppCompatActivity {
                     setSyncLed(LED_RED);
                     // set error flag and label
                     String message = intent.getStringExtra("message");
-                    syncErrorLabel.setText(message);
-                    syncError = true;
+                    setSyncError(message);
                     // showConfirm message if manual uploading
                     if (isUploading) {
                         showToast(getString(R.string.uploading_failed) + "\n" + message, Toast.LENGTH_LONG);
@@ -741,4 +735,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    /**
+     * Set sync error flag and label
+     * @param message Error message
+     */
+    private void setSyncError(String message) {
+        syncError = true;
+        syncErrorLabel.setText(message);
+    }
+
+    /**
+     * Reset sync error flag and label
+     */
+    private void resetSyncError() {
+        if (syncError) {
+            syncErrorLabel.setText(null);
+            syncError = false;
+        }
+    }
 }

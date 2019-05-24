@@ -39,6 +39,7 @@ import androidx.preference.PreferenceManager;
 import static android.location.LocationProvider.AVAILABLE;
 import static android.location.LocationProvider.OUT_OF_SERVICE;
 import static android.location.LocationProvider.TEMPORARILY_UNAVAILABLE;
+import static net.fabiszewski.ulogger.MainActivity.UPDATED_PREFS;
 
 /**
  * Background service logging positions to database
@@ -134,7 +135,7 @@ public class LoggerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Logger.DEBUG) { Log.d(TAG, "[onStartCommand]"); }
 
-        final boolean prefsUpdated = (intent != null) && intent.getBooleanExtra(MainActivity.UPDATED_PREFS, false);
+        final boolean prefsUpdated = (intent != null) && intent.getBooleanExtra(UPDATED_PREFS, false);
         if (prefsUpdated) {
             handlePrefsUpdated();
         } else {

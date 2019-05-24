@@ -107,8 +107,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
      * On change listener to destroy session cookies if server setup has changed
      */
     private final Preference.OnPreferenceChangeListener serverSetupChanged = (preference, newValue) -> {
-        // remove session cookies
-        WebHelper.deauthorize();
+        // update web helper settings, remove session cookies
+        WebHelper.updatePreferences(preference.getContext());
         // disable live synchronization if any server preference is removed
         if (newValue.toString().trim().length() == 0) {
             disableLiveSync(preference.getContext());
