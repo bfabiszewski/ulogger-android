@@ -6,11 +6,11 @@ This client works with [μlogger web server](https://github.com/bfabiszewski/ulo
 Together they make a complete self owned and controlled client–server solution.
 
 ## Features
-- meant to be simple and small (*μ*);
-- low memory and battery impact;
-- uses GPS or network based location data;
-- synchronizes location with web server in real time, in case of problems keeps retrying;
-- alternatively works in offline mode; positions may be uploaded to the servers manually;
+- meant to be simple and small (*μ*)
+- low memory and battery impact
+- uses GPS or network based location data
+- synchronizes location with web server in real time, in case of problems keeps retrying
+- alternatively works in offline mode; positions may be uploaded to the servers manually
 - configurable tracking settings
 - export to GPX format
 - automation
