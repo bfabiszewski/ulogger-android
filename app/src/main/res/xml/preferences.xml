@@ -85,6 +85,12 @@
             android:summary="@string/pref_autostart_summary"
             android:defaultValue="@string/pref_autostart_default" />
 
+        <SwitchPreferenceCompat
+            android:key="prefAllowExternal"
+            android:title="@string/pref_external_title"
+            android:summary="@string/pref_external_summary"
+            android:defaultValue="@string/pref_external_default" />
+
         <ListPreference
             android:key="prefUnits"
             android:title="@string/pref_units_title"

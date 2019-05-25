@@ -71,6 +71,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".ExternalCommandReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="net.fabiszewski.ulogger.intent.action.COMMAND" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -46,6 +46,9 @@
     <string name="pref_autostart_title">Auto start</string>
     <string name="pref_autostart_summary">Application will start on system boot</string>
     <string name="pref_autostart_default" translatable="false">false</string>
+    <string name="pref_external_title">Allow external commands</string>
+    <string name="pref_external_summary">Allow receiving commands from other applications to facilitate automation and tasks scheduling.</string>
+    <string name="pref_external_default" translatable="false">false</string>
     <string name="pref_provider_title">Location provider</string>
     <string name="pref_provider_summary">Location may be supplied by gps provider, by network or by both. Both providers will give best results, but use more battery.</string>
     <string name="pref_units_title">Units</string>
