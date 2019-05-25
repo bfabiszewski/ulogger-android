@@ -39,6 +39,8 @@
     <string name="pref_livesync_summary">Wysyłanie pozycji na serwer w czasie rzeczywistym. Wymaga podania użytkownika, hasła i adresu serwera.</string>
     <string name="pref_autostart_title">Auto start</string>
     <string name="pref_autostart_summary">Aplikacja zostanie uruchomiona przy starcie systemu</string>
+    <string name="pref_external_title">Zezwalaj na sterowanie</string>
+    <string name="pref_external_summary">Przyjmuj komendy sterujące od innych aplikacji, aby ułatwić automatyzację i planowanie zadań.</string>
     <string name="pref_provider_title">Usługa lokalizacji</string>
     <string name="pref_provider_summary">Współrzędne geograficzne mogą być otrzymywana z GPS-a, z sieci (GSM/wifi), lub z obu na raz. Zaznaczenie obu może dać lepsze rezultaty, jednak kosztem większego zużycia baterii.</string>
     <string name="pref_units_title">Jednostki</string>
@@ -78,6 +80,7 @@
     <string name="unit_mile">mi</string>
     <string name="provide_valid_url">Proszę podać poprawny adres serwera</string>
     <string name="provide_user_pass_url">Proszę najpierw uzupełnić nazwę użytkownika, hasło i adres serwera</string>
+    <string name="e_illegal_state">Błędny stan: %s</string>
     <string name="e_illegal_redirect">Błąd przekierowania: %d</string>
     <string name="e_auth_failure">Błąd autoryzacji: %d</string>
     <string name="e_http_code">Kod błędu HTTP: %d</string>
@@ -114,5 +117,4 @@
     <string name="pref_cat_location">Śledzenie pozycji</string>
     <string name="pref_cat_server">Serwer</string>
     <string name="pref_cat_other">Inne</string>
-    <string name="e_illegal_state">Błędny stan: %s</string>
 </resources>
