@@ -13,6 +13,7 @@ Together they make a complete self owned and controlled client–server solution
 - alternatively works in offline mode; positions may be uploaded to the servers manually;
 - configurable tracking settings
 - export to GPX format
+- automation
 
 ## Screenshots
 ![api10_main3](https://user-images.githubusercontent.com/3366666/57197957-79f92400-6f6d-11e9-8f61-f1318587dac1.png)
@@ -35,13 +36,13 @@ led | tracking | synchronization
 
 ## Automating
 - μlogger may accept commands from other applications for starting or stopping its operations. To make it work you must explicitly enable this functionality in app settings ("Allow external commands" switch). 
-- Commands are sent as `broadcasts` with following `intent` parameters:
+- commands are sent as `broadcasts` with following `intent` parameters:
   - target package: `net.fabiszewski.ulogger`
   - target class: `net.fabiszewski.ulogger.ExternalCommandReceiver`
   - action: `net.fabiszewski.ulogger.intent.action.COMMAND`
   - extra: `"command": [command name]`, where command name is one of: `"start logger"`, `"stop logger"`, `"start upload"`, for starting and stopping position logging and starting track data upload to server (in case live tracking is off)
-- Third party examples:
-  - Automate (LlamaLab) – Send broadcast block with `Package`, `Receiver Class` and `Action` fields as above and `Extras` field eg. `{"command": "start logger"}
+- third party examples:
+  - Automate (LlamaLab) – Send broadcast block with `Package`, `Receiver Class` and `Action` fields as above and `Extras` field eg. `{"command": "start logger"}`
   - Tasker (joaomgcd) – System → Send intent. Fields `Action`, `Package`, `Class` as above and `Extra` field eg. `command:start logger`
 - command line: `am broadcast -a net.fabiszewski.ulogger.intent.action.COMMAND -e "command" "start logger" net.fabiszewski.ulogger net.fabiszewski.ulogger.ExternalCommandReceiver`
 
