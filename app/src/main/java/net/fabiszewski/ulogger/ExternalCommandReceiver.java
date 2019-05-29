@@ -56,7 +56,7 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
         DbAccess db = DbAccess.getInstance();
         db.open(context);
         if (db.getTrackName() == null) {
-            db.newAutoTrack();
+            db.newTrack(AutoNamePreference.getAutoTrackName(context));
         }
         db.close();
         Intent intent = new Intent(context, LoggerService.class);

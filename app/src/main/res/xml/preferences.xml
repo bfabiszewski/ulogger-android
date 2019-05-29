@@ -99,6 +99,13 @@
             android:entryValues="@array/unitsEntries"
             android:defaultValue="@string/pref_units_metric"
             app:useSimpleSummaryProvider="true" />
+
+        <net.fabiszewski.ulogger.AutoNamePreference
+            android:key="prefAutoName"
+            android:title="@string/pref_auto_name_title"
+            android:dialogMessage="@string/pref_auto_name_summary"
+            android:defaultValue="@string/pref_auto_name_default"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

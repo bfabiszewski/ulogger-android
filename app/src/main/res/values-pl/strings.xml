@@ -58,7 +58,7 @@
     <string name="no_positions">Bieżąca trasa nie ma żadnych pozycji</string>
     <string name="warning">Uwaga</string>
     <string name="notsync_warning">Bieżąca trasa zawiera niezsynchronizowane pozycje. Rozpoczęcie nowej trasy usunie wszystkie dane.</string>
-    <string name="empty_trackname_warning">Najpierw rozpocznij nową trasę</string>
+    <string name="no_track_warning">Najpierw rozpocznij nową trasę</string>
     <string name="logger_running_warning">Proszę najpierw zatrzymać zapisywanie bieżącej trasy</string>
     <string name="about">O programie</string>
     <string name="about_description">Prosty program do zapisu pozycji geograficznej z funkcją przesyłania współrzędnych na własny <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>serwer μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>

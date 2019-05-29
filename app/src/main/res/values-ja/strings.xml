@@ -56,7 +56,7 @@
     <string name="no_positions">現在のトラックは場所がありません</string>
     <string name="warning">警告</string>
     <string name="notsync_warning">現在のトラックには同期していない場所が含まれています。 新しいトラックを設定すると、このすべてのデータが削除されます。</string>
-    <string name="empty_trackname_warning">まず新しいトラックを設定してください</string>
+    <string name="no_track_warning">まず新しいトラックを設定してください</string>
     <string name="logger_running_warning">まず現在のトラックを停止してください</string>
     <string name="about">アプリについて</string>
     <string name="about_description">ライブトラッキングと独自の <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger サーバー<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g> に位置のアップロードをサポートする、シンプルロケーションロガー。</string>

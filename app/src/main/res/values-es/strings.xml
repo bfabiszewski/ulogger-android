@@ -56,7 +56,7 @@
     <string name="no_positions">El registro actual no tiene posiciones</string>
     <string name="warning">Alerta</string>
     <string name="notsync_warning">El registro actual contiene posiciones no sincronizadas. Crear un nuevo registro eliminará todos estos datos.</string>
-    <string name="empty_trackname_warning">Por favor, configura un nuevo registro primero</string>
+    <string name="no_track_warning">Por favor, configura un nuevo registro primero</string>
     <string name="logger_running_warning">Por favor, para el registro actual primero</string>
     <string name="about">Acerca de</string>
     <string name="about_description">Aplicación de registro de ubicaciones sencilla, con soporte para registro continuo y subida de posiciones a tu propio <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>servidor μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>

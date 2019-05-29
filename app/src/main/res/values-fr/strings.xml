@@ -56,7 +56,7 @@
     <string name="no_positions">La piste actuelle n\'a pas de localisation</string>
     <string name="warning">Attention</string>
     <string name="notsync_warning">La piste actuelle contient des localisations non synchronisées. Définir une nouvelle piste supprimera ces données.</string>
-    <string name="empty_trackname_warning">Merci de définir une nouvelle piste</string>
+    <string name="no_track_warning">Merci de définir une nouvelle piste</string>
     <string name="logger_running_warning">Merci d\'arrêter le tracking actuel</string>
     <string name="about">A propos</string>
     <string name="about_description">Simple moniteur de localisation avec suivi en direct et envoi de la position sur son propre <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>serveur μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>

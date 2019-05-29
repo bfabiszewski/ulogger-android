@@ -10,7 +10,6 @@
 package net.fabiszewski.ulogger;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
@@ -46,10 +45,7 @@ public class UrlPreferenceDialogFragment extends EditTextPreferenceDialogFragmen
                         preference.setText(url);
                         dismiss();
                     } else {
-                        final Context context = getContext();
-                        if (context != null) {
-                            editText.setError(getContext().getString(R.string.provide_valid_url));
-                        }
+                        editText.setError(getString(R.string.provide_valid_url));
                     }
                 });
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);

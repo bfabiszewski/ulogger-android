@@ -57,6 +57,9 @@
     <string name="pref_units_metric">Metric</string>
     <string name="pref_units_imperial">Imperial</string>
     <string name="pref_units_nautical">Nautical</string>
+    <string name="pref_auto_name_title">Track name template</string>
+    <string name="pref_auto_name_summary">Template for new track name. Following patterns will be substituted with current date elements: %y&#160;(year), %m&#160;(month), %d&#160;(day), %H&#160;(hour), %M&#160;(minute), %S&#160;(second). If you need literal percent character use&#160;%%.</string>
+    <string name="pref_auto_name_default" translatable="false">Auto_%y.%m.%d_%H.%M.%S</string>
     <string name="label_status">Status</string>
     <string name="label_location">Location</string>
     <string name="label_synchronization">Synchronization</string>
@@ -68,7 +71,8 @@
     <string name="no_positions">Current track has no positions</string>
     <string name="warning">Warning</string>
     <string name="notsync_warning">Current track contains not synchronized positions. Setting new track will delete all this data.</string>
-    <string name="empty_trackname_warning">Please set up new track first</string>
+    <string name="no_track_warning">Please set up new track first</string>
+    <string name="empty_trackname_warning">Track name cannot be empty</string>
     <string name="logger_running_warning">Please stop current tracking first</string>
     <string name="about">About</string>
     <string name="about_description">Simple location logger with support for live tracking and position uploading to own <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
@@ -124,4 +128,5 @@
     <string name="pref_cat_location">Tracking</string>
     <string name="pref_cat_server">Server</string>
     <string name="pref_cat_other">Other</string>
+    <string name="illegal_template_warning">Template contains illegal characters</string>
 </resources>

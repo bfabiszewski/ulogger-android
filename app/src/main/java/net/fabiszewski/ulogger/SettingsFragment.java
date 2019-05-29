@@ -42,6 +42,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             if (getFragmentManager() != null) {
                 fragment.show(getFragmentManager(), "UrlPreferenceDialogFragment");
             }
+        } else if (preference instanceof AutoNamePreference && KEY_AUTO_NAME.equals(preference.getKey())) {
+            final AutoNamePreferenceDialogFragment fragment = AutoNamePreferenceDialogFragment.newInstance(preference.getKey());
+            fragment.setTargetFragment(this, 0);
+            if (getFragmentManager() != null) {
+                fragment.show(getFragmentManager(), "AutoNamePreferenceDialogFragment");
+            }
         } else if (preference instanceof ListPreference && KEY_PROVIDER.equals(preference.getKey())) {
             final ProviderPreferenceDialogFragment fragment = ProviderPreferenceDialogFragment.newInstance(preference.getKey());
             fragment.setTargetFragment(this, 0);

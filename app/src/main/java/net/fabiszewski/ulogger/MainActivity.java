@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoggerService.class);
             startService(intent);
         } else {
-            showEmptyTrackNameWarning();
+            showNoTrackWarning();
         }
     }
 
@@ -444,8 +444,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display warning if track name is not set
      */
-    private void showEmptyTrackNameWarning() {
-        showToast(getString(R.string.empty_trackname_warning));
+    private void showNoTrackWarning() {
+        showToast(getString(R.string.no_track_warning));
     }
 
     /**
@@ -459,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
         if (editText == null) {
             return;
         }
-        editText.setText(DbAccess.getAutoTrackName());
+        editText.setText(AutoNamePreference.getAutoTrackName(MainActivity.this));
         editText.setOnClickListener(view -> editText.selectAll());
 
         final Button submit = dialog.findViewById(R.id.newtrack_button_submit);
@@ -467,6 +467,7 @@ public class MainActivity extends AppCompatActivity {
             submit.setOnClickListener(v -> {
                 String trackName = editText.getText().toString();
                 if (trackName.length() == 0) {
+                    showToast(getString(R.string.empty_trackname_warning), Toast.LENGTH_LONG);
                     return;
                 }
                 db.newTrack(trackName);

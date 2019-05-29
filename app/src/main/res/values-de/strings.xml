@@ -56,7 +56,7 @@
     <string name="no_positions">Aktueller Track hat keine Positionen</string>
     <string name="warning">Achtung</string>
     <string name="notsync_warning">Aktuelle Track beinhalten noch nicht synchronisierte Positionen. Diese werden gelöscht bei Erstellung eines neuen Tracks.</string>
-    <string name="empty_trackname_warning">Bitte erstelle zuerst einen neuen Track</string>
+    <string name="no_track_warning">Bitte erstelle zuerst einen neuen Track</string>
     <string name="logger_running_warning">Bitte stoppe den aktuellen Track zuerst</string>
     <string name="about">About</string>
     <string name="about_description">Einfacher Positionslogger mit Live-Tracking und Live-Synchronisationsfunktion auf eigenen <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger Server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
