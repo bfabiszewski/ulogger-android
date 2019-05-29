@@ -48,6 +48,8 @@
     <string name="pref_units_metric">Metryczne</string>
     <string name="pref_units_imperial">Anglosaskie</string>
     <string name="pref_units_nautical">Nawigacyjne</string>
+    <string name="pref_auto_name_title">Szablon nazwy trasy</string>
+    <string name="pref_auto_name_summary" formatted="false">Szablon nazwy nowej trasy. Następujące wzorce zostaną zastapione odpowiednimi elementami bieżącej daty: %y (rok), %m (miesiąc), %d (dzień), %H (godzina), %M (minuta), %S (sekunda). Aby uzyskać znak procenta użyj %%.</string>
     <string name="label_status">Status</string>
     <string name="label_location">Lokalizacja</string>
     <string name="label_synchronization">Synchronizacja</string>
@@ -59,6 +61,7 @@
     <string name="warning">Uwaga</string>
     <string name="notsync_warning">Bieżąca trasa zawiera niezsynchronizowane pozycje. Rozpoczęcie nowej trasy usunie wszystkie dane.</string>
     <string name="no_track_warning">Najpierw rozpocznij nową trasę</string>
+    <string name="empty_trackname_warning">Nazwa trasy nie może być pusta</string>
     <string name="logger_running_warning">Proszę najpierw zatrzymać zapisywanie bieżącej trasy</string>
     <string name="about">O programie</string>
     <string name="about_description">Prosty program do zapisu pozycji geograficznej z funkcją przesyłania współrzędnych na własny <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>serwer μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
@@ -117,4 +120,5 @@
     <string name="pref_cat_location">Śledzenie pozycji</string>
     <string name="pref_cat_server">Serwer</string>
     <string name="pref_cat_other">Inne</string>
+    <string name="illegal_template_warning">Szablon zawiera niepoprawne znaki</string>
 </resources>
