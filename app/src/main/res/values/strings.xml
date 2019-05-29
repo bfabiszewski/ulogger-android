@@ -58,8 +58,8 @@
     <string name="pref_units_imperial">Imperial</string>
     <string name="pref_units_nautical">Nautical</string>
     <string name="pref_auto_name_title">Track name template</string>
-    <string name="pref_auto_name_summary">Template for new track name. Following patterns will be substituted with current date elements: %y&#160;(year), %m&#160;(month), %d&#160;(day), %H&#160;(hour), %M&#160;(minute), %S&#160;(second). If you need literal percent character use&#160;%%.</string>
-    <string name="pref_auto_name_default" translatable="false">Auto_%y.%m.%d_%H.%M.%S</string>
+    <string name="pref_auto_name_summary" formatted="false">Template for new track name. Following patterns will be substituted with current date elements: %y&#160;(year), %m&#160;(month), %d&#160;(day), %H&#160;(hour), %M&#160;(minute), %S&#160;(second). If you need literal percent character use&#160;%%.</string>
+    <string name="pref_auto_name_default" translatable="false" formatted="false">Auto_%y.%m.%d_%H.%M.%S</string>
     <string name="label_status">Status</string>
     <string name="label_location">Location</string>
     <string name="label_synchronization">Synchronization</string>
