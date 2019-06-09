@@ -24,13 +24,13 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMessageFragment {
 
@@ -130,10 +130,8 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
         if (context != null) {
             final TypedArray typedArray = context.obtainStyledAttributes(null, R.styleable.AlertDialog,
                     R.attr.alertDialogStyle, 0);
-            if (typedArray != null) {
-                resId = typedArray.getResourceId(R.styleable.AlertDialog_singleChoiceItemLayout, resId);
-                typedArray.recycle();
-            }
+            resId = typedArray.getResourceId(R.styleable.AlertDialog_singleChoiceItemLayout, resId);
+            typedArray.recycle();
         }
         return resId;
     }

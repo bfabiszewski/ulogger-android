@@ -16,24 +16,27 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 
 class PasswordPreference extends EditTextPreference implements EditTextPreference.OnBindEditTextListener {
     public PasswordPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        setOnBindEditTextListener(this);
     }
 
     public PasswordPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setOnBindEditTextListener(this);
     }
 
     public PasswordPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setOnBindEditTextListener(this);
     }
 
     public PasswordPreference(Context context) {
         super(context);
+        setOnBindEditTextListener(this);
     }
 
     /**
@@ -71,19 +74,5 @@ class PasswordPreference extends EditTextPreference implements EditTextPreferenc
     @Override
     public void onBindEditText(@NonNull EditText editText) {
         editText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-    }
-
-    /**
-     * Returns the {@link OnBindEditTextListener} used to configure the {@link EditText}
-     * displayed in the corresponding dialog view for this preference.
-     *
-     * @return The {@link OnBindEditTextListener} set for this preference, or {@code null} if
-     * there is no OnBindEditTextListener set
-     * @see OnBindEditTextListener
-     */
-    @Nullable
-    @Override
-    public OnBindEditTextListener getOnBindEditTextListener() {
-        return this;
     }
 }
