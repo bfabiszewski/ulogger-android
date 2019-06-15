@@ -10,12 +10,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId 'net.fabiszewski.ulogger'
-        minSdkVersion 14
-        targetSdkVersion 28
+        minSdkVersion 19
+        targetSdkVersion 29
         versionCode 207
         versionName '2.7'
     }
@@ -26,14 +26,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-dev"
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-dev'
         }
     }
 
     lintOptions {
         disable 'GoogleAppIndexingWarning'
         disable 'MissingTranslation'
+        disable 'NotificationIconCompatibility'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

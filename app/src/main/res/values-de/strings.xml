@@ -87,15 +87,12 @@
     <string name="net_disabled_warning">Achtung: Netzwerk-Provider deaktiviert</string>
     <string name="location_disabled">Es muss zumindest eine Positionsquelle aktiviert sein</string>
     <string name="location_permission_denied">Die Berechtigung für Positionsupdates muss akzeptiert werden</string>
-    <string name="write_permission_denied">Die Berechtigung fürs Schreiben auf den externen Speicher muss akzeptiert werden</string>
     <string name="using_network">Verwende Netzwerk-Provider als Positionsquelle</string>
     <string name="using_gps">Verwende GPS als Positionsquelle</string>
     <string name="export">Als GPX exportieren</string>
     <string name="nothing_to_export">Keine Daten zu exportieren</string>
     <string name="export_done">Track erfolgreich im Download-Ordner gespeichert</string>
     <string name="export_failed">Export fehlgeschlagen</string>
-    <string name="e_output_dir">Ausgabeverzeichnis konnte nicht erstellt werden</string>
-    <string name="e_external_not_writable">Schreiben auf externen Speicher nicht möglich</string>
     <string name="unknown_track">Unbekannter Track</string>
     <string name="export_started">Export gestartet</string>
     <plurals name="label_positions_behind">

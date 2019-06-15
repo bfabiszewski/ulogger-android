@@ -28,7 +28,6 @@
         android:layout_height="wrap_content"
         android:inputType="textShortMessage"
         android:text="@string/label_name"
-        android:hint="@string/label_name"
         android:ems="10"
         android:importantForAutofill="no"
         tools:targetApi="o" />

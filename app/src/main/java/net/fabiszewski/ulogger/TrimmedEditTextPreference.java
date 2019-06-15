@@ -18,7 +18,7 @@ import androidx.preference.EditTextPreference;
  * Trimmed edit text preference
  * Trims input string
  */
-
+@SuppressWarnings("WeakerAccess")
 class TrimmedEditTextPreference extends EditTextPreference {
 
     public TrimmedEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {

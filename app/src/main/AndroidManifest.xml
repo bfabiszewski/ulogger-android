@@ -19,8 +19,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- For web sync retries -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!-- For exporting tracks -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- For foreground services API >= 28 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
@@ -51,7 +49,8 @@
         <service
             android:name=".LoggerService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="location" />
         <service
             android:name=".WebSyncService"
             android:exported="false" />

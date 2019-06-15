@@ -87,15 +87,12 @@
     <string name="net_disabled_warning">Attention : réseau désactivé</string>
     <string name="location_disabled">Vous devez autoriser au moins un fournisseur de localisation</string>
     <string name="location_permission_denied">Vous devez accepter la permission pour la mise à jour de localisation</string>
-    <string name="write_permission_denied">Vous devez accepter la permission d\'accès sur un stockage externe</string>
     <string name="using_network">Utilisant le fournisseur de réseau</string>
     <string name="using_gps">Utilisant le GPS</string>
     <string name="export">Exporter en GPX</string>
     <string name="nothing_to_export">Rien à exporter</string>
     <string name="export_done">Piste sauvegardée avec succès dans le dossier de téléchargement</string>
     <string name="export_failed">Export échoué</string>
-    <string name="e_output_dir">Echec lors de la création du dossier d\'export</string>
-    <string name="e_external_not_writable">Impossible d\'écrire sur le stockage externe</string>
     <string name="unknown_track">Piste inconnue</string>
     <string name="export_started">Export débuté</string>
     <plurals name="label_positions_behind">

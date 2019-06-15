@@ -82,7 +82,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_directions_walk_white_24dp"
             android:drawableStart="@drawable/ic_directions_walk_white_24dp"
             android:drawablePadding="5dp"
             android:text="@string/label_track"
@@ -96,7 +95,6 @@
             android:text=""
             android:textColor="@color/colorBlue"
             android:textSize="@dimen/label_font_size"
-            android:layout_marginLeft="@dimen/status_indent"
             android:layout_marginStart="@dimen/status_indent" />
     </LinearLayout>
 
@@ -105,7 +103,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:drawableStart="@drawable/ic_favorite_border_white_24dp"
-        android:drawableLeft="@drawable/ic_favorite_border_white_24dp"
         android:drawablePadding="5dp"
         android:text="@string/label_status"
         android:textSize="@dimen/label_font_size"
@@ -125,7 +122,6 @@
             android:paddingLeft="3dip"
             android:paddingRight="3dip"
             android:drawableStart="@drawable/led"
-            android:drawableLeft="@drawable/led"
             android:drawablePadding="7dp"/>
     </LinearLayout>
 
@@ -136,7 +132,6 @@
         android:text="@string/dash"
         android:textColor="@color/colorBlue"
         android:textSize="@dimen/label_font_size"
-        android:layout_marginLeft="@dimen/status_indent"
         android:layout_marginStart="@dimen/status_indent" />
 
     <LinearLayout
@@ -154,7 +149,6 @@
             android:paddingLeft="3dip"
             android:paddingRight="3dip"
             android:drawableStart="@drawable/led"
-            android:drawableLeft="@drawable/led"
             android:drawablePadding="7dp" />
     </LinearLayout>
 
@@ -165,7 +159,6 @@
         android:text="@string/dash"
         android:textColor="@color/colorBlue"
         android:textSize="@dimen/label_font_size"
-        android:layout_marginLeft="@dimen/status_indent"
         android:layout_marginStart="@dimen/status_indent" />
 
     <TextView
@@ -175,7 +168,6 @@
         android:text=""
         android:textColor="@color/colorPink"
         android:textSize="@dimen/label_font_size"
-        android:layout_marginLeft="@dimen/status_indent"
         android:layout_marginStart="@dimen/status_indent" />
 
 </LinearLayout>

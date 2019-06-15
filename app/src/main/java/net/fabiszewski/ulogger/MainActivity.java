@@ -10,6 +10,8 @@
 package net.fabiszewski.ulogger;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +19,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -48,6 +51,8 @@ import java.util.TimeZone;
 
 import static net.fabiszewski.ulogger.Alert.showAlert;
 import static net.fabiszewski.ulogger.Alert.showConfirm;
+import static net.fabiszewski.ulogger.GpxExportService.GPX_EXTENSION;
+import static net.fabiszewski.ulogger.GpxExportService.GPX_MIME;
 
 /**
  * Main activity of ulogger
@@ -66,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int PERMISSION_LOCATION = 1;
     private final static int PERMISSION_WRITE = 2;
+
     private final static int RESULT_PREFS_UPDATED = 1;
+    private final static int RESULT_GPX_EXPORT = 2;
 
     private String pref_units;
     private long pref_minTimeMillis;
@@ -88,6 +95,11 @@ public class MainActivity extends AppCompatActivity {
     private static String TXT_STOP;
     private Button toggleButton;
 
+    private PorterDuffColorFilter redFilter;
+    private PorterDuffColorFilter greenFilter;
+    private PorterDuffColorFilter yellowFilter;
+
+
     /**
      * Initialization
      * @param savedInstanceState Saved state
@@ -107,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
         syncLed = findViewById(R.id.sync_led);
         locLabel = findViewById(R.id.location_status);
         locLed = findViewById(R.id.loc_led);
+        greenFilter = new PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorGreen), PorterDuff.Mode.SRC_ATOP);
+        redFilter = new PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorRed), PorterDuff.Mode.SRC_ATOP);
+        yellowFilter = new PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorYellow), PorterDuff.Mode.SRC_ATOP);
     }
 
     /**
@@ -244,6 +259,13 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(UPDATED_PREFS, true);
                 startService(intent);
             }
+        } else if (requestCode == RESULT_GPX_EXPORT && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                Intent intent = new Intent(MainActivity.this, GpxExportService.class);
+                intent.setData(data.getData());
+                startService(intent);
+                showToast(getString(R.string.export_started));
+            }
         }
     }
 
@@ -296,9 +318,15 @@ public class MainActivity extends AppCompatActivity {
      */
     private void startExport() {
         if (db.countPositions() > 0) {
-            Intent exportIntent = new Intent(MainActivity.this, GpxExportService.class);
-            startService(exportIntent);
-            showToast(getString(R.string.export_started));
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType(GPX_MIME);
+            intent.putExtra(Intent.EXTRA_TITLE, db.getTrackName() + GPX_EXTENSION);
+            try {
+                startActivityForResult(intent, RESULT_GPX_EXPORT);
+            } catch (ActivityNotFoundException e) {
+                showToast(getString(R.string.cannot_open_picker), Toast.LENGTH_LONG);
+            }
         } else {
             showToast(getString(R.string.nothing_to_export));
         }
@@ -583,15 +611,15 @@ public class MainActivity extends AppCompatActivity {
         Drawable l = TextViewCompat.getCompoundDrawablesRelative(led)[0];
         switch (color) {
             case LED_RED:
-                l.setColorFilter(ContextCompat.getColor(this, R.color.colorRed), PorterDuff.Mode.SRC_ATOP);
+                l.setColorFilter(redFilter);
                 break;
 
             case LED_GREEN:
-                l.setColorFilter(ContextCompat.getColor(this, R.color.colorGreen), PorterDuff.Mode.SRC_ATOP);
+                l.setColorFilter(greenFilter);
                 break;
 
             case LED_YELLOW:
-                l.setColorFilter(ContextCompat.getColor(this, R.color.colorYellow), PorterDuff.Mode.SRC_ATOP);
+                l.setColorFilter(yellowFilter);
                 break;
         }
         l.invalidateSelf();
@@ -636,7 +664,6 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(LoggerService.BROADCAST_LOCATION_GPS_ENABLED);
         filter.addAction(LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED);
         filter.addAction(LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED);
-        filter.addAction(GpxExportService.BROADCAST_WRITE_PERMISSION_DENIED);
         filter.addAction(GpxExportService.BROADCAST_EXPORT_FAILED);
         filter.addAction(GpxExportService.BROADCAST_EXPORT_DONE);
         filter.addAction(WebSyncService.BROADCAST_SYNC_DONE);
@@ -728,10 +755,6 @@ public class MainActivity extends AppCompatActivity {
                     showToast(getString(R.string.location_permission_denied), Toast.LENGTH_LONG);
                     setLocLed(LED_RED);
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
-                    break;
-                case GpxExportService.BROADCAST_WRITE_PERMISSION_DENIED:
-                    showToast(getString(R.string.write_permission_denied), Toast.LENGTH_LONG);
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
                     break;
             }
         }

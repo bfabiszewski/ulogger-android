@@ -11,7 +11,6 @@ package net.fabiszewski.ulogger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.preference.PreferenceManager;
@@ -34,9 +33,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Web server communication
@@ -83,9 +79,8 @@ class WebHelper {
     private final String userAgent;
     private final Context context;
 
-    private static boolean tlsSocketInitialized = false;
     // Socket timeout in milliseconds
-    static final int SOCKET_TIMEOUT = 30 * 1000;
+    private static final int SOCKET_TIMEOUT = 30 * 1000;
 
     static boolean isAuthorized = false;
 
@@ -103,19 +98,6 @@ class WebHelper {
             CookieHandler.setDefault(cookieManager);
         }
 
-        // On API < 19 connection fails if SSL is disabled on server
-        // Try with TLS enabled socket
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT && !tlsSocketInitialized) {
-            try {
-                if (Logger.DEBUG) { Log.d(TAG, "[init TLS socket factory]"); }
-                SSLSocketFactory tlsFactory = new TlsSocketFactory(context);
-                HttpsURLConnection.setDefaultSSLSocketFactory(tlsFactory);
-                tlsSocketInitialized = true;
-            } catch (Exception e) {
-                if (Logger.DEBUG) { Log.d(TAG, "[TLS socket setup error (ignored): " + e.getMessage() + "]"); }
-            }
-
-        }
     }
 
     /**

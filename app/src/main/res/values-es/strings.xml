@@ -87,15 +87,12 @@
     <string name="net_disabled_warning">Alerta: el proveedor de red está desactivado</string>
     <string name="location_disabled">Debes especificar al menos un proveedor de ubicación</string>
     <string name="location_permission_denied">Debes aceptar la solicitud de permisos de ubicación</string>
-    <string name="write_permission_denied">Debes aceptar los permisos para escribir en almacenamiento externo</string>
     <string name="using_network">Utilizando proveedor de red</string>
     <string name="using_gps">Utilizando proveedor gps</string>
     <string name="export">Exportar a GPX</string>
     <string name="nothing_to_export">No hay nada que exportar</string>
     <string name="export_done">El registro se ha guardado correctamente en la carpeta de descargas</string>
     <string name="export_failed">Ha fallado la exportación</string>
-    <string name="e_output_dir">Ha fallado al crear la carpeta de exportación</string>
-    <string name="e_external_not_writable">El almacenamiento externo no permite escribir en él</string>
     <string name="unknown_track">Registro desconocido</string>
     <string name="export_started">Exportación iniciada</string>
     <plurals name="label_positions_behind">

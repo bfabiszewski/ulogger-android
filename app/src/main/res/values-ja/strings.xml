@@ -86,15 +86,12 @@
     <string name="net_disabled_warning">警告: ネットワークプロバイダーが無効になっています</string>
     <string name="location_disabled">少なくとも一つ位置プロバイダーを有効にする必要があります</string>
     <string name="location_permission_denied">位置の更新のため、アクセス許可が必要です</string>
-    <string name="write_permission_denied">外部ストレージに書き込むため、アクセス許可が必要です</string>
     <string name="using_network">ネットワークプロバイダーの使用</string>
     <string name="using_gps">GPS プロバイダーの使用</string>
     <string name="export">GPX にエクスポート</string>
     <string name="nothing_to_export">エクスポートするものはありません</string>
     <string name="export_done">ダウンロードフォルダーにトラックを保存しました</string>
     <string name="export_failed">エクスポートに失敗しました</string>
-    <string name="e_output_dir">出力フォルダーの作成に失敗しました</string>
-    <string name="e_external_not_writable">外部ストレージに書き込みできません</string>
     <string name="unknown_track">不明なトラック</string>
     <string name="export_started">エクスポートが開始しました</string>
     <plurals name="label_positions_behind">

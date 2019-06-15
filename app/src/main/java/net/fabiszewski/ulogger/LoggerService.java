@@ -36,9 +36,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.preference.PreferenceManager;
 
-import static android.location.LocationProvider.AVAILABLE;
-import static android.location.LocationProvider.OUT_OF_SERVICE;
-import static android.location.LocationProvider.TEMPORARILY_UNAVAILABLE;
 import static net.fabiszewski.ulogger.MainActivity.UPDATED_PREFS;
 
 /**
@@ -50,15 +47,15 @@ import static net.fabiszewski.ulogger.MainActivity.UPDATED_PREFS;
 public class LoggerService extends Service {
 
     private static final String TAG = LoggerService.class.getSimpleName();
+    public static final String BROADCAST_LOCATION_DISABLED = "net.fabiszewski.ulogger.broadcast.location_disabled";
+    public static final String BROADCAST_LOCATION_GPS_DISABLED = "net.fabiszewski.ulogger.broadcast.gps_disabled";
+    public static final String BROADCAST_LOCATION_GPS_ENABLED = "net.fabiszewski.ulogger.broadcast.gps_enabled";
+    public static final String BROADCAST_LOCATION_NETWORK_DISABLED = "net.fabiszewski.ulogger.broadcast.network_disabled";
+    public static final String BROADCAST_LOCATION_NETWORK_ENABLED = "net.fabiszewski.ulogger.broadcast.network_enabled";
+    public static final String BROADCAST_LOCATION_PERMISSION_DENIED = "net.fabiszewski.ulogger.broadcast.location_permission_denied";
     public static final String BROADCAST_LOCATION_STARTED = "net.fabiszewski.ulogger.broadcast.location_started";
     public static final String BROADCAST_LOCATION_STOPPED = "net.fabiszewski.ulogger.broadcast.location_stopped";
     public static final String BROADCAST_LOCATION_UPDATED = "net.fabiszewski.ulogger.broadcast.location_updated";
-    public static final String BROADCAST_LOCATION_PERMISSION_DENIED = "net.fabiszewski.ulogger.broadcast.location_permission_denied";
-    public static final String BROADCAST_LOCATION_NETWORK_DISABLED = "net.fabiszewski.ulogger.broadcast.network_disabled";
-    public static final String BROADCAST_LOCATION_GPS_DISABLED = "net.fabiszewski.ulogger.broadcast.gps_disabled";
-    public static final String BROADCAST_LOCATION_NETWORK_ENABLED = "net.fabiszewski.ulogger.broadcast.network_enabled";
-    public static final String BROADCAST_LOCATION_GPS_ENABLED = "net.fabiszewski.ulogger.broadcast.gps_enabled";
-    public static final String BROADCAST_LOCATION_DISABLED = "net.fabiszewski.ulogger.broadcast.location_disabled";
     private boolean liveSync = false;
     private Intent syncIntent;
 
@@ -398,11 +395,7 @@ public class LoggerService extends Service {
             if (!skipLocation(loc)) {
 
                 lastLocation = loc;
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    lastUpdateRealtime = SystemClock.elapsedRealtime();
-                } else {
-                    lastUpdateRealtime = loc.getElapsedRealtimeNanos() / 1000000;
-                }
+                lastUpdateRealtime = loc.getElapsedRealtimeNanos() / 1000000;
                 db.writeLocation(loc);
                 sendBroadcast(BROADCAST_LOCATION_UPDATED);
                 if (liveSync) {
@@ -467,33 +460,11 @@ public class LoggerService extends Service {
             }
         }
 
-        /**
-         * Callback on provider status change
-         * @param provider Provider
-         * @param status Status
-         * @param extras Extras
-         */
-        @SuppressWarnings({"unused"})
+
+        @SuppressWarnings({"deprecation", "RedundantSuppression"})
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            if (Logger.DEBUG) {
-                final String statusString;
-                switch (status) {
-                    case OUT_OF_SERVICE:
-                        statusString = "out of service";
-                        break;
-                    case TEMPORARILY_UNAVAILABLE:
-                        statusString = "temporarily unavailable";
-                        break;
-                    case AVAILABLE:
-                        statusString = "available";
-                        break;
-                    default:
-                        statusString = "unknown";
-                        break;
-                }
-                Log.d(TAG, "[location status for " + provider + " changed: " + statusString + "]");
-            }
+
         }
     }
 }

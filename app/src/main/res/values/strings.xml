@@ -105,15 +105,12 @@
     <string name="net_disabled_warning">Warning: network provider is disabled</string>
     <string name="location_disabled">You must enable at least one location provider</string>
     <string name="location_permission_denied">You must accept permission for location updates</string>
-    <string name="write_permission_denied">You must accept permission for writing to external storage</string>
     <string name="using_network">Using network provider</string>
     <string name="using_gps">Using gps provider</string>
     <string name="export">Export to GPX</string>
     <string name="nothing_to_export">Nothing to export</string>
-    <string name="export_done">Track successfully saved to downloads folder</string>
+    <string name="export_done">Track successfully saved</string>
     <string name="export_failed">Export failed</string>
-    <string name="e_output_dir">Failed to create output folder</string>
-    <string name="e_external_not_writable">External storage not writable</string>
     <string name="unknown_track">Unknown track</string>
     <string name="export_started">Export started</string>
     <plurals name="label_positions_behind">
@@ -129,4 +126,6 @@
     <string name="pref_cat_server">Server</string>
     <string name="pref_cat_other">Other</string>
     <string name="illegal_template_warning">Template contains illegal characters</string>
+    <string name="cannot_open_picker">Cannot open file picker</string>
+    <string name="e_open_out_stream">Failed to open output stream</string>
 </resources>

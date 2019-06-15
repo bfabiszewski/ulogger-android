@@ -95,15 +95,12 @@
     <string name="net_disabled_warning">Uwaga: usługa lokalizacji wg sieci jest wyłączona</string>
     <string name="location_disabled">Należy włączyć przynajmniej jedną usługę lokalizacji</string>
     <string name="location_permission_denied">Należy zaakceptować zgodę na dostęp do lokalizacji</string>
-    <string name="write_permission_denied">Należy wyrazić zgodę na zapis do zewnętrznego nośnika</string>
     <string name="using_network">Uzyskano dostęp do lokalizacji z sieci</string>
     <string name="using_gps">Uzyskano dostęp do lokalizacji z GPS-a</string>
     <string name="export">Eksport do GPX</string>
     <string name="nothing_to_export">Nie ma nic do wyeksportowania</string>
     <string name="export_done">Trasa pomyślnie zapisana do folderu „Pobrane”</string>
     <string name="export_failed">Błąd eksportu</string>
-    <string name="e_output_dir">Błąd utworzenia folderu</string>
-    <string name="e_external_not_writable">Błąd zapisu do zewnętrznego nośnika</string>
     <string name="unknown_track">Nieznana trasa</string>
     <string name="export_started">Eksport rozpoczęty</string>
     <plurals name="label_positions_behind">

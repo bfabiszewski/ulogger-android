@@ -9,26 +9,20 @@
 
 package net.fabiszewski.ulogger;
 
-import android.Manifest;
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.os.Environment;
+import android.net.Uri;
 import android.util.Log;
 import android.util.Xml;
 
+import androidx.annotation.NonNull;
+
 import org.xmlpull.v1.XmlSerializer;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+import java.io.OutputStream;
 
 /**
  * Export track to GPX format
@@ -37,7 +31,6 @@ public class GpxExportService extends IntentService {
 
     private static final String TAG = GpxExportService.class.getSimpleName();
 
-    public static final String BROADCAST_WRITE_PERMISSION_DENIED = "net.fabiszewski.ulogger.broadcast.write_permission_denied";
     public static final String BROADCAST_EXPORT_FAILED = "net.fabiszewski.ulogger.broadcast.write_failed";
     public static final String BROADCAST_EXPORT_DONE = "net.fabiszewski.ulogger.broadcast.write_ok";
 
@@ -47,8 +40,8 @@ public class GpxExportService extends IntentService {
     private static final String schemaLocation = ns_gpx + " http://www.topografix.com/GPX/1/1/gpx.xsd " +
             ns_ulogger + " https://raw.githubusercontent.com/bfabiszewski/ulogger-server/master/scripts/gpx_extensions1.xsd";
 
-    private static final String ULOGGER_DIR = "ulogger_tracks";
-    private static final String GPX_EXTENSION = ".gpx";
+    public static final String GPX_EXTENSION = ".gpx";
+    public static final String GPX_MIME = "application/gpx+xml";
 
     public GpxExportService() {
         super("GpxExportService");
@@ -84,80 +77,77 @@ public class GpxExportService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-
-        if (!hasWritePermission()) {
-            // no permission to write
-            if (Logger.DEBUG) { Log.d(TAG, "[export gpx no permission]"); }
-            sendBroadcast(BROADCAST_WRITE_PERMISSION_DENIED, null);
-            return;
+        if (intent != null && intent.getData() != null) {
+            try {
+                write(intent.getData());
+                sendBroadcast(BROADCAST_EXPORT_DONE, null);
+            } catch (IOException e) {
+                sendBroadcast(BROADCAST_EXPORT_FAILED, e.getMessage());
+            }
         }
-        if (!isExternalStorageWritable()) {
-            // no access to external storage
-            if (Logger.DEBUG) { Log.d(TAG, "[export gpx not writable]"); }
-            sendBroadcast(BROADCAST_EXPORT_FAILED, getString(R.string.e_external_not_writable));
-            return;
-        }
+    }
 
+    /**
+     * Write serialized track to URI
+     * @param uri Target URI
+     * @throws IOException Exception
+     */
+    private void write(@NonNull Uri uri) throws IOException {
+        OutputStream stream = getContentResolver().openOutputStream(uri);
+        if (stream == null) {
+            throw new IOException(getString(R.string.e_open_out_stream));
+        }
+        try (BufferedOutputStream bufferedStream = new BufferedOutputStream(stream)) {
+            serialize(bufferedStream);
+            if (Logger.DEBUG) { Log.d(TAG, "[export gpx file written to " + uri); }
+        } catch (IOException|IllegalArgumentException|IllegalStateException e) {
+            if (Logger.DEBUG) { Log.d(TAG, "[export gpx write exception: " + e + "]"); }
+            throw new IOException(e.getMessage());
+        }
+    }
+
+    /**
+     * Serialize and write
+     * @param stream Output stream
+     * @throws IOException Exception
+     */
+    private void serialize(@NonNull OutputStream stream) throws IOException {
+        XmlSerializer serializer = Xml.newSerializer();
+        serializer.setOutput(stream, "UTF-8");
+
+        // header
+        serializer.startDocument("UTF-8", true);
+        serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+        serializer.setPrefix("xsi", ns_xsi);
+        serializer.setPrefix("ulogger", ns_ulogger);
+        serializer.startTag("", "gpx");
+        serializer.attribute(null, "xmlns", ns_gpx);
+        serializer.attribute(ns_xsi, "schemaLocation", schemaLocation);
+        serializer.attribute(null, "version", "1.1");
+        String creator = getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME;
+        serializer.attribute(null, "creator", creator);
+
+        // metadata
         String trackName = db.getTrackName();
         if (trackName == null) {
             trackName = getString(R.string.unknown_track);
         }
-        File dir = getDir();
-        if (dir == null) {
-            if (Logger.DEBUG) { Log.d(TAG, "[export gpx failed to create output folder]"); }
-            sendBroadcast(BROADCAST_EXPORT_FAILED, getString(R.string.e_output_dir));
-            return;
-        }
-        File file = getFile(dir, trackName);
-        int i = 0;
-        while (file.exists()) {
-            file = getFile(dir, trackName + "_" + (++i));
-        }
+        long trackTimestamp = db.getFirstTimestamp();
+        String trackTime = DbAccess.getTimeISO8601(trackTimestamp);
+        serializer.startTag(null, "metadata");
+        writeTag(serializer, "name", trackName);
+        writeTag(serializer, "time", trackTime);
+        serializer.endTag(null, "metadata");
 
-        try (FileOutputStream stream = new FileOutputStream(file);
-             OutputStreamWriter writer = new OutputStreamWriter(stream, Charset.forName("UTF-8"));
-             BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+        // track
+        serializer.startTag(null, "trk");
+        writeTag(serializer, "name", trackName);
+        writePositions(serializer);
+        serializer.endTag(null, "trk");
 
-            XmlSerializer serializer = Xml.newSerializer();
-            serializer.setOutput(bufferedWriter);
-
-            // header
-            serializer.startDocument("UTF-8", true);
-            serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
-            serializer.setPrefix("xsi", ns_xsi);
-            serializer.setPrefix("ulogger", ns_ulogger);
-            serializer.startTag("", "gpx");
-            serializer.attribute(null, "xmlns", ns_gpx);
-            serializer.attribute(ns_xsi, "schemaLocation", schemaLocation);
-            serializer.attribute(null, "version", "1.1");
-            String creator = getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME;
-            serializer.attribute(null, "creator", creator);
-
-            // metadata
-            long trackTimestamp = db.getFirstTimestamp();
-            String trackTime = DbAccess.getTimeISO8601(trackTimestamp);
-            serializer.startTag(null, "metadata");
-                writeTag(serializer, "name", trackName);
-                writeTag(serializer, "time", trackTime);
-            serializer.endTag(null, "metadata");
-
-            // track
-            serializer.startTag(null, "trk");
-                writeTag(serializer, "name", trackName);
-                writePositions(serializer);
-            serializer.endTag(null, "trk");
-
-            serializer.endTag("", "gpx");
-            serializer.endDocument();
-            serializer.flush();
-
-            if (Logger.DEBUG) { Log.d(TAG, "[export gpx file written to " + file.getPath()); }
-            sendBroadcast(BROADCAST_EXPORT_DONE, null);
-        } catch (IOException|IllegalArgumentException|IllegalStateException e) {
-            if (Logger.DEBUG) { Log.d(TAG, "[export gpx exception: " + e + "]"); }
-            sendBroadcast(BROADCAST_EXPORT_FAILED, e.getMessage());
-        }
-
+        serializer.endTag("", "gpx");
+        serializer.endDocument();
+        serializer.flush();
     }
 
     /**
@@ -236,50 +226,6 @@ public class GpxExportService extends IntentService {
         serializer.startTag(ns, name);
         serializer.text(text);
         serializer.endTag(ns, name);
-    }
-
-    /**
-     * Has user granted write permission?
-     *
-     * @return True if permission granted, false otherwise
-     */
-    private boolean hasWritePermission() {
-        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    /**
-     * Is there external storage we can write to?
-     *
-     * @return True if writable, false otherwise
-     */
-    private boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
-    }
-
-    /**
-     * Set up directory in Downloads folder
-     *
-     * @return File instance or null in case of failure
-     */
-    private File getDir() {
-        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), ULOGGER_DIR);
-        if (!dir.exists() && !dir.mkdirs()) {
-            dir = null;
-        }
-        return dir;
-    }
-
-    /**
-     * Set up file instance with given name in given folder
-     *
-     * @param dir Folder
-     * @param trackName File name
-     * @return File instance
-     */
-    private File getFile(@NonNull File dir, @NonNull String trackName) {
-        String fileName = trackName.replaceAll("[?:\"'*|/\\\\<>]", "_") + GPX_EXTENSION;
-        return new File(dir, fileName);
     }
 
     /**
