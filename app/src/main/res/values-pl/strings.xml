@@ -99,7 +99,7 @@
     <string name="using_gps">Uzyskano dostęp do lokalizacji z GPS-a</string>
     <string name="export">Eksport do GPX</string>
     <string name="nothing_to_export">Nie ma nic do wyeksportowania</string>
-    <string name="export_done">Trasa pomyślnie zapisana do folderu „Pobrane”</string>
+    <string name="export_done">Trasa została pomyślnie zapisana</string>
     <string name="export_failed">Błąd eksportu</string>
     <string name="unknown_track">Nieznana trasa</string>
     <string name="export_started">Eksport rozpoczęty</string>
@@ -118,4 +118,6 @@
     <string name="pref_cat_server">Serwer</string>
     <string name="pref_cat_other">Inne</string>
     <string name="illegal_template_warning">Szablon zawiera niepoprawne znaki</string>
+    <string name="cannot_open_picker">Nie można otworzyć okna wyboru pliku</string>
+    <string name="e_open_out_stream">Błąd otwarcia strumienia wyjściowego</string>
 </resources>

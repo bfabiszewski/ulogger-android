@@ -91,7 +91,7 @@
     <string name="using_gps">Verwende GPS als Positionsquelle</string>
     <string name="export">Als GPX exportieren</string>
     <string name="nothing_to_export">Keine Daten zu exportieren</string>
-    <string name="export_done">Track erfolgreich im Download-Ordner gespeichert</string>
+    <string name="export_done">Track erfolgreich gespeichert</string>
     <string name="export_failed">Export fehlgeschlagen</string>
     <string name="unknown_track">Unbekannter Track</string>
     <string name="export_started">Export gestartet</string>
@@ -107,4 +107,4 @@
     <string name="pref_cat_location">Positionsverfolgung</string>
     <string name="pref_cat_server">Server</string>
     <string name="pref_cat_other">Andere</string>
-</resources>
+    </resources>

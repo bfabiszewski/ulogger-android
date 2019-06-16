@@ -90,7 +90,7 @@
     <string name="using_gps">GPS プロバイダーの使用</string>
     <string name="export">GPX にエクスポート</string>
     <string name="nothing_to_export">エクスポートするものはありません</string>
-    <string name="export_done">ダウンロードフォルダーにトラックを保存しました</string>
+    <string name="export_done">トラックを保存しました</string>
     <string name="export_failed">エクスポートに失敗しました</string>
     <string name="unknown_track">不明なトラック</string>
     <string name="export_started">エクスポートが開始しました</string>
@@ -105,4 +105,4 @@
     <string name="pref_cat_location">位置追跡</string>
     <string name="pref_cat_server">サーバ</string>
     <string name="pref_cat_other">その他の</string>
-</resources>
+    </resources>
