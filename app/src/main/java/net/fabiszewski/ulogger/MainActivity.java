@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
     private final static int LED_YELLOW = 3;
 
     private final static int PERMISSION_LOCATION = 1;
-    private final static int PERMISSION_WRITE = 2;
 
     private final static int RESULT_PREFS_UPDATED = 1;
     private final static int RESULT_GPX_EXPORT = 2;
@@ -203,6 +202,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_export:
                 startExport();
                 return true;
+            case R.id.menu_waypoint:
+                addWaypoint();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -222,19 +224,12 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // onPause closed db
         db.open(this);
-        switch (requestCode) {
-            case PERMISSION_LOCATION:
-                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // onPause closed db
-                    db.open(this);
-                    startLogger();
-                }
-                break;
-            case PERMISSION_WRITE:
-                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    startExport();
-                }
-                break;
+        if (requestCode == PERMISSION_LOCATION) {
+            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // onPause closed db
+                db.open(this);
+                startLogger();
+            }
         }
         db.close();
     }
@@ -299,6 +294,18 @@ public class MainActivity extends AppCompatActivity {
         if (db.getTrackName() != null) {
             Intent intent = new Intent(MainActivity.this, LoggerService.class);
             startService(intent);
+        } else {
+            showNoTrackWarning();
+        }
+    }
+
+    /**
+     * Start logger service
+     */
+    private void addWaypoint() {
+        if (db.getTrackName() != null) {
+            Intent intentOneShot = new Intent(MainActivity.this, WaypointActivity.class);
+            startActivity(intentOneShot);
         } else {
             showNoTrackWarning();
         }

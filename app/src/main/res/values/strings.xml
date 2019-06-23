@@ -59,7 +59,7 @@
     <string name="pref_units_nautical">Nautical</string>
     <string name="pref_auto_name_title">Track name template</string>
     <string name="pref_auto_name_summary" formatted="false">Template for new track name. Following patterns will be substituted with current date elements: %y (year), %m (month), %d (day), %H (hour), %M (minute), %S (second). If you need literal percent character use %%.</string>
-    <string name="pref_auto_name_default" translatable="false" formatted="false">Auto_%y.%m.%d_%H.%M.%S</string>
+    <string name="pref_auto_name_default" formatted="false" translatable="false">Auto_%y.%m.%d_%H.%M.%S</string>
     <string name="label_status">Status</string>
     <string name="label_location">Location</string>
     <string name="label_synchronization">Synchronization</string>
@@ -108,6 +108,7 @@
     <string name="using_network">Using network provider</string>
     <string name="using_gps">Using gps provider</string>
     <string name="export">Export to GPX</string>
+    <string name="waypoint">Add waypoint</string>
     <string name="nothing_to_export">Nothing to export</string>
     <string name="export_done">Track successfully saved</string>
     <string name="export_failed">Export failed</string>

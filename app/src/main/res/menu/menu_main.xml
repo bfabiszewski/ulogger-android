@@ -23,6 +23,12 @@
         android:title="@string/export"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/menu_waypoint"
+        android:icon="@drawable/ic_add_location_white_24dp"
+        android:tint="@android:color/background_light"
+        android:title="@string/waypoint"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_about"
         android:icon="@drawable/ic_info_white_24dp"
         android:tint="@android:color/background_light"

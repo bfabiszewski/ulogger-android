@@ -76,6 +76,17 @@ class DbAccess {
      * @param loc Location
      */
     void writeLocation(Location loc) {
+        writeLocation(loc, null, null);
+    }
+
+    /**
+     * Write location to database.
+     *
+     * @param loc Location
+     * @param comment Comment
+     * @param imageUri Image URI
+     */
+    void writeLocation(Location loc, String comment, String imageUri) {
         if (Logger.DEBUG) { Log.d(TAG, "[writeLocation]"); }
         ContentValues values = new ContentValues();
         values.put(DbContract.Positions.COLUMN_TIME, loc.getTime() / 1000);
@@ -94,7 +105,12 @@ class DbAccess {
             values.put(DbContract.Positions.COLUMN_ACCURACY, loc.getAccuracy());
         }
         values.put(DbContract.Positions.COLUMN_PROVIDER, loc.getProvider());
-
+        if (comment != null && !comment.isEmpty()) {
+            values.put(DbContract.Positions.COLUMN_COMMENT, comment);
+        }
+        if (imageUri != null && !imageUri.isEmpty()) {
+            values.put(DbContract.Positions.COLUMN_IMAGE_URI, imageUri);
+        }
         db.insert(DbContract.Positions.TABLE_NAME, null, values);
     }
 
