@@ -54,8 +54,7 @@ public class GpxExportService extends IntentService {
         super.onCreate();
         if (Logger.DEBUG) { Log.d(TAG, "[gpx export create]"); }
 
-        db = DbAccess.getInstance();
-        db.open(this);
+        db = DbAccess.getOpenInstance(this);
     }
 
     /**

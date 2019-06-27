@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
-  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ Copyright (c) 2019 Bartek Fabiszewski
   ~ http://www.fabiszewski.net
   ~
   ~ This file is part of μlogger-android.
@@ -9,165 +8,24 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
-
-    <LinearLayout
-        style="?android:attr/buttonBarStyle"
+    <FrameLayout
+        android:id="@+id/fragment_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryDark"
-        android:divider="@drawable/separator"
-        android:orientation="horizontal"
-        android:showDividers="middle">
-
-        <Button
-            android:id="@+id/toggle_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="toggleLogging"
-            android:text="@string/button_start"
-            android:textColor="?android:attr/textColorAlertDialogListItem"
-            android:background="@drawable/button_background"
-            android:textStyle="bold" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="uploadData"
-            android:text="@string/button_upload"
-            android:textColor="?android:attr/textColorAlertDialogListItem"
-            android:background="@drawable/button_background"
-            android:textStyle="bold" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="newTrack"
-            android:text="@string/button_newtrack"
-            android:textColor="?android:attr/textColorAlertDialogListItem"
-            android:background="@drawable/button_background"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="trackSummary"
-        android:layout_marginTop="20dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_directions_walk_white_24dp"
-            android:drawablePadding="5dp"
-            android:text="@string/label_track"
-            android:textSize="@dimen/label_font_size"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/newtrack_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/colorBlue"
-            android:textSize="@dimen/label_font_size"
-            android:layout_marginStart="@dimen/status_indent" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:drawableStart="@drawable/ic_favorite_border_white_24dp"
-        android:drawablePadding="5dp"
-        android:text="@string/label_status"
-        android:textSize="@dimen/label_font_size"
-        android:textStyle="bold"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/loc_led"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_location"
-            android:textSize="@dimen/label_font_size"
-            android:paddingStart="3dip"
-            android:paddingLeft="3dip"
-            android:paddingRight="3dip"
-            android:drawableStart="@drawable/led"
-            android:drawablePadding="7dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/location_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/dash"
-        android:textColor="@color/colorBlue"
-        android:textSize="@dimen/label_font_size"
-        android:layout_marginStart="@dimen/status_indent" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-        <TextView
-            android:id="@+id/sync_led"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_synchronization"
-            android:textSize="@dimen/label_font_size"
-            android:paddingStart="3dip"
-            android:paddingLeft="3dip"
-            android:paddingRight="3dip"
-            android:drawableStart="@drawable/led"
-            android:drawablePadding="7dp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/sync_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/dash"
-        android:textColor="@color/colorBlue"
-        android:textSize="@dimen/label_font_size"
-        android:layout_marginStart="@dimen/status_indent" />
-
-    <TextView
-        android:id="@+id/sync_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/colorPink"
-        android:textSize="@dimen/label_font_size"
-        android:layout_marginStart="@dimen/status_indent" />
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 </LinearLayout>

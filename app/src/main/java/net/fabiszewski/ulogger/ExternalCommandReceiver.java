@@ -49,18 +49,14 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
 
     }
 
-
     /**
      * Start logger service
      * @param context Context
      */
     private void startLoggerService(Context context) {
-        DbAccess db = DbAccess.getInstance();
-        db.open(context);
-        if (db.getTrackName() == null) {
-            db.newTrack(AutoNamePreference.getAutoTrackName(context));
+        if (DbAccess.getTrackName(context) == null) {
+            DbAccess.newTrack(context, AutoNamePreference.getAutoTrackName(context));
         }
-        db.close();
         Intent intent = new Intent(context, LoggerService.class);
         ContextCompat.startForegroundService(context, intent);
     }
@@ -79,12 +75,9 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
      * @param context Context
      */
     private void uploadData(Context context) {
-        DbAccess db = DbAccess.getInstance();
-        db.open(context);
-        if (db.needsSync()) {
+        if (DbAccess.needsSync(context)) {
             Intent intent = new Intent(context, WebSyncService.class);
             context.startService(intent);
         }
-        db.close();
     }
 }

@@ -116,4 +116,7 @@
     <string name="illegal_template_warning">La plantilla contiene caracteres ilegales</string>
     <string name="cannot_open_picker">No se puede abrir el selector de archivos</string>
     <string name="e_open_out_stream">No se pudo abrir la secuencia de salida</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Red</string>
+    <string name="provider_gps_network">Red y GPS</string>
 </resources>

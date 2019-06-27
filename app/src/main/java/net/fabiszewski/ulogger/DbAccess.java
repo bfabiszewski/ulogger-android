@@ -26,10 +26,9 @@ import java.util.TimeZone;
 
 /**
  * Gateway class for database access
- *
  */
 
-class DbAccess {
+class DbAccess implements AutoCloseable {
 
     private static int openCount;
     private static DbAccess sInstance;
@@ -46,6 +45,7 @@ class DbAccess {
 
     /**
      * Get singleton instance
+     *
      * @return DbAccess singleton
      */
     static synchronized DbAccess getInstance() {
@@ -56,38 +56,50 @@ class DbAccess {
     }
 
     /**
+     * Get singleton instance with open database
+     * Needs to be closed
+     *
+     * @return DbAccess singleton
+     */
+    static synchronized DbAccess getOpenInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new DbAccess();
+        }
+        sInstance.open(context);
+        return sInstance;
+    }
+
+    /**
      * Opens database
+     *
      * @param context Context
      */
     void open(Context context) {
         synchronized (DbAccess.class) {
             if (openCount++ == 0) {
-                if (Logger.DEBUG) { Log.d(TAG, "[open]"); }
+                if (Logger.DEBUG) {
+                    Log.d(TAG, "[open]");
+                }
                 mDbHelper = DbHelper.getInstance(context.getApplicationContext());
                 db = mDbHelper.getWritableDatabase();
             }
-            if (Logger.DEBUG) { Log.d(TAG, "[+openCount = " + openCount + "]"); }
+            if (Logger.DEBUG) {
+                Log.d(TAG, "[+openCount = " + openCount + "]");
+            }
         }
     }
 
     /**
      * Write location to database.
      *
-     * @param loc Location
-     */
-    void writeLocation(Location loc) {
-        writeLocation(loc, null, null);
-    }
-
-    /**
-     * Write location to database.
-     *
-     * @param loc Location
-     * @param comment Comment
+     * @param loc      Location
+     * @param comment  Comment
      * @param imageUri Image URI
      */
-    void writeLocation(Location loc, String comment, String imageUri) {
-        if (Logger.DEBUG) { Log.d(TAG, "[writeLocation]"); }
+    private void writeLocation(Location loc, String comment, String imageUri) {
+        if (Logger.DEBUG) {
+            Log.d(TAG, "[writeLocation]");
+        }
         ContentValues values = new ContentValues();
         values.put(DbContract.Positions.COLUMN_TIME, loc.getTime() / 1000);
         values.put(DbContract.Positions.COLUMN_LATITUDE, loc.getLatitude());
@@ -115,13 +127,36 @@ class DbAccess {
     }
 
     /**
+     * Write location to database.
+     *
+     * @param loc Location
+     */
+    static void writeLocation(Context context, Location loc) {
+        writeLocation(context, loc, null, null);
+    }
+
+    /**
+     * Write location to database.
+     *
+     * @param context Context
+     * @param location Location
+     * @param comment Comment
+     * @param imageUri Image URI
+     */
+    static void writeLocation(Context context, Location location, String comment, String imageUri) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            dbAccess.writeLocation(location, comment, imageUri);
+        }
+    }
+
+    /**
      * Get result set containing all positions.
      *
      * @return Result set
      */
     Cursor getPositions() {
         return db.query(DbContract.Positions.TABLE_NAME,
-                new String[] {"*"},
+                new String[]{"*"},
                 null, null, null, null,
                 DbContract.Positions._ID);
     }
@@ -133,9 +168,9 @@ class DbAccess {
      */
     Cursor getUnsynced() {
         return db.query(DbContract.Positions.TABLE_NAME,
-                new String[] {"*"},
+                new String[]{"*"},
                 DbContract.Positions.COLUMN_SYNCED + "=?",
-                new String[] {"0"},
+                new String[]{"0"},
                 null, null,
                 DbContract.Positions._ID);
     }
@@ -146,11 +181,11 @@ class DbAccess {
      * @return Error message or null if none
      */
     @Nullable
-    String getError() {
+    private String getError() {
         Cursor query = db.query(DbContract.Positions.TABLE_NAME,
-                new String[] {DbContract.Positions.COLUMN_ERROR},
+                new String[]{DbContract.Positions.COLUMN_ERROR},
                 DbContract.Positions.COLUMN_SYNCED + "=?",
-                new String[] {"0"},
+                new String[]{"0"},
                 null, null,
                 DbContract.Positions._ID,
                 "1");
@@ -160,6 +195,19 @@ class DbAccess {
         }
         query.close();
         return error;
+    }
+
+    /**
+     * Get error message from first not synchronized position.
+     *
+     * @param context Context
+     * @return Error message or null if none
+     */
+    @Nullable
+    static String getError(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            return dbAccess.getError();
+        }
     }
 
     /**
@@ -176,7 +224,7 @@ class DbAccess {
                         "=(SELECT MIN(" + DbContract.Positions._ID + ") " +
                         "FROM " + DbContract.Positions.TABLE_NAME + " " +
                         "WHERE " + DbContract.Positions.COLUMN_SYNCED + "=?)",
-                new String[] { "0" });
+                new String[]{"0"});
     }
 
     /**
@@ -191,7 +239,7 @@ class DbAccess {
         db.update(DbContract.Positions.TABLE_NAME,
                 values,
                 DbContract.Positions._ID + "=?",
-                new String[] { String.valueOf(id) });
+                new String[]{String.valueOf(id)});
     }
 
     /**
@@ -208,11 +256,11 @@ class DbAccess {
      *
      * @return Count
      */
-    int countUnsynced() {
+    private int countUnsynced() {
         Cursor count = db.query(DbContract.Positions.TABLE_NAME,
-                new String[] {"COUNT(*)"},
+                new String[]{"COUNT(*)"},
                 DbContract.Positions.COLUMN_SYNCED + "=?",
-                new String[] {"0"},
+                new String[]{"0"},
                 null, null, null);
         int result = 0;
         if (count.moveToFirst()) {
@@ -223,13 +271,38 @@ class DbAccess {
     }
 
     /**
+     * Get number of not synchronized items.
+     *
+     * @param context Context
+     * @return Count
+     */
+    static int countUnsynced(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            return dbAccess.countUnsynced();
+        }
+    }
+
+    /**
      * Checks if database needs synchronization,
      * i.e. contains non-synchronized positions.
      *
      * @return True if synchronization needed, false otherwise
      */
-    boolean needsSync() {
+    private boolean needsSync() {
         return (countUnsynced() > 0);
+    }
+
+    /**
+     * Checks if database needs synchronization,
+     * i.e. contains non-synchronized positions.
+     *
+     * @param context Context
+     * @return True if synchronization needed, false otherwise
+     */
+    static boolean needsSync(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            return dbAccess.needsSync();
+        }
     }
 
     /**
@@ -239,7 +312,7 @@ class DbAccess {
      */
     long getFirstTimestamp() {
         Cursor query = db.query(DbContract.Positions.TABLE_NAME,
-                new String[] {DbContract.Positions.COLUMN_TIME},
+                new String[]{DbContract.Positions.COLUMN_TIME},
                 null, null, null, null,
                 DbContract.Positions._ID + " ASC",
                 "1");
@@ -256,9 +329,9 @@ class DbAccess {
      *
      * @return UTC timestamp in seconds
      */
-    long getLastTimestamp() {
+    private long getLastTimestamp() {
         Cursor query = db.query(DbContract.Positions.TABLE_NAME,
-                new String[] {DbContract.Positions.COLUMN_TIME},
+                new String[]{DbContract.Positions.COLUMN_TIME},
                 null, null, null, null,
                 DbContract.Positions._ID + " DESC",
                 "1");
@@ -271,13 +344,25 @@ class DbAccess {
     }
 
     /**
+     * Get last saved location time.
+     *
+     * @param context Context
+     * @return UTC timestamp in seconds
+     */
+    static long getLastTimestamp(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            return dbAccess.getLastTimestamp();
+        }
+    }
+
+    /**
      * Get current track id.
      *
      * @return Track id, zero if no track with valid id in database
      */
     int getTrackId() {
         Cursor track = db.query(DbContract.Track.TABLE_NAME,
-                new String[] {DbContract.Track.COLUMN_ID},
+                new String[]{DbContract.Track.COLUMN_ID},
                 DbContract.Track.COLUMN_ID + " IS NOT NULL",
                 null, null, null, null,
                 "1");
@@ -297,7 +382,7 @@ class DbAccess {
     @Nullable
     String getTrackName() {
         Cursor track = db.query(DbContract.Track.TABLE_NAME,
-                new String[] {DbContract.Track.COLUMN_NAME},
+                new String[]{DbContract.Track.COLUMN_NAME},
                 null, null, null, null, null,
                 "1");
         String trackName = null;
@@ -308,6 +393,17 @@ class DbAccess {
         return trackName;
     }
 
+    /**
+     * Get current track name.
+     *
+     * @param context Context
+     * @return Track name, null if no track in database
+     */
+    static String getTrackName(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            return dbAccess.getTrackName();
+        }
+    }
 
     /**
      * Update current track, set id.
@@ -337,40 +433,54 @@ class DbAccess {
     }
 
     /**
+     * Start new track.
+     * Deletes all previous track data and positions. Adds new track.
+     *
+     * @param context Context
+     * @param name New track name
+     */
+    static void newTrack(Context context, String name) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            dbAccess.newTrack(name);
+        }
+    }
+
+    /**
      * Get track summary
      *
      * @return TrackSummary object, null if no positions
      */
     @Nullable
-    TrackSummary getTrackSummary() {
-        Cursor positions = db.query(DbContract.Positions.TABLE_NAME,
-                new String[] {"*"},
-                null, null, null, null,
-                DbContract.Positions._ID);
-        TrackSummary summary = null;
-        if (positions.moveToFirst()) {
-            double distance = 0.0;
-            long count = 1;
-            double startLon = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
-            double startLat = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
-            long startTime = positions.getLong(positions.getColumnIndex(DbContract.Positions.COLUMN_TIME));
-            long endTime = startTime;
-            while (positions.moveToNext()) {
-                count++;
-                double endLon = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
-                double endLat = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
-                endTime = positions.getLong(positions.getColumnIndex(DbContract.Positions.COLUMN_TIME));
-                float[] results = new float[1];
-                Location.distanceBetween(startLat, startLon, endLat, endLon, results);
-                distance += results[0];
-                startLon = endLon;
-                startLat = endLat;
+    static TrackSummary getTrackSummary(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context);
+            Cursor positions = db.query(DbContract.Positions.TABLE_NAME,
+                    new String[]{"*"},
+                    null, null, null, null,
+                    DbContract.Positions._ID)) {
+            TrackSummary summary = null;
+            if (positions.moveToFirst()) {
+                double distance = 0.0;
+                long count = 1;
+                double startLon = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
+                double startLat = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
+                long startTime = positions.getLong(positions.getColumnIndex(DbContract.Positions.COLUMN_TIME));
+                long endTime = startTime;
+                while (positions.moveToNext()) {
+                    count++;
+                    double endLon = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LONGITUDE));
+                    double endLat = positions.getDouble(positions.getColumnIndex(DbContract.Positions.COLUMN_LATITUDE));
+                    endTime = positions.getLong(positions.getColumnIndex(DbContract.Positions.COLUMN_TIME));
+                    float[] results = new float[1];
+                    Location.distanceBetween(startLat, startLon, endLat, endLon, results);
+                    distance += results[0];
+                    startLon = endLon;
+                    startLat = endLat;
+                }
+                long duration = endTime - startTime;
+                summary = new TrackSummary(Math.round(distance), duration, count);
             }
-            long duration = endTime - startTime;
-            summary = new TrackSummary(Math.round(distance), duration, count);
+            return summary;
         }
-        positions.close();
-        return summary;
     }
 
     /**
@@ -390,10 +500,13 @@ class DbAccess {
     /**
      * Closes database
      */
-    void close() {
+    @Override
+    public void close() {
         synchronized (DbAccess.class) {
             if (--openCount == 0) {
-                if (Logger.DEBUG) { Log.d(TAG, "[close]"); }
+                if (Logger.DEBUG) {
+                    Log.d(TAG, "[close]");
+                }
 
                 if (db != null) {
                     db.close();
@@ -402,12 +515,15 @@ class DbAccess {
                     mDbHelper.close();
                 }
             }
-            if (Logger.DEBUG) { Log.d(TAG, "[-openCount = " + openCount + "]"); }
+            if (Logger.DEBUG) {
+                Log.d(TAG, "[-openCount = " + openCount + "]");
+            }
         }
     }
 
     /**
      * Get accuracy from positions cursor
+     *
      * @param cursor Cursor
      * @return String accuracy
      */
@@ -417,6 +533,7 @@ class DbAccess {
 
     /**
      * Check if cursor contains accuracy data
+     *
      * @param cursor Cursor
      * @return True if has accuracy data
      */
@@ -426,6 +543,7 @@ class DbAccess {
 
     /**
      * Get speed from positions cursor
+     *
      * @param cursor Cursor
      * @return String speed
      */
@@ -435,6 +553,7 @@ class DbAccess {
 
     /**
      * Check if cursor contains speed data
+     *
      * @param cursor Cursor
      * @return True if has speed data
      */
@@ -444,6 +563,7 @@ class DbAccess {
 
     /**
      * Get bearing from positions cursor
+     *
      * @param cursor Cursor
      * @return String bearing
      */
@@ -453,6 +573,7 @@ class DbAccess {
 
     /**
      * Check if cursor contains bearing data
+     *
      * @param cursor Cursor
      * @return True if has bearing data
      */
@@ -462,6 +583,7 @@ class DbAccess {
 
     /**
      * Get altitude from positions cursor
+     *
      * @param cursor Cursor
      * @return String altitude
      */
@@ -471,6 +593,7 @@ class DbAccess {
 
     /**
      * Check if cursor contains altitude data
+     *
      * @param cursor Cursor
      * @return True if has altitude data
      */
@@ -480,6 +603,7 @@ class DbAccess {
 
     /**
      * Get provider from positions cursor
+     *
      * @param cursor Cursor
      * @return String provider
      */
@@ -489,6 +613,7 @@ class DbAccess {
 
     /**
      * Check if cursor contains provider data
+     *
      * @param cursor Cursor
      * @return True if has provider data
      */
@@ -498,6 +623,7 @@ class DbAccess {
 
     /**
      * Get latitude from positions cursor
+     *
      * @param cursor Cursor
      * @return String latitude
      */
@@ -507,6 +633,7 @@ class DbAccess {
 
     /**
      * Get longitude from positions cursor
+     *
      * @param cursor Cursor
      * @return String longitude
      */
@@ -516,6 +643,7 @@ class DbAccess {
 
     /**
      * Get time from positions cursor
+     *
      * @param cursor Cursor
      * @return String time
      */
@@ -525,6 +653,7 @@ class DbAccess {
 
     /**
      * Get ISO 8601 formatted time from positions cursor
+     *
      * @param cursor Cursor
      * @return String time
      */
@@ -535,6 +664,7 @@ class DbAccess {
 
     /**
      * Get ID from positions cursor
+     *
      * @param cursor Cursor
      * @return String ID
      */
@@ -544,6 +674,7 @@ class DbAccess {
 
     /**
      * Format unix timestamp as ISO 8601 time
+     *
      * @param timestamp Timestamp
      * @return Formatted time
      */

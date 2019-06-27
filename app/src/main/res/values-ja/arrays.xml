@@ -43,10 +43,4 @@
         <item>別の</item>
     </string-array>
 
-    <string-array name="providersEntries">
-        <item>GPS</item>
-        <item>ネットワーク</item>
-        <item>ネットワークと GPS</item>
-    </string-array>
-
-    </resources>
+</resources>

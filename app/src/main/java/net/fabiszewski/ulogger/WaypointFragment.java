@@ -1,0 +1,365 @@
+/*
+ * Copyright (c) 2019 Bartek Fabiszewski
+ * http://www.fabiszewski.net
+ *
+ * This file is part of μlogger-android.
+ * Licensed under GPL, either version 3, or any later.
+ * See <http://www.gnu.org/licenses/>
+ */
+
+package net.fabiszewski.ulogger;
+
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.io.IOException;
+
+import static android.app.Activity.RESULT_OK;
+
+public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback {
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_OPEN = 2;
+    private static final int PERMISSION_WRITE = 1;
+    private static final int PERMISSION_LOCATION = 2;
+    private static final int ACTION_PHOTO = 0;
+    private static final int ACTION_LIBRARY = 1;
+    private static final String KEY_URI = "keyPhotoUri";
+    private static final String KEY_LOCATION = "keyLocation";
+
+    private static final String TAG = WaypointFragment.class.getSimpleName();
+    private static final String IMAGE_MIME = "image/*";
+
+    private TextView locationTextView;
+    private TextView locationDetailsTextView;
+    private EditText commentEditText;
+    private Button saveButton;
+    private ImageView thumbnailImageView;
+    private SwipeRefreshLayout swipe;
+
+    private LoggerTask loggerTask;
+
+    private Location location = null;
+    private Uri photoUri = null;
+
+    public WaypointFragment() {
+    }
+
+    static WaypointFragment newInstance() {
+        return new WaypointFragment();
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.fragment_waypoint, container, false);
+
+        locationTextView = layout.findViewById(R.id.waypointLocation);
+        locationDetailsTextView = layout.findViewById(R.id.waypointLocationDetails);
+        commentEditText = layout.findViewById(R.id.waypointComment);
+        saveButton = layout.findViewById(R.id.waypointButton);
+        thumbnailImageView = layout.findViewById(R.id.waypointThumbnail);
+        swipe = (SwipeRefreshLayout) layout;
+        swipe.setOnRefreshListener(this::reloadTask);
+
+        saveButton.setOnClickListener(this::saveWaypoint);
+        thumbnailImageView.setOnClickListener(this::addImage);
+        if (savedInstanceState != null) {
+            restoreState(savedInstanceState);
+        }
+        return layout;
+    }
+
+    private void restoreState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(KEY_URI)) {
+            photoUri = savedInstanceState.getParcelable(KEY_URI);
+            setThumbnail();
+        }
+        if (savedInstanceState.containsKey(KEY_LOCATION)) {
+            location = savedInstanceState.getParcelable(KEY_LOCATION);
+            setLocationText();
+            saveButton.setEnabled(true);
+        }
+    }
+
+    private void reloadTask() {
+        cancelTask();
+        runTask();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (photoUri != null) {
+            outState.putParcelable(KEY_URI, photoUri);
+        }
+        if (location != null) {
+            outState.putParcelable(KEY_LOCATION, location);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!hasLocation()) {
+            runTask();
+        }
+    }
+
+    /**
+     * Start logger task
+     */
+    private void runTask() {
+        if (loggerTask == null || loggerTask.getStatus() != LoggerTask.Status.RUNNING) {
+            saveButton.setEnabled(false);
+            location = null;
+            locationTextView.setText("");
+            locationDetailsTextView.setText("");
+            loggerTask = new LoggerTask(this);
+            loggerTask.execute();
+            setRefreshing(true);
+        }
+    }
+
+    /**
+     * Stop logger task
+     */
+    private void cancelTask() {
+        if (Logger.DEBUG) { Log.d(TAG, "[cancelTask]"); }
+        if (loggerTask != null && loggerTask.getStatus() == LoggerTask.Status.RUNNING) {
+            if (Logger.DEBUG) { Log.d(TAG, "[cancelTask effective]"); }
+            loggerTask.cancel(false);
+            loggerTask = null;
+            setRefreshing(false);
+        }
+    }
+
+    private void setRefreshing(boolean refreshing) {
+        swipe.setRefreshing(refreshing);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        cancelTask();
+    }
+
+    /**
+     * Display location details
+     */
+    private void setLocationText() {
+        LocationFormatter formatter = new LocationFormatter(location);
+        locationTextView.setText(String.format("%s\n—\n%s", formatter.getLongitudeDMS(), formatter.getLatitudeDMS()));
+        locationDetailsTextView.setText(formatter.getDetails(requireContext()));
+    }
+
+    /**
+     * Save waypoint action
+     * @param view View
+     */
+    private void saveWaypoint(View view) {
+        if (hasLocation()) {
+            String comment = commentEditText.getText().toString();
+            String uri = (photoUri == null) ? null : photoUri.toString();
+            DbAccess.writeLocation(view.getContext(), location, comment, uri);
+            photoUri = null;
+            if (Logger.DEBUG) { Log.d(TAG, "[saveWaypoint: " + location + ", " + comment + ", " + uri + "]"); }
+        }
+        finish();
+    }
+
+    /**
+     * Go back to main fragment
+     */
+    private void finish() {
+        requireActivity().getSupportFragmentManager().popBackStackImmediate();
+    }
+
+    private boolean hasLocation() {
+        return location != null;
+    }
+
+    private void takePhoto() {
+        if (!hasPermissions()) {
+            return;
+        }
+        requestImageCapture();
+    }
+
+    private void requestImageCapture() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(requireContext().getPackageManager()) != null) {
+            if (photoUri == null) {
+                photoUri = ImageHelper.createImageUri(requireContext());
+            }
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            int flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION;
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                takePictureIntent.addFlags(flags);
+            }
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    private boolean hasPermissions() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            showToast("You must accept permission for writing photo to external storage");
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_WRITE) {
+            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                requestImageCapture();
+            }
+        } else if (requestCode == PERMISSION_LOCATION) {
+            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                runTask();
+            } else {
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            setThumbnail();
+        } else if (requestCode == REQUEST_IMAGE_OPEN && resultCode == RESULT_OK) {
+            if (resultData != null) {
+                photoUri = resultData.getData();
+                try {
+                    requireContext().getContentResolver().takePersistableUriPermission(photoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    setThumbnail();
+                } catch (SecurityException e) {
+                    photoUri = null;
+                    showToast("Failed to acquire persistable read permission for the image");
+                }
+            }
+        }
+    }
+
+    /**
+     * Set thumbnail on ImageView
+     */
+    private void setThumbnail() {
+        try {
+            Bitmap thumbBitmap = ImageHelper.getThumbnail(requireContext(), photoUri);
+            thumbnailImageView.setImageBitmap(thumbBitmap);
+        } catch (IOException e) {
+            if (Logger.DEBUG) { Log.d(TAG, "[setThumbnail exception: " + e + "]"); }
+        }
+    }
+
+    /**
+     * Display toast message
+     * FIXME: duplicated method
+     * @param text Message
+     */
+    private void showToast(CharSequence text) {
+        Context context = getContext();
+        if (context != null) {
+            Toast toast = Toast.makeText(requireContext(), text, Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    /**
+     * Add image action
+     * @param view View
+     */
+    private void addImage(View view) {
+        if (requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            final CharSequence[] items = new CharSequence[2];
+            items[ACTION_PHOTO] = getString(R.string.take_photo);
+            items[ACTION_LIBRARY] = getString(R.string.from_library);
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setItems(items, (dialog, item) -> {
+                if (item == ACTION_PHOTO) {
+                    takePhoto();
+                } else if (item == ACTION_LIBRARY) {
+                    pickImage();
+                }
+            });
+            builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
+            builder.show();
+        } else {
+            pickImage();
+        }
+
+    }
+
+    /**
+     * Show file picker
+     */
+    private void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(IMAGE_MIME);
+        try {
+            startActivityForResult(intent, REQUEST_IMAGE_OPEN);
+        } catch (ActivityNotFoundException e) {
+            showToast(getString(R.string.cannot_open_picker));
+        }
+    }
+
+    @Override
+    public void onLoggerTaskCompleted(Location location) {
+        this.location = location;
+        setRefreshing(false);
+        setLocationText();
+        saveButton.setEnabled(true);
+    }
+
+    @Override
+    public void onLoggerTaskFailure(int reason) {
+        if (Logger.DEBUG) { Log.d(TAG, "[onLoggerTaskFailure: " + reason + "]"); }
+        setRefreshing(false);
+        locationTextView.setText(getString(R.string.logger_task_failure));
+        if ((reason & LoggerTask.E_PERMISSION) != 0) {
+            showToast(getString(R.string.location_permission_denied));
+        }
+        if ((reason & LoggerTask.E_DISABLED) != 0) {
+            showToast(getString(R.string.location_disabled));
+        }
+    }
+}

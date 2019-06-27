@@ -36,9 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".WaypointActivity"
-            android:parentActivityName=".MainActivity" />
         <activity android:name=".SettingsActivity" />
 
         <service
@@ -52,7 +49,6 @@
         <service
             android:name=".GpxExportService"
             android:exported="false" />
-        <service android:name=".LoggerSingleService" />
 
         <receiver
             android:name=".RestartBroadcastReceiver"

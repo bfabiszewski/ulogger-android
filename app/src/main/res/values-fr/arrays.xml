@@ -43,10 +43,4 @@
         <item>autre</item>
     </string-array>
 
-    <string-array name="providersEntries">
-        <item>GPS</item>
-        <item>Réseau</item>
-        <item>Réseau et GPS</item>
-    </string-array>
-
-    </resources>
+</resources>

@@ -77,10 +77,10 @@
         <item>other</item>
     </string-array>
 
-    <string-array name="providersEntries">
-        <item>GPS</item>
-        <item>Network</item>
-        <item>Network and GPS</item>
+    <string-array name="providersEntries" translatable="false">
+        <item>@string/provider_gps</item>
+        <item>@string/provider_network</item>
+        <item>@string/provider_gps_network</item>
     </string-array>
 
     <string-array name="providersValues" translatable="false">

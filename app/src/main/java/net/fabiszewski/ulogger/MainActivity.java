@@ -9,48 +9,30 @@
 
 package net.fabiszewski.ulogger;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
-import androidx.core.widget.TextViewCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import static net.fabiszewski.ulogger.Alert.showAlert;
-import static net.fabiszewski.ulogger.Alert.showConfirm;
 import static net.fabiszewski.ulogger.GpxExportService.GPX_EXTENSION;
 import static net.fabiszewski.ulogger.GpxExportService.GPX_MIME;
 
@@ -59,45 +41,21 @@ import static net.fabiszewski.ulogger.GpxExportService.GPX_MIME;
  *
  */
 
-public class MainActivity extends AppCompatActivity {
-
-    public static final String UPDATED_PREFS = "extra_updated_prefs";
+public class MainActivity extends AppCompatActivity
+        implements FragmentManager.OnBackStackChangedListener, MainFragment.OnFragmentInteractionListener {
 
     private final String TAG = MainActivity.class.getSimpleName();
 
-    private final static int LED_GREEN = 1;
-    private final static int LED_RED = 2;
-    private final static int LED_YELLOW = 3;
-
-    private final static int PERMISSION_LOCATION = 1;
 
     private final static int RESULT_PREFS_UPDATED = 1;
     private final static int RESULT_GPX_EXPORT = 2;
+    public final static String UPDATED_PREFS = "extra_updated_prefs";
 
-    private String pref_units;
-    private long pref_minTimeMillis;
-    private boolean pref_liveSync;
-
-    private final static double KM_MILE = 0.621371;
-    private final static double KM_NMILE = 0.5399568;
-
-    private static boolean syncError = false;
-    private boolean isUploading = false;
-    private TextView syncErrorLabel;
-    private TextView syncLabel;
-    private TextView syncLed;
-    private TextView locLabel;
-    private TextView locLed;
+    public String preferenceUnits;
+    public long preferenceMinTimeMillis;
+    public boolean preferenceLiveSync;
 
     private DbAccess db;
-    private static String TXT_START;
-    private static String TXT_STOP;
-    private Button toggleButton;
-
-    private PorterDuffColorFilter redFilter;
-    private PorterDuffColorFilter greenFilter;
-    private PorterDuffColorFilter yellowFilter;
-
 
     /**
      * Initialization
@@ -107,20 +65,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         updatePreferences();
-        TXT_START = getString(R.string.button_start);
-        TXT_STOP = getString(R.string.button_stop);
         setContentView(R.layout.activity_main);
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        toggleButton = findViewById(R.id.toggle_button);
-        syncErrorLabel = findViewById(R.id.sync_error);
-        syncLabel = findViewById(R.id.sync_status);
-        syncLed = findViewById(R.id.sync_led);
-        locLabel = findViewById(R.id.location_status);
-        locLed = findViewById(R.id.loc_led);
-        greenFilter = new PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorGreen), PorterDuff.Mode.SRC_ATOP);
-        redFilter = new PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorRed), PorterDuff.Mode.SRC_ATOP);
-        yellowFilter = new PorterDuffColorFilter(ContextCompat.getColor(this, R.color.colorYellow), PorterDuff.Mode.SRC_ATOP);
+        if (savedInstanceState == null) {
+            MainFragment fragment = MainFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_placeholder, fragment).commit();
+        }
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+        //Handle when activity is recreated like on orientation Change
+        setHomeUpButton();
     }
 
     /**
@@ -130,23 +85,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (Logger.DEBUG) { Log.d(TAG, "[onResume]"); }
-
-        db = DbAccess.getInstance();
-        db.open(this);
-        String trackName = db.getTrackName();
-        if (trackName != null) {
-            updateTrackLabel(trackName);
-        }
-
-        if (LoggerService.isRunning()) {
-            toggleButton.setText(TXT_STOP);
-            setLocLed(LED_GREEN);
-        } else {
-            toggleButton.setText(TXT_START);
-            setLocLed(LED_RED);
-        }
-        registerBroadcastReceiver();
-        updateStatus();
+        db = DbAccess.getOpenInstance(this);
     }
 
     /**
@@ -155,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         if (Logger.DEBUG) { Log.d(TAG, "[onPause]"); }
-        unregisterReceiver(mBroadcastReceiver);
         if (db != null) {
             db.close();
         }
@@ -193,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.menu_settings:
-                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                Intent i = new Intent(this, SettingsActivity.class);
                 startActivityForResult(i, RESULT_PREFS_UPDATED);
                 return true;
             case R.id.menu_about:
@@ -205,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_waypoint:
                 addWaypoint();
                 return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -213,26 +154,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Callback on permission request result
-     * Called after user granted/rejected location permission
-     *
-     * @param requestCode Permission code
-     * @param permissions Permissions
-     * @param grantResults Result
+     * Reread user preferences
      */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // onPause closed db
-        db.open(this);
-        if (requestCode == PERMISSION_LOCATION) {
-            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                // onPause closed db
-                db.open(this);
-                startLogger();
-            }
-        }
-        db.close();
+    private void updatePreferences() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        preferenceUnits = prefs.getString(SettingsActivity.KEY_UNITS, getString(R.string.pref_units_default));
+        preferenceMinTimeMillis = Long.parseLong(prefs.getString(SettingsActivity.KEY_MIN_TIME, getString(R.string.pref_mintime_default))) * 1000;
+        preferenceLiveSync = prefs.getBoolean(SettingsActivity.KEY_LIVE_SYNC, false);
     }
+
+    /**
+     * Start waypoint activity
+     */
+    private void addWaypoint() {
+        if (DbAccess.getTrackName(this) != null) {
+            WaypointFragment fragment = WaypointFragment.newInstance();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_placeholder, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else {
+            showNoTrackWarning();
+        }
+    }
+
+
+    /**
+     * Display warning if track name is not set
+     */
+    public void showNoTrackWarning() {
+        showToast(getString(R.string.no_track_warning));
+    }
+
 
     /**
      * Callback on activity result.
@@ -265,62 +218,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Reread user preferences
-     */
-    private void updatePreferences() {
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        pref_units = prefs.getString(SettingsActivity.KEY_UNITS, getString(R.string.pref_units_default));
-        pref_minTimeMillis = Long.parseLong(prefs.getString(SettingsActivity.KEY_MIN_TIME, getString(R.string.pref_mintime_default))) * 1000;
-        pref_liveSync = prefs.getBoolean(SettingsActivity.KEY_LIVE_SYNC, false);
-    }
-
-    /**
-     * Called when the user clicks the Start/Stop button
-     * @param view View
-     */
-    public void toggleLogging(@SuppressWarnings("UnusedParameters") View view) {
-        if (LoggerService.isRunning()) {
-            stopLogger();
-        } else {
-            startLogger();
-        }
-    }
-
-    /**
-     * Start logger service
-     */
-    private void startLogger() {
-        // start tracking
-        if (db.getTrackName() != null) {
-            Intent intent = new Intent(MainActivity.this, LoggerService.class);
-            startService(intent);
-        } else {
-            showNoTrackWarning();
-        }
-    }
-
-    /**
-     * Start logger service
-     */
-    private void addWaypoint() {
-        if (db.getTrackName() != null) {
-            Intent intentOneShot = new Intent(MainActivity.this, WaypointActivity.class);
-            startActivity(intentOneShot);
-        } else {
-            showNoTrackWarning();
-        }
-    }
-
-    /**
-     * Stop logger service
-     */
-    private void stopLogger() {
-        // stop tracking
-        Intent intent = new Intent(MainActivity.this, LoggerService.class);
-        stopService(intent);
-    }
-
-    /**
      * Start export service
      */
     private void startExport() {
@@ -328,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType(GPX_MIME);
-            intent.putExtra(Intent.EXTRA_TITLE, db.getTrackName() + GPX_EXTENSION);
+            intent.putExtra(Intent.EXTRA_TITLE, DbAccess.getTrackName(this) + GPX_EXTENSION);
             try {
                 startActivityForResult(intent, RESULT_GPX_EXPORT);
             } catch (ActivityNotFoundException e) {
@@ -339,85 +236,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Called when the user clicks the New track button
-     * @param view View
-     */
-    public void newTrack(@SuppressWarnings("UnusedParameters") View view) {
-        if (LoggerService.isRunning()) {
-            showToast(getString(R.string.logger_running_warning));
-        } else if (db.needsSync()) {
-            showNotSyncedWarning();
-        } else {
-            showTrackDialog();
-        }
-    }
 
-    /**
-     * Called when the user clicks the Upload button
-     * @param view View
-     */
-    public void uploadData(@SuppressWarnings("UnusedParameters") View view) {
-        if (!SettingsFragment.isValidServerSetup(this)) {
-            showToast(getString(R.string.provide_user_pass_url), Toast.LENGTH_LONG);
-        } else if (db.needsSync()) {
-            Intent syncIntent = new Intent(MainActivity.this, WebSyncService.class);
-            startService(syncIntent);
-            showToast(getString(R.string.uploading_started));
-            isUploading = true;
-        } else {
-            showToast(getString(R.string.nothing_to_synchronize));
-        }
-    }
-
-    /**
-     * Called when the user clicks the track text view
-     * @param view View
-     */
-    public void trackSummary(@SuppressWarnings("UnusedParameters") View view) {
-        final TrackSummary summary = db.getTrackSummary();
-        if (summary == null) {
-            showToast(getString(R.string.no_positions));
-            return;
-        }
-
-        final AlertDialog dialog = showAlert(MainActivity.this,
-                getString(R.string.track_summary),
-                R.layout.summary,
-                R.drawable.ic_equalizer_white_24dp);
-        final Button okButton = dialog.findViewById(R.id.summary_button_ok);
-        if (okButton != null) {
-            okButton.setOnClickListener(v -> dialog.dismiss());
-        }
-        final TextView summaryDistance = dialog.findViewById(R.id.summary_distance);
-        final TextView summaryDuration = dialog.findViewById(R.id.summary_duration);
-        final TextView summaryPositions = dialog.findViewById(R.id.summary_positions);
-        double distance = (double) summary.getDistance() / 1000;
-        String unitName = getString(R.string.unit_kilometer);
-        if (pref_units.equals(getString(R.string.pref_units_imperial))) {
-            distance *= KM_MILE;
-            unitName = getString(R.string.unit_mile);
-        }
-        else if (pref_units.equals(getString(R.string.pref_units_nautical))) {
-            distance *= KM_NMILE;
-            unitName = getString(R.string.unit_nmile);
-        }
-        final NumberFormat nf = NumberFormat.getInstance();
-        nf.setMaximumFractionDigits(2);
-        final String distanceString = nf.format(distance);
-        if (summaryDistance != null) {
-            summaryDistance.setText(getString(R.string.summary_distance, distanceString, unitName));
-        }
-        final long h = summary.getDuration() / 3600;
-        final long m = summary.getDuration() % 3600 / 60;
-        if (summaryDuration != null) {
-            summaryDuration.setText(getString(R.string.summary_duration, h, m));
-        }
-        int positionsCount = (int) summary.getPositionsCount();
-        if (summaryPositions != null) {
-            summaryPositions.setText(getResources().getQuantityString(R.plurals.summary_positions, positionsCount, positionsCount));
-        }
-    }
 
     /**
      * Display toast message
@@ -462,327 +281,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Display warning before deleting not synchronized track
-     */
-    private void showNotSyncedWarning() {
-        showConfirm(MainActivity.this,
-                getString(R.string.warning),
-                getString(R.string.notsync_warning),
-                (dialog, which) -> {
-                    dialog.dismiss();
-                    showTrackDialog();
-                }
-        );
-    }
-
-    /**
-     * Display warning if track name is not set
-     */
-    private void showNoTrackWarning() {
-        showToast(getString(R.string.no_track_warning));
-    }
-
-    /**
-     * Display track name dialog
-     */
-    private void showTrackDialog() {
-        final AlertDialog dialog = showAlert(MainActivity.this,
-                getString(R.string.title_newtrack),
-                R.layout.newtrack_dialog);
-        final EditText editText = dialog.findViewById(R.id.newtrack_edittext);
-        if (editText == null) {
-            return;
-        }
-        editText.setText(AutoNamePreference.getAutoTrackName(MainActivity.this));
-        editText.setOnClickListener(view -> editText.selectAll());
-
-        final Button submit = dialog.findViewById(R.id.newtrack_button_submit);
-        if (submit != null) {
-            submit.setOnClickListener(v -> {
-                String trackName = editText.getText().toString();
-                if (trackName.length() == 0) {
-                    showToast(getString(R.string.empty_trackname_warning), Toast.LENGTH_LONG);
-                    return;
-                }
-                db.newTrack(trackName);
-                LoggerService.resetUpdateRealtime();
-                updateTrackLabel(trackName);
-                updateStatus();
-                dialog.cancel();
-            });
-        }
-
-        final Button cancel = dialog.findViewById(R.id.newtrack_button_cancel);
-        if (cancel != null) {
-            cancel.setOnClickListener(v -> dialog.cancel());
+    private void setHomeUpButton() {
+        boolean enabled = getSupportFragmentManager().getBackStackEntryCount() > 0;
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(enabled);
         }
     }
 
     /**
-     * Update track name label
-     * @param trackName Track name
+     * Called whenever the contents of the back stack change.
      */
-    private void updateTrackLabel(String trackName) {
-        final TextView trackLabel = findViewById(R.id.newtrack_label);
-        trackLabel.setText(trackName);
-    }
-
-    /**
-     * Update location tracking status label
-     * @param lastUpdateRealtime Real time of last location update
-     */
-    private void updateLocationLabel(long lastUpdateRealtime) {
-        // get last location update time
-        String timeString;
-        long timestamp = 0;
-        long elapsed = 0;
-        long dbTimestamp;
-        if (lastUpdateRealtime > 0) {
-            elapsed = (SystemClock.elapsedRealtime() - lastUpdateRealtime);
-            timestamp = System.currentTimeMillis() - elapsed;
-        } else if ((dbTimestamp = db.getLastTimestamp()) > 0) {
-            timestamp = dbTimestamp * 1000;
-            elapsed = System.currentTimeMillis() - timestamp;
-        }
-
-        if (timestamp > 0) {
-            final Date updateDate = new Date(timestamp);
-            final Calendar calendar = Calendar.getInstance();
-            calendar.setTime(updateDate);
-            final Calendar today = Calendar.getInstance();
-            SimpleDateFormat sdf;
-
-            if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR)
-                    && calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
-                sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            } else {
-                sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-            }
-            sdf.setTimeZone(TimeZone.getDefault());
-            timeString = String.format(getString(R.string.label_last_update), sdf.format(updateDate));
-        } else {
-            timeString = "-";
-        }
-        locLabel.setText(timeString);
-        // Change led if more than 2 update periods elapsed since last location update
-        if (LoggerService.isRunning() && (timestamp == 0 || elapsed > pref_minTimeMillis * 2)) {
-            setLocLed(LED_YELLOW);
-        }
-    }
-
-    /**
-     * Update synchronization status label and led
-     * @param unsynced Count of not synchronized positions
-     */
-    private void updateSyncStatus(int unsynced) {
-        String text;
-        if (unsynced > 0) {
-            text = getResources().getQuantityString(R.plurals.label_positions_behind, unsynced, unsynced);
-            if (syncError) {
-                setSyncLed(LED_RED);
-            } else {
-                setSyncLed(LED_YELLOW);
-            }
-        } else {
-            text = getString(R.string.label_synchronized);
-            setSyncLed(LED_GREEN);
-        }
-
-        syncLabel.setText(text);
-    }
-
-    /**
-     * Update location tracking and synchronization status
-     */
-    private void updateStatus() {
-        updateLocationLabel(LoggerService.lastUpdateRealtime());
-        // get sync status
-        int count = db.countUnsynced();
-        String error = db.getError();
-        if (error != null) {
-            if (Logger.DEBUG) { Log.d(TAG, "[sync error: " + error + "]"); }
-            setSyncError(error);
-        } else {
-            resetSyncError();
-        }
-        updateSyncStatus(count);
-    }
-
-    /**
-     * Set status led color
-     * @param led Led text view
-     * @param color Color (red, yellow or green)
-     */
-    private void setLedColor(TextView led, int color) {
-        Drawable l = TextViewCompat.getCompoundDrawablesRelative(led)[0];
-        switch (color) {
-            case LED_RED:
-                l.setColorFilter(redFilter);
-                break;
-
-            case LED_GREEN:
-                l.setColorFilter(greenFilter);
-                break;
-
-            case LED_YELLOW:
-                l.setColorFilter(yellowFilter);
-                break;
-        }
-        l.invalidateSelf();
-    }
-
-    /**
-     * Set synchronization status led color
-     * Red - synchronization error
-     * Yellow - synchronization delay
-     * Green - synchronized
-     * @param color Color
-     */
-    private void setSyncLed(int color) {
-        if (Logger.DEBUG) { Log.d(TAG, "[setSyncLed " + color + "]"); }
-        setLedColor(syncLed, color);
-    }
-
-    /**
-     * Set location tracking status led color
-     * Red - tracking off
-     * Yellow - tracking on, long time since last update
-     * Green - tracking on, recently updated
-     * @param color Color
-     */
-    private void setLocLed(int color) {
-        if (Logger.DEBUG) { Log.d(TAG, "[setLocLed " + color + "]"); }
-        setLedColor(locLed, color);
-    }
-
-    /**
-     * Register broadcast receiver for synchronization
-     * and tracking status updates
-     */
-    private void registerBroadcastReceiver() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(LoggerService.BROADCAST_LOCATION_STARTED);
-        filter.addAction(LoggerService.BROADCAST_LOCATION_STOPPED);
-        filter.addAction(LoggerService.BROADCAST_LOCATION_UPDATED);
-        filter.addAction(LoggerService.BROADCAST_LOCATION_DISABLED);
-        filter.addAction(LoggerService.BROADCAST_LOCATION_GPS_DISABLED);
-        filter.addAction(LoggerService.BROADCAST_LOCATION_NETWORK_DISABLED);
-        filter.addAction(LoggerService.BROADCAST_LOCATION_GPS_ENABLED);
-        filter.addAction(LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED);
-        filter.addAction(LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED);
-        filter.addAction(GpxExportService.BROADCAST_EXPORT_FAILED);
-        filter.addAction(GpxExportService.BROADCAST_EXPORT_DONE);
-        filter.addAction(WebSyncService.BROADCAST_SYNC_DONE);
-        filter.addAction(WebSyncService.BROADCAST_SYNC_FAILED);
-        registerReceiver(mBroadcastReceiver, filter);
-    }
-
-    /**
-     * Broadcast receiver
-     */
-    private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (Logger.DEBUG) { Log.d(TAG, "[broadcast received " + intent + "]"); }
-            if (intent == null || intent.getAction() == null) {
-                return;
-            }
-            switch (intent.getAction()) {
-                case LoggerService.BROADCAST_LOCATION_UPDATED:
-                    updateLocationLabel(LoggerService.lastUpdateRealtime());
-                    setLocLed(LED_GREEN);
-                    if (!pref_liveSync) {
-                        updateSyncStatus(db.countUnsynced());
-                    }
-                    break;
-                case WebSyncService.BROADCAST_SYNC_DONE:
-                    final int unsyncedCount = db.countUnsynced();
-                    updateSyncStatus(unsyncedCount);
-                    setSyncLed(LED_GREEN);
-                    // reset error flag and label
-                    resetSyncError();
-                    // showConfirm message if manual uploading
-                    if (isUploading && unsyncedCount == 0) {
-                        showToast(getString(R.string.uploading_done));
-                        isUploading = false;
-                    }
-                    break;
-                case (WebSyncService.BROADCAST_SYNC_FAILED): {
-                    updateSyncStatus(db.countUnsynced());
-                    setSyncLed(LED_RED);
-                    // set error flag and label
-                    String message = intent.getStringExtra("message");
-                    setSyncError(message);
-                    // showConfirm message if manual uploading
-                    if (isUploading) {
-                        showToast(getString(R.string.uploading_failed) + "\n" + message, Toast.LENGTH_LONG);
-                        isUploading = false;
-                    }
-                    break;
-                }
-                case LoggerService.BROADCAST_LOCATION_STARTED:
-                    toggleButton.setText(TXT_STOP);
-                    showToast(getString(R.string.tracking_started));
-                    setLocLed(LED_YELLOW);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_STOPPED:
-                    toggleButton.setText(TXT_START);
-                    showToast(getString(R.string.tracking_stopped));
-                    setLocLed(LED_RED);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_GPS_DISABLED:
-                    showToast(getString(R.string.gps_disabled_warning), Toast.LENGTH_LONG);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_NETWORK_DISABLED:
-                    showToast(getString(R.string.net_disabled_warning), Toast.LENGTH_LONG);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_DISABLED:
-                    showToast(getString(R.string.location_disabled), Toast.LENGTH_LONG);
-                    setLocLed(LED_RED);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED:
-                    showToast(getString(R.string.using_network), Toast.LENGTH_LONG);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_GPS_ENABLED:
-                    showToast(getString(R.string.using_gps), Toast.LENGTH_LONG);
-                    break;
-                case GpxExportService.BROADCAST_EXPORT_DONE:
-                    showToast(getString(R.string.export_done), Toast.LENGTH_LONG);
-                    break;
-                case GpxExportService.BROADCAST_EXPORT_FAILED: {
-                    String message = getString(R.string.export_failed);
-                    if (intent.hasExtra("message")) {
-                        message += "\n" + intent.getStringExtra("message");
-                    }
-                    showToast(message, Toast.LENGTH_LONG);
-                    break;
-                }
-                case LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED:
-                    showToast(getString(R.string.location_permission_denied), Toast.LENGTH_LONG);
-                    setLocLed(LED_RED);
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
-                    break;
-            }
-        }
-    };
-
-    /**
-     * Set sync error flag and label
-     * @param message Error message
-     */
-    private void setSyncError(String message) {
-        syncError = true;
-        syncErrorLabel.setText(message);
-    }
-
-    /**
-     * Reset sync error flag and label
-     */
-    private void resetSyncError() {
-        if (syncError) {
-            syncErrorLabel.setText(null);
-            syncError = false;
-        }
+    @Override
+    public void onBackStackChanged() {
+        setHomeUpButton();
     }
 }

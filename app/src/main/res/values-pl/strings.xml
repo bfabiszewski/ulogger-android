@@ -120,4 +120,7 @@
     <string name="illegal_template_warning">Szablon zawiera niepoprawne znaki</string>
     <string name="cannot_open_picker">Nie można otworzyć okna wyboru pliku</string>
     <string name="e_open_out_stream">Błąd otwarcia strumienia wyjściowego</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Sieć</string>
+    <string name="provider_gps_network">Sieć i GPS</string>
 </resources>

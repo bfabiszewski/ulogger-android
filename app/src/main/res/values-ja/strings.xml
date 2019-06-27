@@ -105,4 +105,7 @@
     <string name="pref_cat_location">位置追跡</string>
     <string name="pref_cat_server">サーバ</string>
     <string name="pref_cat_other">その他の</string>
-    </resources>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">ネットワーク</string>
+    <string name="provider_gps_network">ネットワークと GPS</string>
+</resources>

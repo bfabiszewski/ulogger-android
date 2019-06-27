@@ -43,10 +43,4 @@
         <item>inna</item>
     </string-array>
 
-    <string-array name="providersEntries">
-        <item>GPS</item>
-        <item>Sieć</item>
-        <item>Sieć i GPS</item>
-    </string-array>
-
-    </resources>
+</resources>

@@ -129,4 +129,16 @@
     <string name="illegal_template_warning">Template contains illegal characters</string>
     <string name="cannot_open_picker">Cannot open file picker</string>
     <string name="e_open_out_stream">Failed to open output stream</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Network</string>
+    <string name="provider_gps_network">Network and GPS</string>
+    <string name="logger_task_failure">Couldn\'t get location</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="from_library">Choose from Library</string>
+    <string name="accuracy_meters">%d m accuracy</string>
+    <string name="meters_asl">%s m a.s.l.</string>
+    <string name="label_position">Position</string>
+    <string name="label_waypoint_description">Waypoint description</string>
+    <string name="label_add_photo">Add photo</string>
+    <string name="button_save">Save</string>
 </resources>

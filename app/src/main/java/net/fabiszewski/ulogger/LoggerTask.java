@@ -9,190 +9,155 @@
 
 package net.fabiszewski.ulogger;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 
-import androidx.core.app.ActivityCompat;
-import androidx.preference.PreferenceManager;
+import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 
+
+/**
+ * Task to get location according to user preferences criteria
+ */
 class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationListener {
 
     private static final String TAG = LoggerTask.class.getSimpleName();
     private static final int E_OK = 0;
     static final int E_PERMISSION = 1;
     static final int E_DISABLED = 2;
+    private static final int TIMEOUT_MS = 30 * 1000;
 
-    private final WeakReference<Activity> weakActivity;
-    private LocationManager locManager;
+    private final WeakReference<LoggerTaskCallback> weakCallback;
+    private final LocationHelper locationHelper;
     private Location location;
-    private Looper looper;
-    private int maxAccuracy;
-    private boolean useGps;
-    private boolean useNet;
+    private volatile boolean waiting;
 
-    private int error = E_OK;
+    private int error = LocationHelper.LoggerException.E_OK;
 
-    LoggerTask(Activity activity) {
-        weakActivity = new WeakReference<>(activity);
-        locManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-        getPreferences(activity);
-        if (!canAccessLocation(activity)) {
-            error = E_PERMISSION;
-        }
+    LoggerTask(LoggerTaskCallback callback) {
+        weakCallback = new WeakReference<>(callback);
+        locationHelper = LocationHelper.getInstance(callback.getActivity());
     }
 
     @Override
     protected Location doInBackground(Void... voids) {
-        if (!isCancelled() && error == E_OK) {
-            Looper.prepare();
-            looper = Looper.myLooper();
-            if (requestLocationUpdates()) {
-                Looper.loop();
-                return location;
-            }
+        if (Logger.DEBUG) { Log.d(TAG, "[doInBackground]"); }
+        Activity activity = getActivity();
+        if (activity == null) {
+            return null;
+        }
+        if (!locationHelper.canAccessLocation()) {
+            error = E_PERMISSION;
+            return null;
+        }
+        try {
+            locationHelper.requestSingleUpdate(this, Looper.getMainLooper());
+            loop();
+            locationHelper.removeUpdates(this);
+            return location;
+        } catch (LocationHelper.LoggerException e) {
+            error = e.getCode();
         }
         return null;
+    }
+
+    /**
+     * Loop on worker thread
+     */
+    private void loop() {
+        waiting = true;
+        final long startTime = System.currentTimeMillis();
+        while (waiting) {
+            if (System.currentTimeMillis() - startTime > TIMEOUT_MS) {
+                if (Logger.DEBUG) { Log.d(TAG, "[loop timeout]"); }
+                break;
+            }
+            if (isCancelled()) {
+                if (Logger.DEBUG) { Log.d(TAG, "[loop cancelled]"); }
+                break;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ignored) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * Quit loop
+     */
+    private void quitLoop() {
+        waiting = false;
     }
 
     @Override
     protected void onPostExecute(Location location) {
         super.onPostExecute(location);
-        Activity activity = weakActivity.get();
-        if (activity instanceof ILoggerTask) {
+        LoggerTaskCallback callback = weakCallback.get();
+        if (callback != null) {
             if (error == E_OK && location != null) {
-                ((ILoggerTask) activity).onLoggerTaskCompleted(location);
+                callback.onLoggerTaskCompleted(location);
             } else {
-                ((ILoggerTask) activity).onLoggerTaskFailure(error);
+                callback.onLoggerTaskFailure(error);
             }
         }
     }
 
-    @Override
-    protected void onCancelled() {
-        exit();
-    }
 
-    /**
-     * Reread preferences
-     */
-    private void getPreferences(Activity activity) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-        maxAccuracy = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_ACCURACY, activity.getString(R.string.pref_minaccuracy_default)));
-        useGps = prefs.getBoolean(SettingsActivity.KEY_USE_GPS, providerExists(LocationManager.GPS_PROVIDER));
-        useNet = prefs.getBoolean(SettingsActivity.KEY_USE_NET, providerExists(LocationManager.NETWORK_PROVIDER));
-    }
-
-    /**
-     * Check if given provider exists on device
-     * @param provider Provider
-     * @return True if exists, false otherwise
-     */
-    private boolean providerExists(String provider) {
-        return locManager.getAllProviders().contains(provider);
-    }
-
-    /**
-     * Request location updates
-     * @return True if succeeded from at least one provider
-     */
-    private boolean requestLocationUpdates() {
-        boolean hasUpdates = false;
-        if (useNet) {
-            try {
-                locManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                if (locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                    hasUpdates = true;
-                } else {
-                    error |= E_DISABLED;
-                }
-            } catch (SecurityException e) {
-                error |= E_PERMISSION;
-            }
+    @Nullable
+    private Activity getActivity() {
+        LoggerTaskCallback callback = weakCallback.get();
+        if (callback != null) {
+            return callback.getActivity();
         }
-        if (useGps) {
-            try {
-                locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-                if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    hasUpdates = true;
-                } else {
-                    error |= E_DISABLED;
-                }
-            } catch (SecurityException e) {
-                error |= E_PERMISSION;
-            }
-        }
-        if (hasUpdates) {
-            error = E_OK;
-        }
-        return hasUpdates;
-    }
-
-    private void exit() {
-        locManager.removeUpdates(this);
-        if (looper != null) {
-            looper.quit();
-        }
-    }
-
-    /**
-     * Should the location be logged or skipped
-     * @param location Location
-     * @return True if skipped
-     */
-    private boolean skipLocation(Location location) {
-        // accuracy radius too high
-        if (location.hasAccuracy() && location.getAccuracy() > maxAccuracy) {
-            if (Logger.DEBUG) { Log.d(TAG, "[location accuracy above limit: " + location.getAccuracy() + " > " + maxAccuracy + "]"); }
-            if (!restartUpdates()) {
-                exit();
-            }
-            return true;
-        }
-        return false;
+        return null;
     }
 
     /**
      * Restart request for location updates
      *
-     * @return True if succeeded, false otherwise (eg. disabled all providers)
      */
-    private boolean restartUpdates() {
+    private void restartUpdates() throws LocationHelper.LoggerException {
         if (Logger.DEBUG) { Log.d(TAG, "[location updates restart]"); }
 
-        locManager.removeUpdates(this);
-        return requestLocationUpdates();
+        locationHelper.removeUpdates(this);
+        locationHelper.requestSingleUpdate(this, Looper.getMainLooper());
     }
 
-    /**
-     * Check if user granted permission to access location.
-     *
-     * @param context Context
-     * @return True if permission granted, false otherwise
-     */
-    private static boolean canAccessLocation(Context context) {
-        return (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-    }
 
     @Override
     public void onLocationChanged(Location location) {
         if (Logger.DEBUG) { Log.d(TAG, "[location changed: " + location + "]"); }
-
-        if (!skipLocation(location)) {
+        if (hasRequiredAccuracy(location)) {
             this.location = location;
-            exit();
+            quitLoop();
         }
+    }
+
+
+    /**
+     * Has received location requested accuracy
+     * @param location Location
+     * @return True if skipped
+     */
+    private boolean hasRequiredAccuracy(Location location) {
+
+        if (!locationHelper.hasRequiredAccuracy(location)) {
+            try {
+                restartUpdates();
+            } catch (LocationHelper.LoggerException e) {
+                quitLoop();
+            }
+            return false;
+        }
+        return true;
     }
 
     @SuppressWarnings({"deprecation", "RedundantSuppression"})
@@ -201,16 +166,27 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
 
     @Override
     public void onProviderEnabled(String provider) {
-        restartUpdates();
+        if (Logger.DEBUG) { Log.d(TAG, "[onProviderEnabled: " + provider + "]"); }
+        try {
+            restartUpdates();
+        } catch (LocationHelper.LoggerException e) {
+            quitLoop();
+        }
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        restartUpdates();
+        if (Logger.DEBUG) { Log.d(TAG, "[onProviderDisabled: " + provider + "]"); }
+        try {
+            restartUpdates();
+        } catch (LocationHelper.LoggerException e) {
+            quitLoop();
+        }
     }
 
-    public interface ILoggerTask {
+    interface LoggerTaskCallback {
         void onLoggerTaskCompleted(Location location);
         void onLoggerTaskFailure(int reason);
+        Activity getActivity();
     }
 }

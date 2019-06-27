@@ -43,10 +43,4 @@
         <item>otro</item>
     </string-array>
 
-    <string-array name="providersEntries">
-        <item>GPS</item>
-        <item>Red</item>
-        <item>Red y GPS</item>
-    </string-array>
-
-    </resources>
+</resources>

@@ -107,4 +107,7 @@
     <string name="pref_cat_location">Positionsverfolgung</string>
     <string name="pref_cat_server">Server</string>
     <string name="pref_cat_other">Andere</string>
-    </resources>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Netzwerk</string>
+    <string name="provider_gps_network">Netzwerk und GPS</string>
+</resources>
