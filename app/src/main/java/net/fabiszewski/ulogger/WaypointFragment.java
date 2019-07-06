@@ -41,6 +41,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Intent.EXTRA_LOCAL_ONLY;
+import static android.content.Intent.EXTRA_MIME_TYPES;
 
 public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback {
 
@@ -54,7 +56,6 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private static final String KEY_LOCATION = "keyLocation";
 
     private static final String TAG = WaypointFragment.class.getSimpleName();
-    private static final String IMAGE_MIME = "image/*";
 
     private TextView locationTextView;
     private TextView locationDetailsTextView;
@@ -177,6 +178,12 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         cancelTask();
     }
 
+    @Override
+    public void onDestroy() {
+        ImageHelper.clearImageCache(requireContext());
+        super.onDestroy();
+    }
+
     /**
      * Display location details
      */
@@ -192,6 +199,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      */
     private void saveWaypoint(View view) {
         if (hasLocation()) {
+            photoUri = ImageHelper.moveToAppStorage(view.getContext(), photoUri);
             String comment = commentEditText.getText().toString();
             String uri = (photoUri == null) ? null : photoUri.toString();
             DbAccess.writeLocation(view.getContext(), location, comment, uri);
@@ -262,18 +270,24 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            setThumbnail();
-        } else if (requestCode == REQUEST_IMAGE_OPEN && resultCode == RESULT_OK) {
-            if (resultData != null) {
-                photoUri = resultData.getData();
-                try {
-                    requireContext().getContentResolver().takePersistableUriPermission(photoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    setThumbnail();
-                } catch (SecurityException e) {
-                    photoUri = null;
-                    showToast("Failed to acquire persistable read permission for the image");
-                }
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_IMAGE_OPEN:
+                    if (resultData != null) {
+                        photoUri = resultData.getData();
+                    }
+                    // fall through
+                case REQUEST_IMAGE_CAPTURE:
+                    if (photoUri != null) {
+                        try {
+                            photoUri = ImageHelper.resampleIfNeeded(requireContext(), photoUri);
+                            setThumbnail();
+                        } catch (IOException e) {
+                            photoUri = null;
+                            if (Logger.DEBUG) { Log.d(TAG, "[onActivityResult exception: " + e + "]"); }
+                            showToast("Failed to save downscaled image");
+                        }
+                    }
             }
         }
     }
@@ -334,7 +348,10 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private void pickImage() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType(IMAGE_MIME);
+        intent.setType("*/*");
+        String[] mimeTypes = { "image/jpeg", "image/gif", "image/png", "image/x-ms-bmp" };
+        intent.putExtra(EXTRA_MIME_TYPES, mimeTypes);
+        intent.putExtra(EXTRA_LOCAL_ONLY, true);
         try {
             startActivityForResult(intent, REQUEST_IMAGE_OPEN);
         } catch (ActivityNotFoundException e) {

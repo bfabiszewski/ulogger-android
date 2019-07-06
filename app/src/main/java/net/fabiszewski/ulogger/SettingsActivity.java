@@ -26,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_MIN_ACCURACY = "prefMinAccuracy";
     public static final String KEY_MIN_DISTANCE = "prefMinDistance";
     public static final String KEY_MIN_TIME = "prefMinTime";
+    public static final String KEY_IMAGE_SIZE = "prefImageSize";
     public static final String KEY_PASS = "prefPass";
     public static final String KEY_PROVIDER = "prefProvider";
     public static final String KEY_UNITS = "prefUnits";

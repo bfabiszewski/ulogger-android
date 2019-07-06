@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.NoRouteToHostException;
+import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -142,7 +143,7 @@ public class WebSyncService extends IntentService {
                 Map<String, String> params = cursorToMap(cursor);
                 params.put(WebHelper.PARAM_TRACKID, String.valueOf(trackId));
                 web.postPosition(params);
-                db.setSynced(rowId);
+                db.setSynced(getApplicationContext(), rowId);
                 Intent intent = new Intent(BROADCAST_SYNC_DONE);
                 sendBroadcast(intent);
             }
@@ -177,16 +178,17 @@ public class WebSyncService extends IntentService {
      */
     private void handleError(Exception e) {
         String message;
+        String reason = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
         if (e instanceof UnknownHostException) {
-            message = getString(R.string.e_unknown_host, e.getMessage());
+            message = getString(R.string.e_unknown_host, reason);
         } else if (e instanceof MalformedURLException || e instanceof URISyntaxException) {
-            message = getString(R.string.e_bad_url, e.getMessage());
-        } else if (e instanceof ConnectException || e instanceof NoRouteToHostException) {
-            message = getString(R.string.e_connect, e.getMessage());
+            message = getString(R.string.e_bad_url, reason);
+        } else if (e instanceof ConnectException || e instanceof NoRouteToHostException || e instanceof SocketTimeoutException) {
+            message = getString(R.string.e_connect, reason);
         } else if (e instanceof IllegalStateException) {
-            message = getString(R.string.e_illegal_state, e.getMessage());
+            message = getString(R.string.e_illegal_state, reason);
         } else {
-            message = e.getMessage();
+            message = reason;
         }
         if (Logger.DEBUG) { Log.d(TAG, "[websync retry: " + message + "]"); }
 
@@ -260,6 +262,12 @@ public class WebSyncService extends IntentService {
         }
         if (DbAccess.hasProvider(cursor)) {
             params.put(WebHelper.PARAM_PROVIDER, DbAccess.getProvider(cursor));
+        }
+        if (DbAccess.hasComment(cursor)) {
+            params.put(WebHelper.PARAM_COMMENT, DbAccess.getComment(cursor));
+        }
+        if (DbAccess.hasImageUri(cursor)) {
+            params.put(WebHelper.PARAM_IMAGE, DbAccess.getImageUri(cursor));
         }
         return params;
     }

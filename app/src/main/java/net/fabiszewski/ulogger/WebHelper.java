@@ -9,10 +9,15 @@
 
 package net.fabiszewski.ulogger;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import org.json.JSONException;
@@ -25,14 +30,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookieStore;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
+import static android.util.Base64.NO_PADDING;
+import static android.util.Base64.NO_WRAP;
+import static android.util.Base64.URL_SAFE;
 
 /**
  * Web server communication
@@ -41,6 +53,12 @@ import java.util.Map;
 
 class WebHelper {
     private static final String TAG = WebSyncService.class.getSimpleName();
+    private static final int BUFFER_SIZE = 16 * 1024;
+    private static final long UPLOAD_SIZE_MAX = 10 * 1024 * 1024;
+    private static final String MULTIPART_TEXT_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s";
+    private static final String MULTIPART_FILE_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"; filename=\"upload\"\r\n" +
+            "Content-Type: %s\r\n" +
+            "Content-Transfer-Encoding: binary\r\n\r\n";
     private static CookieManager cookieManager = null;
 
     private static String host;
@@ -60,9 +78,8 @@ class WebHelper {
     static final String PARAM_BEARING = "bearing";
     static final String PARAM_ACCURACY = "accuracy";
     static final String PARAM_PROVIDER = "provider";
-    // todo add comments, images
-//    static final String PARAM_COMMENT = "comment";
-//    static final String PARAM_IMAGEID = "imageid";
+    static final String PARAM_COMMENT = "comment";
+    static final String PARAM_IMAGE = "image";
     static final String PARAM_TRACKID = "trackid";
 
     // auth
@@ -81,8 +98,10 @@ class WebHelper {
 
     // Socket timeout in milliseconds
     private static final int SOCKET_TIMEOUT = 30 * 1000;
+    private static final Random random = new Random();
 
     static boolean isAuthorized = false;
+    private byte[] delimiter;
 
     /**
      * Constructor
@@ -97,21 +116,21 @@ class WebHelper {
             cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
         }
-
     }
 
     /**
      * Send post request
+     * application/x-www-form-urlencoded
      * @param params Request parameters
      * @return Server response
      * @throws IOException Connection error
      * @throws WebAuthException Authorization error
      */
     private String postWithParams(Map<String, String> params) throws IOException, WebAuthException {
-        URL url = new URL(host + "/" + CLIENT_SCRIPT);
-        if (Logger.DEBUG) { Log.d(TAG, "[postWithParams: " + url + " : " + params + "]"); }
-        String response;
+        return postForm(params, null);
+    }
 
+    private byte[] getUrlencodedData(Map<String, String> params) throws UnsupportedEncodingException {
         StringBuilder dataString = new StringBuilder();
         for (Map.Entry<String, String> p : params.entrySet()) {
             String key = p.getKey();
@@ -123,29 +142,75 @@ class WebHelper {
                       .append("=")
                       .append(URLEncoder.encode(value, "UTF-8"));
         }
-        byte[] data = dataString.toString().getBytes();
+        return dataString.toString().getBytes(StandardCharsets.UTF_8);
+    }
 
+    /**
+     * Send post request
+     * When uri is supplied it posts multipart/form-data
+     * else application/x-www-form-urlencoded type
+     * @param params Request parameters
+     * @param uri Optional uri of file
+     * @return Server response
+     * @throws IOException Connection error
+     * @throws WebAuthException Authorization error
+     */
+    private String postForm(@NonNull Map<String, String> params, @Nullable Uri uri) throws IOException, WebAuthException {
+        boolean isMultipart = uri != null;
+        URL url = new URL(host + "/" + CLIENT_SCRIPT);
+        if (Logger.DEBUG) { Log.d(TAG, "[postForm: " + url + " : " + params + ", image=" + uri + "]"); }
+        String response;
+
+        boolean useChunkedEncoding = false;
+        byte[] data;
+        String boundary = null;
+        if (isMultipart) {
+            boundary = generateBoundary();
+            final String crlf = "\r\n";
+            final String dash = "--";
+            final String d = crlf + dash + boundary + crlf;
+            delimiter = d.getBytes(StandardCharsets.UTF_8);
+            final String closeDelimiter = crlf + dash + boundary + dash + crlf;
+            data = closeDelimiter.getBytes(StandardCharsets.UTF_8);
+            useChunkedEncoding = true;
+        } else {
+            data = getUrlencodedData(params);
+        }
         HttpURLConnection connection = null;
         InputStream in = null;
         OutputStream out = null;
         try {
-            boolean redirect;
-            int redirectTries = 5;
+            boolean retry;
+            int tries = 5;
             do {
-                redirect = false;
+                retry = false;
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setDoOutput(true);
                 connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                connection.setRequestProperty("Content-Length", Integer.toString(data.length));
                 connection.setRequestProperty("User-Agent", userAgent);
                 connection.setInstanceFollowRedirects(false);
                 connection.setConnectTimeout(SOCKET_TIMEOUT);
                 connection.setReadTimeout(SOCKET_TIMEOUT);
-                connection.setUseCaches(true);
+                connection.setUseCaches(false);
+                if (isMultipart) {
+                    connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+                    if (useChunkedEncoding) {
+                        // chunk length seems to have no effect??
+                        connection.setChunkedStreamingMode(0);
+                    }
+                } else {
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestProperty("Content-Length", Integer.toString(data.length));
+                }
 
                 out = new BufferedOutputStream(connection.getOutputStream());
-                out.write(data);
+                if (isMultipart) {
+                    writeMultipartTextParams(out, params);
+                    writeMultipartFile(out, uri);
+                    out.write(data);
+                } else {
+                    out.write(data);
+                }
                 out.flush();
 
                 int responseCode = connection.getResponseCode();
@@ -155,12 +220,12 @@ class WebHelper {
                         || responseCode == 307) {
                     URL base = connection.getURL();
                     String location = connection.getHeaderField("Location");
-                    if (Logger.DEBUG) { Log.d(TAG, "[postWithParams redirect: " + location + "]"); }
-                    if (location == null || redirectTries == 0) {
+                    if (Logger.DEBUG) { Log.d(TAG, "[postForm redirect: " + location + "]"); }
+                    if (location == null || tries == 0) {
                         throw new IOException(context.getString(R.string.e_illegal_redirect, responseCode));
                     }
-                    redirect = true;
-                    redirectTries--;
+                    retry = true;
+                    tries--;
                     url = new URL(base, location);
                     String h1 = base.getHost();
                     String h2 = url.getHost();
@@ -171,9 +236,12 @@ class WebHelper {
                         out.close();
                         connection.getInputStream().close();
                         connection.disconnect();
-                    } catch (final IOException e) {
-                        if (Logger.DEBUG) { Log.d(TAG, "[connection cleanup failed (ignored)]"); }
-                    }
+                    } catch (final IOException ignored) { }
+                }
+                else if (useChunkedEncoding && responseCode == HttpURLConnection.HTTP_NOT_IMPLEMENTED) {
+                    useChunkedEncoding = false;
+                    retry = true;
+                    tries--;
                 }
                 else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     throw new WebAuthException(context.getString(R.string.e_auth_failure, responseCode));
@@ -181,7 +249,7 @@ class WebHelper {
                 else if (responseCode != HttpURLConnection.HTTP_OK) {
                     throw new IOException(context.getString(R.string.e_http_code, responseCode));
                 }
-            } while (redirect);
+            } while (retry);
 
             in = new BufferedInputStream(connection.getInputStream());
 
@@ -203,12 +271,72 @@ class WebHelper {
                 if (connection != null) {
                     connection.disconnect();
                 }
-            } catch (final IOException e) {
-                if (Logger.DEBUG) { Log.d(TAG, "[connection cleanup failed (ignored)]"); }
-            }
+            } catch (final IOException ignored) { }
         }
-        if (Logger.DEBUG) { Log.d(TAG, "[postWithParams response: " + response + "]"); }
+        if (Logger.DEBUG) { Log.d(TAG, "[postForm response: " + response + "]"); }
         return response;
+    }
+
+    /**
+     * Write uri to output stream.
+     * File name and extension is ignored, only MIME type is sent.
+     * Errors are not propagated to allow skipping problematic file and sending only position.
+     * @param out Output stream
+     * @param uri File uri
+     */
+    private void writeMultipartFile(@NonNull OutputStream out, @NonNull Uri uri) {
+        ContentResolver cr = context.getContentResolver();
+        String fileMime = ImageHelper.getFileMime(context, uri);
+        if (fileMime == null) {
+            if (Logger.DEBUG) { Log.d(TAG, "[Skipping file, unknown mime type]"); }
+            return;
+        }
+        long fileSize = ImageHelper.getFileSize(context, uri);
+        if (fileSize > UPLOAD_SIZE_MAX) {
+            if (Logger.DEBUG) { Log.d(TAG, "[Skipping file, too large: " + fileSize + "]"); }
+            return;
+        }
+        try (InputStream fileStream = cr.openInputStream(uri)) {
+            if (fileStream == null) {
+                throw new IOException("InputStream is null");
+            }
+            out.write(delimiter);
+            String headers = String.format(MULTIPART_FILE_TEMPLATE, PARAM_IMAGE, fileMime);
+            out.write(headers.getBytes(StandardCharsets.UTF_8));
+
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int len;
+            while ((len = fileStream.read(buffer)) > 0) {
+                out.write(buffer, 0, len);
+            }
+        } catch (IOException | OutOfMemoryError fileException) {
+            if (Logger.DEBUG) { Log.d(TAG, "[Skipping file, error: " + fileException + "]"); }
+        }
+    }
+
+    /**
+     * Send text/plain parameters as part of multipart form
+     * @param out Output stream
+     * @param params Parameters
+     * @throws IOException Exception on failure
+     */
+    private void writeMultipartTextParams(OutputStream out, Map<String, String> params) throws IOException {
+        for (Map.Entry<String, String> p : params.entrySet()) {
+            out.write(delimiter);
+            String body = String.format(MULTIPART_TEXT_TEMPLATE, p.getKey(), p.getValue());
+            out.write(body.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    /**
+     * Generate random boundary for multipart form
+     * @return Boundary
+     */
+    private static String generateBoundary() {
+        byte[] token = new byte[12];
+        random.nextBytes(token);
+        String boundary = "----uLoggerBoundary";
+        return boundary + Base64.encodeToString(token, NO_PADDING|NO_WRAP|URL_SAFE);
     }
 
     /**
@@ -220,7 +348,12 @@ class WebHelper {
     void postPosition(Map<String, String> params) throws IOException, WebAuthException {
         if (Logger.DEBUG) { Log.d(TAG, "[postPosition]"); }
         params.put(PARAM_ACTION, ACTION_ADDPOS);
-        String response = postWithParams(params);
+        String response;
+        Uri uri = null;
+        if (params.containsKey(PARAM_IMAGE)) {
+            uri = Uri.parse(params.remove(PARAM_IMAGE));
+        }
+        response = postForm(params, uri);
         boolean error = true;
         try {
             JSONObject json = new JSONObject(response);

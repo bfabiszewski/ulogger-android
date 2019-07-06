@@ -77,6 +77,24 @@
         <item>other</item>
     </string-array>
 
+    <string-array name="imageSizeEntries">
+        <item>actual size</item>
+        <item>800 px</item>
+        <item>1080 px</item>
+        <item>1280 px</item>
+        <item>1920 px</item>
+        <item>other</item>
+    </string-array>
+
+    <string-array name="imageSizeValues" translatable="false">
+        <item>0</item>
+        <item>800</item>
+        <item>1080</item>
+        <item>1280</item>
+        <item>1920</item>
+        <item>other</item>
+    </string-array>
+
     <string-array name="providersEntries" translatable="false">
         <item>@string/provider_gps</item>
         <item>@string/provider_network</item>

@@ -74,6 +74,15 @@
             android:title="@string/pref_host_title"
             android:dialogMessage="@string/pref_host_summary"
             app:useSimpleSummaryProvider="true" />
+        <net.fabiszewski.ulogger.ListWithEditTextPreference
+            android:key="prefImageSize"
+            android:title="@string/pref_imagesize_title"
+            android:dialogMessage="@string/pref_imagesize_summary"
+            android:entries="@array/imageSizeEntries"
+            android:entryValues="@array/imageSizeValues"
+            android:defaultValue="@string/pref_imagesize_default"
+            ulogger:otherSummary="@string/pref_imagesize_other"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory

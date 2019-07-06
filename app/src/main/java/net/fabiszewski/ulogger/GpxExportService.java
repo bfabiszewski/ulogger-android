@@ -171,6 +171,9 @@ public class GpxExportService extends IntentService {
                 }
                 writeTag(serializer, "time", DbAccess.getTimeISO8601(cursor));
                 writeTag(serializer, "name", DbAccess.getID(cursor));
+                if (DbAccess.hasComment(cursor)) {
+                    writeTag(serializer, "desc", DbAccess.getComment(cursor));
+                }
 
                 // ulogger extensions (accuracy, speed, bearing, provider)
                 serializer.startTag(null, "extensions");

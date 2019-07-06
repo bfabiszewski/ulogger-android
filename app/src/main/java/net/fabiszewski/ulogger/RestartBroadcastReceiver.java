@@ -62,12 +62,7 @@ public class RestartBroadcastReceiver extends BroadcastReceiver {
      * @param context Context
      */
     private void startLoggerService(Context context) {
-        DbAccess db = DbAccess.getInstance();
-        db.open(context);
-        if (db.getTrackName() == null) {
-            db.newTrack(AutoNamePreference.getAutoTrackName(context));
-        }
-        db.close();
+        DbAccess.newAutoTrack(context);
         Intent intent = new Intent(context, LoggerService.class);
         ContextCompat.startForegroundService(context, intent);
     }

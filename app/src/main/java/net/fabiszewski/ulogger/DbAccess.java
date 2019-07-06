@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -162,6 +163,30 @@ class DbAccess implements AutoCloseable {
     }
 
     /**
+     * Get result set containing position with given id
+     *
+     * @param id Position id
+     * @return Image URI
+     */
+     @Nullable
+     private Uri getImageUri(int id) {
+        Cursor query = db.query(DbContract.Positions.TABLE_NAME,
+                new String[]{DbContract.Positions.COLUMN_IMAGE_URI},
+                DbContract.Positions._ID + "=?",
+                new String[]{Integer.toString(id)},
+                null, null, null);
+        Uri uri = null;
+        if (query.moveToFirst()) {
+            String imageUri = query.getString(0);
+            if (imageUri != null) {
+                uri = Uri.parse(imageUri);
+            }
+        }
+        query.close();
+        return uri;
+    }
+
+    /**
      * Get result set containing positions marked as not synchronized.
      *
      * @return Result set
@@ -232,7 +257,7 @@ class DbAccess implements AutoCloseable {
      *
      * @param id Position id
      */
-    void setSynced(int id) {
+    void setSynced(Context context, int id) {
         ContentValues values = new ContentValues();
         values.put(DbContract.Positions.COLUMN_SYNCED, "1");
         values.putNull(DbContract.Positions.COLUMN_ERROR);
@@ -240,6 +265,10 @@ class DbAccess implements AutoCloseable {
                 values,
                 DbContract.Positions._ID + "=?",
                 new String[]{String.valueOf(id)});
+        Uri uri = getImageUri(id);
+        if (uri != null) {
+            ImageHelper.deleteImage(context, uri);
+        }
     }
 
     /**
@@ -419,12 +448,12 @@ class DbAccess implements AutoCloseable {
     }
 
     /**
-     * Start new track.
+     * Set up new track.
      * Deletes all previous track data and positions. Adds new track.
      *
      * @param name New track name
      */
-    void newTrack(String name) {
+    private void newTrack(String name) {
         truncateTrack();
         truncatePositions();
         ContentValues values = new ContentValues();
@@ -433,7 +462,7 @@ class DbAccess implements AutoCloseable {
     }
 
     /**
-     * Start new track.
+     * Set up new track.
      * Deletes all previous track data and positions. Adds new track.
      *
      * @param context Context
@@ -441,7 +470,20 @@ class DbAccess implements AutoCloseable {
      */
     static void newTrack(Context context, String name) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
+            ImageHelper.clearTrackImages(context);
             dbAccess.newTrack(name);
+        }
+    }
+
+
+    /**
+     * Set up new track with default name if there is no active track.
+     * To be used in automated context
+     * @param context Context
+     */
+    static void newAutoTrack(Context context) {
+        if (getTrackName(context) == null) {
+            newTrack(context, AutoNamePreference.getAutoTrackName(context));
         }
     }
 
@@ -453,10 +495,7 @@ class DbAccess implements AutoCloseable {
     @Nullable
     static TrackSummary getTrackSummary(Context context) {
         try (DbAccess dbAccess = getOpenInstance(context);
-            Cursor positions = db.query(DbContract.Positions.TABLE_NAME,
-                    new String[]{"*"},
-                    null, null, null, null,
-                    DbContract.Positions._ID)) {
+            Cursor positions = dbAccess.getPositions()) {
             TrackSummary summary = null;
             if (positions.moveToFirst()) {
                 double distance = 0.0;
@@ -619,6 +658,46 @@ class DbAccess implements AutoCloseable {
      */
     static boolean hasProvider(Cursor cursor) {
         return !cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_PROVIDER));
+    }
+
+    /**
+     * Get comment from positions cursor
+     *
+     * @param cursor Cursor
+     * @return String comment
+     */
+    static String getComment(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_COMMENT));
+    }
+
+    /**
+     * Check if cursor contains image URI
+     *
+     * @param cursor Cursor
+     * @return True if has image URI
+     */
+    static boolean hasImageUri(Cursor cursor) {
+        return !cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_IMAGE_URI));
+    }
+
+    /**
+     * Get image URI from positions cursor
+     *
+     * @param cursor Cursor
+     * @return String URI
+     */
+    static String getImageUri(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(DbContract.Positions.COLUMN_IMAGE_URI));
+    }
+
+    /**
+     * Check if cursor contains comment data
+     *
+     * @param cursor Cursor
+     * @return True if has comment data
+     */
+    static boolean hasComment(Cursor cursor) {
+        return !cursor.isNull(cursor.getColumnIndex(DbContract.Positions.COLUMN_COMMENT));
     }
 
     /**

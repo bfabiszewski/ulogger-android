@@ -54,9 +54,7 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
      * @param context Context
      */
     private void startLoggerService(Context context) {
-        if (DbAccess.getTrackName(context) == null) {
-            DbAccess.newTrack(context, AutoNamePreference.getAutoTrackName(context));
-        }
+        DbAccess.newAutoTrack(context);
         Intent intent = new Intent(context, LoggerService.class);
         ContextCompat.startForegroundService(context, intent);
     }

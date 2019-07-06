@@ -40,6 +40,9 @@
     <string name="pref_minaccuracy_title">Minimum accuracy</string>
     <string name="pref_minaccuracy_summary">Minimum accuracy of position</string>
     <string name="pref_minaccuracy_default" translatable="false">100</string>
+    <string name="pref_imagesize_title">Image size</string>
+    <string name="pref_imagesize_summary">Maximum width/height of uploaded images in pixels. In case of downsampling resized image copy will be temporarily stored in application folder before uploading. If you choose “actual size” option no copy will be made, so original files must be available during uploading.</string>
+    <string name="pref_imagesize_default" translatable="false">800</string>
     <string name="pref_livesync_title">Live synchronization</string>
     <string name="pref_livesync_summary">Live uploading of positions to the server. Requires valid user name, password and server url.</string>
     <string name="pref_livesync_default" translatable="false">false</string>
@@ -122,6 +125,7 @@
     <string name="pref_mintime_other">Minimum time interval in seconds</string>
     <string name="pref_mindistance_other">Minimum distance in meters</string>
     <string name="pref_minaccuracy_other">Minimum accuracy in meters</string>
+    <string name="pref_imagesize_other">Maximum image width/height in pixels</string>
     <string name="unit_nmile">nm</string>
     <string name="pref_cat_location">Tracking</string>
     <string name="pref_cat_server">Server</string>
