@@ -45,10 +45,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
-    implementation 'androidx.preference:preference:1.1.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.preference:preference:1.1.0-rc01'
     implementation 'androidx.exifinterface:exifinterface:1.0.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 }

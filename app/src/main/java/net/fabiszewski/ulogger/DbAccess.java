@@ -267,7 +267,7 @@ class DbAccess implements AutoCloseable {
                 new String[]{String.valueOf(id)});
         Uri uri = getImageUri(id);
         if (uri != null) {
-            ImageHelper.deleteImage(context, uri);
+            ImageHelper.deleteLocalImage(context, uri);
         }
     }
 
@@ -308,6 +308,36 @@ class DbAccess implements AutoCloseable {
     static int countUnsynced(Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             return dbAccess.countUnsynced();
+        }
+    }
+
+    /**
+     * Get number of not synchronized items.
+     *
+     * @return Count
+     */
+    private int countImages() {
+        Cursor count = db.query(DbContract.Positions.TABLE_NAME,
+                new String[]{"COUNT(*)"},
+                DbContract.Positions.COLUMN_IMAGE_URI + " IS NOT NULL",
+                null, null, null, null);
+        int result = 0;
+        if (count.moveToFirst()) {
+            result = count.getInt(0);
+        }
+        count.close();
+        return result;
+    }
+
+    /**
+     * Get number of not synchronized items.
+     *
+     * @param context Context
+     * @return Count
+     */
+    static int countImages(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            return dbAccess.countImages();
         }
     }
 

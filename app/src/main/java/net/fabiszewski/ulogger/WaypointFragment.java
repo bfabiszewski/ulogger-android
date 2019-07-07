@@ -38,13 +38,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.io.IOException;
-
 import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.EXTRA_LOCAL_ONLY;
 import static android.content.Intent.EXTRA_MIME_TYPES;
 
-public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback {
+public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback, ImageTask.ImageTaskCallback {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_OPEN = 2;
@@ -53,6 +51,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private static final int ACTION_PHOTO = 0;
     private static final int ACTION_LIBRARY = 1;
     private static final String KEY_URI = "keyPhotoUri";
+    private static final String KEY_THUMB = "keyPhotoThumb";
     private static final String KEY_LOCATION = "keyLocation";
 
     private static final String TAG = WaypointFragment.class.getSimpleName();
@@ -65,9 +64,11 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private SwipeRefreshLayout swipe;
 
     private LoggerTask loggerTask;
+    private ImageTask imageTask;
 
     private Location location = null;
     private Uri photoUri = null;
+    private Bitmap photoThumb = null;
 
     public WaypointFragment() {
     }
@@ -107,7 +108,11 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private void restoreState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(KEY_URI)) {
             photoUri = savedInstanceState.getParcelable(KEY_URI);
-            setThumbnail();
+            setThumbnail(photoThumb);
+        }
+        if (savedInstanceState.containsKey(KEY_THUMB)) {
+            photoThumb = savedInstanceState.getParcelable(KEY_THUMB);
+            setThumbnail(photoThumb);
         }
         if (savedInstanceState.containsKey(KEY_LOCATION)) {
             location = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -117,8 +122,8 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     }
 
     private void reloadTask() {
-        cancelTask();
-        runTask();
+        cancelLoggerTask();
+        runLoggerTask();
     }
 
     @Override
@@ -126,6 +131,9 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         super.onSaveInstanceState(outState);
         if (photoUri != null) {
             outState.putParcelable(KEY_URI, photoUri);
+        }
+        if (photoThumb != null) {
+            outState.putParcelable(KEY_THUMB, photoThumb);
         }
         if (location != null) {
             outState.putParcelable(KEY_LOCATION, location);
@@ -136,14 +144,14 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     public void onResume() {
         super.onResume();
         if (!hasLocation()) {
-            runTask();
+            runLoggerTask();
         }
     }
 
     /**
      * Start logger task
      */
-    private void runTask() {
+    private void runLoggerTask() {
         if (loggerTask == null || loggerTask.getStatus() != LoggerTask.Status.RUNNING) {
             saveButton.setEnabled(false);
             location = null;
@@ -158,13 +166,26 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     /**
      * Stop logger task
      */
-    private void cancelTask() {
-        if (Logger.DEBUG) { Log.d(TAG, "[cancelTask]"); }
+    private void cancelLoggerTask() {
+        if (Logger.DEBUG) { Log.d(TAG, "[cancelLoggerTask]"); }
         if (loggerTask != null && loggerTask.getStatus() == LoggerTask.Status.RUNNING) {
-            if (Logger.DEBUG) { Log.d(TAG, "[cancelTask effective]"); }
+            if (Logger.DEBUG) { Log.d(TAG, "[cancelLoggerTask effective]"); }
             loggerTask.cancel(false);
             loggerTask = null;
             setRefreshing(false);
+        }
+    }
+
+    /**
+     * Start image task
+     */
+    private void runImageTask(@NonNull Uri uri) {
+        if (imageTask == null || imageTask.getStatus() != ImageTask.Status.RUNNING) {
+            clearImage();
+            saveButton.setEnabled(false);
+            imageTask = new ImageTask(this);
+            imageTask.execute(uri);
+            setRefreshing(true);
         }
     }
 
@@ -175,7 +196,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     @Override
     public void onDetach() {
         super.onDetach();
-        cancelTask();
+        cancelLoggerTask();
     }
 
     @Override
@@ -199,7 +220,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      */
     private void saveWaypoint(View view) {
         if (hasLocation()) {
-            photoUri = ImageHelper.moveToAppStorage(view.getContext(), photoUri);
+            photoUri = ImageHelper.moveCachedToAppStorage(view.getContext(), photoUri);
             String comment = commentEditText.getText().toString();
             String uri = (photoUri == null) ? null : photoUri.toString();
             DbAccess.writeLocation(view.getContext(), location, comment, uri);
@@ -230,9 +251,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private void requestImageCapture() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(requireContext().getPackageManager()) != null) {
-            if (photoUri == null) {
-                photoUri = ImageHelper.createImageUri(requireContext());
-            }
+            photoUri = ImageHelper.createImageUri(requireContext());
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             int flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION;
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
@@ -260,7 +279,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
             }
         } else if (requestCode == PERMISSION_LOCATION) {
             if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                runTask();
+                runLoggerTask();
             } else {
                 finish();
             }
@@ -273,34 +292,31 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_IMAGE_OPEN:
-                    if (resultData != null) {
+                    if (resultData != null && resultData.getData() != null) {
                         photoUri = resultData.getData();
+                        runImageTask(photoUri);
                     }
-                    // fall through
+                    break;
+
                 case REQUEST_IMAGE_CAPTURE:
                     if (photoUri != null) {
-                        try {
-                            photoUri = ImageHelper.resampleIfNeeded(requireContext(), photoUri);
-                            setThumbnail();
-                        } catch (IOException e) {
-                            photoUri = null;
-                            if (Logger.DEBUG) { Log.d(TAG, "[onActivityResult exception: " + e + "]"); }
-                            showToast("Failed to save downscaled image");
-                        }
+                        ImageHelper.galleryAdd(requireContext(), photoUri);
+                        runImageTask(photoUri);
                     }
+                    break;
             }
         }
     }
 
     /**
      * Set thumbnail on ImageView
+     * @param thumbnail Thumbnail bitmap, default placeholder if null
      */
-    private void setThumbnail() {
-        try {
-            Bitmap thumbBitmap = ImageHelper.getThumbnail(requireContext(), photoUri);
-            thumbnailImageView.setImageBitmap(thumbBitmap);
-        } catch (IOException e) {
-            if (Logger.DEBUG) { Log.d(TAG, "[setThumbnail exception: " + e + "]"); }
+    private void setThumbnail(@Nullable Bitmap thumbnail) {
+        if (thumbnail == null) {
+            thumbnailImageView.setImageResource(R.drawable.ic_photo_camera_gray_24dp);
+        } else {
+            thumbnailImageView.setImageBitmap(thumbnail);
         }
     }
 
@@ -322,6 +338,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * @param view View
      */
     private void addImage(View view) {
+        clearImage();
         if (requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             final CharSequence[] items = new CharSequence[2];
             items[ACTION_PHOTO] = getString(R.string.take_photo);
@@ -377,6 +394,34 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         }
         if ((reason & LoggerTask.E_DISABLED) != 0) {
             showToast(getString(R.string.location_disabled));
+        }
+    }
+
+    @Override
+    public void onImageTaskCompleted(@NonNull Uri uri, @NonNull Bitmap thumbnail) {
+        photoUri = uri;
+        photoThumb = thumbnail;
+        setThumbnail(thumbnail);
+        setRefreshing(false);
+        saveButton.setEnabled(true);
+    }
+
+    @Override
+    public void onImageTaskFailure(@NonNull String error) {
+        clearImage();
+        setRefreshing(false);
+        showToast(error);
+        saveButton.setEnabled(true);
+    }
+
+    private void clearImage() {
+        if (photoUri != null) {
+            ImageHelper.clearImageCache(requireContext());
+            photoUri = null;
+        }
+        if (photoThumb != null) {
+            photoThumb = null;
+            setThumbnail(null);
         }
     }
 }

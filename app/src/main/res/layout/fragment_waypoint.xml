@@ -93,7 +93,7 @@
                     android:layout_marginBottom="30dp"
                     android:contentDescription="@string/label_add_photo"
                     android:minHeight="@dimen/thumbnail_size"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
+                    android:src="@drawable/ic_photo_camera_gray_24dp" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

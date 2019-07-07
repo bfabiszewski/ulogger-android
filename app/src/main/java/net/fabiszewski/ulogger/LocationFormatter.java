@@ -102,7 +102,7 @@ class LocationFormatter {
         if (LocationHelper.isGps(location)) {
             provider = context.getString(R.string.provider_gps);
         } else if (LocationHelper.isNetwork(location)) {
-            provider = context.getString(R.string.provider_network).toLowerCase();
+            provider = context.getString(R.string.provider_network).toLowerCase(Locale.getDefault());
         } else {
             provider = location.getProvider();
         }
