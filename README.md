@@ -40,7 +40,11 @@ led | tracking | synchronization
   - target package: `net.fabiszewski.ulogger`
   - target class: `net.fabiszewski.ulogger.ExternalCommandReceiver`
   - action: `net.fabiszewski.ulogger.intent.action.COMMAND`
-  - extra: `"command": [command name]`, where command name is one of: `"start logger"`, `"stop logger"`, `"start upload"`, for starting and stopping position logging and starting track data upload to server (in case live tracking is off)
+  - extra: `"command": [command name]`, where command name is one of: 
+    - `"start logger"` for starting position logging
+    - `"start new logger"` for creating a New Track and starting position logging to it 
+    - `"stop logger"` for stopping position logging
+    - `"start upload"` for starting track data upload to server (in case live tracking is off)
 - third party examples:
   - Automate (LlamaLab) – Send broadcast block with `Package`, `Receiver Class` and `Action` fields as above and `Extras` field eg. `{"command": "start logger"}`
   - Tasker (joaomgcd) – System → Send intent. Fields `Action`, `Package`, `Class` as above and `Extra` field eg. `command:start logger`
