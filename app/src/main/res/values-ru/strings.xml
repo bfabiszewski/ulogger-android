@@ -1,0 +1,123 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_start">Старт</string>
+    <string name="button_stop">Стоп</string>
+    <string name="button_newtrack">Новый трeк</string>
+    <string name="button_upload">Опубликовать</string>
+    <string name="is_running" comment="substituted app_name">%s запущен</string>
+    <string name="title_newtrack">Новый трeк</string>
+    <string name="label_track">Текущий трeк</string>
+    <string name="label_newtrack_name">Имя нового трека</string>
+    <string name="label_name">Имя</string>
+    <string name="label_last_update">Последнее обновление: %s</string>
+    <string name="label_synchronized">Синхронизировано</string>
+    <string name="cancel">Отмена</string>
+    <string name="submit">Отправить</string>
+    <string name="ok">ОК</string>
+    <string name="settings">Настройки</string>
+    <string name="pref_username_title">Имя пользователя</string>
+    <string name="pref_username_summary">Имя пользователя на удаленном сервере</string>
+    <string name="pref_pass_title">Пароль</string>
+    <string name="pref_pass_summary">Пароль на удаленном сервере</string>
+    <string name="pref_host_title">Адрес сервера</string>
+    <string name="pref_host_summary">Ссылка на удаленный сервер</string>
+    <string name="pref_mintime_title">Минимальное время</string>
+    <string name="pref_mintime_summary">Минимальное время между обновлениями геопозиции</string>
+    <string name="pref_mindistance_title">Минимальная дистанция</string>
+    <string name="pref_mindistance_summary">Минимальное расстояние между обновлениями геопозиции</string>
+    <string name="pref_minaccuracy_title">Минимальная точность</string>
+    <string name="pref_minaccuracy_summary">Минимальная точность позиционирования</string>
+    <string name="pref_livesync_title">Синхронизация в реальном времени</string>
+    <string name="pref_livesync_summary">Для синхронизация с сервером в реальном времени необходимо указать действительное имя пользователя, пароль и гиперссылку на сервер.</string>
+    <string name="pref_autostart_title">Автоматический старт</string>
+    <string name="pref_autostart_summary">Приложение будет запускаться при загрузке системы</string>
+    <string name="pref_external_title">Разрешить внешнее управление</string>
+    <string name="pref_external_summary">Разрешить принимать команды от других приложений для автоматизации процессов и периодических задач.</string>
+    <string name="pref_provider_title">Настройки позиционирования</string>
+    <string name="pref_provider_summary">Позиционирование может осуществляться по спутникам gps, или с использованием сети, а так же по обоим источникам. Использование всех источников обеспечит наилучшее позиционирование, но увеличит потребление энергии батареи.</string>
+    <string name="pref_units_title">Единицы измерения</string>
+    <string name="pref_units_summary">Предпочитаемые единицы измерения для отображения в статистике трeков</string>
+    <string name="pref_units_metric">Метрическая система единиц</string>
+    <string name="pref_units_imperial">Английская система единиц</string>
+    <string name="pref_units_nautical">Естественные системы единиц</string>
+    <string name="pref_auto_name_title">Шаблон названия трэка</string>
+    <string name="pref_auto_name_summary" formatted="false">Шаблон названия нового трека. Следующие элементы будут замещены текущей датой: %y (год), %m (месяц), %d (день), %H (часы), %M (минуты), %S (секунды). Для использования знака процента введите %%.</string>
+    <string name="label_status">Статус</string>
+    <string name="label_location">Позиционирование </string>
+    <string name="label_synchronization">Синхронизация</string>
+    <string name="tracking_stopped">Запись трека остановлена</string>
+    <string name="tracking_started">Запись трека</string>
+    <string name="uploading_started">Выгрузка начата</string>
+    <string name="nothing_to_synchronize">Нечего синхронизировать</string>
+    <string name="no_positions">Текущий трек не содержит данных</string>
+    <string name="warning">Предупреждение</string>
+    <string name="notsync_warning">Текущий трек содержит не синхронизированные данные. Запуск нового трека приведет к потере этих данных.</string>
+    <string name="no_track_warning">Пожалуйста, сначала настройте новый трек</string>
+    <string name="empty_trackname_warning">Имя трека не может быть пустым</string>
+    <string name="logger_running_warning">Пожалуйста, сначала остановите текущий трек</string>
+    <string name="about">О программе</string>
+    <string name="about_description">Простой трекер с поддержкой трекинга в реальном времени и выгрузкой данных на личный <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>сервер μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Для дополнительной информации и помощи пожалуйста посетите <xliff:g id="app_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-android\">]]></xliff:g>домашнюю страницу μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Версия %s</string>
+    <string name="about_license">Лицензия: GPL</string>
+    <string name="uploading_failed">Ошибка выгрузки:</string>
+    <string name="uploading_done">Выгрузка успешно завершена</string>
+    <string name="track_summary">Статистика трека</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d позиция</item>
+        <item quantity="few">%d позиции</item>
+        <item quantity="many">%d позиций</item>
+        <item quantity="other">%d позиций</item>
+    </plurals>
+    <string name="summary_duration">%1$d часов %2$d минут</string>
+    <string name="unit_kilometer">км</string>
+    <string name="unit_mile">мили</string>
+    <string name="provide_valid_url">Пожалуйста укажите действительную ссылку на сервер</string>
+    <string name="provide_user_pass_url">Пожалуйста, сначала введите имя пользователя, пароль и ссылку на сервер. </string>
+    <string name="e_illegal_state">Ошибка, недопустимое значение: %s</string>
+    <string name="e_illegal_redirect">Неправильная переадресация: %d</string>
+    <string name="e_auth_failure">Ошибка авторизации: %d</string>
+    <string name="e_http_code">Код ошибки HTTP: %d</string>
+    <string name="e_server_response">Ошибка ответа сервера</string>
+    <string name="e_unknown_host">Неизвестный хост: %s</string>
+    <string name="e_bad_url">Неправильная гиперссылка: %s</string>
+    <string name="e_connect">Ошибка сети: %s</string>
+    <string name="gps_disabled_warning">Внимание: позиционирование по спутникам gps отключено</string>
+    <string name="net_disabled_warning">Внимание: позиционирование по сети отключено</string>
+    <string name="location_disabled">Вы должны включить хотя бы один источник геопозиционирования</string>
+    <string name="location_permission_denied">Вы должны дать разрешение на доступ к геоданным</string>
+    <string name="using_network">Использование сети</string>
+    <string name="using_gps">Использование спутников gps</string>
+    <string name="export">Экспортировать в GPX файл</string>
+    <string name="nothing_to_export">Нечего экспортировать</string>
+    <string name="export_done">Трек успешно сохранён</string>
+    <string name="export_failed">Ошибка экспортирования</string>
+    <string name="unknown_track">Неизвестный трек</string>
+    <string name="export_started">Экспортирование начато</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d позиция позади</item>
+        <item quantity="few">%d позиции позади</item>
+        <item quantity="many">%d позиций позади</item>
+        <item quantity="other">%d позиций позади</item>
+    </plurals>
+    <string name="track_server_setup_warning">Если вы измените настройки сервера, то возможно не сможете больше синхронизировать текущий трек.</string>
+    <string name="pref_mintime_other">Минимальное интервал в секундах</string>
+    <string name="pref_mindistance_other">Минимальная дистанция в метрах</string>
+    <string name="pref_minaccuracy_other">Минимальная точность в метрах</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">Запись</string>
+    <string name="pref_cat_server">Сервер</string>
+    <string name="pref_cat_other">Другое</string>
+    <string name="illegal_template_warning">Шаблон содержит недопустимые символы</string>
+    <string name="cannot_open_picker">Не могу открыть проводник</string>
+    <string name="e_open_out_stream">Ошибка при открытии </string>
+</resources>
