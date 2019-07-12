@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+    <string-array name="minTimeEntries">
+        <item>10 sekund</item>
+        <item>30 sekund</item>
+        <item>1 minuta</item>
+        <item>5 minut</item>
+        <item>15 minut</item>
+        <item>30 minut</item>
+        <item>1 hodina</item>
+        <item>jiný</item>
+    </string-array>
+
+    <string-array name="minDistanceEntries">
+        <item>žádné minimum</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+        <item>jiné</item>
+    </string-array>
+
+    <string-array name="minAccuracyEntries">
+        <item>10 m</item>
+        <item>25 m</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+        <item>jiný</item>
+    </string-array>
+
+    <string-array name="providersEntries">
+        <item>GPS</item>
+        <item>Síť</item>
+        <item>Síť a GPS</item>
+    </string-array>
+
+    </resources>

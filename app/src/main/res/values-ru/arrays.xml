@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+    <string-array name="minTimeEntries">
+        <item>10 секунд</item>
+        <item>30 секунд</item>
+        <item>1 минута</item>
+        <item>5 минут</item>
+        <item>15 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>другое</item>
+    </string-array>
+
+    <string-array name="minDistanceEntries">
+        <item>без минимума</item>
+        <item>50 м</item>
+        <item>100 м</item>
+        <item>250 м</item>
+        <item>500 м</item>
+        <item>1 км</item>
+        <item>5 км</item>
+        <item>другое</item>
+    </string-array>
+
+    <string-array name="minAccuracyEntries">
+        <item>10 м</item>
+        <item>25 м</item>
+        <item>50 м</item>
+        <item>100 м</item>
+        <item>250 м</item>
+        <item>500 м</item>
+        <item>1 км</item>
+        <item>5 км</item>
+        <item>другое</item>
+    </string-array>
+
+    <string-array name="providersEntries">
+        <item>Спутники GPS</item>
+        <item>Геопозиционирование по сети</item>
+        <item>Геопозиционирование по сети и по спутникам GPS</item>
+    </string-array>
+
+    </resources>

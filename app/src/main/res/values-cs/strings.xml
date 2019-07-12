@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_start">Start</string>
+    <string name="button_stop">Stop</string>
+    <string name="button_newtrack">Nová trasa</string>
+    <string name="button_upload">Nahrát</string>
+    <string name="is_running" comment="substituted app_name">%s běží</string>
+    <string name="title_newtrack">Nová trasa</string>
+    <string name="label_track">Aktuální trasa</string>
+    <string name="label_newtrack_name">Nový název trasy</string>
+    <string name="label_name">Název</string>
+    <string name="label_last_update">Poslední aktualizace: %s</string>
+    <string name="label_synchronized">Synchronizováno</string>
+    <string name="cancel">Zrušit</string>
+    <string name="submit">Odeslat</string>
+    <string name="ok">OK</string>
+    <string name="settings">Nastavení</string>
+    <string name="pref_username_title">Uživatelské jméno</string>
+    <string name="pref_username_summary">Přihlášení uživatele na vzdáleném serveru</string>
+    <string name="pref_pass_title">Heslo</string>
+    <string name="pref_pass_summary">Heslo uživatele na vzdáleném serveru</string>
+    <string name="pref_host_title">URL Serveru</string>
+    <string name="pref_host_summary">Základní URL vzdáleného serveru</string>
+    <string name="pref_mintime_title">Minimální doba</string>
+    <string name="pref_mintime_summary">Minimální doba mezi aktualizacemi umístění</string>
+    <string name="pref_mindistance_title">Minimální vzdálenost</string>
+    <string name="pref_mindistance_summary">Minimální vzdálenost mezi aktualizacemi umístění</string>
+    <string name="pref_minaccuracy_title">Minimální přesnost</string>
+    <string name="pref_minaccuracy_summary">Minimální přesnost polohy</string>
+    <string name="pref_livesync_title">Okamžitá synchronizace</string>
+    <string name="pref_livesync_summary">Okamžité nahrávání pozic na server. Vyžaduje platné uživatelské jméno, heslo a URL serveru.</string>
+    <string name="pref_autostart_title">Automatický start</string>
+    <string name="pref_autostart_summary">Aplikace se spustí při startu systému</string>
+    <string name="pref_external_title">Povolit externí příkazy</string>
+    <string name="pref_external_summary">Povolit přijímání příkazů z jiných aplikací pro usnadnění automatizace a plánování úloh.</string>
+    <string name="pref_provider_title">Poskytovatel umístění</string>
+    <string name="pref_provider_summary">Umístění může být určeno přes GPS, přes internet, nebo oběma. Oba poskytovatelé poskytnou nejlepší výsledky, ale vyžadují více energie.</string>
+    <string name="pref_units_title">Jednotky</string>
+    <string name="pref_units_summary">Preferované jednotky pro zobrazení souhrnu trasy</string>
+    <string name="pref_units_metric">Metrický</string>
+    <string name="pref_units_imperial">Imperiální</string>
+    <string name="pref_units_nautical">Námořní</string>
+    <string name="pref_auto_name_title">Šablona názvu trasy</string>
+    <string name="pref_auto_name_summary" formatted="false">Šablona pro nový název trasy. Následující vzory budou nahrazeny prvky aktuálního data: %y(year), %m(month), %d(day), %H(hour), %M(minute), %S(second).. Potřebujete-li doslovný procentuální znak, použijte %%.</string>
+    <string name="label_status">Stav</string>
+    <string name="label_location">Lokace</string>
+    <string name="label_synchronization">Synchronizace</string>
+    <string name="tracking_stopped">Trasování zastaveno</string>
+    <string name="tracking_started">Trasování bylo zahájeno</string>
+    <string name="uploading_started">Začalo nahrávání</string>
+    <string name="nothing_to_synchronize">Nic k synchronizaci</string>
+    <string name="no_positions">Aktuální trasa nemá žádné pozice</string>
+    <string name="warning">Upozornění</string>
+    <string name="notsync_warning">Aktuální trasa neobsahuje synchronizované pozice. Nastavení nové trasy odstraní všechna tato data.</string>
+    <string name="no_track_warning">Nejprve nastavte novou trasu</string>
+    <string name="empty_trackname_warning">Název trasy nemůže být prázdný</string>
+    <string name="logger_running_warning">Nejdříve zastavte aktuální sledování</string>
+    <string name="about">O nás...</string>
+    <string name="about_description">Jednoduchý záznamník polohy s podporou živého sledování a nahrávání pozic do vlastních stránek <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>μlogger server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Další informace a nápovědu naleznete na domovské stránce <xliff:g id="app_link_open"><![CDATA[ <a href=\"https://github.com/bfabiszewski/ulogger-android\">]]></xliff:g> μlogger <xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Verze %s</string>
+    <string name="about_license">Licence: GPL</string>
+    <string name="uploading_failed">Nahrávání se nezdařilo:</string>
+    <string name="uploading_done">Nahrávání hotovo</string>
+    <string name="track_summary">Souhrn trasy</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d pozice</item>
+        <item quantity="few">%d pozic</item>
+        <item quantity="other">%d pozic</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">Zadejte platnou adresu URL serveru</string>
+    <string name="provide_user_pass_url">Nejprve zadejte uživatele, heslo a URL serveru</string>
+    <string name="e_illegal_state">Chyba nelegálního stavu: %s</string>
+    <string name="e_illegal_redirect">Nelegální přesměrování: %d</string>
+    <string name="e_auth_failure">Selhání autorizace: %d</string>
+    <string name="e_http_code">Kód chyby HTTP: %d</string>
+    <string name="e_server_response">Chyba odezvy serveru</string>
+    <string name="e_unknown_host">Neznámý hostitel: %s</string>
+    <string name="e_bad_url">Chybné URL: %s</string>
+    <string name="e_connect">Chyba připojení: %s</string>
+    <string name="gps_disabled_warning">Upozornění: Poskytovatel gps je zakázán</string>
+    <string name="net_disabled_warning">Upozornění: poskytovatel sítě je zakázán</string>
+    <string name="location_disabled">Musíte povolit alespoň jednoho poskytovatele polohy</string>
+    <string name="location_permission_denied">Musíte souhlasit s aktualizací umístění</string>
+    <string name="using_network">Použití poskytovatele sítě</string>
+    <string name="using_gps">Použití poskytovatele gps</string>
+    <string name="export">Export do GPX</string>
+    <string name="nothing_to_export">Nic k exportu</string>
+    <string name="export_done">Trasa úspěšně uložena</string>
+    <string name="export_failed">Export se nezdařil</string>
+    <string name="unknown_track">Neznámá trasa</string>
+    <string name="export_started">Export začal</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d pozice zbývá</item>
+        <item quantity="few">%d pozice zbývají</item>
+        <item quantity="other">%d pozic zbývá</item>
+    </plurals>
+    <string name="track_server_setup_warning">Pokud změníte nastavení serveru, nemusí být možné synchronizovat aktuální trasu.</string>
+    <string name="pref_mintime_other">Minimální časový interval v sekundách</string>
+    <string name="pref_mindistance_other">Minimální vzdálenost v metrech</string>
+    <string name="pref_minaccuracy_other">Minimální přesnost v metrech</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">Trasování</string>
+    <string name="pref_cat_server">Server</string>
+    <string name="pref_cat_other">Jiný</string>
+    <string name="illegal_template_warning">Šablona obsahuje nepovolené znaky</string>
+    <string name="cannot_open_picker">Nelze otevřít nástroj pro výběr souborů</string>
+    <string name="e_open_out_stream">Nepodařilo se otevřít výstupní stream</string>
+</resources>
