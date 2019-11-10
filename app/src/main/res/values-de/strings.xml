@@ -39,6 +39,8 @@
     <string name="pref_livesync_summary">Live-Synchronisation mit Server. Gültiger Server/Benutzername/Passwort erforderlich.</string>
     <string name="pref_autostart_title">Autostart</string>
     <string name="pref_autostart_summary">Applikation beim Booten starten</string>
+    <string name="pref_external_title">Erlaube externen Zugriff</string>
+    <string name="pref_external_summary">Erlaube anderen Apps zur Automatisierung Befehle an die App zu senden.</string>
     <string name="pref_provider_title">Positionsquelle</string>
     <string name="pref_provider_summary">Position kann vom GPS, vom Netzwerk, oder von beiden ermittelt werden. Die Verwendung beider Positionsquellen liefert die besten Ergebnisse, aber benötigt mehr Batterie.</string>
     <string name="pref_units_title">Einheiten</string>
@@ -46,6 +48,8 @@
     <string name="pref_units_metric">Metrisch</string>
     <string name="pref_units_imperial">US-Meilen</string>
     <string name="pref_units_nautical">Nautisch</string>
+    <string name="pref_auto_name_title">Namensvorlage</string>
+    <string name="pref_auto_name_summary" formatted="false">Vorlage für den Namen für neue Tracks. Die folgenden Platzhalter werden mit dem aktuellen Datum und der Zeit ersetzt: %y (Jahr), %m (Monat), %d (Tag), %H (Stunde), %M (Minute), %S (Sekunde). Für ein einfaches Prozentzeichen benutze %%.</string>
     <string name="label_status">Status</string>
     <string name="label_location">Position</string>
     <string name="label_synchronization">Synchronisation</string>
@@ -57,12 +61,13 @@
     <string name="warning">Achtung</string>
     <string name="notsync_warning">Aktuelle Track beinhalten noch nicht synchronisierte Positionen. Diese werden gelöscht bei Erstellung eines neuen Tracks.</string>
     <string name="no_track_warning">Bitte erstelle zuerst einen neuen Track</string>
+    <string name="empty_trackname_warning">Der Name kann nicht leer sein</string>
     <string name="logger_running_warning">Bitte stoppe den aktuellen Track zuerst</string>
-    <string name="about">About</string>
+    <string name="about">Über</string>
     <string name="about_description">Einfacher Positionslogger mit Live-Tracking und Live-Synchronisationsfunktion auf eigenen <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger Server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_description2">Mehr Information und Hilfe gibt es auf der <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>μlogger-Homepage<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_version">Version %s</string>
-    <string name="about_license">License: GPL</string>
+    <string name="about_license">Lizenz: GPL</string>
     <string name="uploading_failed">Upload fehlgeschlagen:</string>
     <string name="uploading_done">Upload erfolgreich</string>
     <string name="track_summary">Track-Zusammenfassung</string>
@@ -76,6 +81,7 @@
     <string name="unit_mile">mi</string>
     <string name="provide_valid_url">Bitte gültige Server-URL angeben</string>
     <string name="provide_user_pass_url">Bitte zuerst Benutzername, Passwort und Server-URL angeben</string>
+    <string name="e_illegal_state">Zustandsfehler: %s</string>
     <string name="e_illegal_redirect">Ungültige Weiterleitung: %d</string>
     <string name="e_auth_failure">Anmeldefehler: %d</string>
     <string name="e_http_code">HTTP-Fehlercode: %d</string>
@@ -96,8 +102,8 @@
     <string name="unknown_track">Unbekannter Track</string>
     <string name="export_started">Export gestartet</string>
     <plurals name="label_positions_behind">
-        <item quantity="one">%d Position Rückstand</item>
-        <item quantity="other">%d Positionen Rückstand</item>
+        <item quantity="one">%d Position im Rückstand</item>
+        <item quantity="other">%d Positionen im Rückstand</item>
     </plurals>
     <string name="track_server_setup_warning">Wenn das Server-Setup verändert wird, funktioniert die aktuelle Synchronisation u.U. nicht mehr.</string>
     <string name="pref_mintime_other">Mindester Zeitabstand in Sekunden</string>
@@ -107,4 +113,7 @@
     <string name="pref_cat_location">Positionsverfolgung</string>
     <string name="pref_cat_server">Server</string>
     <string name="pref_cat_other">Andere</string>
-    </resources>
+    <string name="illegal_template_warning">Die Vorlage enthält ungültige Zeichen</string>
+    <string name="cannot_open_picker">Der Dateiauswahldialog kann nicht geöffnet werden</string>
+    <string name="e_open_out_stream">Export fehlgeschlagen</string>
+</resources>
