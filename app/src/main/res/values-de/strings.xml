@@ -39,6 +39,8 @@
     <string name="pref_livesync_summary">Live-Synchronisation mit Server. Gültiger Server/Benutzername/Passwort erforderlich.</string>
     <string name="pref_autostart_title">Autostart</string>
     <string name="pref_autostart_summary">Applikation beim Booten starten</string>
+    <string name="pref_external_title">Aufrufe von dritten Applikation zulassen</string>
+    <string name="pref_external_summary">Aufrufe von dritten Applikation zulassen um Automatisierung und Planung zu erlauben.</string>
     <string name="pref_provider_title">Positionsquelle</string>
     <string name="pref_provider_summary">Position kann vom GPS, vom Netzwerk, oder von beiden ermittelt werden. Die Verwendung beider Positionsquellen liefert die besten Ergebnisse, aber benötigt mehr Batterie.</string>
     <string name="pref_units_title">Einheiten</string>
@@ -46,6 +48,7 @@
     <string name="pref_units_metric">Metrisch</string>
     <string name="pref_units_imperial">US-Meilen</string>
     <string name="pref_units_nautical">Nautisch</string>
+    <string name="pref_auto_name_title">Track Name Vorlage</string>
     <string name="label_status">Status</string>
     <string name="label_location">Position</string>
     <string name="label_synchronization">Synchronisation</string>
@@ -57,6 +60,7 @@
     <string name="warning">Achtung</string>
     <string name="notsync_warning">Aktuelle Track beinhalten noch nicht synchronisierte Positionen. Diese werden gelöscht bei Erstellung eines neuen Tracks.</string>
     <string name="no_track_warning">Bitte erstelle zuerst einen neuen Track</string>
+    <string name="empty_trackname_warning">Track Name kann nicht leer sein</string>
     <string name="logger_running_warning">Bitte stoppe den aktuellen Track zuerst</string>
     <string name="about">About</string>
     <string name="about_description">Einfacher Positionslogger mit Live-Tracking und Live-Synchronisationsfunktion auf eigenen <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger Server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
@@ -76,6 +80,7 @@
     <string name="unit_mile">mi</string>
     <string name="provide_valid_url">Bitte gültige Server-URL angeben</string>
     <string name="provide_user_pass_url">Bitte zuerst Benutzername, Passwort und Server-URL angeben</string>
+    <string name="e_illegal_state">Ungültige Zustand Fehler: %s</string>
     <string name="e_illegal_redirect">Ungültige Weiterleitung: %d</string>
     <string name="e_auth_failure">Anmeldefehler: %d</string>
     <string name="e_http_code">HTTP-Fehlercode: %d</string>
@@ -107,4 +112,5 @@
     <string name="pref_cat_location">Positionsverfolgung</string>
     <string name="pref_cat_server">Server</string>
     <string name="pref_cat_other">Andere</string>
+    <string name="illegal_template_warning">Mustername hat aus ungültige Zeichen</string>
     </resources>

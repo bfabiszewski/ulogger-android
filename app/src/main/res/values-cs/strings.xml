@@ -63,7 +63,7 @@
     <string name="no_track_warning">Nejprve nastavte novou trasu</string>
     <string name="empty_trackname_warning">Název trasy nemůže být prázdný</string>
     <string name="logger_running_warning">Nejdříve zastavte aktuální sledování</string>
-    <string name="about">O nás…</string>
+    <string name="about">O nás...</string>
     <string name="about_description">Jednoduchý záznamník polohy s podporou živého sledování a nahrávání pozic do vlastních stránek <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>μlogger server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_description2">Další informace a nápovědu naleznete na domovské stránce <xliff:g id="app_link_open"><![CDATA[ <a href=\"https://github.com/bfabiszewski/ulogger-android\">]]></xliff:g> μlogger <xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_version">Verze %s</string>
@@ -75,6 +75,7 @@
     <plurals name="summary_positions">
         <item quantity="one">%d pozice</item>
         <item quantity="few">%d pozic</item>
+        <item quantity="many">%d pozic</item>
         <item quantity="other">%d pozic</item>
     </plurals>
     <string name="summary_duration">%1$d h %2$d min</string>
@@ -105,6 +106,7 @@
     <plurals name="label_positions_behind">
         <item quantity="one">%d pozice zbývá</item>
         <item quantity="few">%d pozice zbývají</item>
+        <item quantity="many">%d pozic zbývá</item>
         <item quantity="other">%d pozic zbývá</item>
     </plurals>
     <string name="track_server_setup_warning">Pokud změníte nastavení serveru, nemusí být možné synchronizovat aktuální trasu.</string>
