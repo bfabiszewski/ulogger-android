@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ Copyright (c) 2020 Bartek Fabiszewski
   ~ http://www.fabiszewski.net
   ~
   ~ This file is part of μlogger-android.
@@ -9,154 +9,184 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <LinearLayout
-        style="?android:attr/buttonBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryDark"
-        android:divider="@drawable/separator"
-        android:orientation="horizontal"
-        android:showDividers="middle">
-
-        <Button
-            android:id="@+id/buttonLogger"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/button_start"
-            android:textColor="?android:attr/textColorAlertDialogListItem"
-            android:background="@drawable/button_background"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonUpload"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/button_upload"
-            android:textColor="?android:attr/textColorAlertDialogListItem"
-            android:background="@drawable/button_background"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonNewTrack"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/button_newtrack"
-            android:textColor="?android:attr/textColorAlertDialogListItem"
-            android:background="@drawable/button_background"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutSummary"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_marginTop="20dp">
-        <TextView
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_directions_walk_white_24dp"
-            android:drawablePadding="5dp"
-            android:text="@string/label_track"
-            android:textSize="@dimen/label_font_size"
-            android:textStyle="bold" />
+            android:background="?attr/colorPrimaryDark"
+            android:divider="@drawable/separator"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <Button
+                android:id="@+id/buttonWaypoint"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:drawableTop="@drawable/ic_add_location_white_24dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/waypoint"
+                android:textColor="?android:attr/textColorAlertDialogListItem"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/buttonUpload"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:drawableTop="@drawable/ic_cloud_upload_white_24dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/button_upload"
+                android:textColor="?android:attr/textColorAlertDialogListItem"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/buttonNewTrack"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:drawableTop="@drawable/ic_library_add_white_24dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/button_newtrack"
+                android:textColor="?android:attr/textColorAlertDialogListItem"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <net.fabiszewski.ulogger.SwipeSwitch
+            android:id="@+id/switchLogger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingTop="30dp"
+            android:paddingBottom="20dp"
+            android:switchMinWidth="200dp"
+            android:text="@string/tracking"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textIsSelectable="false"
+            android:textSize="16sp"
+            android:thumb="@drawable/thumb_selector"
+            android:track="@drawable/track_selector" />
+
+        <LinearLayout
+            android:id="@+id/layoutSummary"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_directions_walk_white_24dp"
+                android:drawablePadding="5dp"
+                android:text="@string/label_track"
+                android:textSize="@dimen/label_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/newtrack_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/label_font_size"
+                android:layout_marginStart="@dimen/status_indent" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/newtrack_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_favorite_border_white_24dp"
+            android:drawablePadding="5dp"
+            android:text="@string/label_status"
+            android:textSize="@dimen/label_font_size"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/loc_led"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_location"
+                android:textSize="@dimen/label_font_size"
+                android:paddingStart="3dip"
+                android:paddingLeft="3dip"
+                android:paddingRight="3dip"
+                android:drawableStart="@drawable/led"
+                android:drawablePadding="7dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/location_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dash"
             android:textColor="@color/colorBlue"
             android:textSize="@dimen/label_font_size"
             android:layout_marginStart="@dimen/status_indent" />
-    </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:drawableStart="@drawable/ic_favorite_border_white_24dp"
-        android:drawablePadding="5dp"
-        android:text="@string/label_status"
-        android:textSize="@dimen/label_font_size"
-        android:textStyle="bold"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/loc_led"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_location"
-            android:textSize="@dimen/label_font_size"
-            android:paddingStart="3dip"
-            android:paddingLeft="3dip"
-            android:paddingRight="3dip"
-            android:drawableStart="@drawable/led"
-            android:drawablePadding="7dp"/>
-    </LinearLayout>
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/sync_led"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_synchronization"
+                android:textSize="@dimen/label_font_size"
+                android:paddingStart="3dip"
+                android:paddingLeft="3dip"
+                android:paddingRight="3dip"
+                android:drawableStart="@drawable/led"
+                android:drawablePadding="7dp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/location_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/dash"
-        android:textColor="@color/colorBlue"
-        android:textSize="@dimen/label_font_size"
-        android:layout_marginStart="@dimen/status_indent" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
         <TextView
-            android:id="@+id/sync_led"
+            android:id="@+id/sync_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_synchronization"
+            android:text="@string/dash"
+            android:textColor="@color/colorBlue"
             android:textSize="@dimen/label_font_size"
-            android:paddingStart="3dip"
-            android:paddingLeft="3dip"
-            android:paddingRight="3dip"
-            android:drawableStart="@drawable/led"
-            android:drawablePadding="7dp" />
+            android:layout_marginStart="@dimen/status_indent" />
+
+        <TextView
+            android:id="@+id/sync_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/colorPink"
+            android:textSize="@dimen/label_font_size"
+            android:layout_marginStart="@dimen/status_indent" />
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/sync_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/dash"
-        android:textColor="@color/colorBlue"
-        android:textSize="@dimen/label_font_size"
-        android:layout_marginStart="@dimen/status_indent" />
-
-    <TextView
-        android:id="@+id/sync_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/colorPink"
-        android:textSize="@dimen/label_font_size"
-        android:layout_marginStart="@dimen/status_indent" />
-
-</LinearLayout>
+</ScrollView>

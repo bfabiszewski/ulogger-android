@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -52,9 +55,6 @@ import static net.fabiszewski.ulogger.Alert.showConfirm;
 public class MainFragment extends Fragment {
 
     private final String TAG = MainFragment.class.getSimpleName();
-
-    private static String TXT_START;
-    private static String TXT_STOP;
 
     private final static int LED_GREEN = 1;
     private final static int LED_RED = 2;
@@ -73,7 +73,7 @@ public class MainFragment extends Fragment {
     private TextView syncLed;
     private TextView locLabel;
     private TextView locLed;
-    private Button buttonLogger;
+    private SwipeSwitch switchLogger;
 
     private PorterDuffColorFilter redFilter;
     private PorterDuffColorFilter greenFilter;
@@ -96,14 +96,12 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main, container, false);
-        TXT_START = getString(R.string.button_start);
-        TXT_STOP = getString(R.string.button_stop);
+        ScrollView layout = (ScrollView) inflater.inflate(R.layout.fragment_main, container, false);
 
-        buttonLogger = layout.findViewById(R.id.buttonLogger);
+        switchLogger = layout.findViewById(R.id.switchLogger);
+        Button buttonWaypoint = layout.findViewById(R.id.buttonWaypoint);
         Button buttonUpload = layout.findViewById(R.id.buttonUpload);
         Button buttonNewTrack = layout.findViewById(R.id.buttonNewTrack);
-        buttonLogger = layout.findViewById(R.id.buttonLogger);
         syncErrorLabel = layout.findViewById(R.id.sync_error);
         syncLabel = layout.findViewById(R.id.sync_status);
         syncLed = layout.findViewById(R.id.sync_led);
@@ -111,7 +109,8 @@ public class MainFragment extends Fragment {
         locLed = layout.findViewById(R.id.loc_led);
         LinearLayout layoutSummary = layout.findViewById(R.id.layoutSummary);
 
-        buttonLogger.setOnClickListener(this::toggleLogging);
+        switchLogger.setOnCheckedChangeListener(this::toggleLogging);
+        buttonWaypoint.setOnClickListener(this::addWaypoint);
         buttonUpload.setOnClickListener(this::uploadData);
         buttonNewTrack.setOnClickListener(this::newTrack);
         layoutSummary.setOnClickListener(this::trackSummary);
@@ -156,10 +155,10 @@ public class MainFragment extends Fragment {
             }
 
             if (LoggerService.isRunning()) {
-                buttonLogger.setText(TXT_STOP);
+                switchLogger.setChecked(true);
                 setLocLed(LED_GREEN);
             } else {
-                buttonLogger.setText(TXT_START);
+                switchLogger.setChecked(false);
                 setLocLed(LED_RED);
             }
             registerBroadcastReceiver();
@@ -181,14 +180,14 @@ public class MainFragment extends Fragment {
     }
 
     /**
-     * Called when the user clicks the Start/Stop button
+     * Called when the user swipes tracking switch
      * @param view View
      */
-    private void toggleLogging(View view) {
-        if (LoggerService.isRunning()) {
-            stopLogger(view.getContext());
-        } else {
+    private void toggleLogging(View view, boolean isChecked) {
+        if (isChecked && !LoggerService.isRunning()) {
             startLogger(view.getContext());
+        } else if (!isChecked && LoggerService.isRunning()) {
+            stopLogger(view.getContext());
         }
     }
 
@@ -214,6 +213,26 @@ public class MainFragment extends Fragment {
         // stop tracking
         Intent intent = new Intent(context, LoggerService.class);
         context.stopService(intent);
+    }
+
+    /**
+     * Start waypoint activity
+     */
+    private void addWaypoint(View view) {
+        if (DbAccess.getTrackName(view.getContext()) != null) {
+            WaypointFragment fragment = WaypointFragment.newInstance();
+            FragmentManager manager = getFragmentManager();
+            if (manager != null) {
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.fragment_placeholder, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        } else {
+            if (mListener != null) {
+                mListener.showNoTrackWarning();
+            }
+        }
     }
 
     /**
@@ -614,12 +633,12 @@ public class MainFragment extends Fragment {
                     break;
                 }
                 case LoggerService.BROADCAST_LOCATION_STARTED:
-                    buttonLogger.setText(TXT_STOP);
+                    switchLogger.setChecked(true);
                     showToast(getString(R.string.tracking_started));
                     setLocLed(LED_YELLOW);
                     break;
                 case LoggerService.BROADCAST_LOCATION_STOPPED:
-                    buttonLogger.setText(TXT_START);
+                    switchLogger.setChecked(false);
                     showToast(getString(R.string.tracking_stopped));
                     setLocLed(LED_RED);
                     break;

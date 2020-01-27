@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import static net.fabiszewski.ulogger.Alert.showAlert;
@@ -140,9 +139,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_export:
                 startExport();
                 return true;
-            case R.id.menu_waypoint:
-                addWaypoint();
-                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -162,22 +158,6 @@ public class MainActivity extends AppCompatActivity
         preferenceMinTimeMillis = Long.parseLong(prefs.getString(SettingsActivity.KEY_MIN_TIME, getString(R.string.pref_mintime_default))) * 1000;
         preferenceLiveSync = prefs.getBoolean(SettingsActivity.KEY_LIVE_SYNC, false);
     }
-
-    /**
-     * Start waypoint activity
-     */
-    private void addWaypoint() {
-        if (DbAccess.getTrackName(this) != null) {
-            WaypointFragment fragment = WaypointFragment.newInstance();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_placeholder, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        } else {
-            showNoTrackWarning();
-        }
-    }
-
 
     /**
      * Display warning if track name is not set

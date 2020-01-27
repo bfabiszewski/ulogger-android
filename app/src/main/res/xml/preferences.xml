@@ -14,7 +14,7 @@
 
     <PreferenceCategory
         android:title="@string/pref_cat_location"
-        android:icon="@drawable/ic_location_on_white_24dp">
+        android:icon="@drawable/ic_location_on_blue_24dp">
         <net.fabiszewski.ulogger.ListWithEditTextPreference
             android:key="prefMinTime"
             android:title="@string/pref_mintime_title"
@@ -58,7 +58,7 @@
 
     <PreferenceCategory
         android:title="@string/pref_cat_server"
-        android:icon="@drawable/ic_cloud_upload_white_24dp">
+        android:icon="@drawable/ic_cloud_upload_blue_24dp">
         <net.fabiszewski.ulogger.TrimmedEditTextPreference
             android:key="prefUsername"
             android:title="@string/pref_username_title"
@@ -87,7 +87,7 @@
 
     <PreferenceCategory
         android:title="@string/pref_cat_other"
-        android:icon="@drawable/ic_build_white_24dp">
+        android:icon="@drawable/ic_build_blue_24dp">
         <SwitchPreferenceCompat
             android:key="prefAutoStart"
             android:title="@string/pref_autostart_title"

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="50dp" />
+            <size android:height="40dp" />
+            <solid android:color="@android:color/black" />
+            <stroke android:color="#00000000" android:width="15dp" />
+        </shape>
+    </item>
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="50dp" />
+            <size android:height="40dp" />
+            <solid android:color="@android:color/black" />
+            <stroke android:color="#00000000" android:width="15dp" />
+        </shape>
+    </item>
+
+</selector>

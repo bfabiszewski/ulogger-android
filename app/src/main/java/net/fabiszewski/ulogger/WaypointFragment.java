@@ -220,7 +220,9 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      */
     private void saveWaypoint(View view) {
         if (hasLocation()) {
-            photoUri = ImageHelper.moveCachedToAppStorage(view.getContext(), photoUri);
+            if (photoUri != null) {
+                photoUri = ImageHelper.moveCachedToAppStorage(view.getContext(), photoUri);
+            }
             String comment = commentEditText.getText().toString();
             String uri = (photoUri == null) ? null : photoUri.toString();
             DbAccess.writeLocation(view.getContext(), location, comment, uri);
