@@ -110,4 +110,4 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Réseau</string>
     <string name="provider_gps_network">Réseau et GPS</string>
-</resources>
+    </resources>

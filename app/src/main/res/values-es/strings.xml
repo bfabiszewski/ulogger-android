@@ -119,4 +119,4 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Red</string>
     <string name="provider_gps_network">Red y GPS</string>
-</resources>
+    </resources>

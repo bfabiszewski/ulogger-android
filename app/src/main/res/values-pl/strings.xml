@@ -35,6 +35,8 @@
     <string name="pref_mindistance_summary">Minimalna odległość pomiędzy kolejnymi pozycjami</string>
     <string name="pref_minaccuracy_title">Minimalna dokładność</string>
     <string name="pref_minaccuracy_summary">Minimalna dokładność pozycji</string>
+    <string name="pref_imagesize_title">Rozmiar zdjęcia</string>
+    <string name="pref_imagesize_summary">Maksymalna wysokość/szerokość przesyłanych zdjęć. W przypadku zmniejszania kopia obrazu będzie przed wysłaniem przechowywana tymczasowo w folderze aplikacji. W przypadku opcji „bez zmian” kopia nie będzie tworzona, więc oryginalny plik musi być dostępny podczas synchronizacji.</string>
     <string name="pref_livesync_title">Ciągła synchronizacja</string>
     <string name="pref_livesync_summary">Wysyłanie pozycji na serwer w czasie rzeczywistym. Wymaga podania użytkownika, hasła i adresu serwera.</string>
     <string name="pref_autostart_title">Auto start</string>
@@ -98,6 +100,7 @@
     <string name="using_network">Uzyskano dostęp do lokalizacji z sieci</string>
     <string name="using_gps">Uzyskano dostęp do lokalizacji z GPS-a</string>
     <string name="export">Eksport do GPX</string>
+    <string name="waypoint">Punkt</string>
     <string name="nothing_to_export">Nie ma nic do wyeksportowania</string>
     <string name="export_done">Trasa została pomyślnie zapisana</string>
     <string name="export_failed">Błąd eksportu</string>
@@ -113,6 +116,7 @@
     <string name="pref_mintime_other">Minimalny czas w sekundach</string>
     <string name="pref_mindistance_other">Minimalna odległość w metrach</string>
     <string name="pref_minaccuracy_other">Minimalna dokładność w metrach</string>
+    <string name="pref_imagesize_other">Maksymalna wysokość/szerokość w pikselach</string>
     <string name="unit_nmile">Mm</string>
     <string name="pref_cat_location">Śledzenie pozycji</string>
     <string name="pref_cat_server">Serwer</string>
@@ -123,4 +127,14 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Sieć</string>
     <string name="provider_gps_network">Sieć i GPS</string>
+    <string name="logger_task_failure">Nie można ustalić pozycji</string>
+    <string name="take_photo">Zrób zdjęcie</string>
+    <string name="from_library">Wybierz z galerii </string>
+    <string name="accuracy_meters">dokładność %d m</string>
+    <string name="meters_asl">%s m n.p.m.</string>
+    <string name="label_position">Pozycja</string>
+    <string name="label_waypoint_description">Opis punktu</string>
+    <string name="label_add_photo">Dodaj zdjęcie</string>
+    <string name="button_save">Zapisz</string>
+    <string name="tracking">Śledzenie</string>
 </resources>

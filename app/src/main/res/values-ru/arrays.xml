@@ -43,10 +43,4 @@
         <item>другое</item>
     </string-array>
 
-    <string-array name="providersEntries">
-        <item>Спутники GPS</item>
-        <item>Геопозиционирование по сети</item>
-        <item>Геопозиционирование по сети и по спутникам GPS</item>
-    </string-array>
-
     </resources>

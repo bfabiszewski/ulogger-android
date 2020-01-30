@@ -108,4 +108,4 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">ネットワーク</string>
     <string name="provider_gps_network">ネットワークと GPS</string>
-</resources>
+    </resources>

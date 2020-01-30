@@ -43,10 +43,4 @@
         <item>jiný</item>
     </string-array>
 
-    <string-array name="providersEntries">
-        <item>GPS</item>
-        <item>Síť</item>
-        <item>Síť a GPS</item>
-    </string-array>
-
     </resources>

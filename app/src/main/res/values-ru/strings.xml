@@ -120,4 +120,7 @@
     <string name="illegal_template_warning">Шаблон содержит недопустимые символы</string>
     <string name="cannot_open_picker">Не могу открыть проводник</string>
     <string name="e_open_out_stream">Ошибка при открытии </string>
-</resources>
+    <string name="provider_gps">Спутники GPS</string>
+    <string name="provider_network">Геопозиционирование по сети</string>
+    <string name="provider_gps_network">Геопозиционирование по сети и по спутникам GPS</string>
+    </resources>

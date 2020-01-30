@@ -43,4 +43,13 @@
         <item>inna</item>
     </string-array>
 
-</resources>
+    <string-array name="imageSizeEntries">
+        <item>bez zmian</item>
+        <item>800 px</item>
+        <item>1080 px</item>
+        <item>1280 px</item>
+        <item>1920 px</item>
+        <item>inny</item>
+    </string-array>
+
+    </resources>
