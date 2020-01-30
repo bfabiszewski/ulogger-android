@@ -11,7 +11,7 @@ Together they make a complete self owned and controlled client–server solution
 - uses GPS or network based location data
 - synchronizes location with web server in real time, in case of problems keeps retrying
 - alternatively works in offline mode; positions may be uploaded to the servers manually
-- allows adding waypoints with attached images and comments
+- allows adding waypoints with attached images and comments (required μlogger server version 1.0+ for synchronization)
 - configurable tracking settings
 - export to GPX format
 - automation
