@@ -13,7 +13,7 @@
         <item>10 Sekunden</item>
         <item>30 Sekunden</item>
         <item>1 Minute</item>
-        <item>5 Mintuen</item>
+        <item>5 Minuten</item>
         <item>15 Minuten</item>
         <item>30 Minuten</item>
         <item>1 Stunde</item>
@@ -41,6 +41,15 @@
         <item>1 km</item>
         <item>5 km</item>
         <item>other</item>
+    </string-array>
+
+    <string-array name="imageSizeEntries">
+        <item>tatsächliche Größe</item>
+        <item>800 Pixel</item>
+        <item>1080 Pixel</item>
+        <item>1280 Pixel</item>
+        <item>1920 Pixel</item>
+        <item>sonstige</item>
     </string-array>
 
     </resources>
