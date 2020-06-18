@@ -1,0 +1,10 @@
+3.0: μlogger
+
+Changes:
+- Adding waypoints with images and comments
+- Uploading images and comments (requires server version 1.0+)
+- Swipe switch to start and stop tracking
+- Updated translations
+
+Bugfix:
+- Small fixes

@@ -1,0 +1,15 @@
+μlogger ('micro-logger') is an application for continuous logging of location coordinates, designed to record hiking, biking tracks and other outdoor activities. Track points are saved at chosen intervals and may be uploaded to dedicated server in real time.
+This client works with <a href="https://github.com/bfabiszewski/ulogger-server">μlogger web server</a>. Together they make a complete self owned and controlled client–server solution.
+
+Features
+
+* meant to be simple and small (μ)
+* focus on privacy, doesn't use Google Play services, logs to self-owned server
+* low memory and battery impact
+* uses GPS or network based location data
+* synchronizes location with web server in real time, in case of problems keeps retrying
+* alternatively works in offline mode; positions may be exported to file and uploaded to the server manually
+* allows adding waypoints with attached images and comments (required server version 1.0+ for synchronization)
+* configurable tracking settings
+* export to GPX, KML format
+* automation

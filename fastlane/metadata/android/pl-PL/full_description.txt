@@ -1,0 +1,15 @@
+μlogger ('mikrologger') to aplikacja do ciągłego zapisu pozycji, przeznaczona do rejestowania tras pieszych, rowerowych lub innych aktywności w terenie. Punkty są zapisywane w wybranych odstępach czasu i mogą być na bieżąco wysyłane do dedykowanego serwera.
+Aplikacja współpracuje z <a href="https://github.com/bfabiszewski/ulogger-server">serwerem μlogger</a>. Razem tworzą kompletny system typu klient–serwer pozostający pod całkowitą kontrolą użytkownika.
+
+Właściwości
+
+* niewielki rozmiar i proste działanie (μ)
+* nacisk na prywatność: nie używa usług Google Play, zapisuje trasy na własny serwer
+* małe zużycie zasobów systemu oraz baterii
+* lokalizacja z GPS-a lub z sieci komórkowej
+* synchronizacja z serwerem w czasie rzeczywistym, ponawianie prób w przypadku problemów
+* opcjonalnie praca w trybie offline; trasy można eksportować do plików i importować na serwerze
+* dodawanie punktów z załączonym zdjęciem i komentarzem (do synchronizacji wymagana wersja serwera 1.0+)
+* konfigurowane ustawienia śledzenia
+* eksport do formatów GPX, KML
+* automatyzacja

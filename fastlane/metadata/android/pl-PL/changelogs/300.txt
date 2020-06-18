@@ -1,0 +1,10 @@
+3.0: μlogger
+
+Zmiany:
+- Dodawanie pozycji ze zdjęciami i komentarzami
+- Wysyłanie zdjęć i komentarzy (wymaga serwera w wersji 1.0+)
+- Przesuwany przełącznik śledzenia
+- Zaktualizowane tłumaczenia
+
+Błędy:
+- Drobne poprawki
