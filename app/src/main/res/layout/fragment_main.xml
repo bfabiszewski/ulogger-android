@@ -9,16 +9,17 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/share_button"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
 
         <LinearLayout
             style="?android:attr/buttonBarStyle"
@@ -90,30 +91,56 @@
             android:track="@drawable/track_selector" />
 
         <LinearLayout
-            android:id="@+id/layoutSummary"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginTop="20dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_directions_walk_white_24dp"
-                android:drawablePadding="5dp"
-                android:text="@string/label_track"
-                android:textSize="@dimen/label_font_size"
-                android:textStyle="bold" />
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/newtrack_label"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/layoutSummary"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/colorBlue"
-                android:textSize="@dimen/label_font_size"
-                android:layout_marginStart="@dimen/status_indent" />
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_directions_walk_white_24dp"
+                    android:drawablePadding="5dp"
+                    android:text="@string/label_track"
+                    android:textSize="@dimen/label_font_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/newtrack_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/status_indent"
+                    android:text=""
+                    tools:text="Auto_2020.06.18_19.42.17"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/label_font_size" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonShare"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="top"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/share_button_inset"
+                android:contentDescription="@string/share_link"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:visibility="gone"
+                tools:ignore="UnusedAttribute"
+                tools:targetApi="m"
+                tools:visibility="visible" />
+
         </LinearLayout>
 
         <TextView
@@ -124,69 +151,73 @@
             android:drawablePadding="5dp"
             android:text="@string/label_status"
             android:textSize="@dimen/label_font_size"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/loc_led"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/label_location"
-                android:textSize="@dimen/label_font_size"
+                android:drawableStart="@drawable/led"
+                android:drawablePadding="7dp"
                 android:paddingStart="3dip"
                 android:paddingLeft="3dip"
                 android:paddingRight="3dip"
-                android:drawableStart="@drawable/led"
-                android:drawablePadding="7dp"/>
+                android:text="@string/label_location"
+                android:textSize="@dimen/label_font_size" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/location_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/status_indent"
             android:text="@string/dash"
+            tools:text="Last update: 2020-06-18 22.09"
             android:textColor="@color/colorBlue"
-            android:textSize="@dimen/label_font_size"
-            android:layout_marginStart="@dimen/status_indent" />
+            android:textSize="@dimen/label_font_size" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/sync_led"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/label_synchronization"
-                android:textSize="@dimen/label_font_size"
+                android:drawableStart="@drawable/led"
+                android:drawablePadding="7dp"
                 android:paddingStart="3dip"
                 android:paddingLeft="3dip"
                 android:paddingRight="3dip"
-                android:drawableStart="@drawable/led"
-                android:drawablePadding="7dp" />
+                android:text="@string/label_synchronization"
+                android:textSize="@dimen/label_font_size" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/sync_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/status_indent"
             android:text="@string/dash"
+            tools:text="3 positions behind"
             android:textColor="@color/colorBlue"
-            android:textSize="@dimen/label_font_size"
-            android:layout_marginStart="@dimen/status_indent" />
+            android:textSize="@dimen/label_font_size" />
 
         <TextView
             android:id="@+id/sync_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/status_indent"
             android:text=""
             android:textColor="@color/colorPink"
-            android:textSize="@dimen/label_font_size"
-            android:layout_marginStart="@dimen/status_indent" />
+            android:textSize="@dimen/label_font_size" />
 
     </LinearLayout>
 </ScrollView>

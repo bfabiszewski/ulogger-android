@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity
     private final static int RESULT_GPX_EXPORT = 2;
     public final static String UPDATED_PREFS = "extra_updated_prefs";
 
+    public String preferenceHost;
     public String preferenceUnits;
     public long preferenceMinTimeMillis;
     public boolean preferenceLiveSync;
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity
         preferenceUnits = prefs.getString(SettingsActivity.KEY_UNITS, getString(R.string.pref_units_default));
         preferenceMinTimeMillis = Long.parseLong(prefs.getString(SettingsActivity.KEY_MIN_TIME, getString(R.string.pref_mintime_default))) * 1000;
         preferenceLiveSync = prefs.getBoolean(SettingsActivity.KEY_LIVE_SYNC, false);
+        preferenceHost = prefs.getString(SettingsActivity.KEY_HOST, "").replaceAll("/+$", "");
     }
 
     /**
