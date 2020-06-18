@@ -18,9 +18,7 @@ Together they make a complete self owned and controlled client–server solution
 - automation
 
 ## Screenshots
-<img alt="main" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot1" width="250">
-<img alt="waypoint" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot2" width="250">
-<img alt="settings" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot3" width="250">
+<img alt="main" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot1.png" width="30%"> <img alt="waypoint" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot2.png" width="30%"> <img alt="settings" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot3.png" width="30%">
 
 ## Download
 [![Download from f-droid](https://img.shields.io/f-droid/v/net.fabiszewski.ulogger.svg?color=green)](https://f-droid.org/app/net.fabiszewski.ulogger)
