@@ -28,10 +28,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.HtmlCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
 import static net.fabiszewski.ulogger.Alert.showAlert;
+import static net.fabiszewski.ulogger.Alert.showConfirm;
 import static net.fabiszewski.ulogger.GpxExportService.GPX_EXTENSION;
 import static net.fabiszewski.ulogger.GpxExportService.GPX_MIME;
 
@@ -139,13 +141,15 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_export:
                 startExport();
                 return true;
+            case R.id.menu_clear:
+                clearTrack();
+                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -217,6 +221,27 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private void clearTrack() {
+        if (LoggerService.isRunning()) {
+            showToast(getString(R.string.logger_running_warning));
+            return;
+        }
+        if (DbAccess.getTrackName(MainActivity.this) != null) {
+            showConfirm(MainActivity.this,
+                    getString(R.string.warning),
+                    getString(R.string.clear_warning),
+                    (dialog, which) -> {
+                        dialog.dismiss();
+                        DbAccess.clearTrack(MainActivity.this);
+                        LoggerService.resetLastLocation();
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_placeholder);
+                        if (currentFragment instanceof MainFragment) {
+                            currentFragment.onResume();
+                        }
+                    }
+            );
+        }
+    }
 
     /**
      * Display toast message

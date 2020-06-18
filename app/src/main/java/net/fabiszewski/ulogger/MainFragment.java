@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -149,9 +150,7 @@ public class MainFragment extends Fragment {
         Context context = getContext();
         if (context != null) {
             String trackName = DbAccess.getTrackName(context);
-            if (trackName != null) {
-                updateTrackLabel(trackName);
-            }
+            updateTrackLabel(trackName);
 
             if (LoggerService.isRunning()) {
                 switchLogger.setChecked(true);
@@ -384,10 +383,11 @@ public class MainFragment extends Fragment {
      * Update track name label
      * @param trackName Track name
      */
-    private void updateTrackLabel(String trackName) {
+    private void updateTrackLabel(@Nullable String trackName) {
         View view = getView();
         if (view != null) {
             final TextView trackLabel = view.findViewById(R.id.newtrack_label);
+            trackName = trackName == null ? "-" : trackName;
             trackLabel.setText(trackName);
         }
     }

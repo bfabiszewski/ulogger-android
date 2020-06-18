@@ -60,6 +60,7 @@
     <string name="no_positions">Bieżąca trasa nie ma żadnych pozycji</string>
     <string name="warning">Uwaga</string>
     <string name="notsync_warning">Bieżąca trasa zawiera niezsynchronizowane pozycje. Rozpoczęcie nowej trasy usunie wszystkie dane.</string>
+    <string name="clear_warning">Czy na pewno chcesz usunąć z urządzenia bieżącą trasę i wszystkie powiązane z nią dane? Operacja ta nie kasuje danych z serwera.</string>
     <string name="no_track_warning">Najpierw rozpocznij nową trasę</string>
     <string name="empty_trackname_warning">Nazwa trasy nie może być pusta</string>
     <string name="logger_running_warning">Proszę najpierw zatrzymać zapisywanie bieżącej trasy</string>
@@ -135,4 +136,5 @@
     <string name="label_add_photo">Dodaj zdjęcie</string>
     <string name="button_save">Zapisz</string>
     <string name="tracking">Śledzenie</string>
+    <string name="clear">Usuń trasę</string>
 </resources>

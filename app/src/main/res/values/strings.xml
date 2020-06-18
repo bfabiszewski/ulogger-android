@@ -72,6 +72,7 @@
     <string name="no_positions">Current track has no positions</string>
     <string name="warning">Warning</string>
     <string name="notsync_warning">Current track contains not synchronized positions. Setting new track will delete all this data.</string>
+    <string name="clear_warning">Are you sure you want to delete current track and all its data from device? It will not delete any data from server.</string>
     <string name="no_track_warning">Please set up new track first</string>
     <string name="empty_trackname_warning">Track name cannot be empty</string>
     <string name="logger_running_warning">Please stop current tracking first</string>
@@ -144,4 +145,5 @@
     <string name="label_add_photo">Add photo</string>
     <string name="button_save">Save</string>
     <string name="tracking">Tracking</string>
+    <string name="clear">Clear track</string>
 </resources>

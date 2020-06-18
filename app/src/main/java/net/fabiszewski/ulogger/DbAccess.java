@@ -484,8 +484,7 @@ class DbAccess implements AutoCloseable {
      * @param name New track name
      */
     private void newTrack(String name) {
-        truncateTrack();
-        truncatePositions();
+        clear();
         ContentValues values = new ContentValues();
         values.put(DbContract.Track.COLUMN_NAME, name);
         db.insert(DbContract.Track.TABLE_NAME, null, values);
@@ -502,6 +501,27 @@ class DbAccess implements AutoCloseable {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             ImageHelper.clearTrackImages(context);
             dbAccess.newTrack(name);
+        }
+    }
+
+    /**
+     * Truncate all tables
+     */
+    private void clear() {
+        truncateTrack();
+        truncatePositions();
+    }
+
+    /**
+     * Clear track.
+     * Deletes all track data and positions.
+     *
+     * @param context Context
+     */
+    static void clearTrack(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            ImageHelper.clearTrackImages(context);
+            dbAccess.clear();
         }
     }
 
