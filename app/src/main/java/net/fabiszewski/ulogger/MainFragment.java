@@ -203,6 +203,7 @@ public class MainFragment extends Fragment {
             if (mListener != null) {
                 mListener.showNoTrackWarning();
             }
+            switchLogger.setChecked(false);
         }
     }
 
