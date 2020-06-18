@@ -33,6 +33,8 @@
     <string name="pref_mindistance_summary">Minimální vzdálenost mezi aktualizacemi umístění</string>
     <string name="pref_minaccuracy_title">Minimální přesnost</string>
     <string name="pref_minaccuracy_summary">Minimální přesnost polohy</string>
+    <string name="pref_imagesize_title">Velikost obrázku</string>
+    <string name="pref_imagesize_summary">Maximální šířka / výška nahraných obrázků v pixelech. V případě převzorkování ve zmenšené velikosti bude kopie dočasně uložena do složky aplikace před nahráním. Pokud zvolíte možnost „skutečná velikost“, nebude vytvořena žádná kopie, takže během nahrávání musí být k dispozici původní soubory.</string>
     <string name="pref_livesync_title">Okamžitá synchronizace</string>
     <string name="pref_livesync_summary">Okamžité nahrávání pozic na server. Vyžaduje platné uživatelské jméno, heslo a URL serveru.</string>
     <string name="pref_autostart_title">Automatický start</string>
@@ -73,6 +75,7 @@
     <plurals name="summary_positions">
         <item quantity="one">%d pozice</item>
         <item quantity="few">%d pozic</item>
+        <item quantity="many">%d pozic</item>
         <item quantity="other">%d pozic</item>
     </plurals>
     <string name="summary_duration">%1$d h %2$d min</string>
@@ -103,12 +106,14 @@
     <plurals name="label_positions_behind">
         <item quantity="one">%d pozice zbývá</item>
         <item quantity="few">%d pozice zbývají</item>
+        <item quantity="many">%d pozic zbývá</item>
         <item quantity="other">%d pozic zbývá</item>
     </plurals>
     <string name="track_server_setup_warning">Pokud změníte nastavení serveru, nemusí být možné synchronizovat aktuální trasu.</string>
     <string name="pref_mintime_other">Minimální časový interval v sekundách</string>
     <string name="pref_mindistance_other">Minimální vzdálenost v metrech</string>
     <string name="pref_minaccuracy_other">Minimální přesnost v metrech</string>
+    <string name="pref_imagesize_other">Maximální šířka / výška obrázku v pixelech</string>
     <string name="unit_nmile">nm</string>
     <string name="pref_cat_location">Trasování</string>
     <string name="pref_cat_server">Server</string>
@@ -119,4 +124,12 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Síť</string>
     <string name="provider_gps_network">Síť a GPS</string>
+    <string name="logger_task_failure">Nelze získat polohu</string>
+    <string name="take_photo">Vyfotit</string>
+    <string name="from_library">Vybrat z knihovny</string>
+    <string name="accuracy_meters">%d m přesnost</string>
+    <string name="meters_asl">%s m a.s.l.</string>
+    <string name="label_position">Poloha</string>
+    <string name="label_add_photo">Přidat fotku</string>
+    <string name="button_save">Uložit</string>
     </resources>

@@ -130,4 +130,5 @@
     <string name="label_waypoint_description">Beschreibung des Wegpunktes</string>
     <string name="label_add_photo">Foto hinzufügen</string>
     <string name="button_save">Speichern</string>
+    <string name="tracking">Tracking</string>
     </resources>

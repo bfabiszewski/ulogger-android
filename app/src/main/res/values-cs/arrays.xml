@@ -43,4 +43,13 @@
         <item>jiný</item>
     </string-array>
 
+    <string-array name="imageSizeEntries">
+        <item>aktuální velikost</item>
+        <item>800 px</item>
+        <item>1080 px</item>
+        <item>1280 px</item>
+        <item>1920 px</item>
+        <item>jiný</item>
+    </string-array>
+
     </resources>
