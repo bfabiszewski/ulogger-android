@@ -19,7 +19,6 @@ import android.widget.Switch;
 import androidx.annotation.RequiresApi;
 
 public class SwipeSwitch extends Switch {
-    private static final String TAG = ImageTask.class.getSimpleName();
 
     public SwipeSwitch(Context context) {
         super(context);
