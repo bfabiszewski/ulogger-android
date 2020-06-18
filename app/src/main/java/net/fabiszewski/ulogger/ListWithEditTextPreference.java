@@ -139,7 +139,7 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
         editText.setHint(prefs.getString(key, ""));
         submit.setOnClickListener(v -> {
             String newval = editText.getText().toString();
-            if (newval.length() > 0 && Integer.valueOf(newval) >= 0) {
+            if (newval.length() > 0 && Integer.parseInt(newval) >= 0) {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString(key, newval);
                 editor.apply();

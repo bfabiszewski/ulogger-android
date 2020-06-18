@@ -207,10 +207,8 @@ class WebHelper {
                 if (isMultipart) {
                     writeMultipartTextParams(out, params);
                     writeMultipartFile(out, uri);
-                    out.write(data);
-                } else {
-                    out.write(data);
                 }
+                out.write(data);
                 out.flush();
 
                 int responseCode = connection.getResponseCode();

@@ -252,7 +252,7 @@ class LocationHelper {
     /**
      * Logger exceptions
      */
-    class LoggerException extends Exception {
+    static class LoggerException extends Exception {
 
         private final int code;
 

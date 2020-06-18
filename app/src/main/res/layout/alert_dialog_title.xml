@@ -18,14 +18,13 @@
     android:paddingTop="@dimen/abc_dialog_padding_top_material"
     tools:ignore="PrivateResource">
 
-    <LinearLayout android:id="@+id/custom_title_template"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|start"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/customIcon"
             android:layout_width="32dip"
             android:layout_height="32dip"
             android:layout_marginEnd="8dip"

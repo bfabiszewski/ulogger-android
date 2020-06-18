@@ -114,7 +114,7 @@ public class LoggerService extends Service {
     }
 
     /**
-     * Start foreqround service
+     * Start foreground service
      *
      * @param intent Intent
      * @param flags Flags

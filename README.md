@@ -8,6 +8,7 @@ Together they make a complete self owned and controlled client–server solution
 ## Features
 - meant to be simple and small (*μ*)
 - low memory and battery impact
+- focus on privacy, doesn't use Google Play services, logs to self-owned server
 - uses GPS or network based location data
 - synchronizes location with web server in real time, in case of problems keeps retrying
 - alternatively works in offline mode; positions may be uploaded to the servers manually
@@ -17,9 +18,9 @@ Together they make a complete self owned and controlled client–server solution
 - automation
 
 ## Screenshots
-![api10_main3](https://user-images.githubusercontent.com/3366666/57197957-79f92400-6f6d-11e9-8f61-f1318587dac1.png)
-![api10_summary](https://user-images.githubusercontent.com/3366666/57197958-79f92400-6f6d-11e9-8adb-249aaca078d9.png)
-![api24_settings](https://user-images.githubusercontent.com/3366666/57197959-79f92400-6f6d-11e9-8a5a-98b9a2b4bd95.png)
+<img alt="main" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot1" width="250">
+<img alt="waypoint" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot2" width="250">
+<img alt="settings" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot3" width="250">
 
 ## Download
 [![Download from f-droid](https://img.shields.io/f-droid/v/net.fabiszewski.ulogger.svg?color=green)](https://f-droid.org/app/net.fabiszewski.ulogger)

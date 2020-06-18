@@ -424,7 +424,7 @@ class ImageHelper {
      * @param context Context
      * @param uri URI
      */
-    static void getPersistablePermision(@NonNull Context context, @NonNull Uri uri) {
+    static void getPersistablePermission(@NonNull Context context, @NonNull Uri uri) {
         context.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 }

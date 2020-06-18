@@ -23,7 +23,7 @@ import androidx.preference.PreferenceManager;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import static net.fabiszewski.ulogger.ImageHelper.getPersistablePermision;
+import static net.fabiszewski.ulogger.ImageHelper.getPersistablePermission;
 import static net.fabiszewski.ulogger.ImageHelper.getResampledBitmap;
 import static net.fabiszewski.ulogger.ImageHelper.getThumbnail;
 import static net.fabiszewski.ulogger.ImageHelper.saveToCache;
@@ -61,7 +61,7 @@ class ImageTask extends AsyncTask<Uri, Void, ImageTask.ImageTaskResult> {
             int dstWidth = Integer.parseInt(prefs.getString(SettingsActivity.KEY_IMAGE_SIZE, activity.getString(R.string.pref_imagesize_default)));
             if (dstWidth == 0) {
                 savedUri = inUri;
-                getPersistablePermision(activity, inUri);
+                getPersistablePermission(activity, inUri);
                 thumbnail = getThumbnail(activity, inUri);
             } else {
                 Bitmap bitmap = getResampledBitmap(activity, inUri, dstWidth);
@@ -108,7 +108,7 @@ class ImageTask extends AsyncTask<Uri, Void, ImageTask.ImageTaskResult> {
         Activity getActivity();
     }
 
-    class ImageTaskResult {
+    static class ImageTaskResult {
         final Uri savedUri;
         final Bitmap thumbnail;
 

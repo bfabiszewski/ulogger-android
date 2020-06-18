@@ -8,8 +8,6 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="button_start">Start</string>
-    <string name="button_stop">Stop</string>
     <string name="button_newtrack">Nová trasa</string>
     <string name="button_upload">Nahrát</string>
     <string name="is_running" comment="substituted app_name">%s běží</string>
@@ -75,7 +73,6 @@
     <plurals name="summary_positions">
         <item quantity="one">%d pozice</item>
         <item quantity="few">%d pozic</item>
-        <item quantity="many">%d pozic</item>
         <item quantity="other">%d pozic</item>
     </plurals>
     <string name="summary_duration">%1$d h %2$d min</string>
@@ -106,7 +103,6 @@
     <plurals name="label_positions_behind">
         <item quantity="one">%d pozice zbývá</item>
         <item quantity="few">%d pozice zbývají</item>
-        <item quantity="many">%d pozic zbývá</item>
         <item quantity="other">%d pozic zbývá</item>
     </plurals>
     <string name="track_server_setup_warning">Pokud změníte nastavení serveru, nemusí být možné synchronizovat aktuální trasu.</string>

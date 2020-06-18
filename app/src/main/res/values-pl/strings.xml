@@ -8,8 +8,6 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="button_start">Start</string>
-    <string name="button_stop">Stop</string>
     <string name="button_newtrack">Nowa trasa</string>
     <string name="button_upload">Wyślij</string>
     <string name="is_running" comment="substituted app_name">%s jest uruchomiony</string>

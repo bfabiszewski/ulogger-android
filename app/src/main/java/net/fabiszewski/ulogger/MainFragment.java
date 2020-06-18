@@ -38,7 +38,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.text.NumberFormat;
@@ -222,13 +221,10 @@ public class MainFragment extends Fragment {
     private void addWaypoint(View view) {
         if (DbAccess.getTrackName(view.getContext()) != null) {
             WaypointFragment fragment = WaypointFragment.newInstance();
-            FragmentManager manager = getFragmentManager();
-            if (manager != null) {
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.fragment_placeholder, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_placeholder, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         } else {
             if (mListener != null) {
                 mListener.showNoTrackWarning();

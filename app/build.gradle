@@ -17,8 +17,8 @@ android {
         applicationId 'net.fabiszewski.ulogger'
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 208
-        versionName '2.8'
+        versionCode 300
+        versionName '3.0'
     }
 
     buildTypes {
@@ -46,7 +46,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.preference:preference:1.1.0'
-    implementation 'androidx.exifinterface:exifinterface:1.1.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.exifinterface:exifinterface:1.2.0'
+    testImplementation 'junit:junit:4.13'
 }

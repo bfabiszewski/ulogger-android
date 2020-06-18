@@ -10,8 +10,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">μlogger</string>
     <string name="app_name_ascii" translatable="false">ulogger</string>
-    <string name="button_start">Start</string>
-    <string name="button_stop">Stop</string>
     <string name="button_newtrack">New track</string>
     <string name="button_upload">Upload</string>
     <string name="is_running" comment="substituted app_name">%s is running</string>
@@ -82,7 +80,7 @@
     <string name="about_description2">For more information and help please see <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>μlogger homepage<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_version">Version %s</string>
     <string name="about_license">License: GPL</string>
-    <string name="about_credits" translatable="false">2017 © Bartek Fabiszewski</string>
+    <string name="about_credits" translatable="false">© Bartek Fabiszewski</string>
     <string name="uploading_failed">Uploading failed:</string>
     <string name="uploading_done">Uploading done</string>
     <string name="track_summary">Track summary</string>

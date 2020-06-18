@@ -8,8 +8,6 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="button_start">開始</string>
-    <string name="button_stop">停止</string>
     <string name="button_newtrack">新しいトラック</string>
     <string name="button_upload">アップロード</string>
     <string name="is_running" comment="substituted app_name">%s が実行中</string>

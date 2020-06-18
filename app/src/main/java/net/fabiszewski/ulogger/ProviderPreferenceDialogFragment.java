@@ -71,7 +71,7 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
 
         preference.setOnPreferenceChangeListener((preference, newValue) -> {
             if (Logger.DEBUG) { Log.d(TAG, "[preference changed: " + newValue + "]"); }
-            int providersMask = Integer.valueOf((String) newValue);
+            int providersMask = Integer.parseInt((String) newValue);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(SettingsActivity.KEY_USE_GPS, (providersMask & VALUE_GPS) == VALUE_GPS);

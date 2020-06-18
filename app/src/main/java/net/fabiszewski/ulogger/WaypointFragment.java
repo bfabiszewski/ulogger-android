@@ -170,7 +170,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * @param <T> Task type
      * @return True if running, false otherwise
      */
-    private <T extends AsyncTask> boolean isTaskRunning(T task) {
+    private <T extends AsyncTask<U, V, W>, U, V, W> boolean isTaskRunning(T task) {
         return task != null && task.getStatus() == T.Status.RUNNING;
     }
 
