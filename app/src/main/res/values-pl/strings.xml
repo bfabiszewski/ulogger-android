@@ -137,4 +137,5 @@
     <string name="button_save">Zapisz</string>
     <string name="tracking">Śledzenie</string>
     <string name="clear">Usuń trasę</string>
+    <string name="share_link">Udostępnij link do trasy</string>
 </resources>
