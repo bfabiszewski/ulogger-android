@@ -146,4 +146,5 @@
     <string name="button_save">Save</string>
     <string name="tracking">Tracking</string>
     <string name="clear">Clear track</string>
+    <string name="share_link">Share track link</string>
 </resources>

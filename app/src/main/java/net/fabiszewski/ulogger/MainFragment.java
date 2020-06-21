@@ -19,6 +19,7 @@ import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -74,6 +75,7 @@ public class MainFragment extends Fragment {
     private TextView locLabel;
     private TextView locLed;
     private SwipeSwitch switchLogger;
+    private Button buttonShare;
 
     private PorterDuffColorFilter redFilter;
     private PorterDuffColorFilter greenFilter;
@@ -102,6 +104,7 @@ public class MainFragment extends Fragment {
         Button buttonWaypoint = layout.findViewById(R.id.buttonWaypoint);
         Button buttonUpload = layout.findViewById(R.id.buttonUpload);
         Button buttonNewTrack = layout.findViewById(R.id.buttonNewTrack);
+        buttonShare = layout.findViewById(R.id.buttonShare);
         syncErrorLabel = layout.findViewById(R.id.sync_error);
         syncLabel = layout.findViewById(R.id.sync_status);
         syncLed = layout.findViewById(R.id.sync_led);
@@ -113,6 +116,7 @@ public class MainFragment extends Fragment {
         buttonWaypoint.setOnClickListener(this::addWaypoint);
         buttonUpload.setOnClickListener(this::uploadData);
         buttonNewTrack.setOnClickListener(this::newTrack);
+        buttonShare.setOnClickListener(this::shareURL);
         layoutSummary.setOnClickListener(this::trackSummary);
         return layout;
     }
@@ -245,6 +249,10 @@ public class MainFragment extends Fragment {
         }
     }
 
+    /**
+     * Show toast
+     * @param text Text
+     */
     private void showToast(String text) {
         Context context = getContext();
         if (context != null) {
@@ -254,10 +262,36 @@ public class MainFragment extends Fragment {
     }
 
     /**
+     * Share track URL
+     * Called when the user clicks the share button
+     * @param view View
+     */
+    private void shareURL(View view) {
+        Context context = view.getContext();
+        String trackName = DbAccess.getTrackName(context);
+        int trackId = DbAccess.getTrackId(context);
+        MainActivity activity = (MainActivity) requireActivity();
+        String host = activity.preferenceHost;
+        if (trackId > 0 && host.length() > 0) {
+            String trackUrl = host + "/#" + trackId;
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, trackUrl);
+            sendIntent.putExtra(Intent.EXTRA_TITLE, trackName);
+            sendIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_link));
+            Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+            viewIntent.setData(Uri.parse(trackUrl));
+            shareIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{viewIntent});
+            startActivity(shareIntent);
+        }
+    }
+
+    /**
      * Called when the user clicks the Upload button
      * @param view View
      */
-    private void uploadData(@SuppressWarnings("UnusedParameters") View view) {
+    private void uploadData(View view) {
         Context context = view.getContext();
         if (!SettingsFragment.isValidServerSetup(context)) {
             showToast(getString(R.string.provide_user_pass_url));
@@ -387,7 +421,9 @@ public class MainFragment extends Fragment {
         View view = getView();
         if (view != null) {
             final TextView trackLabel = view.findViewById(R.id.newtrack_label);
-            trackName = trackName == null ? "-" : trackName;
+            if (trackName == null) {
+                trackName = "-";
+            }
             trackLabel.setText(trackName);
         }
     }
@@ -469,6 +505,7 @@ public class MainFragment extends Fragment {
         if (context == null) {
             return;
         }
+        updateShareButton();
         updateLocationLabel(LoggerService.lastUpdateRealtime());
         // get sync status
         int count = DbAccess.countUnsynced(context);
@@ -480,6 +517,21 @@ public class MainFragment extends Fragment {
             resetSyncError();
         }
         updateSyncStatus(count);
+    }
+
+    /**
+     * Update visibility of share button
+     */
+    private void updateShareButton() {
+        Context context = getContext();
+        if (context == null) {
+            return;
+        }
+        if (DbAccess.getTrackId(context) > 0) {
+            buttonShare.setVisibility(View.VISIBLE);
+        } else {
+            buttonShare.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -614,6 +666,9 @@ public class MainFragment extends Fragment {
                     if (isUploading && unsyncedCount == 0) {
                         showToast(getString(R.string.uploading_done));
                         isUploading = false;
+                    }
+                    if (buttonShare.getVisibility() == View.GONE) {
+                        buttonShare.setVisibility(View.VISIBLE);
                     }
                     break;
                 case (WebSyncService.BROADCAST_SYNC_FAILED): {

@@ -465,6 +465,18 @@ class DbAccess implements AutoCloseable {
     }
 
     /**
+     * Get current track id.
+     *
+     * @param context Context
+     * @return Track id, zero if no track with valid id in database
+     */
+    static int getTrackId(Context context) {
+        try (DbAccess dbAccess = getOpenInstance(context)) {
+            return dbAccess.getTrackId();
+        }
+    }
+
+    /**
      * Update current track, set id.
      *
      * @param id New track id
