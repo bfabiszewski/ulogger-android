@@ -1,0 +1,4 @@
+3.1: μlogger
+
+Changes:
+- Sharing link to synchronized track
