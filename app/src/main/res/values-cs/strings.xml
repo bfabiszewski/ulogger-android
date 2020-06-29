@@ -7,7 +7,7 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="button_newtrack">Nová trasa</string>
     <string name="button_upload">Nahrát</string>
     <string name="is_running" comment="substituted app_name">%s běží</string>
@@ -60,6 +60,7 @@
     <string name="no_positions">Aktuální trasa nemá žádné pozice</string>
     <string name="warning">Upozornění</string>
     <string name="notsync_warning">Aktuální trasa neobsahuje synchronizované pozice. Nastavení nové trasy odstraní všechna tato data.</string>
+    <string name="clear_warning">Opravdu chcete odstranit aktuální trasu a všechna její data ze zařízení? Nebudou smazána žádná data ze serveru.</string>
     <string name="no_track_warning">Nejprve nastavte novou trasu</string>
     <string name="empty_trackname_warning">Název trasy nemůže být prázdný</string>
     <string name="logger_running_warning">Nejdříve zastavte aktuální sledování</string>
@@ -72,9 +73,10 @@
     <string name="uploading_done">Nahrávání hotovo</string>
     <string name="track_summary">Souhrn trasy</string>
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
-    <plurals name="summary_positions">
+    <plurals name="summary_positions" tools:ignore="UnusedQuantity">
         <item quantity="one">%d pozice</item>
         <item quantity="few">%d pozic</item>
+        <item quantity="many">%d pozic</item>
         <item quantity="other">%d pozic</item>
     </plurals>
     <string name="summary_duration">%1$d h %2$d min</string>
@@ -97,14 +99,16 @@
     <string name="using_network">Použití poskytovatele sítě</string>
     <string name="using_gps">Použití poskytovatele gps</string>
     <string name="export">Export do GPX</string>
+    <string name="waypoint">Trasový bod</string>
     <string name="nothing_to_export">Nic k exportu</string>
     <string name="export_done">Trasa úspěšně uložena</string>
     <string name="export_failed">Export se nezdařil</string>
     <string name="unknown_track">Neznámá trasa</string>
     <string name="export_started">Export začal</string>
-    <plurals name="label_positions_behind">
+    <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
         <item quantity="one">%d pozice zbývá</item>
         <item quantity="few">%d pozice zbývají</item>
+        <item quantity="many">%d pozic zbývá</item>
         <item quantity="other">%d pozic zbývá</item>
     </plurals>
     <string name="track_server_setup_warning">Pokud změníte nastavení serveru, nemusí být možné synchronizovat aktuální trasu.</string>
@@ -128,6 +132,10 @@
     <string name="accuracy_meters">%d m přesnost</string>
     <string name="meters_asl">%s m a.s.l.</string>
     <string name="label_position">Poloha</string>
+    <string name="label_waypoint_description">Popis trasového bodu</string>
     <string name="label_add_photo">Přidat fotku</string>
     <string name="button_save">Uložit</string>
-    </resources>
+    <string name="tracking">Trasování</string>
+    <string name="clear">Vymazat trasu</string>
+    <string name="share_link">Sdílet odkaz na stopu</string>
+</resources>
