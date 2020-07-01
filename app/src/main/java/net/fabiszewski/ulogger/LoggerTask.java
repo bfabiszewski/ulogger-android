@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
@@ -133,7 +134,7 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
 
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(@NonNull Location location) {
         if (Logger.DEBUG) { Log.d(TAG, "[location changed: " + location + "]"); }
         if (hasRequiredAccuracy(location)) {
             this.location = location;
@@ -165,7 +166,7 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
     public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     @Override
-    public void onProviderEnabled(String provider) {
+    public void onProviderEnabled(@NonNull String provider) {
         if (Logger.DEBUG) { Log.d(TAG, "[onProviderEnabled: " + provider + "]"); }
         try {
             restartUpdates();
@@ -175,7 +176,7 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
     }
 
     @Override
-    public void onProviderDisabled(String provider) {
+    public void onProviderDisabled(@NonNull String provider) {
         if (Logger.DEBUG) { Log.d(TAG, "[onProviderDisabled: " + provider + "]"); }
         try {
             restartUpdates();

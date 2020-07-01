@@ -27,6 +27,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
@@ -297,7 +298,7 @@ public class LoggerService extends Service {
          * @param location Location
          */
         @Override
-        public void onLocationChanged(Location location) {
+        public void onLocationChanged(@NonNull Location location) {
             if (Logger.DEBUG) { Log.d(TAG, "[location changed: " + location + "]"); }
 
             if (meetsCriteria(location)) {
@@ -346,7 +347,7 @@ public class LoggerService extends Service {
          * @param provider Provider
          */
         @Override
-        public void onProviderDisabled(String provider) {
+        public void onProviderDisabled(@NonNull String provider) {
             if (Logger.DEBUG) { Log.d(TAG, "[location provider " + provider + " disabled]"); }
             if (provider.equals(LocationManager.GPS_PROVIDER)) {
                 sendBroadcast(BROADCAST_LOCATION_GPS_DISABLED);
@@ -360,7 +361,7 @@ public class LoggerService extends Service {
          * @param provider Provider
          */
         @Override
-        public void onProviderEnabled(String provider) {
+        public void onProviderEnabled(@NonNull String provider) {
             if (Logger.DEBUG) { Log.d(TAG, "[location provider " + provider + " enabled]"); }
             if (provider.equals(LocationManager.GPS_PROVIDER)) {
                 sendBroadcast(BROADCAST_LOCATION_GPS_ENABLED);
