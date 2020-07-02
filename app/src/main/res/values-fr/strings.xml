@@ -8,14 +8,14 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="button_newtrack">Nouvelle piste</string>
-    <string name="button_upload">Uploader</string>
+    <string name="button_newtrack">Nouvelle trace</string>
+    <string name="button_upload">Envoyer</string>
     <string name="is_running" comment="substituted app_name">%s est lancé</string>
-    <string name="title_newtrack">Nouvelle piste</string>
-    <string name="label_track">Piste actuelle</string>
-    <string name="label_newtrack_name">Nom de la nouvelle piste</string>
+    <string name="title_newtrack">Nouvelle trace</string>
+    <string name="label_track">Trace actuelle</string>
+    <string name="label_newtrack_name">Nom de la nouvelle trace</string>
     <string name="label_name">Nom</string>
-    <string name="label_last_update">Dernière mise à jour: %s</string>
+    <string name="label_last_update">Dernière mise à jour : %s</string>
     <string name="label_synchronized">Synchronisé</string>
     <string name="cancel">Annuler</string>
     <string name="submit">Envoyer</string>
@@ -26,44 +26,52 @@
     <string name="pref_pass_title">Mot de passe</string>
     <string name="pref_pass_summary">Mot de passe sur le serveur distant</string>
     <string name="pref_host_title">Adresse du serveur</string>
-    <string name="pref_host_summary">Adresse racine sur le serveur distant</string>
+    <string name="pref_host_summary">Adresse racine du serveur distant</string>
     <string name="pref_mintime_title">Temps minimum</string>
     <string name="pref_mintime_summary">Temps minimum entre les mises à jour de localisation</string>
     <string name="pref_mindistance_title">Distance minimum</string>
     <string name="pref_mindistance_summary">Distance minimum entre les mises à jour de localisation</string>
     <string name="pref_minaccuracy_title">Précision minimum</string>
     <string name="pref_minaccuracy_summary">Précision minimum de la position</string>
-    <string name="pref_livesync_title">Synchronisation directe</string>
+    <string name="pref_imagesize_title">Taille d\'image</string>
+    <string name="pref_imagesize_summary">Largeur/hauteur maximale des images téléchargées en pixels. En cas de sous-échantillonnage, les images redimensionnées seront temporairement stockées dans le dossier d\'application avant d\'être téléverséess. Si vous choisissez l\'option \"taille native\", aucune copie ne sera faite, les fichiers originaux doivent donc être disponibles pendant le téléchargement.</string>
+    <string name="pref_livesync_title">Synchronisation immédiate</string>
     <string name="pref_livesync_summary">Mise à jour directe de la position sur le serveur. Nécessite un nom d\'utilisateur, un mot de passe et une adresse de serveur valide.</string>
     <string name="pref_autostart_title">Enregistrement automatique</string>
     <string name="pref_autostart_summary">L\'application enregistrera au démarrage du téléphone</string>
-    <string name="pref_provider_title">Fournisseur de localisation</string>
+    <string name="pref_external_title">Autoriser les actions externes</string>
+    <string name="pref_external_summary">Permet de recevoir des commandes d\'autres applications pour faciliter l\'automatisation et la planification des tâches.</string>
+    <string name="pref_provider_title">Fournisseur de position</string>
     <string name="pref_provider_summary">La localisation peut être fournie par le fournisseur GPS, le réseau ou les deux. Utiliser les deux fournisseurs donnera de meilleurs résultats mais utilisera plus de batterie.</string>
     <string name="pref_units_title">Unités</string>
     <string name="pref_units_summary">Unités préférées pour afficher le résumé de la piste</string>
     <string name="pref_units_metric">Mètre</string>
     <string name="pref_units_imperial">Impérial</string>
     <string name="pref_units_nautical">Système nautique</string>
+    <string name="pref_auto_name_title">Nom par défaut de la trace</string>
+    <string name="pref_auto_name_summary" formatted="false">Modèle pour le nouveau nom d\'une trace. Les modèles suivants seront remplacés par les éléments de la date actuelle : %y (année), %m (mois), %d (jour), %H (heure), %M (minute), %S (seconde). Si vous avez besoin d\'utiliser le caractère de pourcentage littéral, utilisez %%.</string>
     <string name="label_status">Statut</string>
-    <string name="label_location">Localisation</string>
+    <string name="label_location">Position</string>
     <string name="label_synchronization">Synchronisation</string>
     <string name="tracking_stopped">Enregistrement arrêté</string>
     <string name="tracking_started">Enregistrement démarré</string>
-    <string name="uploading_started">Envoi démarré</string>
+    <string name="uploading_started">Le téléversement a débuté</string>
     <string name="nothing_to_synchronize">Rien à synchroniser</string>
-    <string name="no_positions">La piste actuelle n\'a pas de localisation</string>
+    <string name="no_positions">La trace actuelle n\'a pas de position</string>
     <string name="warning">Attention</string>
-    <string name="notsync_warning">La piste actuelle contient des localisations non synchronisées. Définir une nouvelle piste supprimera ces données.</string>
-    <string name="no_track_warning">Merci de définir une nouvelle piste</string>
-    <string name="logger_running_warning">Merci d\'arrêter le tracking actuel</string>
+    <string name="notsync_warning">La piste actuelle contient des positions non synchronisées. Définir une nouvelle piste supprimera ces données.</string>
+    <string name="clear_warning">Êtes-vous sûr de vouloir supprimer la piste actuelle et toutes ses données de l\'appareil ? Aucune donnée sur le serveur ne sera supprimée.</string>
+    <string name="no_track_warning">Merci de d\'abord créer une nouvelle trace</string>
+    <string name="empty_trackname_warning">Le nom de la trace ne peut pas être vide</string>
+    <string name="logger_running_warning">Merci d\'arrêter l\'enregistrement actuel</string>
     <string name="about">A propos</string>
-    <string name="about_description">Simple moniteur de localisation avec suivi en direct et envoi de la position sur son propre <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>serveur μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description">Simple moniteur de position avec suivi en direct et envoi des traces sur son propre <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>serveur μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_description2">Pour plus d\'informations et soutien, aller sur <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>page d\'accueil de μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_version">Version %s</string>
     <string name="about_license">License : GPL</string>
-    <string name="uploading_failed">Envoi échoué :</string>
-    <string name="uploading_done">Envoi effectué</string>
-    <string name="track_summary">Résumé de la piste</string>
+    <string name="uploading_failed">Échec du téléversement :</string>
+    <string name="uploading_done">Téléversement effectué</string>
+    <string name="track_summary">Résumé de la trace</string>
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
     <plurals name="summary_positions">
         <item quantity="one">%d position</item>
@@ -72,8 +80,9 @@
     <string name="summary_duration">%1$d h %2$d min</string>
     <string name="unit_kilometer">km</string>
     <string name="unit_mile">mi.</string>
-    <string name="provide_valid_url">Merci de remplir une adresse de serveur correcte</string>
+    <string name="provide_valid_url">Merci de remplir une adresse de serveur valide</string>
     <string name="provide_user_pass_url">Merci d\'entrer un nom d\'utilisateur, un mot de passe et une adresse de serveur</string>
+    <string name="e_illegal_state">Erreur d\'état : %s</string>
     <string name="e_illegal_redirect">Redirection illégale : %d</string>
     <string name="e_auth_failure">Erreur d\'authentification : %d</string>
     <string name="e_http_code">Code d\'erreur HTTP : %d</string>
@@ -83,29 +92,46 @@
     <string name="e_connect">Erreur de connexion : %s</string>
     <string name="gps_disabled_warning">Attention : GPS désactivé</string>
     <string name="net_disabled_warning">Attention : réseau désactivé</string>
-    <string name="location_disabled">Vous devez autoriser au moins un fournisseur de localisation</string>
-    <string name="location_permission_denied">Vous devez accepter la permission pour la mise à jour de localisation</string>
-    <string name="using_network">Utilisant le fournisseur de réseau</string>
+    <string name="location_disabled">Vous devez autoriser au moins un fournisseur de position</string>
+    <string name="location_permission_denied">Vous devez accepter la permission pour la mise à jour de position</string>
+    <string name="using_network">Utilisant le réseau GSM</string>
     <string name="using_gps">Utilisant le GPS</string>
     <string name="export">Exporter en GPX</string>
+    <string name="waypoint">Point d\'intérêt</string>
     <string name="nothing_to_export">Rien à exporter</string>
     <string name="export_done">Piste sauvegardée avec succès</string>
-    <string name="export_failed">Export échoué</string>
+    <string name="export_failed">Échec de l\'export</string>
     <string name="unknown_track">Piste inconnue</string>
     <string name="export_started">Export débuté</string>
     <plurals name="label_positions_behind">
         <item quantity="one">%d position derrière</item>
-        <item quantity="other">%d positions derrière</item>
+        <item quantity="other">%d positions en attente</item>
     </plurals>
     <string name="track_server_setup_warning">Si vous modifiez la configuration du serveur, vous ne pourrez peut-être pas synchroniser la piste en cours.</string>
     <string name="pref_mintime_other">Intervalle de temps minimum en secondes</string>
     <string name="pref_mindistance_other">Distance minimum en mètres</string>
     <string name="pref_minaccuracy_other">Précision minimum en mètres</string>
+    <string name="pref_imagesize_other">Largeur/hauteur maximale de l\'image en pixels</string>
     <string name="unit_nmile">nm</string>
-    <string name="pref_cat_location">Suivi de localisation</string>
+    <string name="pref_cat_location">Suivi de la position</string>
     <string name="pref_cat_server">Serveur</string>
-    <string name="pref_cat_other">Autres</string>
+    <string name="pref_cat_other">Autre</string>
+    <string name="illegal_template_warning">Le modèle contient des caractères illégaux</string>
+    <string name="cannot_open_picker">Impossible d\'ouvrir le dossier</string>
+    <string name="e_open_out_stream">Impossible d\'ouvrir le flux de sortie</string>
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Réseau</string>
     <string name="provider_gps_network">Réseau et GPS</string>
-    </resources>
+    <string name="logger_task_failure">Impossible d\'obtenir la position</string>
+    <string name="take_photo">Prendre une photo</string>
+    <string name="from_library">Choisir dans la galerie</string>
+    <string name="accuracy_meters">Précision de %d m</string>
+    <string name="meters_asl">%s m</string>
+    <string name="label_position">Position</string>
+    <string name="label_waypoint_description">Description du point d\'intérêt</string>
+    <string name="label_add_photo">Ajouter une photo</string>
+    <string name="button_save">Sauvegarder</string>
+    <string name="tracking">Enregistrement</string>
+    <string name="clear">RAZ de la trace</string>
+    <string name="share_link">Partager le lien de la trace</string>
+</resources>
