@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -54,7 +55,7 @@ import static android.util.Base64.URL_SAFE;
 class WebHelper {
     private static final String TAG = WebSyncService.class.getSimpleName();
     private static final int BUFFER_SIZE = 16 * 1024;
-    private static final long UPLOAD_SIZE_MAX = 10 * 1024 * 1024;
+    private static final long UPLOAD_SIZE_MAX = 25 * 1024 * 1024;
     private static final String MULTIPART_TEXT_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s";
     private static final String MULTIPART_FILE_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"; filename=\"upload\"\r\n" +
             "Content-Type: %s\r\n" +
@@ -102,6 +103,8 @@ class WebHelper {
 
     static boolean isAuthorized = false;
     private byte[] delimiter;
+    private static final String CRLF = "\r\n";
+    private static final String DASH = "--";
 
     /**
      * Constructor
@@ -160,21 +163,20 @@ class WebHelper {
         URL url = new URL(host + "/" + CLIENT_SCRIPT);
         if (Logger.DEBUG) { Log.d(TAG, "[postForm: " + url + " : " + params + ", image=" + uri + "]"); }
         String response;
-
-        boolean useChunkedEncoding = false;
         byte[] data;
-        String boundary = null;
+        final long contentLength;
+        final String contentType;
         if (isMultipart) {
-            boundary = generateBoundary();
-            final String crlf = "\r\n";
-            final String dash = "--";
-            final String d = crlf + dash + boundary + crlf;
+            final String boundary = generateBoundary();
+            final String d = CRLF + DASH + boundary + CRLF;
             delimiter = d.getBytes(StandardCharsets.UTF_8);
-            final String closeDelimiter = crlf + dash + boundary + dash + crlf;
-            data = closeDelimiter.getBytes(StandardCharsets.UTF_8);
-            useChunkedEncoding = true;
+            data = getMultipartTextPart(params);
+            contentLength = getMultipartLength(uri, data);
+            contentType = "multipart/form-data; boundary=" + boundary;
         } else {
             data = getUrlencodedData(params);
+            contentLength = data.length;
+            contentType = "application/x-www-form-urlencoded";
         }
         HttpURLConnection connection = null;
         InputStream in = null;
@@ -192,21 +194,16 @@ class WebHelper {
                 connection.setConnectTimeout(SOCKET_TIMEOUT);
                 connection.setReadTimeout(SOCKET_TIMEOUT);
                 connection.setUseCaches(false);
-                if (isMultipart) {
-                    connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-                    if (useChunkedEncoding) {
-                        // chunk length seems to have no effect??
-                        connection.setChunkedStreamingMode(0);
-                    }
-                } else {
-                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                    connection.setRequestProperty("Content-Length", Integer.toString(data.length));
-                }
+                connection.setRequestProperty("Content-Type", contentType);
+                connection.setFixedLengthStreamingMode(contentLength);
 
                 out = new BufferedOutputStream(connection.getOutputStream());
                 if (isMultipart) {
-                    writeMultipartTextParams(out, params);
+                    out.write(data);
                     writeMultipartFile(out, uri);
+                    out.write(delimiter, 0, delimiter.length - 2);
+                    String end = DASH + CRLF;
+                    data = end.getBytes(StandardCharsets.UTF_8);
                 }
                 out.write(data);
                 out.flush();
@@ -235,11 +232,6 @@ class WebHelper {
                         connection.getInputStream().close();
                         connection.disconnect();
                     } catch (final IOException ignored) { }
-                }
-                else if (useChunkedEncoding && responseCode == HttpURLConnection.HTTP_NOT_IMPLEMENTED) {
-                    useChunkedEncoding = false;
-                    retry = true;
-                    tries--;
                 }
                 else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     throw new WebAuthException(context.getString(R.string.e_auth_failure, responseCode));
@@ -276,6 +268,29 @@ class WebHelper {
     }
 
     /**
+     * Get length of multipart body
+     * @param uri File uri
+     * @param data Text part data
+     * @return Length in bytes
+     */
+    private int getMultipartLength(@NonNull Uri uri, byte[] data) {
+        int length = 0;
+        String fileMime = ImageHelper.getFileMime(context, uri);
+        if (fileMime != null) {
+            // text part size
+            length += data.length;
+            // file size
+            String headers = String.format(MULTIPART_FILE_TEMPLATE, PARAM_IMAGE, fileMime);
+            length += headers.getBytes(StandardCharsets.UTF_8).length + delimiter.length;
+            length += ImageHelper.getFileSize(context, uri);
+            // closing delimiter
+            length += delimiter.length + 2;
+        }
+        if (Logger.DEBUG) { Log.d(TAG, "[getMultipartLength: " + length + "]"); }
+        return length;
+    }
+
+    /**
      * Write uri to output stream.
      * File name and extension is ignored, only MIME type is sent.
      * Errors are not propagated to allow skipping problematic file and sending only position.
@@ -290,8 +305,8 @@ class WebHelper {
             return;
         }
         long fileSize = ImageHelper.getFileSize(context, uri);
-        if (fileSize > UPLOAD_SIZE_MAX) {
-            if (Logger.DEBUG) { Log.d(TAG, "[Skipping file, too large: " + fileSize + "]"); }
+        if (fileSize > UPLOAD_SIZE_MAX || fileSize == 0) {
+            if (Logger.DEBUG) { Log.d(TAG, "[Skipping file, wrong size: " + fileSize + "]"); }
             return;
         }
         try (InputStream fileStream = cr.openInputStream(uri)) {
@@ -313,17 +328,20 @@ class WebHelper {
     }
 
     /**
-     * Send text/plain parameters as part of multipart form
+     * Get text/plain parameters as part of multipart form
      * @param out Output stream
      * @param params Parameters
+     * @return Multipart body for text parameters
      * @throws IOException Exception on failure
      */
-    private void writeMultipartTextParams(OutputStream out, Map<String, String> params) throws IOException {
+    private byte[] getMultipartTextPart(Map<String, String> params) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         for (Map.Entry<String, String> p : params.entrySet()) {
             out.write(delimiter);
             String body = String.format(MULTIPART_TEXT_TEMPLATE, p.getKey(), p.getValue());
             out.write(body.getBytes(StandardCharsets.UTF_8));
         }
+        return out.toByteArray();
     }
 
     /**
