@@ -40,6 +40,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static android.content.ContentResolver.SCHEME_CONTENT;
+import static android.content.ContentResolver.SCHEME_FILE;
+
 class ImageHelper {
     private static final String TAG = ImageHelper.class.getSimpleName();
     private static final String MEDIA_ORIENTATION = "orientation";
@@ -235,18 +238,25 @@ class ImageHelper {
      * Get file size
      * @param context Context
      * @param uri File URI
-     * @return Size
+     * @return Size or zero if not known
      */
     static long getFileSize(@NonNull Context context, @NonNull Uri uri) {
         long fileSize = 0;
-        try (Cursor cursor = context.getContentResolver()
-                .query(uri, null, null, null, null)) {
-            if (cursor != null) {
-                int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-                cursor.moveToFirst();
-                fileSize = cursor.getLong(sizeIndex);
+        final String scheme = uri.getScheme();
+        if (SCHEME_CONTENT.equals(scheme)) {
+            try (Cursor cursor = context.getContentResolver()
+                    .query(uri, null, null, null, null)) {
+                if (cursor != null) {
+                    int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                    cursor.moveToFirst();
+                    fileSize = cursor.getLong(sizeIndex);
+                }
             }
+        } else if (SCHEME_FILE.equals(scheme) && uri.getPath() != null) {
+            File file = new File(uri.getPath());
+            fileSize = file.length();
         }
+        if (Logger.DEBUG) { Log.d(TAG, "[getFileSize (" + scheme + "): " + fileSize + "]" ); }
         return fileSize;
     }
 
