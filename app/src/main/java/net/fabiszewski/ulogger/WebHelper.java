@@ -280,9 +280,12 @@ class WebHelper {
             // text part size
             length += data.length;
             // file size
-            String headers = String.format(MULTIPART_FILE_TEMPLATE, PARAM_IMAGE, fileMime);
-            length += headers.getBytes(StandardCharsets.UTF_8).length + delimiter.length;
-            length += ImageHelper.getFileSize(context, uri);
+            long fileSize = ImageHelper.getFileSize(context, uri);
+            if (fileSize <= UPLOAD_SIZE_MAX && fileSize > 0) {
+                String headers = String.format(MULTIPART_FILE_TEMPLATE, PARAM_IMAGE, fileMime);
+                length += headers.getBytes(StandardCharsets.UTF_8).length + delimiter.length;
+                length += fileSize;
+            }
             // closing delimiter
             length += delimiter.length + 2;
         }
