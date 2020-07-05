@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+    <string-array name="minTimeEntries">
+        <item>10 sekúnd</item>
+        <item>30 sekúnd</item>
+        <item>1 minúta</item>
+        <item>5 minút</item>
+        <item>15 minút</item>
+        <item>30 minút</item>
+        <item>1 hodina</item>
+        <item>iné</item>
+    </string-array>
+
+    <string-array name="minDistanceEntries">
+        <item>žiadne minimum</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+        <item>iné</item>
+    </string-array>
+
+    <string-array name="minAccuracyEntries">
+        <item>10 m</item>
+        <item>25 m</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+        <item>iné</item>
+    </string-array>
+
+    <string-array name="imageSizeEntries">
+        <item>skutočná veľkosť</item>
+        <item>800 px</item>
+        <item>1080 px</item>
+        <item>1280 px</item>
+        <item>1920 px</item>
+        <item>iné</item>
+    </string-array>
+
+    </resources>
