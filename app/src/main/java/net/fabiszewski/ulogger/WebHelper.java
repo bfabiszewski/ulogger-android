@@ -308,7 +308,7 @@ class WebHelper {
             return;
         }
         long fileSize = ImageHelper.getFileSize(context, uri);
-        if (fileSize > UPLOAD_SIZE_MAX || fileSize == 0) {
+        if (fileSize > UPLOAD_SIZE_MAX || fileSize <= 0) {
             if (Logger.DEBUG) { Log.d(TAG, "[Skipping file, wrong size: " + fileSize + "]"); }
             return;
         }

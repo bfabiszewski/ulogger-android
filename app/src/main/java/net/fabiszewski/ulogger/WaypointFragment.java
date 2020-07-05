@@ -18,7 +18,6 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -42,6 +41,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.EXTRA_LOCAL_ONLY;
 import static android.content.Intent.EXTRA_MIME_TYPES;
+import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
 public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback, ImageTask.ImageTaskCallback {
 
@@ -268,10 +270,8 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         if (takePictureIntent.resolveActivity(requireContext().getPackageManager()) != null) {
             photoUri = ImageHelper.createImageUri(requireContext());
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            int flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION;
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-                takePictureIntent.addFlags(flags);
-            }
+            int flags = FLAG_GRANT_WRITE_URI_PERMISSION|FLAG_GRANT_READ_URI_PERMISSION|FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+            takePictureIntent.addFlags(flags);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
@@ -384,6 +384,8 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         String[] mimeTypes = { "image/jpeg", "image/gif", "image/png", "image/x-ms-bmp" };
         intent.putExtra(EXTRA_MIME_TYPES, mimeTypes);
         intent.putExtra(EXTRA_LOCAL_ONLY, true);
+        int flags = FLAG_GRANT_READ_URI_PERMISSION|FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+        intent.addFlags(flags);
         try {
             startActivityForResult(intent, REQUEST_IMAGE_OPEN);
         } catch (ActivityNotFoundException e) {
