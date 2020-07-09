@@ -1,0 +1,9 @@
+3.2: μlogger
+
+Bugs fixed:
+- Problem with image upload in some server setups
+
+Translations:
+- New Slovak translation (Tibor Repček)
+- Updated French translations (Thieume)
+- Updated Czech translation (trendspotter)
