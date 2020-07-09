@@ -1,0 +1,141 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_newtrack">Nová cesta</string>
+    <string name="button_upload">Nahrať</string>
+    <string name="is_running" comment="substituted app_name">%s je aktívna</string>
+    <string name="title_newtrack">Nová cesta</string>
+    <string name="label_track">Aktuálna cesta</string>
+    <string name="label_newtrack_name">Názov novej cesty</string>
+    <string name="label_name">Názov</string>
+    <string name="label_last_update">Naposledy aktualizované: %s</string>
+    <string name="label_synchronized">Synchronizované</string>
+    <string name="cancel">Zrušiť</string>
+    <string name="submit">Poslať</string>
+    <string name="ok">OK</string>
+    <string name="settings">Nastavenia</string>
+    <string name="pref_username_title">Používateľské meno</string>
+    <string name="pref_username_summary">Používateľ na vzdialenom servery</string>
+    <string name="pref_pass_title">Heslo</string>
+    <string name="pref_pass_summary">Heslo na vzdialenom servery</string>
+    <string name="pref_host_title">URL servera</string>
+    <string name="pref_host_summary">Základná URL vzdialeného servera</string>
+    <string name="pref_mintime_title">Minimálny čas</string>
+    <string name="pref_mintime_summary">Minimálny čas medzi aktualizáciami polohy</string>
+    <string name="pref_mindistance_title">Minimálna vzdialenosť</string>
+    <string name="pref_mindistance_summary">Minimálna vzdialenosť medzi aktualizáciami polohy</string>
+    <string name="pref_minaccuracy_title">Minimálna presnosť</string>
+    <string name="pref_minaccuracy_summary">Minimálna presnosť polohy</string>
+    <string name="pref_imagesize_title">Veľkosť obrázka</string>
+    <string name="pref_imagesize_summary">Maximálna šírka/výška nahrávaného obrázka v pixeloch. V prípade zmenšenia budú zmenšené obrázky pred nahratím dočasne uložené v priečinku aplikácie. Ak vyberiete \"skutočnú veľkosť\" neuloží sa žiadna dočasná kópia, takže originálne súbory musia byť počas nahrávania k dispozícii.</string>
+    <string name="pref_livesync_title">Live synchronizácia</string>
+    <string name="pref_livesync_summary">Okamžité nahrávanie polohy na server. Vyžaduje platné prihlasovacie údaje a adresu servera.</string>
+    <string name="pref_autostart_title">Spustiť automaticky</string>
+    <string name="pref_autostart_summary">Aplikácia sa spustí pri štarte systému</string>
+    <string name="pref_external_title">Povoliť externé príkazy</string>
+    <string name="pref_external_summary">Povoliť prijímanie príkazov z iných aplikácií na automatizovanie a plánovanie úloh.</string>
+    <string name="pref_provider_title">Poskytovateľ polohy</string>
+    <string name="pref_provider_summary">Poloha môže byť poskytovaná cez GPS, cez sieť alebo cez oba zdroje. Oba poskytovatelia naraz dodávajú lepšie výsledky, ale vyžadujú viac energie baterky.</string>
+    <string name="pref_units_title">Jednotky</string>
+    <string name="pref_units_summary">Jednotky, v ktorých chcete zobraziť zhrnutie cesty</string>
+    <string name="pref_units_metric">Metrické</string>
+    <string name="pref_units_imperial">Imperiálne</string>
+    <string name="pref_units_nautical">Námornícke</string>
+    <string name="pref_auto_name_title">Šablóna názvu cesty</string>
+    <string name="pref_auto_name_summary" formatted="false">Šablóna pre názov novej cesty. Tento vzorec bude nahradený aktuálnym dátumom takto: %y (rok), %m (mesiac), %d (deň), %H (hodina), %M (minúta), %S (sekunda). Ak potrebujete znak percenta, použite %%.</string>
+    <string name="label_status">Stav</string>
+    <string name="label_location">Poloha</string>
+    <string name="label_synchronization">Synchronizácia</string>
+    <string name="tracking_stopped">Sledovanie zastavené</string>
+    <string name="tracking_started">Sledovanie spustené</string>
+    <string name="uploading_started">Nahrávanie začalo</string>
+    <string name="nothing_to_synchronize">Všetko je synchronizované</string>
+    <string name="no_positions">Aktuálna cesta nemá miesta</string>
+    <string name="warning">Upozornenie</string>
+    <string name="notsync_warning">Aktuálna cesta neobsahuje synchronizované polohy. Vytvorením novej cesty vymažete všetky tieto údaje.</string>
+    <string name="clear_warning">Naozaj chcete vymazať aktuálnu cestu a všetky jej údaje z tohto zariadenia? Údaje na servery sa nevymažú.</string>
+    <string name="no_track_warning">Prosím, najskôr nastavte novú cestu</string>
+    <string name="empty_trackname_warning">Zadajte názov cesty</string>
+    <string name="logger_running_warning">Prosím, najskôr ukončite nahrávanie cesty</string>
+    <string name="about">O aplikácii</string>
+    <string name="about_description">Jednoduchý záznamník polohy, ktorý podporuje okamžité zaznamenávanie polohy a jej následné nahratie na vlastný <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>μlogger server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Pre viac informácií a pomoci <xliff:g id="app_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-android\">]]></xliff:g>navštívte domovskú stránku projektu μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Verzia %s</string>
+    <string name="about_license">Licencia: GPL</string>
+    <string name="uploading_failed">Nahrávanie sa nepodarilo:</string>
+    <string name="uploading_done">Nahrávanie dokončené</string>
+    <string name="track_summary">Zhrnutie cesty</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions" tools:ignore="UnusedQuantity">
+        <item quantity="one">%d miesto</item>
+        <item quantity="few">%d miest</item>
+        <item quantity="many">%d miest</item>
+        <item quantity="other">%d miest</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d m</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">Prosím, zadajte platnú URL adresu.</string>
+    <string name="provide_user_pass_url">Prosím, najskôr zadajte meno používateľa, heslo a adresu servera</string>
+    <string name="e_illegal_state">Chyba nepovoleného stavu: %s</string>
+    <string name="e_illegal_redirect">Nepovolené presmerovanie: %d</string>
+    <string name="e_auth_failure">Prihlásenie sa nepodarilo: %d</string>
+    <string name="e_http_code">Chybový kód HTTP: %d</string>
+    <string name="e_server_response">Server odpovedal chybou</string>
+    <string name="e_unknown_host">Neznámy hostiteľ: %s</string>
+    <string name="e_bad_url">Nesprávna adresa URL: %s</string>
+    <string name="e_connect">Chyba spojenia: %s</string>
+    <string name="gps_disabled_warning">Varovanie: poskytovateľ GPS je zakázaný</string>
+    <string name="net_disabled_warning">Varovanie: poskytovateľ siete je zakázaný</string>
+    <string name="location_disabled">Musíte povoliť aspoň jedného poskytovateľa polohy</string>
+    <string name="location_permission_denied">Musíte povoliť práva na aktualizáciu polohy</string>
+    <string name="using_network">Používa sa poskytovateľ siete</string>
+    <string name="using_gps">Používa sa poskytovateľ GPS</string>
+    <string name="export">Exportovať do GPX</string>
+    <string name="waypoint">Cieľové miesto</string>
+    <string name="nothing_to_export">Nie je čo exportovať</string>
+    <string name="export_done">Cesta sa úspešne zapísala</string>
+    <string name="export_failed">Exportovanie sa nepodarilo</string>
+    <string name="unknown_track">Neznáma cesta</string>
+    <string name="export_started">Exportovanie sa začalo</string>
+    <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
+        <item quantity="one">Počet nezapísaných polôh: %d </item>
+        <item quantity="few">Počet nezapísaných polôh: %d</item>
+        <item quantity="many">Počet nezapísaných polôh: %d</item>
+        <item quantity="other">Počet nezapísaných polôh: %d </item>
+    </plurals>
+    <string name="track_server_setup_warning">Ak zmeníte nastavenia servera, nebudete môcť nahrať aktuálnu cestu.</string>
+    <string name="pref_mintime_other">Minimálny časový interval v sekundách</string>
+    <string name="pref_mindistance_other">Minimálna vzdialenosť v metroch</string>
+    <string name="pref_minaccuracy_other">Minimálna presnosť v metroch</string>
+    <string name="pref_imagesize_other">Minimálna šírka/výška v pixeloch</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">Sledovanie</string>
+    <string name="pref_cat_server">Server</string>
+    <string name="pref_cat_other">Iné</string>
+    <string name="illegal_template_warning">Šablóna obsahuje nepovolené znaky</string>
+    <string name="cannot_open_picker">Nepodarilo sa otvoriť prehliadač súborov</string>
+    <string name="e_open_out_stream">Nepodarilo sa otvoriť výstupný tok</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Sieť</string>
+    <string name="provider_gps_network">Sieť a GPS</string>
+    <string name="logger_task_failure">Nepodarilo sa získať polohu</string>
+    <string name="take_photo">Odfotiť</string>
+    <string name="from_library">Vybrať z knižnice</string>
+    <string name="accuracy_meters">%d m presnosť</string>
+    <string name="meters_asl">%s m n. m.</string>
+    <string name="label_position">Poloha</string>
+    <string name="label_waypoint_description">Popis cieľového miesta</string>
+    <string name="label_add_photo">Pridať fotku</string>
+    <string name="button_save">Uložiť</string>
+    <string name="tracking">Sledovanie</string>
+    <string name="clear">Vymazať cestu</string>
+    <string name="share_link">Zdielať odkaz na cestu</string>
+</resources>

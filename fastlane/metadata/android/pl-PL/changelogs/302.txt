@@ -1,0 +1,9 @@
+3.2: μlogger
+
+Naprawione błędy:
+- Problem z przesyłaniem zdjęć przy niektórych konfiguracjach serwera
+
+Tłumaczenia:
+- Nowy język: słowacki (Tibor Repček)
+- Aktualizacja przekładu francuskiego (Thieume)
+- Aktualizacja przekładu czeskiego (trendspotter)

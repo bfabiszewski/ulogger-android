@@ -18,10 +18,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.MediaScannerConnection;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -40,13 +40,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static android.content.ContentResolver.SCHEME_CONTENT;
-import static android.content.ContentResolver.SCHEME_FILE;
-
 class ImageHelper {
     private static final String TAG = ImageHelper.class.getSimpleName();
     private static final String MEDIA_ORIENTATION = "orientation";
-    private static final String JPEG_MIME = "image/jpg";
     private static final int ORIENTATION_90 = 90;
     private static final int ORIENTATION_180 = 180;
     private static final int ORIENTATION_270 = 270;
@@ -148,22 +144,20 @@ class ImageHelper {
      */
     static Uri createImageUri(@NonNull Context context) {
         ContentValues values = new ContentValues();
-        String title = getUniqueTitle(context);
         long timeMillis = System.currentTimeMillis();
-        values.put(MediaStore.Images.Media.TITLE, title);
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, title);
-        values.put(MediaStore.Images.Media.MIME_TYPE, JPEG_MIME);
+        values.put(MediaStore.Images.Media.TITLE, getUniqueTitle(context));
         values.put(MediaStore.Images.Media.DATE_ADDED, timeMillis / 1000);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            values.put(MediaStore.Images.Media.DATE_TAKEN, timeMillis);
-        }
         Uri collection;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.DATE_TAKEN, timeMillis);
+            values.put(MediaStore.Images.Media.IS_PENDING, 0);
             collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
         } else {
             collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         }
-        return context.getContentResolver().insert(collection, values);
+        Uri imageUri = context.getContentResolver().insert(collection, values);
+        if (Logger.DEBUG) { Log.d(TAG, "[createImageUri: " + imageUri + "]" ); }
+        return imageUri;
     }
 
     /**
@@ -238,26 +232,32 @@ class ImageHelper {
      * Get file size
      * @param context Context
      * @param uri File URI
-     * @return Size or zero if not known
+     * @return Size or -1 if not known
      */
     static long getFileSize(@NonNull Context context, @NonNull Uri uri) {
-        long fileSize = 0;
-        final String scheme = uri.getScheme();
-        if (SCHEME_CONTENT.equals(scheme)) {
-            try (Cursor cursor = context.getContentResolver()
-                    .query(uri, null, null, null, null)) {
-                if (cursor != null) {
-                    int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-                    cursor.moveToFirst();
-                    fileSize = cursor.getLong(sizeIndex);
+        final ContentResolver cr = context.getContentResolver();
+
+        String[] projection = {OpenableColumns.SIZE};
+        try (Cursor cursor = cr.query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                long size = cursor.getInt(0);
+                if (size > 0) {
+                    if (Logger.DEBUG) { Log.d(TAG, "[getFileSize (db): " + size + "]" ); }
+                    return size;
                 }
+
             }
-        } else if (SCHEME_FILE.equals(scheme) && uri.getPath() != null) {
-            File file = new File(uri.getPath());
-            fileSize = file.length();
-        }
-        if (Logger.DEBUG) { Log.d(TAG, "[getFileSize (" + scheme + "): " + fileSize + "]" ); }
-        return fileSize;
+        } catch (Exception ignored) { }
+
+        try (ParcelFileDescriptor parcelFileDescriptor = cr.openFileDescriptor(uri, "r")) {
+            if (parcelFileDescriptor != null) {
+                long size = parcelFileDescriptor.getStatSize();
+                if (Logger.DEBUG) { Log.d(TAG, "[getFileSize (fd): " + size + "]" ); }
+                return size;
+            }
+        } catch (IOException ignored) { }
+
+        return -1;
     }
 
     /**
@@ -273,6 +273,10 @@ class ImageHelper {
         if (fileMime == null) {
             String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
             fileMime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase(Locale.ROOT));
+            if (Logger.DEBUG) { Log.d(TAG, "[getFileMime (ext): " + fileMime + "]" ); }
+        } else {
+            fileMime = fileMime.replace("jpg", "jpeg");
+            if (Logger.DEBUG) { Log.d(TAG, "[getFileMime (cr): " + fileMime + "]" ); }
         }
         return fileMime;
     }
@@ -424,9 +428,14 @@ class ImageHelper {
      * @param uri Image URI
      */
     static void galleryAdd(@NonNull Context context, @NonNull Uri uri) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, getUniqueTitle(context));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.IS_PENDING, 0);
+        }
         ContentResolver cr = context.getContentResolver();
-        String mime = cr.getType(uri);
-        MediaScannerConnection.scanFile(context, new String[] {uri.getPath()}, new String[] {mime}, null);
+        if (Logger.DEBUG) { Log.d(TAG, "[update " + uri + "]"); }
+        cr.update(uri, values, null, null);
     }
 
     /**
@@ -435,6 +444,10 @@ class ImageHelper {
      * @param uri URI
      */
     static void getPersistablePermission(@NonNull Context context, @NonNull Uri uri) {
-        context.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            context.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } catch (SecurityException e) {
+            if (Logger.DEBUG) { Log.d(TAG, "[getPersistablePermission failed for " + uri + "]"); }
+        }
     }
 }
