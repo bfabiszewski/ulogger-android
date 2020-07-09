@@ -135,7 +135,7 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Network</string>
     <string name="provider_gps_network">Network and GPS</string>
-    <string name="logger_task_failure">Couldn\'t get location</string>
+    <string name="logger_task_failure">Couldn’t get location</string>
     <string name="take_photo">Take photo</string>
     <string name="from_library">Choose from Library</string>
     <string name="accuracy_meters">%d m accuracy</string>
