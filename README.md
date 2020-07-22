@@ -56,6 +56,7 @@ As a first approach, here are some parameters that offer a good compromise betwe
 
 | Activity | Time | Distance | Accuracy | Provider |
 |---|---|---|---|---|
+| **hiking/cycling** | 30 seconds | 100m | 100m | GPS + Network |
 | **motorbiking** | 1 minute | 500m | 50m | GPS + Network |
 
 They may not be optimal, depending on your feelings, and you will have to adapt them.
