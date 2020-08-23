@@ -300,6 +300,8 @@ public class LoggerService extends Service {
         public void onLocationChanged(Location location) {
             if (Logger.DEBUG) { Log.d(TAG, "[location changed: " + location + "]"); }
 
+            LocationHelper.handleRolloverBug(location);
+
             if (meetsCriteria(location)) {
                 lastLocation = location;
                 DbAccess.writeLocation(LoggerService.this, location);

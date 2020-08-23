@@ -32,6 +32,13 @@ class LocationHelper {
     private final Context context;
     private final LocationManager locationManager;
 
+    // millis 1999-08-21T23:59:42+00:00
+    private static final long FIRST_ROLLOVER_TIMESTAMP = 935279982000L;
+    // millis 2019-04-06T23:59:42+00:00
+    private static final long SECOND_ROLLOVER_TIMESTAMP = 1554595182000L;
+    // 1024 weeks in milliseconds
+    private static final long ROLLOVER_MILLIS = 1024 * 7 * 24 * 60 * 60 * 1000L;
+
     private boolean liveSync = false;
     private int maxAccuracy;
     private float minDistance;
@@ -247,6 +254,20 @@ class LocationHelper {
     boolean isLiveSync() {
         if (Logger.DEBUG) { Log.d(TAG, "[isLiveSync: " + liveSync + "]"); }
         return liveSync;
+    }
+
+
+    /**
+     * Fix GPS week count rollover bug if needed
+     * https://galileognss.eu/gps-week-number-rollover-april-6-2019/
+     * @param location Location
+     */
+    static void handleRolloverBug(Location location) {
+        long gpsTime = location.getTime();
+        if (gpsTime > FIRST_ROLLOVER_TIMESTAMP && gpsTime < SECOND_ROLLOVER_TIMESTAMP) {
+            if (Logger.DEBUG) { Log.d(TAG, "[Fixing GPS rollover bug: " + gpsTime + "]"); }
+            location.setTime(gpsTime + ROLLOVER_MILLIS);
+        }
     }
 
     /**
