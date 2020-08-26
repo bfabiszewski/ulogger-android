@@ -13,6 +13,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
@@ -42,6 +43,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import static android.util.Base64.NO_PADDING;
 import static android.util.Base64.NO_WRAP;
@@ -97,8 +100,9 @@ class WebHelper {
     private final String userAgent;
     private final Context context;
 
+    private static boolean tlsSocketInitialized = false;
     // Socket timeout in milliseconds
-    private static final int SOCKET_TIMEOUT = 30 * 1000;
+    static final int SOCKET_TIMEOUT = 30 * 1000;
     private static final Random random = new Random();
 
     static boolean isAuthorized = false;
@@ -118,6 +122,17 @@ class WebHelper {
         if (cookieManager == null) {
             cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
+        }
+
+        // On APIs < 20 enable TLSv1.1 and TLSv1.2 protocols, on APIs <= 22 disable SSLv3
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1 && !tlsSocketInitialized) {
+            try {
+                if (Logger.DEBUG) { Log.d(TAG, "[init TLS socket factory]"); }
+                HttpsURLConnection.setDefaultSSLSocketFactory(new TlsSocketFactory());
+                tlsSocketInitialized = true;
+            } catch (Exception e) {
+                if (Logger.DEBUG) { Log.d(TAG, "[TLS socket setup error (ignored): " + e.getMessage() + "]"); }
+            }
         }
     }
 
