@@ -25,6 +25,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class LocationHelper {
 
     private static final String TAG = LocationHelper.class.getSimpleName();
@@ -46,8 +49,7 @@ class LocationHelper {
     // max time tolerance is half min time, but not more that 5 min
     final private long minTimeTolerance = Math.min(minTimeMillis / 2, 5 * 60 * 1000);
     final private long maxTimeMillis = minTimeMillis + minTimeTolerance;
-    private boolean useGps;
-    private boolean useNet;
+    private List<String> userProviders = new ArrayList<>();
 
 
     private LocationHelper(@NonNull Context context) {
@@ -79,8 +81,13 @@ class LocationHelper {
         minTimeMillis = Long.parseLong(prefs.getString(SettingsActivity.KEY_MIN_TIME, context.getString(R.string.pref_mintime_default))) * 1000;
         minDistance = Float.parseFloat(prefs.getString(SettingsActivity.KEY_MIN_DISTANCE, context.getString(R.string.pref_mindistance_default)));
         maxAccuracy = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_ACCURACY, context.getString(R.string.pref_minaccuracy_default)));
-        useGps = prefs.getBoolean(SettingsActivity.KEY_USE_GPS, providerExists(LocationManager.GPS_PROVIDER));
-        useNet = prefs.getBoolean(SettingsActivity.KEY_USE_NET, providerExists(LocationManager.NETWORK_PROVIDER));
+        userProviders.clear();
+        if (prefs.getBoolean(SettingsActivity.KEY_USE_GPS, providerExists(LocationManager.GPS_PROVIDER))) {
+            userProviders.add(LocationManager.GPS_PROVIDER);
+        }
+        if (prefs.getBoolean(SettingsActivity.KEY_USE_NET, providerExists(LocationManager.NETWORK_PROVIDER))) {
+            userProviders.add(LocationManager.NETWORK_PROVIDER);
+        }
         liveSync = prefs.getBoolean(SettingsActivity.KEY_LIVE_SYNC, false);
     }
 
@@ -114,53 +121,38 @@ class LocationHelper {
      * @throws LoggerException Exception on permission denied or all providers disabled
      */
     void requestSingleUpdate(@NonNull LocationListener listener, @Nullable Looper looper) throws LoggerException {
-        int errorCode = LoggerException.E_DISABLED;
-        if (useNet) {
-            try {
-                requestProviderUpdates(LocationManager.NETWORK_PROVIDER, listener, looper, true);
-                errorCode = LoggerException.E_OK;
-            } catch (LoggerException e) {
-                errorCode = e.getCode();
-            }
-        }
-        if (useGps) {
-            try {
-                requestProviderUpdates(LocationManager.GPS_PROVIDER, listener, looper, true);
-                errorCode = LoggerException.E_OK;
-            } catch (LoggerException e) {
-                errorCode = e.getCode();
-            }
-        }
-        if (errorCode != LoggerException.E_OK) {
-            throw new LoggerException(errorCode);
-        }
+        requestAllProvidersUpdates(listener, looper, true);
     }
 
     /**
      * Request location updates for user selected providers
      * @param listener Listener
      * @param looper Looper
-     * @throws LoggerException Exception on permission denied or all providers disabled
+     * @throws LoggerException Exception on all requested providers failure
      */
     void requestLocationUpdates(@NonNull LocationListener listener, @Nullable Looper looper) throws LoggerException {
-        int errorCode = LoggerException.E_DISABLED;
-        if (useNet) {
+        requestAllProvidersUpdates(listener, looper, false);
+    }
+
+    /**
+     * Request location updates for user selected providers
+     * @param listener Listener
+     * @param looper Looper
+     * @param singleShot Request single update if true
+     * @throws LoggerException Exception on all requested providers failure
+     */
+    private void requestAllProvidersUpdates(@NonNull LocationListener listener, @Nullable Looper looper, boolean singleShot) throws LoggerException {
+        List<Integer> results = new ArrayList<>();
+        for (String provider : userProviders) {
             try {
-                requestProviderUpdates(LocationManager.NETWORK_PROVIDER, listener, looper, false);
-                errorCode = LoggerException.E_OK;
+                requestProviderUpdates(provider, listener, looper, singleShot);
+                results.add(LoggerException.E_OK);
             } catch (LoggerException e) {
-                errorCode = e.getCode();
+                results.add(e.getCode());
             }
         }
-        if (useGps) {
-            try {
-                requestProviderUpdates(LocationManager.GPS_PROVIDER, listener, looper, false);
-                errorCode = LoggerException.E_OK;
-            } catch (LoggerException e) {
-                errorCode = e.getCode();
-            }
-        }
-        if (errorCode != LoggerException.E_OK) {
+        if (!results.contains(LoggerException.E_OK)) {
+            int errorCode = results.isEmpty() ? LoggerException.E_DISABLED : results.get(0);
             throw new LoggerException(errorCode);
         }
     }
@@ -171,18 +163,18 @@ class LocationHelper {
      * @param listener Listener
      * @param looper Looper
      * @param singleShot Request single update if true
-     * @throws LoggerException Exception on permission denied or all providers disabled
+     * @throws LoggerException Exception on permission denied or provider disabled
      */
     private void requestProviderUpdates(@NonNull String provider, @NonNull LocationListener listener, @Nullable Looper looper, boolean singleShot) throws LoggerException {
+        if (Logger.DEBUG) { Log.d(TAG, "[requestProviderUpdates: " + provider + " (" + singleShot + ")]"); }
         try {
-            if (locationManager.isProviderEnabled(provider)) {
-                if (singleShot) {
-                    locationManager.requestSingleUpdate(provider, listener, looper);
-                } else {
-                    locationManager.requestLocationUpdates(provider, minTimeMillis, minDistance, listener, looper);
-                }
-                if (Logger.DEBUG) { Log.d(TAG, "[requestProviderUpdates success: " + provider + " (" + singleShot + ")]"); }
-            } else {
+            if (!singleShot) {
+                // request even if provider is disabled to allow users re-enable it later
+                locationManager.requestLocationUpdates(provider, minTimeMillis, minDistance, listener, looper);
+            } else if (locationManager.isProviderEnabled(provider)) {
+                locationManager.requestSingleUpdate(provider, listener, looper);
+            }
+            if (!locationManager.isProviderEnabled(provider)) {
                 if (Logger.DEBUG) { Log.d(TAG, "[requestProviderUpdates disabled: " + provider + " (" + singleShot + ")]"); }
                 throw new LoggerException("Provider disabled", LoggerException.E_DISABLED);
             }
@@ -199,6 +191,19 @@ class LocationHelper {
     void removeUpdates(LocationListener listener) {
         if (Logger.DEBUG) { Log.d(TAG, "[removeUpdates]"); }
         locationManager.removeUpdates(listener);
+    }
+
+    /**
+     * Is any of user location providers enabled
+     * @return True if enabled
+     */
+    boolean hasEnabledProviders() {
+        for (String provider : userProviders) {
+            if (locationManager.isProviderEnabled(provider)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
