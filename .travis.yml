@@ -13,10 +13,10 @@ script:
 after_success:
   - |
     if [ ! -z "$TRANSIFEX_PASSWORD" ]; then
-      pip install --user virtualenv
+      pip3 install --user virtualenv
       virtualenv ~/env
       source ~/env/bin/activate
-      pip install transifex-client
+      pip3 install transifex-client
       echo -e "[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = api\npassword = ${TRANSIFEX_PASSWORD}\n" > ~/.transifexrc
       tx push -s --no-interactive
     fi
@@ -40,3 +40,7 @@ addons:
     build_command_prepend: rm -rf ./build
     build_command: ./gradlew -Dorg.gradle.jvmargs= --no-daemon assemble
     branch_pattern: master
+  apt:
+    packages:
+      - python3
+      - python3-pip
