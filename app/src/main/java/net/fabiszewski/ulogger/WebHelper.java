@@ -58,7 +58,6 @@ import static android.util.Base64.URL_SAFE;
 class WebHelper {
     private static final String TAG = WebSyncService.class.getSimpleName();
     private static final int BUFFER_SIZE = 16 * 1024;
-    private static final long UPLOAD_SIZE_MAX = 25 * 1024 * 1024;
     private static final String MULTIPART_TEXT_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s";
     private static final String MULTIPART_FILE_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"; filename=\"upload\"\r\n" +
             "Content-Type: %s\r\n" +
@@ -296,7 +295,7 @@ class WebHelper {
             length += data.length;
             // file size
             long fileSize = ImageHelper.getFileSize(context, uri);
-            if (fileSize <= UPLOAD_SIZE_MAX && fileSize > 0) {
+            if (fileSize > 0) {
                 String headers = String.format(MULTIPART_FILE_TEMPLATE, PARAM_IMAGE, fileMime);
                 length += headers.getBytes(StandardCharsets.UTF_8).length + delimiter.length;
                 length += fileSize;
@@ -323,7 +322,7 @@ class WebHelper {
             return;
         }
         long fileSize = ImageHelper.getFileSize(context, uri);
-        if (fileSize > UPLOAD_SIZE_MAX || fileSize <= 0) {
+        if (fileSize <= 0) {
             if (Logger.DEBUG) { Log.d(TAG, "[Skipping file, wrong size: " + fileSize + "]"); }
             return;
         }
