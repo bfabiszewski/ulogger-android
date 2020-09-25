@@ -8,8 +8,6 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" translatable="false">μlogger</string>
-    <string name="app_name_ascii" translatable="false">ulogger</string>
     <string name="button_newtrack">Nuova traccia</string>
     <string name="button_upload">Carica</string>
     <string name="is_running" comment="substituted app_name">%s è in esecuzione</string>
@@ -26,45 +24,35 @@
     <string name="pref_username_title">Nome utente</string>
     <string name="pref_username_summary">Nome utente sul server remoto</string>
     <string name="pref_pass_title">Password</string>
-    <string name="pref_pass_summary">Password dell'utente sul server remoto</string>
+    <string name="pref_pass_summary">Password dell’utente sul server remoto</string>
     <string name="pref_host_title">Indirizzo URL del server</string>
     <string name="pref_host_summary">Indirizzo URL base del server remoto</string>
     <string name="pref_mintime_title">Intervallo di aggiornamento</string>
     <string name="pref_mintime_summary">Tempo tra ogni aggiornamento della posizione</string>
-    <string name="pref_mintime_default" translatable="false">30</string>
     <string name="pref_mindistance_title">Distanza minima</string>
     <string name="pref_mindistance_summary">Distanza minima tra ogni aggiornamento della posizione</string>
-    <string name="pref_mindistance_default" translatable="false">100</string>
     <string name="pref_minaccuracy_title">Precisione minima</string>
     <string name="pref_minaccuracy_summary">Precisione minima della posizione</string>
-    <string name="pref_minaccuracy_default" translatable="false">100</string>
-    <string name="pref_imagesize_title">Grandezza dell'immagine</string>
-    <string name="pref_imagesize_summary">Massime dimensioni delle immagini caricate in pixel. In caso di ridimensionamento dell'immagine, una copia verrà salvata nella cartella dell'applicazione. Se scegli l'opzione “dimensioni effettive”, non ne verrà fatta una copia, dunque i file originali dovranno essere disponibili al momento dell'upload.</string>
-    <string name="pref_imagesize_default" translatable="false">800</string>
+    <string name="pref_imagesize_title">Grandezza dell’immagine</string>
+    <string name="pref_imagesize_summary">Massime dimensioni delle immagini caricate in pixel. In caso di ridimensionamento dell’immagine, una copia verrà salvata nella cartella dell’applicazione. Se scegli l’opzione “dimensioni effettive”, non ne verrà fatta una copia, dunque i file originali dovranno essere disponibili al momento dell’upload.</string>
     <string name="pref_livesync_title">Sincronizzazione live</string>
-    <string name="pref_livesync_summary">Caricamento continuo (live) delle posizioni al server. Richiede il nome utente, password e l'indirizzo del server.</string>
-    <string name="pref_livesync_default" translatable="false">false</string>
+    <string name="pref_livesync_summary">Caricamento continuo (live) delle posizioni al server. Richiede il nome utente, password e l’indirizzo del server.</string>
     <string name="pref_autostart_title">Avvio automatico</string>
-    <string name="pref_autostart_summary">L'applicazione sì avvierà all'accensione del dispositivo</string>
-    <string name="pref_autostart_default" translatable="false">false</string>
+    <string name="pref_autostart_summary">L’applicazione sì avvierà all’accensione del dispositivo</string>
     <string name="pref_external_title">Consenti comandi esterni</string>
-    <string name="pref_external_summary">Consenti comandi esterni da altre applicazioni per facilitare l'automazione e la programmazione di eventi.</string>
-    <string name="pref_external_default" translatable="false">false</string>
+    <string name="pref_external_summary">Consenti comandi esterni da altre applicazioni per facilitare l’automazione e la programmazione di eventi.</string>
     <string name="pref_provider_title">Fornitore della geolocalizzazione</string>
     <string name="pref_provider_summary">La posizione può essere ricavata dal GPS, dalla rete dati, o da entrambi. Usare sia il GPS che la rete darà risultati più accurati, a costo della batteria.</string>
     <string name="pref_units_title">Unità di misura</string>
     <string name="pref_units_summary">Unità di misura preferite per il sommario della traccia</string>
-    <string name="pref_units_default" translatable="false">metric</string>
     <string name="pref_units_metric">Metrico</string>
     <string name="pref_units_imperial">Imperiale</string>
     <string name="pref_units_nautical">Nautico</string>
     <string name="pref_auto_name_title">Modello nome della traccia</string>
     <string name="pref_auto_name_summary" formatted="false">Modello per il nome della traccia. Il seguente modello verrà utilizzato per i nomi: %y (anno), %m (mese), %d (giorno), %H (ore), %M (minuti), %S (secondi). Se hai bisogno del simbolo della percentuale, utilizza %%.</string>
-    <string name="pref_auto_name_default" formatted="false" translatable="false">Auto_%y.%m.%d_%H.%M.%S</string>
     <string name="label_status">Stato</string>
     <string name="label_location">Posizione</string>
     <string name="label_synchronization">Sincronizzazione</string>
-    <string name="dash" translatable="false">-</string>
     <string name="tracking_stopped">Tracciamento fermato</string>
     <string name="tracking_started">Tracciamento iniziato</string>
     <string name="uploading_started">Caricamento iniziato</string>
@@ -81,7 +69,6 @@
     <string name="about_description2">Per più informazioni visita <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>μlogger homepage<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_version">Versione %s</string>
     <string name="about_license">Licenza: GPL</string>
-    <string name="about_credits" translatable="false">© Bartek Fabiszewski</string>
     <string name="uploading_failed">Caricamento fallito:</string>
     <string name="uploading_done">Caricamento completato</string>
     <string name="track_summary">Sommario della traccia</string>
