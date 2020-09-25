@@ -13,8 +13,9 @@ script:
 after_success:
   - |
     if [ ! -z "$TRANSIFEX_PASSWORD" ]; then
+      pip3 install --upgrade pip setuptools
       pip3 install --user virtualenv
-      virtualenv ~/env
+      virtualenv ~/env -ppython3
       source ~/env/bin/activate
       pip3 install transifex-client
       echo -e "[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = api\npassword = ${TRANSIFEX_PASSWORD}\n" > ~/.transifexrc
@@ -41,6 +42,7 @@ addons:
     build_command: ./gradlew -Dorg.gradle.jvmargs= --no-daemon assemble
     branch_pattern: master
   apt:
+    update: true
     packages:
       - python3
       - python3-pip
