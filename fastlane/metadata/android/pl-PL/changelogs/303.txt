@@ -1,0 +1,9 @@
+3.3: μlogger
+
+Naprawione błędy:
+- Poprawka dla niektórych starszych układów GPS (rollover bug)
+- Naprawione problemy z połączeniem przez TLS w API 19
+- Poprawione obsługa statusów zwracanych przez dostawców lokalizacji
+
+Tłumaczenia:
+- Nowy język: włoski (Saverio Napolitano)

@@ -1,0 +1,9 @@
+3.3: μlogger
+
+Bugs fixed:
+- Fix for some older GPS chipsets (rollover bug)
+- Fix TLS connection problems on API 19
+- Improve handling state changes of location providers
+
+Translations:
+- New Italian translation (Saverio Napolitano)
