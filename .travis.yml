@@ -1,7 +1,5 @@
 language: android
 jdk: oraclejdk8
-os: linux
-dist: focal
 android:
   components:
     - tools
@@ -15,11 +13,15 @@ script:
 after_success:
   - |
     if [ ! -z "$TRANSIFEX_PASSWORD" ]; then
-      sudo apt-get update
-      sudo apt-get -y install transifex-client
-      tx --version
+      virtualenv ~/env
+      source ~/env/bin/activate
+      python -m pip install --upgrade pip
+      python -m pip install --upgrade setuptools
+      python -m pip install --upgrade requests[security] urllib3
+      python -m pip install --upgrade transifex-client
       echo -e "[https://www.transifex.com]\napi_hostname = https://api.transifex.com\nhostname = https://www.transifex.com\nusername = api\npassword = ${TRANSIFEX_PASSWORD}\n" > ~/.transifexrc
-      tx --debug push -s --no-interactive
+      tx --version
+      tx push -s --no-interactive
     fi
 after_failure:
   - cat app/build/reports/checkstyle.html
