@@ -43,4 +43,13 @@
         <item>altre</item>
     </string-array>
 
+    <string-array name="imageSizeEntries">
+        <item>Tamany actual</item>
+        <item>800 px</item>
+        <item>1080 px</item>
+        <item>1280 px</item>
+        <item>1920 px</item>
+        <item>Altra</item>
+    </string-array>
+
     </resources>

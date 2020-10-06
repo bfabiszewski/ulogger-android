@@ -33,6 +33,8 @@
     <string name="pref_mindistance_summary">Distància mínima entre actualizacions de l’ubicació</string>
     <string name="pref_minaccuracy_title">Precisió mínima</string>
     <string name="pref_minaccuracy_summary">Precisió mínima de la posició</string>
+    <string name="pref_imagesize_title">Tamany de l’imatge</string>
+    <string name="pref_imagesize_summary">Ampla i alçada màximes de les imatges pujades, en píxels. En cas de reducció, la còpia de la imatge redimensionada s’emmagatzemarà temporalment a la carpeta de l’aplicació abans de pujar-la. Si trieu l’opció “mida actuall”, no es farà cap còpia, els fitxers originals han d’estar disponibles durant la càrrega.</string>
     <string name="pref_livesync_title">Sincronització contínua</string>
     <string name="pref_livesync_summary">Pujada contínua de posicions cap al servidor. Requereix usuari, contrasenya i la url del servidor vàlids.</string>
     <string name="pref_autostart_title">Inici automàtic</string>
@@ -58,6 +60,7 @@
     <string name="no_positions">La ruta actual no té posicions</string>
     <string name="warning">Alerta</string>
     <string name="notsync_warning">La ruta actual conté posicions no sincronitzades. Crear una nueva ruta eliminarà totes aquestes dades.</string>
+    <string name="clear_warning">Està segur que vol esborrar la ruta actual i totes les dades relatives? Això no esborrarà cap ruta ni dada del servidor.</string>
     <string name="no_track_warning">Si us plau, configura una nova ruta primer</string>
     <string name="empty_trackname_warning">El nom de la ruta no pot estar buit</string>
     <string name="logger_running_warning">Si us plau, para el registre actual primer</string>
@@ -94,6 +97,7 @@
     <string name="using_network">Utilizant proveïdor de xarxa</string>
     <string name="using_gps">Utilizant proveïdor gps</string>
     <string name="export">Exportar a GPX</string>
+    <string name="waypoint">Punt de pas</string>
     <string name="nothing_to_export">No hi ha res a exportar</string>
     <string name="export_done">La ruta s’ha desat correctament</string>
     <string name="export_failed">Ha fallat l’exportació</string>
@@ -107,6 +111,7 @@
     <string name="pref_mintime_other">Interval mínim de temps en segons</string>
     <string name="pref_mindistance_other">Distància mínima en metres</string>
     <string name="pref_minaccuracy_other">Precisió mínima en metres</string>
+    <string name="pref_imagesize_other">Amplada/alçada màximes, en píxels, de l’imatge</string>
     <string name="unit_nmile">nm</string>
     <string name="pref_cat_location">Seguiment d’ubicació</string>
     <string name="pref_cat_server">Servidor</string>
@@ -117,4 +122,16 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Xarxa</string>
     <string name="provider_gps_network">Xarxa i GPS</string>
-    </resources>
+    <string name="logger_task_failure">No es troba la localització</string>
+    <string name="take_photo">Fer foto</string>
+    <string name="from_library">Escollir de la galeria</string>
+    <string name="accuracy_meters">%dm de precisió</string>
+    <string name="meters_asl">%sm a.s.l</string>
+    <string name="label_position">Posició</string>
+    <string name="label_waypoint_description">Descripció del punt de pas</string>
+    <string name="label_add_photo">Afegir foto</string>
+    <string name="button_save">Desar</string>
+    <string name="tracking">Seguiment d’ubicació</string>
+    <string name="clear">Netejar ruta</string>
+    <string name="share_link">Enllaç per compartir ruta</string>
+</resources>
