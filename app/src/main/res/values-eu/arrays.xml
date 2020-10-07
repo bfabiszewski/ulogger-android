@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+    <string-array name="minTimeEntries">
+        <item>10 segundo</item>
+        <item>30 segundo</item>
+        <item>1 minutu</item>
+        <item>5 minutu</item>
+        <item>15 minutu</item>
+        <item>30 minutu</item>
+        <item>1 ordu</item>
+        <item>besterik</item>
+    </string-array>
+
+    <string-array name="minDistanceEntries">
+        <item>minimorik ez</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+        <item>besterik</item>
+    </string-array>
+
+    <string-array name="minAccuracyEntries">
+        <item>10 m</item>
+        <item>25 m</item>
+        <item>50 m</item>
+        <item>100 m</item>
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>5 km</item>
+        <item>besterik</item>
+    </string-array>
+
+    <string-array name="imageSizeEntries">
+        <item>jatorrizko tamaina</item>
+        <item>800 px</item>
+        <item>1080 px</item>
+        <item>1280 px</item>
+        <item>1920 px</item>
+        <item>besterik</item>
+    </string-array>
+
+    </resources>

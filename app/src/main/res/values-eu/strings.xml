@@ -1,0 +1,137 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_newtrack">Ibilbide berria</string>
+    <string name="button_upload">Igo</string>
+    <string name="is_running" comment="substituted app_name">%s martxan dago</string>
+    <string name="title_newtrack">Ibilbide berria</string>
+    <string name="label_track">Oraingo ibilbidea</string>
+    <string name="label_newtrack_name">Ibilbide berriaren izena</string>
+    <string name="label_name">Izena</string>
+    <string name="label_last_update">Azken eguneratzea: %s</string>
+    <string name="label_synchronized">Sinkronizatuta</string>
+    <string name="cancel">Utzi</string>
+    <string name="submit">Bidali</string>
+    <string name="ok">Ados</string>
+    <string name="settings">Ezarpenak</string>
+    <string name="pref_username_title">Erabiltzaile izena</string>
+    <string name="pref_username_summary">Urruneko zerbitzariko erabiltzaile izena</string>
+    <string name="pref_pass_title">Pasahitza</string>
+    <string name="pref_pass_summary">Urruneko zerbitzariko pasahitza</string>
+    <string name="pref_host_title">Zerbitzariko URLa</string>
+    <string name="pref_host_summary">Urruneko zerbitzariko oinarri URLa</string>
+    <string name="pref_mintime_title">Denbora tarte minimoa</string>
+    <string name="pref_mintime_summary">Denbora tarte minimoa eguneratzeen artean</string>
+    <string name="pref_mindistance_title">Distantzia minimoa</string>
+    <string name="pref_mindistance_summary">Distantzia minimoa kokalekuen eguneratzeen artean</string>
+    <string name="pref_minaccuracy_title">Doitasun minimoa </string>
+    <string name="pref_minaccuracy_summary">Posizioaren doitasun minimoa</string>
+    <string name="pref_imagesize_title">Irudi tamaina</string>
+    <string name="pref_imagesize_summary">Igotako irudien tamaina maximoa, zabalera/altuera pixeletan. Irudia txikiagotuz gero, behin behineko kopia bat gordeko da aplikazioaren karpetan igo aurretik. \"Jatorrizko tamaina\" aukeratzen baduzu ez da kopiarik gordeko, hortaz, igoerak dirauen bitartean irudiaren fitxategi originalek eskuragarri egon behar dute</string>
+    <string name="pref_livesync_title">Zuzeneko sinkronizazioa</string>
+    <string name="pref_livesync_summary">Kokapena zuzenean zerbitzarira igo. Baliozko erabiltzaile, pasahitz eta zerbitzariaren URLa behar ditu</string>
+    <string name="pref_autostart_title">Automatikoki hasi </string>
+    <string name="pref_autostart_summary">Aplikazioa sistema abiatzean automatikoki hasiko da</string>
+    <string name="pref_external_title">Kanpoko komandoak onartu</string>
+    <string name="pref_external_summary">Beste aplikazioetatik komandoak jasotzea onartu, automatizazioa eta zereginen programazioa errazteko.</string>
+    <string name="pref_provider_title">Kokapenaren jatorria</string>
+    <string name="pref_provider_summary">Kokapena GPSak, datu-konexioak edo biek batera hornitu dezakete. Biak batera erabiliz doitasun handiena lortzen da, bateria gehiago erabiltzearen truk.</string>
+    <string name="pref_units_title">Unitateak</string>
+    <string name="pref_units_summary">Hobetsitako unitateak bidearen laburpena erakusteko</string>
+    <string name="pref_units_metric">Metrikoa</string>
+    <string name="pref_units_imperial">Inperiala</string>
+    <string name="pref_units_nautical">Itsasokoa</string>
+    <string name="pref_auto_name_title">Bide izenen txantiloia</string>
+    <string name="pref_auto_name_summary" formatted="false">Bide berrientzako txantiloia. Ondorengo patroiak erabil ditzakezu: %y (urtea), %m (hilabetea), %d (eguna), %H (ordua), %M (minutua), %S (segundoa). Ehuneko zeinua sartu nahi baduzu erabili %%</string>
+    <string name="label_status">Egoera</string>
+    <string name="label_location">Kokapena</string>
+    <string name="label_synchronization">Sinkronizazioa</string>
+    <string name="tracking_stopped">Jarraipena geldituta</string>
+    <string name="tracking_started">Jarraipena hasita</string>
+    <string name="uploading_started">Igoera hasita</string>
+    <string name="nothing_to_synchronize">Sinkronizatzeko ezer ere ez</string>
+    <string name="no_positions">Uneko bideak ez dauka kokapenik</string>
+    <string name="warning">Adi</string>
+    <string name="notsync_warning">Uneko bideak sinkronizatu gabeko kokapenak ditu. Bide berria sortzeak datu guzti hauek ezabatuko ditu.</string>
+    <string name="clear_warning">Ziur zaude uneko bidea (datu guztiekin) ezabatu nahi duzula gailutik ezabatu nahi duzula? Ez du zerbitzariko daturik ezabatuko.</string>
+    <string name="no_track_warning">Mesedez, ezarri bide berria lehenengo</string>
+    <string name="empty_trackname_warning">Bide izenak ezin du hutsa izan</string>
+    <string name="logger_running_warning">Mesedez, gelditu uneko bidea lehenengo</string>
+    <string name="about">Honi buruz</string>
+    <string name="about_description"> Jarraipen erregistragailu sinplea, zuzeneko kokapen eta posizioaren igoerarekin zure <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>μlogger zerbitzari<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>propiora.</string>
+    <string name="about_description2">Informazio gehiago eta laguntza lortzeko ikusi <xliff:g id="app_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-android\">]]></xliff:g>μlogger-eko web-orria<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Bertsioa %s</string>
+    <string name="about_license">Lizentzia: GPL</string>
+    <string name="uploading_failed">Hutsegitea igoeran</string>
+    <string name="uploading_done">Igoera eginda</string>
+    <string name="track_summary">Bidearen laburpena</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d position</item>
+        <item quantity="other">%d posizio</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">Mesedez, ezarri baliozko URLa</string>
+    <string name="provide_user_pass_url">Mesedez, sartu lehenengo erabiltzailea, pasahitza eta zerbitzariko URLa</string>
+    <string name="e_illegal_state">Egoera ilegala errorea: %s</string>
+    <string name="e_illegal_redirect">Berbideraketa ilegala: %d</string>
+    <string name="e_auth_failure">Authorization failure: %d</string>
+    <string name="e_http_code">HTTP errore kodea: %d</string>
+    <string name="e_server_response">Zerbitzariaren erantzun errorea</string>
+    <string name="e_unknown_host">Unknown host: %s</string>
+    <string name="e_bad_url">Bad URL: %s</string>
+    <string name="e_connect">Konexio errorea: %s</string>
+    <string name="gps_disabled_warning">Adi: GPSa desgaituta dago</string>
+    <string name="net_disabled_warning">Adi: datu konexioa desgaituta dago</string>
+    <string name="location_disabled">Gutxienez kokapen hornitzaile bat aktibatu behar duzu</string>
+    <string name="location_permission_denied">Kokapen baimena eman behar duzu</string>
+    <string name="using_network">Datu-konexioa erabiltzen</string>
+    <string name="using_gps">GPSa erabiltzen</string>
+    <string name="export">GPXera esportatu</string>
+    <string name="waypoint">Bide-puntua</string>
+    <string name="nothing_to_export">Exportatzeko daturik ez</string>
+    <string name="export_done">Ibilbidea zuzen gordeta</string>
+    <string name="export_failed">Akatsa esportatzean</string>
+    <string name="unknown_track">Ibilbide ezezaguna</string>
+    <string name="export_started">Esportazioa hasita</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d posizio atzetik</item>
+        <item quantity="other">%d posizio atzetik</item>
+    </plurals>
+    <string name="track_server_setup_warning">Zerbitzariaren ezarpenak aldatze badituzu, baliteke oraingo ibilbidea ezin sinkronizatu ahal izatea</string>
+    <string name="pref_mintime_other">Denbora tarte minimoa segundotan</string>
+    <string name="pref_mindistance_other">Distantzia minimoa metrotan</string>
+    <string name="pref_minaccuracy_other">Doitasun minimoa metrotan</string>
+    <string name="pref_imagesize_other">Irudiaren zabalera/altuera maximoa pixeletan</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">Jarraipena egiten</string>
+    <string name="pref_cat_server">Zerbitzaria</string>
+    <string name="pref_cat_other">Beste neurri bat</string>
+    <string name="illegal_template_warning">Txantiloiak baliogabeko karaktereak dauzka</string>
+    <string name="cannot_open_picker">Ezin da fitxategi-kudeatzailea ireki</string>
+    <string name="e_open_out_stream">Kanpo-jarioa irekitzean akatsa</string>
+    <string name="provider_gps">GPSa</string>
+    <string name="provider_network">Datu-konexioa</string>
+    <string name="provider_gps_network">Datu-konexioa eta GPSa</string>
+    <string name="logger_task_failure">Ezin izan da kokapena eskuratu</string>
+    <string name="take_photo">Argazkia atera</string>
+    <string name="from_library">Liburutegitik aukeratu</string>
+    <string name="accuracy_meters">%d m-ko doitasuna</string>
+    <string name="meters_asl">%s m</string>
+    <string name="label_position">Posizioa</string>
+    <string name="label_waypoint_description">Bide-puntuaren deskribapena</string>
+    <string name="label_add_photo">Argazkia gehitu</string>
+    <string name="button_save">Gorde</string>
+    <string name="tracking">Jarraipena egiten</string>
+    <string name="clear">Ibilbidea garbitu</string>
+    <string name="share_link">Ibilbidearen lotura partekatu</string>
+</resources>
