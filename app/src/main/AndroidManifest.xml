@@ -19,6 +19,8 @@
     <uses-feature android:name="android.hardware.location.network" />
     <!-- For attaching images to waypoints -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <!-- For API 29, background location needs an additional permission -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
