@@ -212,9 +212,25 @@ class LocationHelper {
      * @return True if location accuracy within limit
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    boolean hasRequiredAccuracy(Location location) {
+    boolean hasRequiredAccuracy(@NonNull Location location) {
         boolean ret = location.hasAccuracy() && location.getAccuracy() <= maxAccuracy;
         if (Logger.DEBUG) { Log.d(TAG, "[hasRequiredAccuracy: " + ret + "]"); }
+        return ret;
+    }
+
+    /**
+     * Check location distance meets user criteria
+     * @param location Current location
+     * @param lastLocation Previous location
+     * @return True if location distance within limit
+     */
+    boolean hasRequiredDistance(@NonNull Location location, @Nullable Location lastLocation) {
+        if (lastLocation == null) {
+            return true;
+        }
+        float distance = location.distanceTo(lastLocation);
+        boolean ret = distance >= minDistance;
+        if (Logger.DEBUG) { Log.d(TAG, "[hasRequiredDistance: " + ret + "]"); }
         return ret;
     }
 
@@ -223,7 +239,7 @@ class LocationHelper {
      * @param location Location
      * @return True if location time within limit
      */
-    boolean hasRequiredTime(Location location) {
+    boolean hasRequiredTime(@NonNull Location location) {
         long elapsedMillis = SystemClock.elapsedRealtime() - location.getElapsedRealtimeNanos() / 1000000;
         boolean ret = elapsedMillis <= maxTimeMillis;
         if (Logger.DEBUG) { Log.d(TAG, "[hasRequiredTime: " + ret + "]"); }
@@ -235,7 +251,7 @@ class LocationHelper {
      * @param location Location
      * @return True if is from GPS
      */
-    static boolean isGps(Location location) {
+    static boolean isGps(@NonNull Location location) {
         boolean ret = location.getProvider().equals(LocationManager.GPS_PROVIDER);
         if (Logger.DEBUG) { Log.d(TAG, "[isGps: " + ret + "]"); }
         return ret;
@@ -246,7 +262,7 @@ class LocationHelper {
      * @param location Location
      * @return True if is from Network
      */
-    static boolean isNetwork(Location location) {
+    static boolean isNetwork(@NonNull Location location) {
         boolean ret = location.getProvider().equals(LocationManager.NETWORK_PROVIDER);
         if (Logger.DEBUG) { Log.d(TAG, "[isNetwork: " + ret + "]"); }
         return ret;
@@ -267,7 +283,7 @@ class LocationHelper {
      * https://galileognss.eu/gps-week-number-rollover-april-6-2019/
      * @param location Location
      */
-    static void handleRolloverBug(Location location) {
+    static void handleRolloverBug(@NonNull Location location) {
         long gpsTime = location.getTime();
         if (gpsTime > FIRST_ROLLOVER_TIMESTAMP && gpsTime < SECOND_ROLLOVER_TIMESTAMP) {
             if (Logger.DEBUG) { Log.d(TAG, "[Fixing GPS rollover bug: " + gpsTime + "]"); }

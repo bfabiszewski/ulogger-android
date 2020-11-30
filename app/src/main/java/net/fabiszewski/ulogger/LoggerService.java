@@ -317,6 +317,10 @@ public class LoggerService extends Service {
          * @return True if matches
          */
         private boolean meetsCriteria(Location location) {
+            // skip if distance is below user criterion
+            if (!locationHelper.hasRequiredDistance(location, lastLocation)) {
+                return false;
+            }
             // accuracy radius too high
             if (!locationHelper.hasRequiredAccuracy(location)) {
                 if (Logger.DEBUG) { Log.d(TAG, "[location accuracy above limit: " + location.getAccuracy() + "]"); }
