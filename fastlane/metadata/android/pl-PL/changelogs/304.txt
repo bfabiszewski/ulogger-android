@@ -1,0 +1,9 @@
+3.4: μlogger
+
+Naprawione błędy:
+- Ustawienie minimalnej odległości mogło być niekiedy ignorowane
+
+Tłumaczenia:
+- Nowy język: baskijski (Joseba)
+- Nowy język: kataloński (Franc Rodriguez)
+- Zaktualizowane tłumaczenia niemieckie i hiszpańskie
