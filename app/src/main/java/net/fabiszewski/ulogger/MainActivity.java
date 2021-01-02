@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity
             if (data != null) {
                 Intent intent = new Intent(MainActivity.this, GpxExportService.class);
                 intent.setData(data.getData());
-                startService(intent);
+                GpxExportService.enqueueWork(this, intent);
                 showToast(getString(R.string.export_started));
             }
         }

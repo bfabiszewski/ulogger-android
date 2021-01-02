@@ -9,7 +9,7 @@
 
 package net.fabiszewski.ulogger;
 
-import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,6 +17,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -27,7 +28,7 @@ import java.io.OutputStream;
 /**
  * Export track to GPX format
  */
-public class GpxExportService extends IntentService {
+public class GpxExportService extends JobIntentService {
 
     private static final String TAG = GpxExportService.class.getSimpleName();
 
@@ -43,11 +44,16 @@ public class GpxExportService extends IntentService {
     public static final String GPX_EXTENSION = ".gpx";
     public static final String GPX_MIME = "application/gpx+xml";
 
-    public GpxExportService() {
-        super("GpxExportService");
-    }
-
     private DbAccess db;
+
+    static final int JOB_ID = 1000;
+
+    /**
+     * Convenience method for enqueuing work in to this service.
+     */
+    static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, GpxExportService.class, JOB_ID, work);
+    }
 
     @Override
     public void onCreate() {
@@ -75,8 +81,8 @@ public class GpxExportService extends IntentService {
      * @param intent Intent
      */
     @Override
-    protected void onHandleIntent(Intent intent) {
-        if (intent != null && intent.getData() != null) {
+    protected void onHandleWork(@NonNull Intent intent) {
+        if (intent.getData() != null) {
             try {
                 write(intent.getData());
                 sendBroadcast(BROADCAST_EXPORT_DONE, null);

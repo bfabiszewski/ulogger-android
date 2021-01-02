@@ -103,7 +103,7 @@ public class LoggerService extends Service {
 
             // start websync service if needed
             if (locationHelper.isLiveSync() && DbAccess.needsSync(this)) {
-                startService(syncIntent);
+                WebSyncService.enqueueWork(this, syncIntent);
             }
         } catch (LocationHelper.LoggerException e) {
             int errorCode = e.getCode();

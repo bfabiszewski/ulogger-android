@@ -10,12 +10,14 @@
 package net.fabiszewski.ulogger;
 
 import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 import org.json.JSONException;
 
@@ -36,7 +38,7 @@ import static android.app.PendingIntent.FLAG_ONE_SHOT;
  *
  */
 
-public class WebSyncService extends IntentService {
+public class WebSyncService extends JobIntentService {
 
     private static final String TAG = WebSyncService.class.getSimpleName();
     public static final String BROADCAST_SYNC_FAILED = "net.fabiszewski.ulogger.broadcast.sync_failed";
@@ -48,12 +50,13 @@ public class WebSyncService extends IntentService {
 
     final private static int FIVE_MINUTES = 1000 * 60 * 5;
 
+    static final int JOB_ID = 1001;
 
     /**
-     * Constructor
+     * Convenience method for enqueuing work in to this service.
      */
-    public WebSyncService() {
-        super("WebSyncService");
+    static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, WebSyncService.class, JOB_ID, work);
     }
 
     @Override
@@ -71,7 +74,7 @@ public class WebSyncService extends IntentService {
      * @param intent Intent
      */
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
         if (Logger.DEBUG) { Log.d(TAG, "[websync start]"); }
 
         cancelPending();
