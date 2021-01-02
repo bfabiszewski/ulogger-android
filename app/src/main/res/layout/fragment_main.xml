@@ -10,6 +10,7 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/share_button"
     android:layout_width="fill_parent"
@@ -108,11 +109,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_directions_walk_white_24dp"
                     android:drawablePadding="5dp"
                     android:text="@string/label_track"
                     android:textSize="@dimen/label_font_size"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_directions_walk_white_24dp" />
 
                 <TextView
                     android:id="@+id/newtrack_label"
@@ -147,11 +148,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:drawableStart="@drawable/ic_favorite_border_white_24dp"
             android:drawablePadding="5dp"
             android:text="@string/label_status"
             android:textSize="@dimen/label_font_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_favorite_border_white_24dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -162,13 +163,13 @@
                 android:id="@+id/loc_led"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/led"
                 android:drawablePadding="7dp"
                 android:paddingStart="3dip"
                 android:paddingLeft="3dip"
                 android:paddingRight="3dip"
                 android:text="@string/label_location"
-                android:textSize="@dimen/label_font_size" />
+                android:textSize="@dimen/label_font_size"
+                app:drawableStartCompat="@drawable/led" />
         </LinearLayout>
 
         <TextView
@@ -191,13 +192,13 @@
                 android:id="@+id/sync_led"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/led"
                 android:drawablePadding="7dp"
                 android:paddingStart="3dip"
                 android:paddingLeft="3dip"
                 android:paddingRight="3dip"
                 android:text="@string/label_synchronization"
-                android:textSize="@dimen/label_font_size" />
+                android:textSize="@dimen/label_font_size"
+                app:drawableStartCompat="@drawable/led" />
         </LinearLayout>
 
         <TextView

@@ -9,6 +9,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dip">
@@ -18,30 +19,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/ic_straighten_white_24dp"
         android:drawablePadding="10dp"
         android:text=""
-        android:textSize="@dimen/label_font_size" />
+        android:textSize="@dimen/label_font_size"
+        app:drawableStartCompat="@drawable/ic_straighten_white_24dp" />
 
     <TextView
         android:id="@+id/summary_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/ic_schedule_white_24dp"
         android:drawablePadding="10dp"
         android:text=""
-        android:textSize="@dimen/label_font_size" />
+        android:textSize="@dimen/label_font_size"
+        app:drawableStartCompat="@drawable/ic_schedule_white_24dp" />
 
     <TextView
         android:id="@+id/summary_positions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/ic_linear_scale_white_24dp"
         android:drawablePadding="10dp"
         android:text=""
-        android:textSize="@dimen/label_font_size" />
+        android:textSize="@dimen/label_font_size"
+        app:drawableStartCompat="@drawable/ic_linear_scale_white_24dp" />
 
     <LinearLayout
         android:orientation="horizontal"
