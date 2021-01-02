@@ -31,8 +31,8 @@
     <string name="pref_mintime_summary">Temps minimum entre chaque enregistrement de position</string>
     <string name="pref_mindistance_title">Distance minimum</string>
     <string name="pref_mindistance_summary">Distance minimum entre chaque enregistrement de position</string>
-    <string name="pref_minaccuracy_title">Précision minimum</string>
-    <string name="pref_minaccuracy_summary">Précision minimum de la position</string>
+    <string name="pref_minaccuracy_title">Précision maximum</string>
+    <string name="pref_minaccuracy_summary">Précision maximum de la position</string>
     <string name="pref_imagesize_title">Taille d’image</string>
     <string name="pref_imagesize_summary">Largeur/hauteur maximale des images téléchargées en pixels. En cas de sous-échantillonnage, les images redimensionnées seront temporairement stockées dans le dossier d’application avant d’être téléverséess. Si vous choisissez l’option \"taille native\", aucune copie ne sera faite, les fichiers originaux doivent donc être disponibles pendant le téléchargement.</string>
     <string name="pref_livesync_title">Synchronisation immédiate</string>

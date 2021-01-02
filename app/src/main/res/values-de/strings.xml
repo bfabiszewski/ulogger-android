@@ -121,7 +121,6 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Netzwerk</string>
     <string name="provider_gps_network">Netzwerk und GPS</string>
-    <string name="logger_task_failure">Position konnte nicht ermittelt werden.</string>
     <string name="take_photo">Foto aufnehmen</string>
     <string name="from_library">Aus Sammlung wählen</string>
     <string name="accuracy_meters">%d m Genauigkeit</string>

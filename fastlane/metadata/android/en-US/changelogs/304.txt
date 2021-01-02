@@ -1,0 +1,9 @@
+3.4: μlogger
+
+Bugs fixed:
+- Location might ignore minimum distance setting
+
+Translations:
+- New Basque translation (Joseba)
+- New Catalan translation (Franc Rodriguez)
+- Updated German and Spanish translations

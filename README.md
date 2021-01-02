@@ -50,6 +50,17 @@ led | tracking | synchronization
   - Tasker (joaomgcd) – System → Send intent. Fields `Action`, `Package`, `Class` as above and `Extra` field eg. `command:start logger`
 - command line: `am broadcast -a net.fabiszewski.ulogger.intent.action.COMMAND -e "command" "start logger" net.fabiszewski.ulogger net.fabiszewski.ulogger.ExternalCommandReceiver`
 
+## App settings guidelines
+Finding the optimized settings for your practice can be a bit complex and may require you to do a lot of testing.
+As a first approach, here are some parameters that offer a good compromise between precision and the number of points acquired by your server.
+
+| Activity | Time | Distance | Accuracy | Provider |
+|---|---|---|---|---|
+| **hiking/cycling** | 30 seconds | 100m | 100m | GPS + Network |
+| **motorbiking** | 1 minute | 500m | 50m | GPS + Network |
+
+They may not be optimal, depending on your feelings, and you will have to adapt them.
+
 ## Contribute translations
 [![Translate with transifex](https://img.shields.io/badge/translate-transifex-green.svg)](https://www.transifex.com/bfabiszewski/ulogger/)
 

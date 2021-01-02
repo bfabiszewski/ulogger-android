@@ -1,0 +1,137 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_newtrack">Nuova traccia</string>
+    <string name="button_upload">Carica</string>
+    <string name="is_running" comment="substituted app_name">%s è in esecuzione</string>
+    <string name="title_newtrack">Nuova traccia</string>
+    <string name="label_track">Traccia corrente</string>
+    <string name="label_newtrack_name">Nome della nuova traccia</string>
+    <string name="label_name">Nome</string>
+    <string name="label_last_update">Ultimo aggiornamento: %s</string>
+    <string name="label_synchronized">Sincronizzato</string>
+    <string name="cancel">Annulla</string>
+    <string name="submit">Invia</string>
+    <string name="ok">OK</string>
+    <string name="settings">Impostazioni</string>
+    <string name="pref_username_title">Nome utente</string>
+    <string name="pref_username_summary">Nome utente sul server remoto</string>
+    <string name="pref_pass_title">Password</string>
+    <string name="pref_pass_summary">Password dell’utente sul server remoto</string>
+    <string name="pref_host_title">Indirizzo URL del server</string>
+    <string name="pref_host_summary">Indirizzo URL base del server remoto</string>
+    <string name="pref_mintime_title">Intervallo di aggiornamento</string>
+    <string name="pref_mintime_summary">Tempo tra ogni aggiornamento della posizione</string>
+    <string name="pref_mindistance_title">Distanza minima</string>
+    <string name="pref_mindistance_summary">Distanza minima tra ogni aggiornamento della posizione</string>
+    <string name="pref_minaccuracy_title">Precisione minima</string>
+    <string name="pref_minaccuracy_summary">Precisione minima della posizione</string>
+    <string name="pref_imagesize_title">Grandezza dell’immagine</string>
+    <string name="pref_imagesize_summary">Massime dimensioni delle immagini caricate in pixel. In caso di ridimensionamento dell’immagine, una copia verrà salvata nella cartella dell’applicazione. Se scegli l’opzione “dimensioni effettive”, non ne verrà fatta una copia, dunque i file originali dovranno essere disponibili al momento dell’upload.</string>
+    <string name="pref_livesync_title">Sincronizzazione live</string>
+    <string name="pref_livesync_summary">Caricamento continuo (live) delle posizioni al server. Richiede il nome utente, password e l’indirizzo del server.</string>
+    <string name="pref_autostart_title">Avvio automatico</string>
+    <string name="pref_autostart_summary">L’applicazione sì avvierà all’accensione del dispositivo</string>
+    <string name="pref_external_title">Consenti comandi esterni</string>
+    <string name="pref_external_summary">Consenti comandi esterni da altre applicazioni per facilitare l’automazione e la programmazione di eventi.</string>
+    <string name="pref_provider_title">Fornitore della geolocalizzazione</string>
+    <string name="pref_provider_summary">La posizione può essere ricavata dal GPS, dalla rete dati, o da entrambi. Usare sia il GPS che la rete darà risultati più accurati, a costo della batteria.</string>
+    <string name="pref_units_title">Unità di misura</string>
+    <string name="pref_units_summary">Unità di misura preferite per il sommario della traccia</string>
+    <string name="pref_units_metric">Metrico</string>
+    <string name="pref_units_imperial">Imperiale</string>
+    <string name="pref_units_nautical">Nautico</string>
+    <string name="pref_auto_name_title">Modello nome della traccia</string>
+    <string name="pref_auto_name_summary" formatted="false">Modello per il nome della traccia. Il seguente modello verrà utilizzato per i nomi: %y (anno), %m (mese), %d (giorno), %H (ore), %M (minuti), %S (secondi). Se hai bisogno del simbolo della percentuale, utilizza %%.</string>
+    <string name="label_status">Stato</string>
+    <string name="label_location">Posizione</string>
+    <string name="label_synchronization">Sincronizzazione</string>
+    <string name="tracking_stopped">Tracciamento fermato</string>
+    <string name="tracking_started">Tracciamento iniziato</string>
+    <string name="uploading_started">Caricamento iniziato</string>
+    <string name="nothing_to_synchronize">Niente da sincronizzare</string>
+    <string name="no_positions">La traccia corrente non ha posizioni</string>
+    <string name="warning">Attenzione</string>
+    <string name="notsync_warning">La traccia corrente contiene posizioni non sincronizzate. Impostare una nuova traccia cancellerà tutte le informazioni precedenti.</string>
+    <string name="clear_warning">Sei sicuro di voler cancellare la traccia corrente e tutti i dati raccolti dal dispositivo? I dati non verranno cancellati dal server.</string>
+    <string name="no_track_warning">Perfavore imposta una nuova traccia</string>
+    <string name="empty_trackname_warning">Il nome della traccia non può essere vuoto</string>
+    <string name="logger_running_warning">Perfavore interrompi prima il tracciamento</string>
+    <string name="about">Informazioni</string>
+    <string name="about_description">Una semplice app per tracciare la posizione e caricarla in tempo reale sul tuo <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Per più informazioni visita <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>μlogger homepage<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Versione %s</string>
+    <string name="about_license">Licenza: GPL</string>
+    <string name="uploading_failed">Caricamento fallito:</string>
+    <string name="uploading_done">Caricamento completato</string>
+    <string name="track_summary">Sommario della traccia</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d posizione</item>
+        <item quantity="other">%d posizioni</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">miglia</string>
+    <string name="provide_valid_url">Inserisci un URL valido</string>
+    <string name="provide_user_pass_url">Perfavore inserisci nome utente, password e indirizzo del server prima</string>
+    <string name="e_illegal_state">Errore stato illegale: %s</string>
+    <string name="e_illegal_redirect">Reindirizzamento illegale: %d</string>
+    <string name="e_auth_failure">Errore di autorizzazione: %d</string>
+    <string name="e_http_code">Errore HTTP: %d</string>
+    <string name="e_server_response">Errore di risposta del server</string>
+    <string name="e_unknown_host">Host sconosciuto: %s</string>
+    <string name="e_bad_url">URL incorretto: %s</string>
+    <string name="e_connect">Errore di connessione: %s</string>
+    <string name="gps_disabled_warning">Avviso: il GPS non verrà utilizzato perché disabilitato nelle impostazioni del fornitore.</string>
+    <string name="net_disabled_warning">Avviso: la rete dati non verrà utilizzata perché disabilitata nelle impostazioni del fornitore.</string>
+    <string name="location_disabled">Devi abilitare almeno un servizio di localizzazione</string>
+    <string name="location_permission_denied">Per aggiornare la posizione devi accettare i permessi di localizzazione</string>
+    <string name="using_network">Connessione dati in utilizzo</string>
+    <string name="using_gps">GPS in utilizzo</string>
+    <string name="export">Esporta in GPX</string>
+    <string name="waypoint">Marcatore</string>
+    <string name="nothing_to_export">Niente da esportare</string>
+    <string name="export_done">Traccia salvata con successo</string>
+    <string name="export_failed">Esportazione fallita</string>
+    <string name="unknown_track">Traccia sconosciuta</string>
+    <string name="export_started">Esportazione iniziata</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d posizione indietro</item>
+        <item quantity="other">%d posizioni indietro</item>
+    </plurals>
+    <string name="track_server_setup_warning">Se cambi impostazioni del server potresti non avere la possibilità di sincronizzare la traccia corrente.</string>
+    <string name="pref_mintime_other">Intervallo minimo in secondi</string>
+    <string name="pref_mindistance_other">Distanza minima in metri</string>
+    <string name="pref_minaccuracy_other">Precisione minima in metri</string>
+    <string name="pref_imagesize_other">Massima larghezza/altezza in pixel</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">Tracciamento</string>
+    <string name="pref_cat_server">Server</string>
+    <string name="pref_cat_other">Altro</string>
+    <string name="illegal_template_warning">Il modello contiene caratteri illegali</string>
+    <string name="cannot_open_picker">Impossibile aprire il selezionatore di file</string>
+    <string name="e_open_out_stream">Impossibile aprire lo stream in output</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Connessione</string>
+    <string name="provider_gps_network">Connessione e GPS</string>
+    <string name="logger_task_failure">Posizione non ottenuta</string>
+    <string name="take_photo">Fai una foto</string>
+    <string name="from_library">Scegli dalla galleria</string>
+    <string name="accuracy_meters">%d m di precisione</string>
+    <string name="meters_asl">%s m a.s.l.</string>
+    <string name="label_position">Posizione</string>
+    <string name="label_waypoint_description">Descrizione del marcatore</string>
+    <string name="label_add_photo">Aggiungi una foto</string>
+    <string name="button_save">Salva</string>
+    <string name="tracking">Tracciamento</string>
+    <string name="clear">Resetta traccia</string>
+    <string name="share_link">Condividi link della traccia</string>
+</resources>

@@ -10,25 +10,25 @@
 
 <resources>
     <string-array name="minTimeEntries">
-        <item>10 segundos</item>
-        <item>30 segundos</item>
-        <item>1 minuto</item>
-        <item>5 minutos</item>
-        <item>15 minutos</item>
-        <item>30 minutos</item>
-        <item>1 hora</item>
-        <item>otro</item>
+        <item>10 segundo</item>
+        <item>30 segundo</item>
+        <item>1 minutu</item>
+        <item>5 minutu</item>
+        <item>15 minutu</item>
+        <item>30 minutu</item>
+        <item>1 ordu</item>
+        <item>besterik</item>
     </string-array>
 
     <string-array name="minDistanceEntries">
-        <item>sin mínimo</item>
+        <item>minimorik ez</item>
         <item>50 m</item>
         <item>100 m</item>
         <item>250 m</item>
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
-        <item>otro</item>
+        <item>besterik</item>
     </string-array>
 
     <string-array name="minAccuracyEntries">
@@ -40,16 +40,16 @@
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
-        <item>otro</item>
+        <item>besterik</item>
     </string-array>
 
     <string-array name="imageSizeEntries">
-        <item>Tamaño actual</item>
+        <item>jatorrizko tamaina</item>
         <item>800 px</item>
         <item>1080 px</item>
         <item>1280 px</item>
         <item>1920 px</item>
-        <item>Otro</item>
+        <item>besterik</item>
     </string-array>
 
     </resources>

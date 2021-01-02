@@ -1,0 +1,137 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_newtrack">Nova ruta</string>
+    <string name="button_upload">Pujar</string>
+    <string name="is_running" comment="substituted app_name">%s s’està executant</string>
+    <string name="title_newtrack">Nova ruta</string>
+    <string name="label_track">Ruta actual</string>
+    <string name="label_newtrack_name">Nom de la nova ruta</string>
+    <string name="label_name">Nom</string>
+    <string name="label_last_update">Última actualizació: %s</string>
+    <string name="label_synchronized">Sincronitzat</string>
+    <string name="cancel">Cancel·lar</string>
+    <string name="submit">Enviar</string>
+    <string name="ok">OK</string>
+    <string name="settings">Configuració</string>
+    <string name="pref_username_title">Nom d’usuari</string>
+    <string name="pref_username_summary">Nom d’usuari al servidor remot</string>
+    <string name="pref_pass_title">Contrasenya</string>
+    <string name="pref_pass_summary">Contrasenya de l’usuari al servidor remot</string>
+    <string name="pref_host_title">URL del servidor</string>
+    <string name="pref_host_summary">URL base del servidor remot</string>
+    <string name="pref_mintime_title">Temps mínim</string>
+    <string name="pref_mintime_summary">Temps mínim entre actualizacions de l’ubicació</string>
+    <string name="pref_mindistance_title">Distància mínima</string>
+    <string name="pref_mindistance_summary">Distància mínima entre actualizacions de l’ubicació</string>
+    <string name="pref_minaccuracy_title">Precisió mínima</string>
+    <string name="pref_minaccuracy_summary">Precisió mínima de la posició</string>
+    <string name="pref_imagesize_title">Tamany de l’imatge</string>
+    <string name="pref_imagesize_summary">Ampla i alçada màximes de les imatges pujades, en píxels. En cas de reducció, la còpia de la imatge redimensionada s’emmagatzemarà temporalment a la carpeta de l’aplicació abans de pujar-la. Si trieu l’opció “mida actuall”, no es farà cap còpia, els fitxers originals han d’estar disponibles durant la càrrega.</string>
+    <string name="pref_livesync_title">Sincronització contínua</string>
+    <string name="pref_livesync_summary">Pujada contínua de posicions cap al servidor. Requereix usuari, contrasenya i la url del servidor vàlids.</string>
+    <string name="pref_autostart_title">Inici automàtic</string>
+    <string name="pref_autostart_summary">L’aplicació s’iniciarà a l’arrancar el sistema</string>
+    <string name="pref_external_title">Permetre comandes externes</string>
+    <string name="pref_external_summary">Permetre rebre comandes d’altres aplicacions per facilitar l’automatització i la programació de tasques.</string>
+    <string name="pref_provider_title">Proveïdor d’ubicació</string>
+    <string name="pref_provider_summary">L’ubicació pot ser proporcionada pel proveïdor de gps, de la xarxa o per ambdós. utilitzar ambdós proveïdors proporcionarà els millors resultats, però un major consum de bateria.</string>
+    <string name="pref_units_title">Unitats</string>
+    <string name="pref_units_summary">Tipus d’unitat preferida per mostrar el resum de la ruta</string>
+    <string name="pref_units_metric">Mètriques</string>
+    <string name="pref_units_imperial">Imperials</string>
+    <string name="pref_units_nautical">Nàutiques</string>
+    <string name="pref_auto_name_title">Plantilla del nom de ruta</string>
+    <string name="pref_auto_name_summary" formatted="false">Plantilla del nom de la nova ruta. Els següents patrons seran substituits amb elements de data actual: %y (any), %m (mes), %d (dia), %H (hora), %M (minut), %S (segon). Si necessita un caràcter de percentatge literal, utilitzi %%.</string>
+    <string name="label_status">Estat</string>
+    <string name="label_location">Ubicació</string>
+    <string name="label_synchronization">Sincronització</string>
+    <string name="tracking_stopped">Registre aturat</string>
+    <string name="tracking_started">Registre iniciat</string>
+    <string name="uploading_started">Pujada iniciada</string>
+    <string name="nothing_to_synchronize">Res a sincronitzar</string>
+    <string name="no_positions">La ruta actual no té posicions</string>
+    <string name="warning">Alerta</string>
+    <string name="notsync_warning">La ruta actual conté posicions no sincronitzades. Crear una nueva ruta eliminarà totes aquestes dades.</string>
+    <string name="clear_warning">Està segur que vol esborrar la ruta actual i totes les dades relatives? Això no esborrarà cap ruta ni dada del servidor.</string>
+    <string name="no_track_warning">Si us plau, configura una nova ruta primer</string>
+    <string name="empty_trackname_warning">El nom de la ruta no pot estar buit</string>
+    <string name="logger_running_warning">Si us plau, para el registre actual primer</string>
+    <string name="about">En quant a</string>
+    <string name="about_description">Aplicació sencilla de registre d’ubicacions, amb suport per registre continu i pujada de posicions al teu propi <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>servidor μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Per a més informació i ajuda, si us plau consulta la <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>página de μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Versió %s</string>
+    <string name="about_license">Llicència: GPL</string>
+    <string name="uploading_failed">La pujada ha fallat:</string>
+    <string name="uploading_done">Pujada completada</string>
+    <string name="track_summary">Resum de la ruta</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d posició</item>
+        <item quantity="other">%d posicions</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">Si us plau, indica una url de servidor vàlida</string>
+    <string name="provide_user_pass_url">Si us plau, indica primer l’usuari, contrasenya i url del servidor</string>
+    <string name="e_illegal_state">Excepció d’estat il·legal: %s</string>
+    <string name="e_illegal_redirect">Redirecció il·legal: %d</string>
+    <string name="e_auth_failure">Error d’autenticació: %d</string>
+    <string name="e_http_code">Codi d’error HTTP: %d</string>
+    <string name="e_server_response">Error de resposta del servidor</string>
+    <string name="e_unknown_host">Host desconegut: %s</string>
+    <string name="e_bad_url">URL incorrecta: %s</string>
+    <string name="e_connect">Error de connexió: %s</string>
+    <string name="gps_disabled_warning">Alerta: el proveïdor de gps està desactivat</string>
+    <string name="net_disabled_warning">Alerta: el proveïdor de xarxa està desactivat</string>
+    <string name="location_disabled">Has d’especificar almenys un proveïdor d’ubicació</string>
+    <string name="location_permission_denied">Has d’aceptar la sol·licitut de permissos d’ubicación</string>
+    <string name="using_network">Utilizant proveïdor de xarxa</string>
+    <string name="using_gps">Utilizant proveïdor gps</string>
+    <string name="export">Exportar a GPX</string>
+    <string name="waypoint">Punt de pas</string>
+    <string name="nothing_to_export">No hi ha res a exportar</string>
+    <string name="export_done">La ruta s’ha desat correctament</string>
+    <string name="export_failed">Ha fallat l’exportació</string>
+    <string name="unknown_track">Ruta desconeguda</string>
+    <string name="export_started">Exportació iniciada</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d posició pendent</item>
+        <item quantity="other">%d posicions pendents</item>
+    </plurals>
+    <string name="track_server_setup_warning">Si canvies la configuració del servidor no serà possible sincronitzar la ruta en curs.</string>
+    <string name="pref_mintime_other">Interval mínim de temps en segons</string>
+    <string name="pref_mindistance_other">Distància mínima en metres</string>
+    <string name="pref_minaccuracy_other">Precisió mínima en metres</string>
+    <string name="pref_imagesize_other">Amplada/alçada màximes, en píxels, de l’imatge</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">Seguiment d’ubicació</string>
+    <string name="pref_cat_server">Servidor</string>
+    <string name="pref_cat_other">Altres</string>
+    <string name="illegal_template_warning">La plantilla conté caracters il·egals</string>
+    <string name="cannot_open_picker">No es pot obrir el selector d’arxius</string>
+    <string name="e_open_out_stream">No es pot obrir la seqüència de sortida</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Xarxa</string>
+    <string name="provider_gps_network">Xarxa i GPS</string>
+    <string name="logger_task_failure">No es troba la localització</string>
+    <string name="take_photo">Fer foto</string>
+    <string name="from_library">Escollir de la galeria</string>
+    <string name="accuracy_meters">%dm de precisió</string>
+    <string name="meters_asl">%sm a.s.l</string>
+    <string name="label_position">Posició</string>
+    <string name="label_waypoint_description">Descripció del punt de pas</string>
+    <string name="label_add_photo">Afegir foto</string>
+    <string name="button_save">Desar</string>
+    <string name="tracking">Seguiment d’ubicació</string>
+    <string name="clear">Netejar ruta</string>
+    <string name="share_link">Enllaç per compartir ruta</string>
+</resources>

@@ -10,25 +10,25 @@
 
 <resources>
     <string-array name="minTimeEntries">
-        <item>10 segundos</item>
-        <item>30 segundos</item>
+        <item>10 secondi</item>
+        <item>30 secondi</item>
         <item>1 minuto</item>
-        <item>5 minutos</item>
-        <item>15 minutos</item>
-        <item>30 minutos</item>
-        <item>1 hora</item>
-        <item>otro</item>
+        <item>5 minuti</item>
+        <item>15 minuti</item>
+        <item>30 minuti</item>
+        <item>1 ora</item>
+        <item>altro</item>
     </string-array>
 
     <string-array name="minDistanceEntries">
-        <item>sin mínimo</item>
+        <item>nessun minimo</item>
         <item>50 m</item>
         <item>100 m</item>
         <item>250 m</item>
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
-        <item>otro</item>
+        <item>altra</item>
     </string-array>
 
     <string-array name="minAccuracyEntries">
@@ -40,16 +40,16 @@
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
-        <item>otro</item>
+        <item>altra</item>
     </string-array>
 
     <string-array name="imageSizeEntries">
-        <item>Tamaño actual</item>
+        <item>actual size</item>
         <item>800 px</item>
         <item>1080 px</item>
         <item>1280 px</item>
         <item>1920 px</item>
-        <item>Otro</item>
+        <item>altra</item>
     </string-array>
 
     </resources>

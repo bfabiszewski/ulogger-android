@@ -90,6 +90,7 @@ public class LoggerService extends Service {
         looper = thread.getLooper();
 
         try {
+            locationHelper.updatePreferences();
             locationHelper.requestLocationUpdates(locationListener, looper);
             setRunning(true);
             sendBroadcast(BROADCAST_LOCATION_STARTED);
@@ -153,7 +154,6 @@ public class LoggerService extends Service {
                 // no valid providers after preferences update
                 stopSelf();
             }
-
         }
     }
 
@@ -190,7 +190,6 @@ public class LoggerService extends Service {
             thread.interrupt();
             thread = null;
         }
-
     }
 
     @Override
@@ -301,6 +300,8 @@ public class LoggerService extends Service {
         public void onLocationChanged(@NonNull Location location) {
             if (Logger.DEBUG) { Log.d(TAG, "[location changed: " + location + "]"); }
 
+            LocationHelper.handleRolloverBug(location);
+
             if (meetsCriteria(location)) {
                 lastLocation = location;
                 DbAccess.writeLocation(LoggerService.this, location);
@@ -317,6 +318,10 @@ public class LoggerService extends Service {
          * @return True if matches
          */
         private boolean meetsCriteria(Location location) {
+            // skip if distance is below user criterion
+            if (!locationHelper.hasRequiredDistance(location, lastLocation)) {
+                return false;
+            }
             // accuracy radius too high
             if (!locationHelper.hasRequiredAccuracy(location)) {
                 if (Logger.DEBUG) { Log.d(TAG, "[location accuracy above limit: " + location.getAccuracy() + "]"); }
@@ -354,6 +359,9 @@ public class LoggerService extends Service {
             } else if (provider.equals(LocationManager.NETWORK_PROVIDER)) {
                 sendBroadcast(BROADCAST_LOCATION_NETWORK_DISABLED);
             }
+            if (!locationHelper.hasEnabledProviders()) {
+                sendBroadcast(BROADCAST_LOCATION_DISABLED);
+            }
         }
 
         /**
@@ -373,8 +381,6 @@ public class LoggerService extends Service {
 
         @SuppressWarnings({"deprecation", "RedundantSuppression"})
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
+        public void onStatusChanged(String provider, int status, Bundle extras) { }
     }
 }

@@ -13,6 +13,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
@@ -43,6 +44,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import static android.util.Base64.NO_PADDING;
 import static android.util.Base64.NO_WRAP;
 import static android.util.Base64.URL_SAFE;
@@ -55,7 +58,6 @@ import static android.util.Base64.URL_SAFE;
 class WebHelper {
     private static final String TAG = WebSyncService.class.getSimpleName();
     private static final int BUFFER_SIZE = 16 * 1024;
-    private static final long UPLOAD_SIZE_MAX = 25 * 1024 * 1024;
     private static final String MULTIPART_TEXT_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s";
     private static final String MULTIPART_FILE_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"; filename=\"upload\"\r\n" +
             "Content-Type: %s\r\n" +
@@ -97,8 +99,9 @@ class WebHelper {
     private final String userAgent;
     private final Context context;
 
+    private static boolean tlsSocketInitialized = false;
     // Socket timeout in milliseconds
-    private static final int SOCKET_TIMEOUT = 30 * 1000;
+    static final int SOCKET_TIMEOUT = 30 * 1000;
     private static final Random random = new Random();
 
     static boolean isAuthorized = false;
@@ -118,6 +121,17 @@ class WebHelper {
         if (cookieManager == null) {
             cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
+        }
+
+        // On APIs < 20 enable TLSv1.1 and TLSv1.2 protocols, on APIs <= 22 disable SSLv3
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1 && !tlsSocketInitialized) {
+            try {
+                if (Logger.DEBUG) { Log.d(TAG, "[init TLS socket factory]"); }
+                HttpsURLConnection.setDefaultSSLSocketFactory(new TlsSocketFactory());
+                tlsSocketInitialized = true;
+            } catch (Exception e) {
+                if (Logger.DEBUG) { Log.d(TAG, "[TLS socket setup error (ignored): " + e.getMessage() + "]"); }
+            }
         }
     }
 
@@ -281,7 +295,7 @@ class WebHelper {
             length += data.length;
             // file size
             long fileSize = ImageHelper.getFileSize(context, uri);
-            if (fileSize <= UPLOAD_SIZE_MAX && fileSize > 0) {
+            if (fileSize > 0) {
                 String headers = String.format(MULTIPART_FILE_TEMPLATE, PARAM_IMAGE, fileMime);
                 length += headers.getBytes(StandardCharsets.UTF_8).length + delimiter.length;
                 length += fileSize;
@@ -308,7 +322,7 @@ class WebHelper {
             return;
         }
         long fileSize = ImageHelper.getFileSize(context, uri);
-        if (fileSize > UPLOAD_SIZE_MAX || fileSize <= 0) {
+        if (fileSize <= 0) {
             if (Logger.DEBUG) { Log.d(TAG, "[Skipping file, wrong size: " + fileSize + "]"); }
             return;
         }
