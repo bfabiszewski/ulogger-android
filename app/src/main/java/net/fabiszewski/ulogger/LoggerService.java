@@ -89,6 +89,18 @@ public class LoggerService extends Service {
         thread.start();
         looper = thread.getLooper();
 
+
+        // keep database open during whole service runtime
+        db = DbAccess.getInstance();
+        db.open(this);
+    }
+
+    /**
+     * Request location updates, start web synchronization if needed
+     * @return True on success, false otherwise
+     */
+    private boolean initializeLocationUpdates() {
+        if (Logger.DEBUG) { Log.d(TAG, "[initializeLocationUpdates]"); }
         try {
             locationHelper.updatePreferences();
             locationHelper.requestLocationUpdates(locationListener, looper);
@@ -97,14 +109,10 @@ public class LoggerService extends Service {
 
             syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
 
-            // keep database open during whole service runtime
-            db = DbAccess.getInstance();
-            db.open(this);
-
-            // start websync service if needed
             if (locationHelper.isLiveSync() && DbAccess.needsSync(this)) {
                 WebSyncService.enqueueWork(this, syncIntent);
             }
+            return true;
         } catch (LocationHelper.LoggerException e) {
             int errorCode = e.getCode();
             if (errorCode == E_DISABLED) {
@@ -113,6 +121,7 @@ public class LoggerService extends Service {
                 sendBroadcast(BROADCAST_LOCATION_PERMISSION_DENIED);
             }
         }
+        return false;
     }
 
     /**
@@ -130,11 +139,10 @@ public class LoggerService extends Service {
         if (intent != null && intent.getBooleanExtra(UPDATED_PREFS, false)) {
             handlePrefsUpdated();
         } else {
-            if (isRunning) {
-                final Notification notification = showNotification(NOTIFICATION_ID);
-                startForeground(NOTIFICATION_ID, notification);
-            } else {
-                // onCreate failed to start updates
+            final Notification notification = showNotification(NOTIFICATION_ID);
+            startForeground(NOTIFICATION_ID, notification);
+            if (!initializeLocationUpdates()) {
+                setRunning(false);
                 stopSelf();
             }
         }
