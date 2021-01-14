@@ -8,6 +8,9 @@ android:
     - android-30
     - extra-android-m2repository
     - extra-google-m2repository
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
 script:
   - ./gradlew build
 after_success:
@@ -33,6 +36,7 @@ env:
   global:
    - secure: "kwyk4/ug9j5KdmR4DGp4vi6/BAhnYiFFlXeyptLR5CQ2+u+FNv588WdIFQ4loFlubsokkOjD9XZx8BQF0f47Agsr8FOPS/c+tSdXF9AL1mXj5jAhnrHJGmmyUBW3t8A1+JwxWTpo8WEvzeWZDYEPhxfbnYdGjoz8fpWO4srskBZKcsaSoGIXNZ1d7YBUtp6nqqOhiyaySjVn6etmbO3bghA3A8bCc+9U5CN5LBGLG256KNHFC4+0J86zopcC04bDBs6c4HecI03xB5BPhSKjuBNN3b2mAFznqYf9VqK+QEC1w71tNn0iL7bZiUw9/tvozE5xQ6krcTgK4xqXHS+g720RhYkib0TSrlDn2jfMAlJqshzzHT2lb2ofPEJpJg7C7Lmzbv4MtMnoFuNfAj1wmN0aszYkMUeYx72ku1TrNIvvMiJX3b0H8DAEZD6xN7JV9IUJjZ0BHv7CUj2e5Ya+wFnfbOWBuMIQP3XJw6JopRHOlsijTgQYQC3rkFHfARWQ4N4jjsAXR4AXxmqB4dMa+QiF6hkSE+O7S8sDuk5sCYB1KeTW/oaSo1fRbfYE1lE5sXAkX9KPtXw2/OjSnCANKheDSRzzgDzj3d9dQA0zOq7XRwEQ+GHJapoVAEMdPn0mYgOwVxxm6Fsbh/67xEf2AtM1MITQcLiH4/OBJhVaGGc="
 before_install:
+      - yes | sdkmanager "platforms;android-30" 
       - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 addons:
   coverity_scan:
