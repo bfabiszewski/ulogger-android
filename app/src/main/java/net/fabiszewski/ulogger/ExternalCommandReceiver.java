@@ -88,7 +88,7 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
     private void uploadData(Context context) {
         if (DbAccess.needsSync(context)) {
             Intent intent = new Intent(context, WebSyncService.class);
-            context.startService(intent);
+            WebSyncService.enqueueWork(context, intent);
         }
     }
 }

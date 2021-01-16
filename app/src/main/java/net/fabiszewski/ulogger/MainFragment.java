@@ -297,7 +297,7 @@ public class MainFragment extends Fragment {
             showToast(getString(R.string.provide_user_pass_url));
         } else if (DbAccess.needsSync(context)) {
             Intent syncIntent = new Intent(context, WebSyncService.class);
-            context.startService(syncIntent);
+            WebSyncService.enqueueWork(context, syncIntent);
             showToast(getString(R.string.uploading_started));
             isUploading = true;
         } else {

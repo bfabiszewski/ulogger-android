@@ -110,7 +110,7 @@ public class LoggerService extends Service {
             syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
 
             if (locationHelper.isLiveSync() && DbAccess.needsSync(this)) {
-                WebSyncService.enqueueWork(this, syncIntent);
+                WebSyncService.enqueueWork(getApplicationContext(), syncIntent);
             }
             return true;
         } catch (LocationHelper.LoggerException e) {
@@ -315,7 +315,7 @@ public class LoggerService extends Service {
                 DbAccess.writeLocation(LoggerService.this, location);
                 sendBroadcast(BROADCAST_LOCATION_UPDATED);
                 if (locationHelper.isLiveSync()) {
-                    startService(syncIntent);
+                    WebSyncService.enqueueWork(getApplicationContext(), syncIntent);
                 }
             }
         }
