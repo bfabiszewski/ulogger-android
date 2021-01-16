@@ -16,6 +16,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
@@ -49,7 +51,7 @@ class LocationHelper {
     // max time tolerance is half min time, but not more that 5 min
     final private long minTimeTolerance = Math.min(minTimeMillis / 2, 5 * 60 * 1000);
     final private long maxTimeMillis = minTimeMillis + minTimeTolerance;
-    private List<String> userProviders = new ArrayList<>();
+    private final List<String> userProviders = new ArrayList<>();
 
 
     private LocationHelper(@NonNull Context context) {
@@ -172,7 +174,16 @@ class LocationHelper {
                 // request even if provider is disabled to allow users re-enable it later
                 locationManager.requestLocationUpdates(provider, minTimeMillis, minDistance, listener, looper);
             } else if (locationManager.isProviderEnabled(provider)) {
-                locationManager.requestSingleUpdate(provider, listener, looper);
+                // FIXME: original caller should be rewritten instead?
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    locationManager.getCurrentLocation(provider, null, runnable -> {
+                        if (looper != null) {
+                            new Handler(looper).post(runnable);
+                        }
+                    }, listener::onLocationChanged);
+                } else {
+                    locationManager.requestSingleUpdate(provider, listener, looper);
+                }
             }
             if (!locationManager.isProviderEnabled(provider)) {
                 if (Logger.DEBUG) { Log.d(TAG, "[requestProviderUpdates disabled: " + provider + " (" + singleShot + ")]"); }
