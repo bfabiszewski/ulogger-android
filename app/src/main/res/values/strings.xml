@@ -147,4 +147,5 @@
     <string name="tracking">Tracking</string>
     <string name="clear">Clear track</string>
     <string name="share_link">Share track link</string>
+    <string name="image_task_failed">Image resampling failed</string>
 </resources>

@@ -12,13 +12,15 @@ package net.fabiszewski.ulogger;
 import android.app.Activity;
 import android.location.Location;
 import android.location.LocationListener;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
+import androidx.annotation.WorkerThread;
 
 import java.lang.ref.WeakReference;
 
@@ -26,7 +28,7 @@ import java.lang.ref.WeakReference;
 /**
  * Task to get location according to user preferences criteria
  */
-class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationListener {
+class LoggerTask implements LocationListener, Runnable {
 
     private static final String TAG = LoggerTask.class.getSimpleName();
     private static final int E_OK = 0;
@@ -38,6 +40,11 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
     private final LocationHelper locationHelper;
     private Location location;
     private volatile boolean waiting;
+    private boolean isCancelled = false;
+    private boolean isRunning = false;
+
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
+    private final Object lock = new Object();
 
     private int error = LocationHelper.LoggerException.E_OK;
 
@@ -47,7 +54,31 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
     }
 
     @Override
-    protected Location doInBackground(Void... voids) {
+    public void run() {
+        isRunning = true;
+        Location location = doInBackground();
+        if (!isCancelled) {
+            uiHandler.post(() -> onPostExecute(location));
+        }
+        isRunning = false;
+    }
+
+    public void cancel() {
+        if (Logger.DEBUG) { Log.d(TAG, "[task cancelled]"); }
+        isCancelled = true;
+        quitLoop();
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    /**
+     * Requests location update, waits in loop
+     * @return Location or null if none
+     */
+    @WorkerThread
+    private Location doInBackground() {
         if (Logger.DEBUG) { Log.d(TAG, "[doInBackground]"); }
         Activity activity = getActivity();
         if (activity == null) {
@@ -57,52 +88,49 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
             error = E_PERMISSION;
             return null;
         }
-        try {
-            locationHelper.requestSingleUpdate(this, Looper.getMainLooper());
-            loop();
-            locationHelper.removeUpdates(this);
-            return location;
-        } catch (LocationHelper.LoggerException e) {
-            error = e.getCode();
+        synchronized (lock) {
+            waiting = true;
+            final long startTime = System.currentTimeMillis();
+            try {
+                locationHelper.requestSingleUpdate(this, Looper.getMainLooper());
+                while (waiting) {
+                    try {
+                        lock.wait(TIMEOUT_MS);
+                    } catch (InterruptedException e) {
+                        if (Logger.DEBUG) { Log.d(TAG, "[loop interrupted]"); }
+                    }
+                    if (System.currentTimeMillis() - startTime >= TIMEOUT_MS) {
+                        if (Logger.DEBUG) { Log.d(TAG, "[loop timeout]"); }
+                        waiting = false;
+                    }
+                }
+                locationHelper.removeUpdates(this);
+                return location;
+            } catch (LocationHelper.LoggerException e) {
+                error = e.getCode();
+            }
         }
         return null;
     }
 
     /**
-     * Loop on worker thread
+     * Quit loop
      */
-    private void loop() {
-        waiting = true;
-        final long startTime = System.currentTimeMillis();
-        while (waiting) {
-            if (System.currentTimeMillis() - startTime > TIMEOUT_MS) {
-                if (Logger.DEBUG) { Log.d(TAG, "[loop timeout]"); }
-                break;
-            }
-            if (isCancelled()) {
-                if (Logger.DEBUG) { Log.d(TAG, "[loop cancelled]"); }
-                break;
-            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ignored) {
-                break;
-            }
+    private synchronized void quitLoop() {
+        synchronized (lock) {
+            waiting = false;
+            lock.notifyAll();
         }
     }
 
     /**
-     * Quit loop
+     * Execute callback with location result
+     * @param location Location
      */
-    private void quitLoop() {
-        waiting = false;
-    }
-
-    @Override
-    protected void onPostExecute(Location location) {
-        super.onPostExecute(location);
+    @UiThread
+    private void onPostExecute(Location location) {
         LoggerTaskCallback callback = weakCallback.get();
-        if (callback != null) {
+        if (callback != null && callback.getActivity() != null) {
             if (error == E_OK && location != null) {
                 callback.onLoggerTaskCompleted(location);
             } else {
@@ -133,6 +161,7 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
     }
 
 
+    @UiThread
     @Override
     public void onLocationChanged(@NonNull Location location) {
         if (Logger.DEBUG) { Log.d(TAG, "[location changed: " + location + "]"); }
@@ -161,10 +190,12 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
         return true;
     }
 
-    @SuppressWarnings({"deprecation", "RedundantSuppression"})
+    @UiThread
     @Override
+    @SuppressWarnings({"deprecation", "RedundantSuppression"})
     public void onStatusChanged(String provider, int status, Bundle extras) { }
 
+    @UiThread
     @Override
     public void onProviderEnabled(@NonNull String provider) {
         if (Logger.DEBUG) { Log.d(TAG, "[onProviderEnabled: " + provider + "]"); }
@@ -175,6 +206,7 @@ class LoggerTask extends AsyncTask<Void, Void, Location> implements LocationList
         }
     }
 
+    @UiThread
     @Override
     public void onProviderDisabled(@NonNull String provider) {
         if (Logger.DEBUG) { Log.d(TAG, "[onProviderDisabled: " + provider + "]"); }

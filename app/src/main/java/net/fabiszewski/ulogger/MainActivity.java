@@ -130,28 +130,25 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.menu_settings:
-                Intent i = new Intent(this, SettingsActivity.class);
-                startActivityForResult(i, RESULT_PREFS_UPDATED);
-                return true;
-            case R.id.menu_about:
-                showAbout();
-                return true;
-            case R.id.menu_export:
-                startExport();
-                return true;
-            case R.id.menu_clear:
-                clearTrack();
-                return true;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        final int id = item.getItemId();
+        if (id == R.id.menu_settings) {
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivityForResult(i, RESULT_PREFS_UPDATED);
+            return true;
+        } else if (id == R.id.menu_about) {
+            showAbout();
+            return true;
+        } else if (id == R.id.menu_export) {
+            startExport();
+            return true;
+        } else if (id == R.id.menu_clear) {
+            clearTrack();
+            return true;
+        } else if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

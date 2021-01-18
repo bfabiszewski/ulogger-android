@@ -17,7 +17,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,12 +38,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.concurrent.ExecutorService;
+
 import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.EXTRA_LOCAL_ONLY;
 import static android.content.Intent.EXTRA_MIME_TYPES;
 import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+import static java.util.concurrent.Executors.newCachedThreadPool;
 
 public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback, ImageTask.ImageTaskCallback {
 
@@ -73,6 +75,8 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private Location location = null;
     private Uri photoUri = null;
     private Bitmap photoThumb = null;
+
+    private final ExecutorService executor = newCachedThreadPool();
 
     public WaypointFragment() {
     }
@@ -156,25 +160,15 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * Start logger task
      */
     private void runLoggerTask() {
-        if (!isTaskRunning(loggerTask)) {
+        if (loggerTask == null || !loggerTask.isRunning()) {
             saveButton.setEnabled(false);
             location = null;
             locationTextView.setText("");
             locationDetailsTextView.setText("");
             loggerTask = new LoggerTask(this);
-            loggerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            executor.execute(loggerTask);
             setRefreshing(true);
         }
-    }
-
-    /**
-     * Verify if task is running
-     * @param task Task
-     * @param <T> Task type
-     * @return True if running, false otherwise
-     */
-    private <T extends AsyncTask<U, V, W>, U, V, W> boolean isTaskRunning(T task) {
-        return task != null && task.getStatus() == T.Status.RUNNING;
     }
 
     /**
@@ -182,11 +176,23 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      */
     private void cancelLoggerTask() {
         if (Logger.DEBUG) { Log.d(TAG, "[cancelLoggerTask]"); }
-        if (isTaskRunning(loggerTask)) {
+        if (loggerTask != null && loggerTask.isRunning()) {
             if (Logger.DEBUG) { Log.d(TAG, "[cancelLoggerTask effective]"); }
-            loggerTask.cancel(false);
+            loggerTask.cancel();
             loggerTask = null;
-            if (!isTaskRunning(imageTask)) {
+            if (imageTask == null || !imageTask.isRunning()) {
+                setRefreshing(false);
+            }
+        }
+    }
+
+    private void cancelImageTask() {
+        if (Logger.DEBUG) { Log.d(TAG, "[cancelImageTask]"); }
+        if (imageTask != null && imageTask.isRunning()) {
+            if (Logger.DEBUG) { Log.d(TAG, "[cancelImageTask effective]"); }
+            imageTask.cancel();
+            imageTask = null;
+            if (loggerTask == null || !loggerTask.isRunning()) {
                 setRefreshing(false);
             }
         }
@@ -196,11 +202,11 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * Start image task
      */
     private void runImageTask(@NonNull Uri uri) {
-        if (!isTaskRunning(imageTask)) {
+        if (imageTask == null || !imageTask.isRunning()) {
             clearImage();
             saveButton.setEnabled(false);
-            imageTask = new ImageTask(this);
-            imageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, uri);
+            imageTask = new ImageTask(uri, this);
+            executor.execute(imageTask);
             setRefreshing(true);
         }
     }
@@ -213,6 +219,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     public void onDetach() {
         super.onDetach();
         cancelLoggerTask();
+        cancelImageTask();
     }
 
     @Override
@@ -398,7 +405,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     public void onLoggerTaskCompleted(Location location) {
         if (Logger.DEBUG) { Log.d(TAG, "[onLoggerTaskCompleted: " + location + "]"); }
         this.location = location;
-        if (!isTaskRunning(imageTask)) {
+        if (imageTask == null || !imageTask.isRunning()) {
             setRefreshing(false);
         }
         setLocationText();
@@ -408,7 +415,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     @Override
     public void onLoggerTaskFailure(int reason) {
         if (Logger.DEBUG) { Log.d(TAG, "[onLoggerTaskFailure: " + reason + "]"); }
-        if (!isTaskRunning(imageTask)) {
+        if (imageTask == null || !imageTask.isRunning()) {
             setRefreshing(false);
         }
         locationTextView.setText(getString(R.string.logger_task_failure));
@@ -426,7 +433,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         photoUri = uri;
         photoThumb = thumbnail;
         setThumbnail(thumbnail);
-        if (!isTaskRunning(loggerTask)) {
+        if (loggerTask == null || !loggerTask.isRunning()) {
             setRefreshing(false);
         }
         if (this.location != null) {
@@ -438,10 +445,14 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     public void onImageTaskFailure(@NonNull String error) {
         if (Logger.DEBUG) { Log.d(TAG, "[onImageTaskFailure: " + error + "]"); }
         clearImage();
-        if (!isTaskRunning(loggerTask)) {
+        if (loggerTask == null || !loggerTask.isRunning()) {
             setRefreshing(false);
         }
-        showToast(error);
+        String message = getString(R.string.image_task_failed);
+        if (!error.isEmpty()) {
+            message += ": " + error;
+        }
+        showToast(message);
         if (this.location != null) {
             saveButton.setEnabled(true);
         }

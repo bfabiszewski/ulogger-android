@@ -167,6 +167,7 @@ class LocationHelper {
      * @param singleShot Request single update if true
      * @throws LoggerException Exception on permission denied or provider disabled
      */
+    @SuppressWarnings({"deprecation", "RedundantSuppression"})
     private void requestProviderUpdates(@NonNull String provider, @NonNull LocationListener listener, @Nullable Looper looper, boolean singleShot) throws LoggerException {
         if (Logger.DEBUG) { Log.d(TAG, "[requestProviderUpdates: " + provider + " (" + singleShot + ")]"); }
         try {
@@ -174,7 +175,6 @@ class LocationHelper {
                 // request even if provider is disabled to allow users re-enable it later
                 locationManager.requestLocationUpdates(provider, minTimeMillis, minDistance, listener, looper);
             } else if (locationManager.isProviderEnabled(provider)) {
-                // FIXME: original caller should be rewritten instead?
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     locationManager.getCurrentLocation(provider, null, runnable -> {
                         if (looper != null) {
