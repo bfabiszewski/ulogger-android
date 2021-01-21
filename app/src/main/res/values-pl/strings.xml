@@ -42,7 +42,7 @@
     <string name="pref_external_title">Zezwalaj na sterowanie</string>
     <string name="pref_external_summary">Przyjmuj komendy sterujące od innych aplikacji, aby ułatwić automatyzację i planowanie zadań.</string>
     <string name="pref_provider_title">Usługa lokalizacji</string>
-    <string name="pref_provider_summary">Współrzędne geograficzne mogą być otrzymywana z GPS-a, z sieci (GSM/wifi), lub z obu na raz. Zaznaczenie obu może dać lepsze rezultaty, jednak kosztem większego zużycia baterii.</string>
+    <string name="pref_provider_summary">Współrzędne geograficzne mogą być otrzymywana z GPS-a, z sieci (GSM/Wi-Fi), lub z obu na raz. Zaznaczenie obu może dać lepsze rezultaty, jednak kosztem większego zużycia baterii.</string>
     <string name="pref_units_title">Jednostki</string>
     <string name="pref_units_summary">Preferowane jednostki miary do wyświetlania statystyk</string>
     <string name="pref_units_metric">Metryczne</string>
@@ -63,7 +63,7 @@
     <string name="clear_warning">Czy na pewno chcesz usunąć z urządzenia bieżącą trasę i wszystkie powiązane z nią dane? Operacja ta nie kasuje danych z serwera.</string>
     <string name="no_track_warning">Najpierw rozpocznij nową trasę</string>
     <string name="empty_trackname_warning">Nazwa trasy nie może być pusta</string>
-    <string name="logger_running_warning">Proszę najpierw zatrzymać zapisywanie bieżącej trasy</string>
+    <string name="logger_running_warning">Najpierw zatrzymaj zapisywanie bieżącej trasy</string>
     <string name="about">O programie</string>
     <string name="about_description">Prosty program do zapisu pozycji geograficznej z funkcją przesyłania współrzędnych na własny <xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>serwer μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
     <string name="about_description2">Więcej informacji oraz pomoc na stronie <xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>projektu μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
@@ -82,8 +82,8 @@
     <string name="summary_duration">%1$d h %2$d min</string>
     <string name="unit_kilometer">km</string>
     <string name="unit_mile">mi</string>
-    <string name="provide_valid_url">Proszę podać poprawny adres serwera</string>
-    <string name="provide_user_pass_url">Proszę najpierw uzupełnić nazwę użytkownika, hasło i adres serwera</string>
+    <string name="provide_valid_url">Podaj poprawny adres serwera</string>
+    <string name="provide_user_pass_url">Najpierw uzupełnij nazwę użytkownika, hasło i adres serwera</string>
     <string name="e_illegal_state">Błędny stan: %s</string>
     <string name="e_illegal_redirect">Błąd przekierowania: %d</string>
     <string name="e_auth_failure">Błąd autoryzacji: %d</string>
