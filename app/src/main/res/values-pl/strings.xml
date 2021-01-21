@@ -34,7 +34,7 @@
     <string name="pref_minaccuracy_title">Minimalna dokładność</string>
     <string name="pref_minaccuracy_summary">Minimalna dokładność pozycji</string>
     <string name="pref_imagesize_title">Rozmiar zdjęcia</string>
-    <string name="pref_imagesize_summary">Maksymalna wysokość/szerokość przesyłanych zdjęć. W przypadku zmniejszania kopia obrazu będzie przed wysłaniem przechowywana tymczasowo w folderze aplikacji. W przypadku opcji „bez zmian” kopia nie będzie tworzona, więc oryginalny plik musi być dostępny podczas synchronizacji.</string>
+    <string name="pref_imagesize_summary">Maksymalna wysokość/szerokość przesyłanych zdjęć. W przypadku zmniejszania rozmiaru, kopia obrazu przed wysłaniem będzie przechowywana tymczasowo w folderze aplikacji. W przypadku wybrania opcji „bez zmian”, oryginalny plik musi być dostępny podczas synchronizacji, ponieważ kopia obrazu nie jest tworzona.</string>
     <string name="pref_livesync_title">Ciągła synchronizacja</string>
     <string name="pref_livesync_summary">Wysyłanie pozycji na serwer w czasie rzeczywistym. Wymaga podania użytkownika, hasła i adresu serwera.</string>
     <string name="pref_autostart_title">Auto start</string>
@@ -49,7 +49,7 @@
     <string name="pref_units_imperial">Anglosaskie</string>
     <string name="pref_units_nautical">Nawigacyjne</string>
     <string name="pref_auto_name_title">Szablon nazwy trasy</string>
-    <string name="pref_auto_name_summary" formatted="false">Szablon nazwy nowej trasy. Następujące wzorce zostaną zastapione odpowiednimi elementami bieżącej daty: %y (rok), %m (miesiąc), %d (dzień), %H (godzina), %M (minuta), %S (sekunda). Aby uzyskać znak procenta użyj %%.</string>
+    <string name="pref_auto_name_summary" formatted="false">Szablon nazwy nowej trasy. Następujące wzorce zostaną zastąpione odpowiednimi elementami bieżącej daty: %y (rok), %m (miesiąc), %d (dzień), %H (godzina), %M (minuta), %S (sekunda). Aby uzyskać znak procenta użyj %%.</string>
     <string name="label_status">Status</string>
     <string name="label_location">Lokalizacja</string>
     <string name="label_synchronization">Synchronizacja</string>
@@ -60,7 +60,7 @@
     <string name="no_positions">Bieżąca trasa nie ma żadnych pozycji</string>
     <string name="warning">Uwaga</string>
     <string name="notsync_warning">Bieżąca trasa zawiera niezsynchronizowane pozycje. Rozpoczęcie nowej trasy usunie wszystkie dane.</string>
-    <string name="clear_warning">Czy na pewno chcesz usunąć z urządzenia bieżącą trasę i wszystkie powiązane z nią dane? Operacja ta nie kasuje danych z serwera.</string>
+    <string name="clear_warning">Czy na pewno chcesz usunąć z urządzenia bieżącą trasę i wszystkie powiązane z nią dane? Operacja ta nie usuwa danych z serwera.</string>
     <string name="no_track_warning">Najpierw rozpocznij nową trasę</string>
     <string name="empty_trackname_warning">Nazwa trasy nie może być pusta</string>
     <string name="logger_running_warning">Najpierw zatrzymaj zapisywanie bieżącej trasy</string>
