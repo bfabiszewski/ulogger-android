@@ -42,7 +42,7 @@
     <string name="pref_external_title">Zezwalaj na sterowanie</string>
     <string name="pref_external_summary">Przyjmuj komendy sterujące od innych aplikacji, aby ułatwić automatyzację i planowanie zadań.</string>
     <string name="pref_provider_title">Usługa lokalizacji</string>
-    <string name="pref_provider_summary">Współrzędne geograficzne mogą być otrzymywana z GPS-a, z sieci (GSM/Wi-Fi), lub z obu na raz. Zaznaczenie obu może dać lepsze rezultaty, jednak kosztem większego zużycia baterii.</string>
+    <string name="pref_provider_summary">Lokalizacja może być otrzymywana z GPS-a, z sieci (GSM/Wi-Fi) lub z obu na raz. Wybranie obu może dać lepsze rezultaty, ale kosztem większego zużycia baterii.</string>
     <string name="pref_units_title">Jednostki</string>
     <string name="pref_units_summary">Preferowane jednostki miary do wyświetlania statystyk</string>
     <string name="pref_units_metric">Metryczne</string>
