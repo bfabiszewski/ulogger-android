@@ -42,7 +42,7 @@
     <string name="pref_imagesize_summary">Maximum width/height of uploaded images in pixels. In case of downsampling resized image copy will be temporarily stored in application folder before uploading. If you choose “actual size” option no copy will be made, so original files must be available during uploading.</string>
     <string name="pref_imagesize_default" translatable="false">800</string>
     <string name="pref_livesync_title">Live synchronization</string>
-    <string name="pref_livesync_summary">Live uploading of positions to the server. Requires valid user name, password and server url.</string>
+    <string name="pref_livesync_summary">Live uploading of positions to the server. Requires valid user name, password and server URL.</string>
     <string name="pref_livesync_default" translatable="false">false</string>
     <string name="pref_autostart_title">Auto start</string>
     <string name="pref_autostart_summary">Application will start on system boot</string>
@@ -51,7 +51,7 @@
     <string name="pref_external_summary">Allow receiving commands from other applications to facilitate automation and tasks scheduling.</string>
     <string name="pref_external_default" translatable="false">false</string>
     <string name="pref_provider_title">Location provider</string>
-    <string name="pref_provider_summary">Location may be supplied by gps provider, by network or by both. Both providers will give best results, but use more battery.</string>
+    <string name="pref_provider_summary">Location may be supplied by GPS provider, by network or by both. Both providers will give best results, but use more battery.</string>
     <string name="pref_units_title">Units</string>
     <string name="pref_units_summary">Preferred units for displaying track summary</string>
     <string name="pref_units_default" translatable="false">metric</string>
@@ -93,8 +93,8 @@
     <string name="summary_duration">%1$d h %2$d min</string>
     <string name="unit_kilometer">km</string>
     <string name="unit_mile">mi.</string>
-    <string name="provide_valid_url">Please provide valid server url</string>
-    <string name="provide_user_pass_url">Please enter user, password and server url first</string>
+    <string name="provide_valid_url">Please provide valid server URL</string>
+    <string name="provide_user_pass_url">Please enter user, password and server URL first</string>
     <string name="e_illegal_state">Illegal state error: %s</string>
     <string name="e_illegal_redirect">Illegal redirect: %d</string>
     <string name="e_auth_failure">Authorization failure: %d</string>
@@ -103,12 +103,12 @@
     <string name="e_unknown_host">Unknown host: %s</string>
     <string name="e_bad_url">Bad URL: %s</string>
     <string name="e_connect">Connection error: %s</string>
-    <string name="gps_disabled_warning">Warning: gps provider is disabled</string>
+    <string name="gps_disabled_warning">Warning: GPS provider is disabled</string>
     <string name="net_disabled_warning">Warning: network provider is disabled</string>
     <string name="location_disabled">You must enable at least one location provider</string>
     <string name="location_permission_denied">You must accept permission for location updates</string>
     <string name="using_network">Using network provider</string>
-    <string name="using_gps">Using gps provider</string>
+    <string name="using_gps">Using GPS provider</string>
     <string name="export">Export to GPX</string>
     <string name="waypoint">Waypoint</string>
     <string name="nothing_to_export">Nothing to export</string>
