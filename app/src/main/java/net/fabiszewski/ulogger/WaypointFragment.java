@@ -10,6 +10,7 @@
 package net.fabiszewski.ulogger;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -267,7 +268,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     }
 
     private void takePhoto() {
-        if (!hasPermissions()) {
+        if (!hasStoragePermission()) {
             return;
         }
         requestImageCapture();
@@ -284,11 +285,11 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         }
     }
 
-    private boolean hasPermissions() {
+    private boolean hasStoragePermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             showToast("You must accept permission for writing photo to external storage");
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE }, PERMISSION_WRITE);
             return false;
         }
         return true;
@@ -421,6 +422,10 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         locationTextView.setText(getString(R.string.logger_task_failure));
         if ((reason & LoggerTask.E_PERMISSION) != 0) {
             showToast(getString(R.string.location_permission_denied));
+            Activity activity = getActivity();
+            if (activity != null) {
+                ActivityCompat.requestPermissions(activity, new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_LOCATION);
+            }
         }
         if ((reason & LoggerTask.E_DISABLED) != 0) {
             showToast(getString(R.string.location_disabled));

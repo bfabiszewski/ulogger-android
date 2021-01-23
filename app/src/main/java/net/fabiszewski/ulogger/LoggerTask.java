@@ -12,7 +12,9 @@ package net.fabiszewski.ulogger;
 import android.app.Activity;
 import android.location.Location;
 import android.location.LocationListener;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -43,6 +45,8 @@ class LoggerTask implements LocationListener, Runnable {
     private boolean isCancelled = false;
     private boolean isRunning = false;
 
+    private CancellationSignal cancellationSignal = null;
+
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
     private final Object lock = new Object();
 
@@ -55,6 +59,7 @@ class LoggerTask implements LocationListener, Runnable {
 
     @Override
     public void run() {
+        if (Logger.DEBUG) { Log.d(TAG, "[task run]"); }
         isRunning = true;
         Location location = doInBackground();
         if (!isCancelled) {
@@ -92,7 +97,10 @@ class LoggerTask implements LocationListener, Runnable {
             waiting = true;
             final long startTime = System.currentTimeMillis();
             try {
-                locationHelper.requestSingleUpdate(this, Looper.getMainLooper());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    cancellationSignal = new CancellationSignal();
+                }
+                locationHelper.requestSingleUpdate(this, cancellationSignal);
                 while (waiting) {
                     try {
                         lock.wait(TIMEOUT_MS);
@@ -104,13 +112,24 @@ class LoggerTask implements LocationListener, Runnable {
                         waiting = false;
                     }
                 }
-                locationHelper.removeUpdates(this);
+                removeUpdates();
                 return location;
             } catch (LocationHelper.LoggerException e) {
                 error = e.getCode();
             }
         }
         return null;
+    }
+
+    /**
+     * Remove updates
+     * Uses locationManager or cancellation signal if supported
+     */
+    private void removeUpdates() {
+        locationHelper.removeUpdates(this);
+        if (cancellationSignal != null) {
+            cancellationSignal.cancel();
+        }
     }
 
     /**
@@ -156,8 +175,8 @@ class LoggerTask implements LocationListener, Runnable {
     private void restartUpdates() throws LocationHelper.LoggerException {
         if (Logger.DEBUG) { Log.d(TAG, "[location updates restart]"); }
 
-        locationHelper.removeUpdates(this);
-        locationHelper.requestSingleUpdate(this, Looper.getMainLooper());
+        removeUpdates();
+        locationHelper.requestSingleUpdate(this, cancellationSignal);
     }
 
 
@@ -177,7 +196,7 @@ class LoggerTask implements LocationListener, Runnable {
      * @param location Location
      * @return True if skipped
      */
-    private boolean hasRequiredAccuracy(Location location) {
+    private boolean hasRequiredAccuracy(@NonNull Location location) {
 
         if (!locationHelper.hasRequiredAccuracy(location)) {
             try {

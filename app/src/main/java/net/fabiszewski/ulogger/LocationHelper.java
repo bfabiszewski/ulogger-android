@@ -17,7 +17,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Handler;
+import android.os.CancellationSignal;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
@@ -96,7 +96,6 @@ class LocationHelper {
     /**
      * Check if user granted permission to access location.
      *
-     * @param context Context
      * @return True if permission granted, false otherwise
      */
     boolean canAccessLocation() {
@@ -119,11 +118,11 @@ class LocationHelper {
     /**
      * Request single location update
      * @param listener Listener
-     * @param looper Looper
+     * @param cancellationSignal Cancellation signal
      * @throws LoggerException Exception on permission denied or all providers disabled
      */
-    void requestSingleUpdate(@NonNull LocationListener listener, @Nullable Looper looper) throws LoggerException {
-        requestAllProvidersUpdates(listener, looper, true);
+    void requestSingleUpdate(@NonNull LocationListener listener, CancellationSignal cancellationSignal) throws LoggerException {
+        requestAllProvidersUpdates(listener, Looper.getMainLooper(), true, cancellationSignal);
     }
 
     /**
@@ -133,7 +132,7 @@ class LocationHelper {
      * @throws LoggerException Exception on all requested providers failure
      */
     void requestLocationUpdates(@NonNull LocationListener listener, @Nullable Looper looper) throws LoggerException {
-        requestAllProvidersUpdates(listener, looper, false);
+        requestAllProvidersUpdates(listener, looper, false, null);
     }
 
     /**
@@ -141,13 +140,15 @@ class LocationHelper {
      * @param listener Listener
      * @param looper Looper
      * @param singleShot Request single update if true
+     * @param cancellationSignal Cancellation signal
      * @throws LoggerException Exception on all requested providers failure
      */
-    private void requestAllProvidersUpdates(@NonNull LocationListener listener, @Nullable Looper looper, boolean singleShot) throws LoggerException {
+    private void requestAllProvidersUpdates(@NonNull LocationListener listener, @Nullable Looper looper, 
+                                            boolean singleShot, CancellationSignal cancellationSignal) throws LoggerException {
         List<Integer> results = new ArrayList<>();
         for (String provider : userProviders) {
             try {
-                requestProviderUpdates(provider, listener, looper, singleShot);
+                requestProviderUpdates(provider, listener, looper, singleShot, cancellationSignal);
                 results.add(LoggerException.E_OK);
             } catch (LoggerException e) {
                 results.add(e.getCode());
@@ -165,10 +166,12 @@ class LocationHelper {
      * @param listener Listener
      * @param looper Looper
      * @param singleShot Request single update if true
+     * @param cancellationSignal Cancellation signal
      * @throws LoggerException Exception on permission denied or provider disabled
      */
     @SuppressWarnings({"deprecation", "RedundantSuppression"})
-    private void requestProviderUpdates(@NonNull String provider, @NonNull LocationListener listener, @Nullable Looper looper, boolean singleShot) throws LoggerException {
+    private void requestProviderUpdates(@NonNull String provider, @NonNull LocationListener listener, @Nullable Looper looper,
+                                        boolean singleShot, @Nullable CancellationSignal cancellationSignal) throws LoggerException {
         if (Logger.DEBUG) { Log.d(TAG, "[requestProviderUpdates: " + provider + " (" + singleShot + ")]"); }
         try {
             if (!singleShot) {
@@ -176,11 +179,12 @@ class LocationHelper {
                 locationManager.requestLocationUpdates(provider, minTimeMillis, minDistance, listener, looper);
             } else if (locationManager.isProviderEnabled(provider)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    locationManager.getCurrentLocation(provider, null, runnable -> {
-                        if (looper != null) {
-                            new Handler(looper).post(runnable);
+                    locationManager.getCurrentLocation(provider, cancellationSignal, context.getMainExecutor(), location -> {
+                        if (Logger.DEBUG) { Log.d(TAG, "[getCurrentLocation location: " + location + ", provider: " + provider + "]"); }
+                        if (location != null) {
+                            listener.onLocationChanged(location);
                         }
-                    }, listener::onLocationChanged);
+                    });
                 } else {
                     locationManager.requestSingleUpdate(provider, listener, looper);
                 }
