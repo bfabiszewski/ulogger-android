@@ -9,12 +9,18 @@
 
 package net.fabiszewski.ulogger;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -22,11 +28,32 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.TwoStatePreference;
 
-import static net.fabiszewski.ulogger.SettingsActivity.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static net.fabiszewski.ulogger.SettingsActivity.KEY_ALLOW_EXTERNAL;
+import static net.fabiszewski.ulogger.SettingsActivity.KEY_AUTO_NAME;
+import static net.fabiszewski.ulogger.SettingsActivity.KEY_AUTO_START;
+import static net.fabiszewski.ulogger.SettingsActivity.KEY_HOST;
+import static net.fabiszewski.ulogger.SettingsActivity.KEY_LIVE_SYNC;
+import static net.fabiszewski.ulogger.SettingsActivity.KEY_PASS;
+import static net.fabiszewski.ulogger.SettingsActivity.KEY_PROVIDER;
+import static net.fabiszewski.ulogger.SettingsActivity.KEY_USERNAME;
 
 @SuppressWarnings("WeakerAccess")
 public class SettingsFragment extends PreferenceFragmentCompat {
+
     private static final String TAG = SettingsFragment.class.getSimpleName();
+
+    private static final Map<String, Integer> PERMISSION_CODES;
+    static {
+        Map<String, Integer> map = new HashMap<>();
+        map.put(KEY_AUTO_START, 1);
+        map.put(KEY_ALLOW_EXTERNAL, 2);
+        PERMISSION_CODES = Collections.unmodifiableMap(map);
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -78,6 +105,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (prefHost != null) {
             prefHost.setOnPreferenceChangeListener(serverSetupChanged);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            final Preference prefAutoStart = findPreference(KEY_AUTO_START);
+            final Preference prefAllowExternal = findPreference(KEY_ALLOW_EXTERNAL);
+            if (prefAutoStart != null) {
+                prefAutoStart.setOnPreferenceChangeListener(permissionLevelChanged);
+            }
+            if (prefAllowExternal != null) {
+                prefAllowExternal.setOnPreferenceChangeListener(permissionLevelChanged);
+            }
+        }
         // on click listeners
         if (prefUsername != null) {
             prefUsername.setOnPreferenceClickListener(serverSetupClicked);
@@ -115,6 +152,21 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     };
 
     /**
+     * On change listener to check permission for background location
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private final Preference.OnPreferenceChangeListener permissionLevelChanged = (preference, newValue) -> {
+        final Context context = preference.getContext();
+        if (Boolean.parseBoolean(newValue.toString())) {
+            if (!hasBackgroundLocationPermission(context)) {
+                requestBackgroundLocationPermission(context, preference.getKey());
+                return false;
+            }
+        }
+        return true;
+    };
+
+    /**
      * On click listener to warn if server setup has changed
      */
     private final Preference.OnPreferenceClickListener serverSetupClicked = preference -> {
@@ -136,16 +188,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
      * Disable live sync preference, reset checkbox
      * @param context Context
      */
-    private void disableLiveSync(Context context) {
-        if (Logger.DEBUG) { Log.d(TAG, "[disabling live sync]"); }
+    private void disableLiveSync(@NonNull Context context) {
+        setBooleanPreference(context, KEY_LIVE_SYNC, false);
+    }
+
+    /**
+     * Enable preference, set checkbox
+     * @param context Context
+     */
+    private void setBooleanPreference(@NonNull Context context, @NonNull String key, boolean isSet) {
+        if (Logger.DEBUG) { Log.d(TAG, "[enabling " + key + "]"); }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(KEY_LIVE_SYNC, false);
+        editor.putBoolean(key, isSet);
         editor.apply();
 
-        final Preference prefLiveSync = findPreference(KEY_LIVE_SYNC);
-        if (prefLiveSync instanceof TwoStatePreference) {
-            ((TwoStatePreference) prefLiveSync).setChecked(false);
+        final Preference preference = findPreference(key);
+        if (preference instanceof TwoStatePreference) {
+            ((TwoStatePreference) preference).setChecked(isSet);
         }
     }
 
@@ -155,7 +215,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
      * @return boolean True if set
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isValidServerSetup(Context context) {
+    public static boolean isValidServerSetup(@NonNull Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final String host = prefs.getString(KEY_HOST, null);
         final String user = prefs.getString(KEY_USERNAME, null);
@@ -164,4 +224,94 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 && (user != null && !user.isEmpty())
                 && (pass != null && !pass.isEmpty()));
     }
+
+    /**
+     * Check whether user granted background location permission.
+     * Background location permission only needed on API 30+
+     * when application is started without user interaction
+     *
+     * @param context Context
+     * @return True if has permission, false otherwise
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private boolean hasBackgroundLocationPermission(@NonNull Context context) {
+        return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Check whether user granted location permission
+     * @param context Context
+     * @return True if has permission, false otherwise
+     */
+    private boolean hasForwardLocationPermission(@NonNull Context context) {
+        return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Request permission when given preference key changed
+     * @param context Context
+     * @param key Key
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void requestBackgroundLocationPermission(@NonNull Context context, @NonNull String key) {
+        String permission = Manifest.permission.ACCESS_BACKGROUND_LOCATION;
+        // Background location permission can only be granted when forward location is permitted
+        if (!hasForwardLocationPermission(context)) {
+            if (Logger.DEBUG) { Log.d(TAG, "[forward location permission denied]"); }
+            permission = Manifest.permission.ACCESS_FINE_LOCATION;
+        }
+        if (permission.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+            final CharSequence option = context.getPackageManager().getBackgroundPermissionOptionLabel();
+            Alert.showConfirm(
+                    context,
+                    getString(R.string.background_location_required),
+                    getString(R.string.background_location_rationale, option),
+                    (dialog, which) -> {
+                        dialog.dismiss();
+                        requestPermissions(new String[]{ Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSION_CODES.get(key));
+                    }
+            );
+        } else {
+            if (Logger.DEBUG) { Log.d(TAG, "[request permission " + permission + ", code " + PERMISSION_CODES.get(key) + "]"); }
+            requestPermissions(new String[]{ permission }, PERMISSION_CODES.get(key));
+        }
+    }
+
+    /**
+     * Callback for the result from requesting permissions.
+     * @param requestCode  The request code passed in requestPermissions()
+     * @param permissions  The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (Logger.DEBUG) { Log.d(TAG, "[onRequestPermissionsResult: " + requestCode + ", permissions: " + Arrays.toString(permissions) + "]"); }
+
+        if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            if (Logger.DEBUG) { Log.d(TAG, "[onRequestPermissionsResult: refused]"); }
+            return;
+        }
+
+        String preferenceKey = null;
+        for (Map.Entry<String, Integer> entry : PERMISSION_CODES.entrySet()) {
+            if (requestCode == entry.getValue()) {
+                preferenceKey = entry.getKey();
+                break;
+            }
+        }
+
+        Context context = getContext();
+
+        if (preferenceKey != null && context != null) {
+            if (Arrays.asList(permissions).contains(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                requestBackgroundLocationPermission(context, preferenceKey);
+            } else if (Arrays.asList(permissions).contains(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+                setBooleanPreference(context, preferenceKey, true);
+            }
+        }
+    }
+
 }

@@ -27,6 +27,8 @@
     <uses-feature android:name="android.hardware.location.network" />
     <!-- For attaching images to waypoints -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <!-- Only needed when started without user interaction (external command or auto-start) -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
