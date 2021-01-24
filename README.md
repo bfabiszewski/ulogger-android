@@ -50,6 +50,10 @@ led | tracking | synchronization
   - Tasker (joaomgcd) – System → Send intent. Fields `Action`, `Package`, `Class` as above and `Extra` field eg. `command:start logger`
 - command line: `am broadcast -a net.fabiszewski.ulogger.intent.action.COMMAND -e "command" "start logger" net.fabiszewski.ulogger net.fabiszewski.ulogger.ExternalCommandReceiver`
 
+## Location permissions
+Starting with Android 11, if you want to use the application without user interaction (automating, autostart on boot), it is necessary to grant application background location permission ("Allow all the time" option).
+In all other cases, when you start tracking from app screen, it is enough to grant "Allow only while using the app" option.
+
 ## App settings guidelines
 Finding the optimized settings for your practice can be a bit complex and may require you to do a lot of testing.
 As a first approach, here are some parameters that offer a good compromise between precision and the number of points acquired by your server.
