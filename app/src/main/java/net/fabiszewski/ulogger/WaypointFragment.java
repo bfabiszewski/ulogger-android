@@ -63,6 +63,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
 
     private static final String TAG = WaypointFragment.class.getSimpleName();
 
+    private TextView locationNotFoundTextView;
     private TextView locationTextView;
     private TextView locationDetailsTextView;
     private EditText commentEditText;
@@ -98,6 +99,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_waypoint, container, false);
 
+        locationNotFoundTextView = layout.findViewById(R.id.waypointLocationNotFound);
         locationTextView = layout.findViewById(R.id.waypointLocation);
         locationDetailsTextView = layout.findViewById(R.id.waypointLocationDetails);
         commentEditText = layout.findViewById(R.id.waypointComment);
@@ -164,8 +166,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         if (loggerTask == null || !loggerTask.isRunning()) {
             saveButton.setEnabled(false);
             location = null;
-            locationTextView.setText("");
-            locationDetailsTextView.setText("");
+            clearLocationText();
             loggerTask = new LoggerTask(this);
             executor.execute(loggerTask);
             setRefreshing(true);
@@ -234,8 +235,18 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      */
     private void setLocationText() {
         LocationFormatter formatter = new LocationFormatter(location);
+        locationNotFoundTextView.setVisibility(View.GONE);
         locationTextView.setText(String.format("%s\n—\n%s", formatter.getLongitudeDMS(), formatter.getLatitudeDMS()));
+        locationTextView.setVisibility(View.VISIBLE);
         locationDetailsTextView.setText(formatter.getDetails(requireContext()));
+    }
+
+
+    private void clearLocationText() {
+        locationNotFoundTextView.setVisibility(View.GONE);
+        locationTextView.setVisibility(View.VISIBLE);
+        locationTextView.setText("");
+        locationDetailsTextView.setText("");
     }
 
     /**
@@ -419,7 +430,8 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         if (imageTask == null || !imageTask.isRunning()) {
             setRefreshing(false);
         }
-        locationTextView.setText(getString(R.string.logger_task_failure));
+        locationTextView.setVisibility(View.GONE);
+        locationNotFoundTextView.setVisibility(View.VISIBLE);
         if ((reason & LoggerTask.E_PERMISSION) != 0) {
             showToast(getString(R.string.location_permission_denied));
             Activity activity = getActivity();

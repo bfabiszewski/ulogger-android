@@ -45,6 +45,19 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/waypointLocationNotFound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="@string/logger_task_failure"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:visibility="gone" />
+
+                <TextView
                     android:id="@+id/waypointLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
