@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dip">
+
+    <TextView
+        android:id="@+id/action_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:drawablePadding="15dp"
+        android:gravity="center_vertical"
+        android:text="@string/take_photo"
+        android:textSize="18sp"
+        android:clickable="true"
+        app:drawableStartCompat="@drawable/ic_baseline_photo_camera_24"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/action_library"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="15dp"
+        android:gravity="center_vertical"
+        android:text="@string/from_library"
+        android:textSize="18sp"
+        android:clickable="true"
+        app:drawableStartCompat="@drawable/ic_baseline_photo_library_24"
+        android:focusable="true" />
+
+</LinearLayout>

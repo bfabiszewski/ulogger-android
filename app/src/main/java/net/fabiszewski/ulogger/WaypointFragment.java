@@ -55,8 +55,6 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private static final int REQUEST_IMAGE_OPEN = 2;
     private static final int PERMISSION_WRITE = 1;
     private static final int PERMISSION_LOCATION = 2;
-    private static final int ACTION_PHOTO = 0;
-    private static final int ACTION_LIBRARY = 1;
     private static final String KEY_URI = "keyPhotoUri";
     private static final String KEY_THUMB = "keyPhotoThumb";
     private static final String KEY_LOCATION = "keyLocation";
@@ -375,19 +373,24 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private void addImage(View view) {
         clearImage();
         if (requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            final CharSequence[] items = new CharSequence[2];
-            items[ACTION_PHOTO] = getString(R.string.take_photo);
-            items[ACTION_LIBRARY] = getString(R.string.from_library);
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-            builder.setItems(items, (dialog, item) -> {
-                if (item == ACTION_PHOTO) {
-                    takePhoto();
-                } else if (item == ACTION_LIBRARY) {
-                    pickImage();
-                }
-            });
+            View dialogView = View.inflate(getContext(), R.layout.image_dialog, null);
+            builder.setView(dialogView);
             builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
-            builder.show();
+
+            TextView photoTextView = dialogView.findViewById(R.id.action_photo);
+            TextView libraryTextView = dialogView.findViewById(R.id.action_library);
+
+            final AlertDialog dialog = builder.create();
+            photoTextView.setOnClickListener(v -> {
+                takePhoto();
+                dialog.dismiss();
+            });
+            libraryTextView.setOnClickListener(v -> {
+                pickImage();
+                dialog.dismiss();
+            });
+            dialog.show();
         } else {
             pickImage();
         }
