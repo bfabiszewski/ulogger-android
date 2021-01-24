@@ -138,4 +138,7 @@
     <string name="tracking">Śledzenie</string>
     <string name="clear">Usuń trasę</string>
     <string name="share_link">Udostępnij link do trasy</string>
+    <string name="image_task_failed">Błąd konwersji obrazu</string>
+    <string name="background_location_rationale">Zgoda na lokalizację w tle jest wymagana jedynie wtedy, gdy śledzenie jest uruchamiane bez udziału użytkownika: poprzez komendę z innej aplikacji lub podczas automatycznego uruchamiania przy starcie systemu. Aby funkcjonalności te działały poprawnie należy wybrać opcję „%s” w dialogu dostępu do lokalizacji.\nCzy przejść do uprawnień aplikacji?</string>
+    <string name="background_location_required">Wymagana zgoda na lokalizację w tle</string>
 </resources>
