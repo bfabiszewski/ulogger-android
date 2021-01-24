@@ -13,6 +13,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,7 @@ import androidx.preference.TwoStatePreference;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static net.fabiszewski.ulogger.SettingsActivity.KEY_ALLOW_EXTERNAL;
@@ -234,6 +236,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
      * @return True if has permission, false otherwise
      */
     @RequiresApi(api = Build.VERSION_CODES.R)
+    @SuppressWarnings({"BooleanMethodIsAlwaysInverted", "RedundantSuppression"})
     private boolean hasBackgroundLocationPermission(@NonNull Context context) {
         return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
@@ -260,22 +263,50 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             if (Logger.DEBUG) { Log.d(TAG, "[forward location permission denied]"); }
             permission = Manifest.permission.ACCESS_FINE_LOCATION;
         }
-        if (permission.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION) &&
-                ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            final CharSequence option = context.getPackageManager().getBackgroundPermissionOptionLabel();
-            Alert.showConfirm(
-                    context,
-                    getString(R.string.background_location_required),
-                    getString(R.string.background_location_rationale, option),
-                    (dialog, which) -> {
-                        dialog.dismiss();
-                        requestPermissions(new String[]{ Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSION_CODES.get(key));
-                    }
-            );
-        } else {
-            if (Logger.DEBUG) { Log.d(TAG, "[request permission " + permission + ", code " + PERMISSION_CODES.get(key) + "]"); }
-            requestPermissions(new String[]{ permission }, PERMISSION_CODES.get(key));
+
+        Integer requestCode = PERMISSION_CODES.get(key);
+        if (requestCode != null) {
+            if (permission.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION) &&
+                    ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+                final CharSequence option = getBackgroundPermissionOptionLabel(context);
+                Alert.showConfirm(
+                        context,
+                        getString(R.string.background_location_required),
+                        getString(R.string.background_location_rationale, option),
+                        (dialog, which) -> {
+                            dialog.dismiss();
+                            requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, requestCode);
+                        }
+                );
+            } else {
+                if (Logger.DEBUG) {
+                    Log.d(TAG, "[request permission " + permission + ", code " + PERMISSION_CODES.get(key) + "]");
+                }
+                requestPermissions(new String[]{permission}, requestCode);
+            }
         }
+    }
+
+    /**
+     * Wrapper for getBackgroundPermissionOptionLabel() method
+     * Will return translated label only when context string was also translated
+     * @param context Context
+     * @return Localized label
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private CharSequence getBackgroundPermissionOptionLabel(Context context) {
+        CharSequence option = context.getPackageManager().getBackgroundPermissionOptionLabel();
+
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            return option;
+        }
+
+        CharSequence translated = context.getString(R.string.background_location_rationale);
+        Configuration config = new Configuration(context.getResources().getConfiguration());
+        config.setLocale(Locale.ENGLISH);
+        CharSequence defaultText = context.createConfigurationContext(config).getText(R.string.background_location_rationale);
+
+        return translated.equals(defaultText) ? "Allow all the time" : option;
     }
 
     /**
