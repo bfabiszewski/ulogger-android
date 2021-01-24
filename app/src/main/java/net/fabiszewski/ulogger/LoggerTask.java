@@ -61,6 +61,7 @@ class LoggerTask implements LocationListener, Runnable {
     public void run() {
         if (Logger.DEBUG) { Log.d(TAG, "[task run]"); }
         isRunning = true;
+        locationHelper.updatePreferences();
         Location location = doInBackground();
         if (!isCancelled) {
             uiHandler.post(() -> onPostExecute(location));
