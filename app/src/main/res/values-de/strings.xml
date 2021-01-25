@@ -32,7 +32,7 @@
     <string name="pref_mindistance_title">Mindeste Entfernung</string>
     <string name="pref_mindistance_summary">Mindeste Entfernung zwischen Positionen</string>
     <string name="pref_minaccuracy_title">Mindeste Genauigkeit</string>
-    <string name="pref_minaccuracy_summary">Mindeste Genauigkeit zwischen Positionen</string>
+    <string name="pref_minaccuracy_summary">Mindeste Genauigkeit der Positionen</string>
     <string name="pref_imagesize_title">Bildgröße</string>
     <string name="pref_imagesize_summary">Maximale Breite/Höhe des hochgeladenen Bildes in Pixeln. Ein evtl verkeinertes Bild wird vorübergehend im App-Ordner gespeichert. Wenn du \"tatsächliche Größe\" wählst, wird keine Kopie angelegt und die Originaldatei muss während des Uploads verfügbar sein.</string>
     <string name="pref_livesync_title">Live-Synchronisation</string>
@@ -59,7 +59,7 @@
     <string name="nothing_to_synchronize">Keine Daten zum Synchronisieren</string>
     <string name="no_positions">Aktueller Track hat keine Positionen</string>
     <string name="warning">Achtung</string>
-    <string name="notsync_warning">Aktuelle Track beinhalten noch nicht synchronisierte Positionen. Diese werden gelöscht bei Erstellung eines neuen Tracks.</string>
+    <string name="notsync_warning">Aktueller Track beinhaltet noch nicht synchronisierte Positionen. Diese werden gelöscht bei Erstellung eines neuen Tracks.</string>
     <string name="no_track_warning">Bitte erstelle zuerst einen neuen Track</string>
     <string name="empty_trackname_warning">Track Name kann nicht leer sein</string>
     <string name="logger_running_warning">Bitte stoppe den aktuellen Track zuerst</string>
@@ -115,7 +115,7 @@
     <string name="pref_cat_location">Positionsverfolgung</string>
     <string name="pref_cat_server">Server</string>
     <string name="pref_cat_other">Andere</string>
-    <string name="illegal_template_warning">Mustername hat aus ungültige Zeichen</string>
+    <string name="illegal_template_warning">Track Namen Vorlage enthält ungültige Zeichen</string>
     <string name="cannot_open_picker">Der Dateiauswahldialog kann nicht geöffnet werden</string>
     <string name="e_open_out_stream">Export fehlgeschlagen</string>
     <string name="provider_gps">GPS</string>

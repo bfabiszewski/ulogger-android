@@ -17,7 +17,7 @@
         <item>15 Minuten</item>
         <item>30 Minuten</item>
         <item>1 Stunde</item>
-        <item>sonstiges</item>
+        <item>benutzerdefiniert</item>
     </string-array>
 
     <string-array name="minDistanceEntries">
@@ -28,7 +28,7 @@
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
-        <item>sonstiges</item>
+        <item>benutzerdefiniert</item>
     </string-array>
 
     <string-array name="minAccuracyEntries">
@@ -40,7 +40,7 @@
         <item>500 m</item>
         <item>1 km</item>
         <item>5 km</item>
-        <item>other</item>
+        <item>benutzerdefiniert</item>
     </string-array>
 
     <string-array name="imageSizeEntries">
@@ -49,7 +49,7 @@
         <item>1080 Pixel</item>
         <item>1280 Pixel</item>
         <item>1920 Pixel</item>
-        <item>sonstige</item>
+        <item>benutzerdefiniert</item>
     </string-array>
 
     </resources>
