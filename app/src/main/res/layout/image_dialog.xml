@@ -25,7 +25,7 @@
         android:text="@string/take_photo"
         android:textSize="18sp"
         android:clickable="true"
-        app:drawableStartCompat="@drawable/ic_baseline_photo_camera_24"
+        app:drawableStartCompat="@drawable/ic_baseline_photo_camera_48dp"
         android:focusable="true" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:text="@string/from_library"
         android:textSize="18sp"
         android:clickable="true"
-        app:drawableStartCompat="@drawable/ic_baseline_photo_library_24"
+        app:drawableStartCompat="@drawable/ic_baseline_photo_library_48dp"
         android:focusable="true" />
 
 </LinearLayout>
