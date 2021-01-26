@@ -60,6 +60,7 @@
     <string name="no_positions">Aktueller Track hat keine Positionen</string>
     <string name="warning">Achtung</string>
     <string name="notsync_warning">Aktueller Track beinhaltet noch nicht synchronisierte Positionen. Diese werden gelöscht bei Erstellung eines neuen Tracks.</string>
+    <string name="clear_warning">Sicher, daß der aktuelle Track mit enthaltenen Daten vom Gerät gelöscht werden soll? Es werden keine Daten vom Server gelöscht. </string>
     <string name="no_track_warning">Bitte erstelle zuerst einen neuen Track</string>
     <string name="empty_trackname_warning">Track Name kann nicht leer sein</string>
     <string name="logger_running_warning">Bitte stoppe den aktuellen Track zuerst</string>
@@ -121,6 +122,7 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Netzwerk</string>
     <string name="provider_gps_network">Netzwerk und GPS</string>
+    <string name="logger_task_failure">Standortermittlung fehlgeschlagen</string>
     <string name="take_photo">Foto aufnehmen</string>
     <string name="from_library">Aus Sammlung wählen</string>
     <string name="accuracy_meters">%d m Genauigkeit</string>
@@ -130,4 +132,9 @@
     <string name="label_add_photo">Foto hinzufügen</string>
     <string name="button_save">Speichern</string>
     <string name="tracking">Tracking</string>
-    </resources>
+    <string name="clear">Track leeren</string>
+    <string name="share_link">Track Link teilen</string>
+    <string name="image_task_failed">Resampling des Fotos fehlgeschlagen</string>
+    <string name="background_location_rationale">Die Berechtigung zum Standort-Zugriff im Hintergrund wird nur benötigt, wenn die Trackaufzeichnung ohne Benutzerinterkation gestartet wird: durch einen externen Aufruf oder wenn die Anwendung beim Booten automatisch gestartet wird. Für diese Funktionalität mußt Du im Standort-Berechtigungsdialog \"%s\" auswählen.\nWeiter zu den Berechtigungseinstellungen?</string>
+    <string name="background_location_required">Berechtigung für Standort-Zugriff im Hintergrund benötigt</string>
+</resources>
