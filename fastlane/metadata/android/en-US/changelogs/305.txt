@@ -1,0 +1,9 @@
+3.5: μlogger
+
+Changes:
+- Support for Android 11
+- Improved location permission handling
+- Improved "Add image" dialog
+
+Translations:
+- Updated German (Carelinus) and Polish (Valdnet) translations

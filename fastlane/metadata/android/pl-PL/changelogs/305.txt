@@ -1,0 +1,9 @@
+3.5: μlogger
+
+Zmiany:
+- Wsparcie dla Androida 11
+- Ulepszony mechanizm udzielania zgody na lokalizację
+- Usprawnione okno dialogowe dodawania obrazów
+
+Tłumaczenia:
+- Zaktualizowane tłumaczenia niemieckie (Carolinus) i polskie (Valdnet)
