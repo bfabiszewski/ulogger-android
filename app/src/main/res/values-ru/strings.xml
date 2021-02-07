@@ -33,6 +33,8 @@
     <string name="pref_mindistance_summary">Минимальное расстояние между обновлениями геопозиции</string>
     <string name="pref_minaccuracy_title">Минимальная точность</string>
     <string name="pref_minaccuracy_summary">Минимальная точность позиционирования</string>
+    <string name="pref_imagesize_title">Размер изображения</string>
+    <string name="pref_imagesize_summary">Максимальная ширина/высота загружаемых изображений в пикселях. В случае понижающей дискретизации копия изображения с измененным размером будет временно сохранена в папке приложения перед загрузкой. Если вы выберете опцию «Фактический размер», копии не будут созданы, поэтому исходные файлы должны быть доступны во время загрузки.</string>
     <string name="pref_livesync_title">Синхронизация в реальном времени</string>
     <string name="pref_livesync_summary">Для синхронизация с сервером в реальном времени необходимо указать действительное имя пользователя, пароль и гиперссылку на сервер.</string>
     <string name="pref_autostart_title">Автоматический старт</string>
@@ -58,6 +60,7 @@
     <string name="no_positions">Текущий трек не содержит данных</string>
     <string name="warning">Предупреждение</string>
     <string name="notsync_warning">Текущий трек содержит не синхронизированные данные. Запуск нового трека приведет к потере этих данных.</string>
+    <string name="clear_warning">Вы действительно хотите удалить текущий трек и все его данные с устройства? Это не приведёт к удалению данных с сервера.</string>
     <string name="no_track_warning">Пожалуйста, сначала настройте новый трек</string>
     <string name="empty_trackname_warning">Имя трека не может быть пустым</string>
     <string name="logger_running_warning">Пожалуйста, сначала остановите текущий трек</string>
@@ -96,6 +99,7 @@
     <string name="using_network">Использование сети</string>
     <string name="using_gps">Использование спутников gps</string>
     <string name="export">Экспортировать в GPX файл</string>
+    <string name="waypoint">Точка</string>
     <string name="nothing_to_export">Нечего экспортировать</string>
     <string name="export_done">Трек успешно сохранён</string>
     <string name="export_failed">Ошибка экспортирования</string>
@@ -111,6 +115,7 @@
     <string name="pref_mintime_other">Минимальное интервал в секундах</string>
     <string name="pref_mindistance_other">Минимальная дистанция в метрах</string>
     <string name="pref_minaccuracy_other">Минимальная точность в метрах</string>
+    <string name="pref_imagesize_other">Максимальная ширина/высота изображения в пикселях</string>
     <string name="unit_nmile">nm</string>
     <string name="pref_cat_location">Запись</string>
     <string name="pref_cat_server">Сервер</string>
@@ -121,4 +126,19 @@
     <string name="provider_gps">Спутники GPS</string>
     <string name="provider_network">Геопозиционирование по сети</string>
     <string name="provider_gps_network">Геопозиционирование по сети и по спутникам GPS</string>
-    </resources>
+    <string name="logger_task_failure">Не удалось определить местоположение</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="from_library">Выбрать из коллекции</string>
+    <string name="accuracy_meters">точность %d м</string>
+    <string name="meters_asl">%s м</string>
+    <string name="label_position">Координаты</string>
+    <string name="label_waypoint_description">Описание путевой точки</string>
+    <string name="label_add_photo">Добавить фото</string>
+    <string name="button_save">Сохранить</string>
+    <string name="tracking">Запись</string>
+    <string name="clear">Удалить трек</string>
+    <string name="share_link">Поделиться ссылкой на трек</string>
+    <string name="image_task_failed">Ошибка передискретизации изображения</string>
+    <string name="background_location_rationale">Разрешение на определение местоположения в фоновом режиме требуется только тогда, когда отслеживание запускается без взаимодействия с пользователем: с помощью внешней команды или когда приложение автоматически запускается при загрузке системы.\nЧтобы эта функция работала, вы должны выбрать опцию «%s» в диалоговом окне разрешения местоположения.\nПерейти к разрешениям приложения? </string>
+    <string name="background_location_required">Требуется разрешение на определение местоположения в фоновом режиме</string>
+</resources>

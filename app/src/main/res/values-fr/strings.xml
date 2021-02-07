@@ -134,4 +134,7 @@
     <string name="tracking">Enregistrement</string>
     <string name="clear">RAZ de la trace</string>
     <string name="share_link">Partager le lien de la trace</string>
+    <string name="image_task_failed">Le redimensionnement des images a échoué</string>
+    <string name="background_location_rationale">L\'autorisation de la localisation en arrière-plan est nécessaire lors d\'un enregistrement sans interaction utilisateur : quand l\'application est automatiquement lancée au démarrage du système ou démarrée par une commande externe.\nPour que la localisation fonctionne, vous devez sélectionner l\'option \"%s\" qui vous sera proposée.\nAller vers les autorisations accordées à l\'application ?</string>
+    <string name="background_location_required">Autorisation de localisation en arrière-plan requise</string>
 </resources>
