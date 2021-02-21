@@ -212,14 +212,15 @@ class WebHelper {
                 connection.setFixedLengthStreamingMode(contentLength);
 
                 out = new BufferedOutputStream(connection.getOutputStream());
+                byte[] bytes = data;
                 if (isMultipart) {
-                    out.write(data);
+                    out.write(bytes);
                     writeMultipartFile(out, uri);
                     out.write(delimiter, 0, delimiter.length - 2);
                     String end = DASH + CRLF;
-                    data = end.getBytes(StandardCharsets.UTF_8);
+                    bytes = end.getBytes(StandardCharsets.UTF_8);
                 }
-                out.write(data);
+                out.write(bytes);
                 out.flush();
 
                 int responseCode = connection.getResponseCode();
