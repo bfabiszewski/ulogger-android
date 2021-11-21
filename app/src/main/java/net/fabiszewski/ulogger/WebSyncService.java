@@ -9,6 +9,8 @@
 
 package net.fabiszewski.ulogger;
 
+import static android.app.PendingIntent.FLAG_ONE_SHOT;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,8 +32,6 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.app.PendingIntent.FLAG_ONE_SHOT;
 
 /**
  * Service synchronizing local database positions with remote server.
@@ -142,7 +142,7 @@ public class WebSyncService extends JobIntentService {
         // iterate over positions in db
         try (Cursor cursor = db.getUnsynced()) {
             while (cursor.moveToNext()) {
-                int rowId = cursor.getInt(cursor.getColumnIndex(DbContract.Positions._ID));
+                int rowId = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Positions._ID));
                 Map<String, String> params = cursorToMap(cursor);
                 params.put(WebHelper.PARAM_TRACKID, String.valueOf(trackId));
                 web.postPosition(params);
