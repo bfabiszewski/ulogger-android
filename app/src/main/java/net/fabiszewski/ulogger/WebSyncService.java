@@ -9,17 +9,27 @@
 
 package net.fabiszewski.ulogger;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
+import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 
@@ -34,65 +44,98 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Service synchronizing local database positions with remote server.
- *
+ * Service synchronizing local database positions with remote server
  */
-
-public class WebSyncService extends JobIntentService {
+public class WebSyncService extends Service {
 
     private static final String TAG = WebSyncService.class.getSimpleName();
     public static final String BROADCAST_SYNC_FAILED = "net.fabiszewski.ulogger.broadcast.sync_failed";
     public static final String BROADCAST_SYNC_DONE = "net.fabiszewski.ulogger.broadcast.sync_done";
 
+    private HandlerThread thread;
+    private ServiceHandler serviceHandler;
     private DbAccess db;
     private WebHelper web;
     private static PendingIntent pi = null;
 
     final private static int FIVE_MINUTES = 1000 * 60 * 5;
 
-    static final int JOB_ID = 1001;
+    private NotificationHelper notificationHelper;
 
     /**
-     * Convenience method for enqueuing work in to this service.
+     * Basic initializations
+     * Start looper to process uploads
      */
-    static void enqueueWork(Context context, Intent work) {
-        enqueueWork(context, WebSyncService.class, JOB_ID, work);
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
         if (Logger.DEBUG) { Log.d(TAG, "[websync create]"); }
 
         web = new WebHelper(this);
+        notificationHelper = new NotificationHelper(this);
+
+        thread = new HandlerThread("WebSyncThread", THREAD_PRIORITY_BACKGROUND);
+        thread.start();
+        Looper looper = thread.getLooper();
+        serviceHandler = new ServiceHandler(looper);
+
+        // keep database open during whole service runtime
         db = DbAccess.getInstance();
         db.open(this);
     }
 
     /**
-     * Handle synchronization intent
+     * Handler to do synchronization on background thread
+     */
+    private final class ServiceHandler extends Handler {
+        public ServiceHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            cancelPending();
+
+            if (!WebHelper.isAuthorized) {
+                try {
+                    web.authorize();
+                } catch (WebAuthException|IOException|JSONException e) {
+                    handleError(e);
+                    stopSelf(msg.arg1);
+                    return;
+                }
+            }
+
+            // get track id
+            int trackId = getTrackId();
+            if (trackId > 0) {
+                doSync(trackId);
+            }
+
+            stopSelf(msg.arg1);
+        }
+    }
+
+    /**
+     * Start foreground service
+     *
      * @param intent Intent
+     * @param flags Flags
+     * @param startId Unique id
+     * @return Always returns START_STICKY
      */
     @Override
-    protected void onHandleWork(@NonNull Intent intent) {
+    public int onStartCommand(@NonNull Intent intent, int flags, int startId) {
         if (Logger.DEBUG) { Log.d(TAG, "[websync start]"); }
 
-        cancelPending();
+        final Notification notification = notificationHelper.showNotification();
+        startForeground(notificationHelper.getId(), notification);
 
-        if (!WebHelper.isAuthorized) {
-            try {
-                web.authorize();
-            } catch (WebAuthException|IOException|JSONException e) {
-                handleError(e);
-                return;
-            }
-        }
+        Message msg = serviceHandler.obtainMessage();
+        msg.arg1 = startId;
+        serviceHandler.sendMessage(msg);
 
-        // get track id
-        int trackId = getTrackId();
-        if (trackId > 0) {
-            doSync(trackId);
-        }
+        return START_STICKY;
     }
 
     /**
@@ -212,7 +255,11 @@ public class WebSyncService extends JobIntentService {
         if (Logger.DEBUG) { Log.d(TAG, "[websync set alarm]"); }
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
-        pi = PendingIntent.getService(this, 0, syncIntent, FLAG_ONE_SHOT);
+        int flags = FLAG_ONE_SHOT;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags |= FLAG_IMMUTABLE;
+        }
+        pi = PendingIntent.getService(this, 0, syncIntent, flags);
         if (am != null) {
             am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + FIVE_MINUTES, pi);
         }
@@ -284,7 +331,19 @@ public class WebSyncService extends JobIntentService {
         if (db != null) {
             db.close();
         }
-        super.onDestroy();
+        notificationHelper.cancelNotification();
+
+        if (thread != null) {
+            thread.interrupt();
+            thread = null;
+        }
+    }
+
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
 }

@@ -9,18 +9,17 @@
 
 package net.fabiszewski.ulogger;
 
+import static net.fabiszewski.ulogger.LoggerTask.E_DISABLED;
+import static net.fabiszewski.ulogger.LoggerTask.E_PERMISSION;
+import static net.fabiszewski.ulogger.MainActivity.UPDATED_PREFS;
+
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -28,14 +27,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
 import androidx.preference.PreferenceManager;
-
-import static net.fabiszewski.ulogger.LoggerTask.E_DISABLED;
-import static net.fabiszewski.ulogger.LoggerTask.E_PERMISSION;
-import static net.fabiszewski.ulogger.MainActivity.UPDATED_PREFS;
 
 /**
  * Background service logging positions to database
@@ -66,8 +58,7 @@ public class LoggerService extends Service {
 
     private static Location lastLocation = null;
 
-    private final int NOTIFICATION_ID = 1526756640;
-    private NotificationManager notificationManager;
+    private NotificationHelper notificationHelper;
 
     /**
      * Basic initializations
@@ -77,13 +68,9 @@ public class LoggerService extends Service {
     public void onCreate() {
         if (Logger.DEBUG) { Log.d(TAG, "[onCreate]"); }
 
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            notificationManager.cancelAll();
-        }
-
         locationHelper = LocationHelper.getInstance(this);
         locationListener = new mLocationListener();
+        notificationHelper = new NotificationHelper(this);
 
         thread = new HandlerThread("LoggerThread");
         thread.start();
@@ -110,7 +97,7 @@ public class LoggerService extends Service {
             syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
 
             if (locationHelper.isLiveSync() && DbAccess.needsSync(this)) {
-                WebSyncService.enqueueWork(getApplicationContext(), syncIntent);
+                getApplicationContext().startService(syncIntent);
             }
             return true;
         } catch (LocationHelper.LoggerException e) {
@@ -139,8 +126,8 @@ public class LoggerService extends Service {
         if (intent != null && intent.getBooleanExtra(UPDATED_PREFS, false)) {
             handlePrefsUpdated();
         } else {
-            final Notification notification = showNotification(NOTIFICATION_ID);
-            startForeground(NOTIFICATION_ID, notification);
+            final Notification notification = notificationHelper.showNotification();
+            startForeground(notificationHelper.getId(), notification);
             if (!initializeLocationUpdates()) {
                 setRunning(false);
                 stopSelf();
@@ -191,7 +178,7 @@ public class LoggerService extends Service {
 
         setRunning(false);
 
-        notificationManager.cancel(NOTIFICATION_ID);
+        notificationHelper.cancelNotification();
         sendBroadcast(BROADCAST_LOCATION_STOPPED);
 
         if (thread != null) {
@@ -246,47 +233,6 @@ public class LoggerService extends Service {
     }
 
     /**
-     * Show notification
-     * @param mId Notification Id
-     */
-    @SuppressWarnings("SameParameterValue")
-    private Notification showNotification(int mId) {
-        if (Logger.DEBUG) { Log.d(TAG, "[showNotification " + mId + "]"); }
-
-        final String channelId = String.valueOf(mId);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(channelId);
-        }
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_stat_notify_24dp)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                        .setContentText(String.format(getString(R.string.is_running), getString(R.string.app_name)));
-        Intent resultIntent = new Intent(this, MainActivity.class);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setContentIntent(resultPendingIntent);
-        Notification mNotification = mBuilder.build();
-        notificationManager.notify(mId, mNotification);
-        return mNotification;
-    }
-
-    /**
-     * Create notification channel
-     * @param channelId Channel Id
-     */
-    @RequiresApi(Build.VERSION_CODES.O)
-    private void createNotificationChannel(String channelId) {
-        NotificationChannel chan = new NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
-        notificationManager.createNotificationChannel(chan);
-    }
-
-    /**
      * Send broadcast message
      * @param broadcast Broadcast message
      */
@@ -315,7 +261,7 @@ public class LoggerService extends Service {
                 DbAccess.writeLocation(LoggerService.this, location);
                 sendBroadcast(BROADCAST_LOCATION_UPDATED);
                 if (locationHelper.isLiveSync()) {
-                    WebSyncService.enqueueWork(getApplicationContext(), syncIntent);
+                    getApplicationContext().startService(syncIntent);
                 }
             }
         }

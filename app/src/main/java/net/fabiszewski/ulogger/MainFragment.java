@@ -9,6 +9,9 @@
 
 package net.fabiszewski.ulogger;
 
+import static net.fabiszewski.ulogger.Alert.showAlert;
+import static net.fabiszewski.ulogger.Alert.showConfirm;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -48,9 +51,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import static net.fabiszewski.ulogger.Alert.showAlert;
-import static net.fabiszewski.ulogger.Alert.showConfirm;
 
 @SuppressWarnings("WeakerAccess")
 public class MainFragment extends Fragment {
@@ -297,7 +297,7 @@ public class MainFragment extends Fragment {
             showToast(getString(R.string.provide_user_pass_url));
         } else if (DbAccess.needsSync(context)) {
             Intent syncIntent = new Intent(context, WebSyncService.class);
-            WebSyncService.enqueueWork(context, syncIntent);
+            context.startService(syncIntent);
             showToast(getString(R.string.uploading_started));
             isUploading = true;
         } else {
