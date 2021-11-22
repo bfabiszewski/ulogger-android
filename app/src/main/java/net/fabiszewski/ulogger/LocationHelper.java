@@ -48,9 +48,7 @@ class LocationHelper {
     private int maxAccuracy;
     private float minDistance;
     private long minTimeMillis;
-    // max time tolerance is half min time, but not more that 5 min
-    final private long minTimeTolerance = Math.min(minTimeMillis / 2, 5 * 60 * 1000);
-    final private long maxTimeMillis = minTimeMillis + minTimeTolerance;
+    private long maxTimeMillis;
     private final List<String> userProviders = new ArrayList<>();
 
 
@@ -81,6 +79,9 @@ class LocationHelper {
         if (Logger.DEBUG) { Log.d(TAG, "[updatePreferences]"); }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         minTimeMillis = Long.parseLong(prefs.getString(SettingsActivity.KEY_MIN_TIME, context.getString(R.string.pref_mintime_default))) * 1000;
+        // max time tolerance is half min time, but not more that 5 min
+        long minTimeTolerance = Math.min(minTimeMillis / 2, 5 * 60 * 1000);
+        maxTimeMillis = minTimeMillis + minTimeTolerance;
         minDistance = Float.parseFloat(prefs.getString(SettingsActivity.KEY_MIN_DISTANCE, context.getString(R.string.pref_mindistance_default)));
         maxAccuracy = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_ACCURACY, context.getString(R.string.pref_minaccuracy_default)));
         userProviders.clear();
