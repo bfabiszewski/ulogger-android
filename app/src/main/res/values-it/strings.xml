@@ -134,4 +134,7 @@
     <string name="tracking">Tracciamento</string>
     <string name="clear">Resetta traccia</string>
     <string name="share_link">Condividi link della traccia</string>
+    <string name="image_task_failed">Ridimensionamento dell\'immagine fallito</string>
+    <string name="background_location_rationale">I permessi di localizzazione in background sono necessari solamente quando il tracciamento inizia senza l\'interazione dell\'utente: attraverso un comando esterno oppure quando un\'applicazione è automaticamente avviata all\'accensione del dispositivo.\nPer avviare questa funzionalità va scelta l\'opzione \"%s\" nella finestra di dialogo dei permessi di localizzazione.\nProcedere ai permessi dell\'applicazione?</string>
+    <string name="background_location_required">Sono necessari i permessi di localizzazione in background</string>
 </resources>
