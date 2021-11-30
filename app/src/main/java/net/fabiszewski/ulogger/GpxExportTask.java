@@ -9,31 +9,33 @@
 
 package net.fabiszewski.ulogger;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Xml;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
+import androidx.annotation.WorkerThread;
 
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 
 /**
  * Export track to GPX format
  */
-public class GpxExportService extends JobIntentService {
+public class GpxExportTask implements Runnable {
 
-    private static final String TAG = GpxExportService.class.getSimpleName();
-
-    public static final String BROADCAST_EXPORT_FAILED = "net.fabiszewski.ulogger.broadcast.write_failed";
-    public static final String BROADCAST_EXPORT_DONE = "net.fabiszewski.ulogger.broadcast.write_ok";
+    private static final String TAG = GpxExportTask.class.getSimpleName();
 
     private static final String ns_gpx = "http://www.topografix.com/GPX/1/1";
     private static final String ns_ulogger = "https://github.com/bfabiszewski/ulogger-android/1";
@@ -46,48 +48,84 @@ public class GpxExportService extends JobIntentService {
 
     private DbAccess db;
 
-    static final int JOB_ID = 1000;
+    private final WeakReference<GpxExportTaskCallback> weakCallback;
+
+    private String errorMessage = "";
+    private final Uri uri;
+
+    private boolean isRunning = false;
+
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
     /**
-     * Convenience method for enqueuing work in to this service.
+     * @param uri URI to exported file
+     * @param callback Callback activity
      */
-    static void enqueueWork(Context context, Intent work) {
-        enqueueWork(context, GpxExportService.class, JOB_ID, work);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        if (Logger.DEBUG) { Log.d(TAG, "[gpx export create]"); }
-
-        db = DbAccess.getOpenInstance(this);
+    GpxExportTask(@NonNull Uri uri, @NonNull GpxExportTaskCallback callback) {
+        this.uri = uri;
+        weakCallback = new WeakReference<>(callback);
     }
 
     /**
-     * Cleanup
+     * Runnable actions
      */
     @Override
-    public void onDestroy() {
-        if (Logger.DEBUG) { Log.d(TAG, "[gpx export stop]"); }
-        if (db != null) {
-            db.close();
+    public void run() {
+        isRunning = true;
+        boolean result = doInBackground();
+        uiHandler.post(() -> onPostExecute(result));
+        isRunning = false;
+    }
+
+    /**
+     * Check whether task is running
+     * @return True if running
+     */
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    /**
+     * Actions to run on worker thread
+     * @return True on success
+     */
+    @WorkerThread
+    private boolean doInBackground() {
+        if (Logger.DEBUG) { Log.d(TAG, "[doInBackground]"); }
+        try {
+            Activity activity = getActivity();
+            if (activity == null) {
+                return false;
+            }
+            Context context = activity.getApplicationContext();
+            if (Logger.DEBUG) { Log.d(TAG, "[gpx export start]"); }
+            db = DbAccess.getOpenInstance(context);
+            write(context, this.uri);
+            if (Logger.DEBUG) { Log.d(TAG, "[gpx export stop]"); }
+            if (db != null) {
+                db.close();
+            }
+        } catch (IOException e) {
+            if (e.getMessage() != null) {
+                errorMessage = e.getMessage();
+            }
+            return false;
         }
-        super.onDestroy();
+        return true;
     }
 
     /**
-     * Handle intent
-     *
-     * @param intent Intent
+     * Post execution actions
+     * @param isSuccess Result of task, true if successful
      */
-    @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-        if (intent.getData() != null) {
-            try {
-                write(intent.getData());
-                sendBroadcast(BROADCAST_EXPORT_DONE, null);
-            } catch (IOException e) {
-                sendBroadcast(BROADCAST_EXPORT_FAILED, e.getMessage());
+    @UiThread
+    private void onPostExecute(boolean isSuccess) {
+        GpxExportTaskCallback callback = weakCallback.get();
+        if (callback != null && callback.getActivity() != null) {
+            if (isSuccess) {
+                callback.onGpxExportTaskCompleted();
+            } else {
+                callback.onGpxExportTaskFailure(errorMessage);
             }
         }
     }
@@ -97,13 +135,13 @@ public class GpxExportService extends JobIntentService {
      * @param uri Target URI
      * @throws IOException Exception
      */
-    private void write(@NonNull Uri uri) throws IOException {
-        OutputStream stream = getContentResolver().openOutputStream(uri);
+    private void write(@NonNull Context context, @NonNull Uri uri) throws IOException {
+        OutputStream stream = context.getContentResolver().openOutputStream(uri);
         if (stream == null) {
-            throw new IOException(getString(R.string.e_open_out_stream));
+            throw new IOException(context.getString(R.string.e_open_out_stream));
         }
         try (BufferedOutputStream bufferedStream = new BufferedOutputStream(stream)) {
-            serialize(bufferedStream);
+            serialize(context, bufferedStream);
             if (Logger.DEBUG) { Log.d(TAG, "[export gpx file written to " + uri); }
         } catch (IOException|IllegalArgumentException|IllegalStateException e) {
             if (Logger.DEBUG) { Log.d(TAG, "[export gpx write exception: " + e + "]"); }
@@ -116,7 +154,7 @@ public class GpxExportService extends JobIntentService {
      * @param stream Output stream
      * @throws IOException Exception
      */
-    private void serialize(@NonNull OutputStream stream) throws IOException {
+    private void serialize(@NonNull Context context, @NonNull OutputStream stream) throws IOException {
         XmlSerializer serializer = Xml.newSerializer();
         serializer.setOutput(stream, "UTF-8");
 
@@ -129,13 +167,13 @@ public class GpxExportService extends JobIntentService {
         serializer.attribute(null, "xmlns", ns_gpx);
         serializer.attribute(ns_xsi, "schemaLocation", schemaLocation);
         serializer.attribute(null, "version", "1.1");
-        String creator = getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME;
+        String creator = context.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME;
         serializer.attribute(null, "creator", creator);
 
         // metadata
         String trackName = db.getTrackName();
         if (trackName == null) {
-            trackName = getString(R.string.unknown_track);
+            trackName = context.getString(R.string.unknown_track);
         }
         long trackTimestamp = db.getFirstTimestamp();
         String trackTime = DbAccess.getTimeISO8601(trackTimestamp);
@@ -237,16 +275,25 @@ public class GpxExportService extends JobIntentService {
     }
 
     /**
-     * Send broadcast message
-     * @param broadcast Broadcast intent
-     * @param message Optional extra message
+     * Get activity from callback
+     * @return Activity, null if not available
      */
-    private void sendBroadcast(String broadcast, String message) {
-        Intent intent = new Intent(broadcast);
-        if (message != null) {
-            intent.putExtra("message", message);
+    @Nullable
+    private Activity getActivity() {
+        GpxExportTaskCallback callback = weakCallback.get();
+        if (callback != null) {
+            return callback.getActivity();
         }
-        sendBroadcast(intent);
+        return null;
+    }
+
+    /**
+     * Callback interface
+     */
+    interface GpxExportTaskCallback {
+        void onGpxExportTaskCompleted();
+        void onGpxExportTaskFailure(@NonNull String error);
+        Activity getActivity();
     }
 
 }

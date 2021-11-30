@@ -9,11 +9,18 @@
 
 package net.fabiszewski.ulogger;
 
+import static net.fabiszewski.ulogger.Alert.showAlert;
+import static net.fabiszewski.ulogger.Alert.showConfirm;
+import static net.fabiszewski.ulogger.GpxExportTask.GPX_EXTENSION;
+import static net.fabiszewski.ulogger.GpxExportTask.GPX_MIME;
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -32,10 +39,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
-import static net.fabiszewski.ulogger.Alert.showAlert;
-import static net.fabiszewski.ulogger.Alert.showConfirm;
-import static net.fabiszewski.ulogger.GpxExportService.GPX_EXTENSION;
-import static net.fabiszewski.ulogger.GpxExportService.GPX_MIME;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Main activity of ulogger
@@ -43,10 +47,10 @@ import static net.fabiszewski.ulogger.GpxExportService.GPX_MIME;
  */
 
 public class MainActivity extends AppCompatActivity
-        implements FragmentManager.OnBackStackChangedListener, MainFragment.OnFragmentInteractionListener {
+        implements FragmentManager.OnBackStackChangedListener, MainFragment.OnFragmentInteractionListener,
+        GpxExportTask.GpxExportTaskCallback {
 
     private final String TAG = MainActivity.class.getSimpleName();
-
 
     private final static int RESULT_PREFS_UPDATED = 1;
     private final static int RESULT_GPX_EXPORT = 2;
@@ -56,6 +60,8 @@ public class MainActivity extends AppCompatActivity
     public String preferenceUnits;
     public long preferenceMinTimeMillis;
     public boolean preferenceLiveSync;
+    private GpxExportTask gpxExportTask;
+    private final ExecutorService executor = newCachedThreadPool();
 
     private DbAccess db;
 
@@ -192,10 +198,7 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (requestCode == RESULT_GPX_EXPORT && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                Intent intent = new Intent(MainActivity.this, GpxExportService.class);
-                intent.setData(data.getData());
-                GpxExportService.enqueueWork(MainActivity.this, intent);
-                showToast(getString(R.string.export_started));
+                runGpxExportTask(data.getData());
             }
         }
     }
@@ -300,4 +303,33 @@ public class MainActivity extends AppCompatActivity
     public void onBackStackChanged() {
         setHomeUpButton();
     }
+
+    /**
+     * Start GPX export task
+     */
+    private void runGpxExportTask(@NonNull Uri uri) {
+        if (gpxExportTask == null || !gpxExportTask.isRunning()) {
+            gpxExportTask = new GpxExportTask(uri, this);
+            executor.execute(gpxExportTask);
+            showToast(getString(R.string.export_started));
+        }
+    }
+
+    @Override
+    public void onGpxExportTaskCompleted() {
+        showToast(getString(R.string.export_done));
+    }
+
+    @Override
+    public void onGpxExportTaskFailure(@NonNull String error) {
+        String message = getString(R.string.export_failed);
+        message += "\n" + error;
+        showToast(message);
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
 }

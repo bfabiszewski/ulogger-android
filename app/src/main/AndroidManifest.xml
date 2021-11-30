@@ -58,11 +58,6 @@
             android:foregroundServiceType="location" />
         <service
             android:name=".WebSyncService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="false" />
-        <service
-            android:name=".GpxExportService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
 
         <receiver
