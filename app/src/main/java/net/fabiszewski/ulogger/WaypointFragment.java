@@ -9,8 +9,15 @@
 
 package net.fabiszewski.ulogger;
 
+import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+import static androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions;
+import static androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
+import static androidx.activity.result.contract.ActivityResultContracts.TakePicture;
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import android.Manifest;
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +27,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,30 +37,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
-
-import static android.app.Activity.RESULT_OK;
-import static android.content.Intent.EXTRA_LOCAL_ONLY;
-import static android.content.Intent.EXTRA_MIME_TYPES;
-import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
-import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
-import static java.util.concurrent.Executors.newCachedThreadPool;
 
 public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback, ImageTask.ImageTaskCallback {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_IMAGE_OPEN = 2;
-    private static final int PERMISSION_WRITE = 1;
-    private static final int PERMISSION_LOCATION = 2;
     private static final String KEY_URI = "keyPhotoUri";
     private static final String KEY_THUMB = "keyPhotoThumb";
     private static final String KEY_LOCATION = "keyLocation";
@@ -78,13 +75,11 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
 
     private final ExecutorService executor = newCachedThreadPool();
 
-    public WaypointFragment() {
-    }
+    public WaypointFragment() { }
 
     static WaypointFragment newInstance() {
         return new WaypointFragment();
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -284,61 +279,18 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     }
 
     private void requestImageCapture() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(requireContext().getPackageManager()) != null) {
-            photoUri = ImageHelper.createImageUri(requireContext());
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            int flags = FLAG_GRANT_WRITE_URI_PERMISSION|FLAG_GRANT_READ_URI_PERMISSION|FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-            takePictureIntent.addFlags(flags);
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
+        photoUri = ImageHelper.createImageUri(requireContext());
+        takePicture.launch(photoUri);
     }
 
     private boolean hasStoragePermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             showToast("You must accept permission for writing photo to external storage");
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE }, PERMISSION_WRITE);
+            requestWritePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_WRITE) {
-            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                requestImageCapture();
-            }
-        } else if (requestCode == PERMISSION_LOCATION) {
-            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                runLoggerTask();
-            } else {
-                finish();
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        super.onActivityResult(requestCode, resultCode, resultData);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_IMAGE_OPEN:
-                    if (resultData != null && resultData.getData() != null) {
-                        photoUri = resultData.getData();
-                        runImageTask(photoUri);
-                    }
-                    break;
-
-                case REQUEST_IMAGE_CAPTURE:
-                    if (photoUri != null) {
-                        ImageHelper.galleryAdd(requireContext(), photoUri);
-                        runImageTask(photoUri);
-                    }
-                    break;
-            }
-        }
     }
 
     /**
@@ -401,21 +353,75 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * Show file picker
      */
     private void pickImage() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-        String[] mimeTypes = { "image/jpeg", "image/gif", "image/png", "image/x-ms-bmp" };
-        intent.putExtra(EXTRA_MIME_TYPES, mimeTypes);
-        intent.putExtra(EXTRA_LOCAL_ONLY, true);
-        int flags = FLAG_GRANT_READ_URI_PERMISSION|FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-        intent.addFlags(flags);
         try {
-            startActivityForResult(intent, REQUEST_IMAGE_OPEN);
+            String[] mimeTypes = { "image/jpeg", "image/gif", "image/png", "image/x-ms-bmp" };
+            openPicture.launch(mimeTypes);
         } catch (ActivityNotFoundException e) {
             showToast(getString(R.string.cannot_open_picker));
         }
     }
 
+    /**
+     * Request location permission(s), on granted run logger task
+     */
+    final ActivityResultLauncher<String[]> requestLocationPermission = registerForActivityResult(new RequestMultiplePermissions(), results -> {
+        if (Logger.DEBUG) { Log.d(TAG, "[requestLocationPermission: " + results.entrySet() + "]"); }
+        boolean isGranted = false;
+        for (Map.Entry<String, Boolean> result : results.entrySet()) {
+            if (result.getValue()) {
+                isGranted = true;
+            }
+        }
+        if (isGranted) {
+            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: granted]"); }
+            runLoggerTask();
+        } else {
+            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: refused]"); }
+            finish();
+        }
+    });
+
+    /**
+     * Request write permission, on granted take picture
+     */
+    final ActivityResultLauncher<String> requestWritePermission = registerForActivityResult(new RequestPermission(), isGranted -> {
+        if (Logger.DEBUG) { Log.d(TAG, "[requestWritePermission: " + isGranted + "]"); }
+        if (isGranted) {
+            requestImageCapture();
+        }
+    });
+
+    /**
+     * Take picture, then run image task
+     */
+    final ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new TakePicture() {
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull Context context, @NonNull Uri input) {
+            int flags = FLAG_GRANT_WRITE_URI_PERMISSION|FLAG_GRANT_READ_URI_PERMISSION|FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+            return super.createIntent(context, input).addFlags(flags);
+        }
+    }, isSaved -> {
+        if (isSaved && photoUri != null) {
+            ImageHelper.galleryAdd(requireContext(), photoUri);
+            runImageTask(photoUri);
+        }
+    });
+
+    /**
+     * Open image file, then run image task
+     */
+    final ActivityResultLauncher<String[]> openPicture = registerForActivityResult(new OpenLocalDocument(), uri -> {
+        if (uri != null) {
+            photoUri = uri;
+            runImageTask(photoUri);
+        }
+    });
+
+    /**
+     * Update state on location received
+     * @param location Current location
+     */
     @Override
     public void onLoggerTaskCompleted(Location location) {
         if (Logger.DEBUG) { Log.d(TAG, "[onLoggerTaskCompleted: " + location + "]"); }
@@ -427,6 +433,10 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         saveButton.setEnabled(true);
     }
 
+    /**
+     * Take actions on location request failure
+     * @param reason Bit encoded failure reason
+     */
     @Override
     public void onLoggerTaskFailure(int reason) {
         if (Logger.DEBUG) { Log.d(TAG, "[onLoggerTaskFailure: " + reason + "]"); }
@@ -437,16 +447,25 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         locationNotFoundTextView.setVisibility(View.VISIBLE);
         if ((reason & LoggerTask.E_PERMISSION) != 0) {
             showToast(getString(R.string.location_permission_denied));
-            Activity activity = getActivity();
-            if (activity != null) {
-                ActivityCompat.requestPermissions(activity, new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_LOCATION);
+            List<String> permissions = new ArrayList<>();
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // On Android 12+ coarse location permission must be also requested
+                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
             }
+            requestLocationPermission.launch(permissions.toArray(new String[0]));
         }
         if ((reason & LoggerTask.E_DISABLED) != 0) {
             showToast(getString(R.string.location_disabled));
         }
     }
 
+
+    /**
+     * Update state on image task completed
+     * @param uri Image URI
+     * @param thumbnail Image thumbnail
+     */
     @Override
     public void onImageTaskCompleted(@NonNull Uri uri, @NonNull Bitmap thumbnail) {
         if (Logger.DEBUG) { Log.d(TAG, "[onImageTaskCompleted: " + uri + "]"); }
@@ -461,6 +480,10 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         }
     }
 
+    /**
+     * Update state on image task failure
+     * @param error Error message
+     */
     @Override
     public void onImageTaskFailure(@NonNull String error) {
         if (Logger.DEBUG) { Log.d(TAG, "[onImageTaskFailure: " + error + "]"); }
@@ -478,6 +501,9 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         }
     }
 
+    /**
+     * Clear image cache and preview
+     */
     private void clearImage() {
         if (photoUri != null) {
             ImageHelper.clearImageCache(requireContext());

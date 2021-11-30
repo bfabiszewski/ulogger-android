@@ -9,10 +9,10 @@
 
 package net.fabiszewski.ulogger;
 
+import static androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import static net.fabiszewski.ulogger.Alert.showAlert;
 import static net.fabiszewski.ulogger.Alert.showConfirm;
 import static net.fabiszewski.ulogger.GpxExportTask.GPX_EXTENSION;
-import static net.fabiszewski.ulogger.GpxExportTask.GPX_MIME;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import android.app.Activity;
@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -52,8 +53,6 @@ public class MainActivity extends AppCompatActivity
 
     private final String TAG = MainActivity.class.getSimpleName();
 
-    private final static int RESULT_PREFS_UPDATED = 1;
-    private final static int RESULT_GPX_EXPORT = 2;
     public final static String UPDATED_PREFS = "extra_updated_prefs";
 
     public String preferenceHost;
@@ -138,8 +137,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         final int id = item.getItemId();
         if (id == R.id.menu_settings) {
-            Intent i = new Intent(this, SettingsActivity.class);
-            startActivityForResult(i, RESULT_PREFS_UPDATED);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            settingsLauncher.launch(intent);
             return true;
         } else if (id == R.id.menu_about) {
             showAbout();
@@ -175,45 +174,13 @@ public class MainActivity extends AppCompatActivity
         showToast(getString(R.string.no_track_warning));
     }
 
-
-    /**
-     * Callback on activity result.
-     * Called after user updated preferences
-     *
-     * @param requestCode Activity code
-     * @param resultCode Result
-     * @param data Data
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_PREFS_UPDATED) {
-            // Preferences updated
-            updatePreferences();
-            if (LoggerService.isRunning()) {
-                // restart logging
-                Intent intent = new Intent(MainActivity.this, LoggerService.class);
-                intent.putExtra(UPDATED_PREFS, true);
-                startService(intent);
-            }
-        } else if (requestCode == RESULT_GPX_EXPORT && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                runGpxExportTask(data.getData());
-            }
-        }
-    }
-
     /**
      * Start export service
      */
     private void startExport() {
         if (db.countPositions() > 0) {
-            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType(GPX_MIME);
-            intent.putExtra(Intent.EXTRA_TITLE, DbAccess.getTrackName(this) + GPX_EXTENSION);
             try {
-                startActivityForResult(intent, RESULT_GPX_EXPORT);
+                getExportUri.launch(DbAccess.getTrackName(this) + GPX_EXTENSION);
             } catch (ActivityNotFoundException e) {
                 showToast(getString(R.string.cannot_open_picker), Toast.LENGTH_LONG);
             }
@@ -297,6 +264,31 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * Open file picker to get exported file URI, then run export task
+     */
+    final ActivityResultLauncher<String> getExportUri = registerForActivityResult(new CreateGpxDocument(), uri -> {
+        if (uri != null) {
+            runGpxExportTask(uri);
+        }
+    });
+
+    /**
+     * Open settings activity, update preferences on return
+     */
+    final ActivityResultLauncher<Intent> settingsLauncher = registerForActivityResult(new StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            // Preferences updated
+            updatePreferences();
+            if (LoggerService.isRunning()) {
+                // restart logging
+                Intent intent = new Intent(MainActivity.this, LoggerService.class);
+                intent.putExtra(UPDATED_PREFS, true);
+                startService(intent);
+            }
+        }
+    });
+
+    /**
      * Called whenever the contents of the back stack change.
      */
     @Override
@@ -323,7 +315,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onGpxExportTaskFailure(@NonNull String error) {
         String message = getString(R.string.export_failed);
-        message += "\n" + error;
+        if (!error.isEmpty()) {
+            message += "\n" + error;
+        }
         showToast(message);
     }
 

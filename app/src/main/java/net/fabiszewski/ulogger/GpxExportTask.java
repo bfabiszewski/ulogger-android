@@ -44,7 +44,6 @@ public class GpxExportTask implements Runnable {
             ns_ulogger + " https://raw.githubusercontent.com/bfabiszewski/ulogger-server/master/scripts/gpx_extensions1.xsd";
 
     public static final String GPX_EXTENSION = ".gpx";
-    public static final String GPX_MIME = "application/gpx+xml";
 
     private DbAccess db;
 
