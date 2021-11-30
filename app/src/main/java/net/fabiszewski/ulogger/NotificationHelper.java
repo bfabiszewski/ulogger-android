@@ -58,6 +58,7 @@ class NotificationHelper {
                         .setContentTitle(context.getString(R.string.app_name))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                        .setOnlyAlertOnce(true)
                         .setContentText(String.format(context.getString(R.string.is_running), context.getString(R.string.app_name)));
         Intent resultIntent = new Intent(context, MainActivity.class);
 
