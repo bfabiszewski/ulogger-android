@@ -13,5 +13,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <declare-styleable name="AlertDialog">
+        <attr format="reference" name="singleChoiceItemLayout"/>
+    </declare-styleable>
 
 </resources>

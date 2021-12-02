@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.DialogTitle;
 import androidx.preference.DialogPreference;
 import androidx.preference.ListPreferenceDialogFragmentCompat;
 
@@ -40,7 +39,7 @@ public class ListPreferenceDialogWithMessageFragment extends ListPreferenceDialo
         final DialogPreference preference = getPreference();
         @SuppressLint("InflateParams")
         View customTitleView = LayoutInflater.from(getActivity()).inflate(R.layout.alert_dialog_title, null);
-        final DialogTitle dialogTitle = customTitleView.findViewById(R.id.customTitle);
+        final TextView dialogTitle = customTitleView.findViewById(R.id.customTitle);
         dialogTitle.setText(preference.getDialogTitle());
         final TextView messageView = customTitleView.findViewById(R.id.customMessage);
         messageView.setText(preference.getDialogMessage());

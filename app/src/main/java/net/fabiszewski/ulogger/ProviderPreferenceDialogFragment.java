@@ -9,7 +9,6 @@
 
 package net.fabiszewski.ulogger;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -120,10 +119,8 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
 
     /**
      * Get default layout for single choice dialog
-     * FIXME: how to do it without private resources?
      * @return Layout resource id
      */
-    @SuppressLint("PrivateResource")
     private int getSingleChoiceLayoutResource() {
         int resId = android.R.layout.select_dialog_singlechoice;
         final Context context = getContext();
