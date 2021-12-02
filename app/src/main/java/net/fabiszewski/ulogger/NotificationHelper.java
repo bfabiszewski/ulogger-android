@@ -9,6 +9,8 @@
 
 package net.fabiszewski.ulogger;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -65,7 +67,11 @@ class NotificationHelper {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags |= FLAG_IMMUTABLE;
+        }
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, flags);
         mBuilder.setContentIntent(resultPendingIntent);
         Notification mNotification = mBuilder.build();
         notificationManager.notify(NOTIFICATION_ID, mNotification);
