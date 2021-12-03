@@ -58,7 +58,7 @@ class NotificationHelper {
                 new NotificationCompat.Builder(context, channelId)
                         .setSmallIcon(R.drawable.ic_stat_notify_24dp)
                         .setContentTitle(context.getString(R.string.app_name))
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
                         .setCategory(NotificationCompat.CATEGORY_SERVICE)
                         .setOnlyAlertOnce(true)
                         .setContentText(String.format(context.getString(R.string.is_running), context.getString(R.string.app_name)));
@@ -84,7 +84,7 @@ class NotificationHelper {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     private void createNotificationChannel(String channelId) {
-        NotificationChannel channel = new NotificationChannel(channelId, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel channel = new NotificationChannel(channelId, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW);
         notificationManager.createNotificationChannel(channel);
     }
 
