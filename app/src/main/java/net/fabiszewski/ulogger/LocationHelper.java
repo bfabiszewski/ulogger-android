@@ -100,8 +100,23 @@ class LocationHelper {
      * @return True if permission granted, false otherwise
      */
     boolean canAccessLocation() {
-        boolean ret = (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        boolean ret = (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) ||
+                (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
         if (Logger.DEBUG) { Log.d(TAG, "[canAccessLocation: " + ret + "]"); }
+        return ret;
+    }
+
+    /**
+     * Check if user granted permission to access background location.
+     *
+     * @return True if permission granted, false otherwise
+     */
+    boolean canAccessBackgroundLocation() {
+        boolean ret = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ret = (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        }
+        if (Logger.DEBUG) { Log.d(TAG, "[canAccessBackgroundLocation: " + ret + "]"); }
         return ret;
     }
 

@@ -9,6 +9,7 @@
 
 package net.fabiszewski.ulogger;
 
+import static androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions;
 import static net.fabiszewski.ulogger.SettingsActivity.KEY_ALLOW_EXTERNAL;
 import static net.fabiszewski.ulogger.SettingsActivity.KEY_AUTO_NAME;
 import static net.fabiszewski.ulogger.SettingsActivity.KEY_AUTO_START;
@@ -21,7 +22,6 @@ import static net.fabiszewski.ulogger.SettingsActivity.KEY_USERNAME;
 import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +29,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -41,6 +40,7 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.TwoStatePreference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -153,7 +153,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private final Preference.OnPreferenceChangeListener permissionLevelChanged = (preference, newValue) -> {
         final Context context = preference.getContext();
         if (Boolean.parseBoolean(newValue.toString())) {
-            if (!hasBackgroundLocationPermission(context)) {
+            LocationHelper locationHelper = LocationHelper.getInstance(context);
+            if (!locationHelper.canAccessBackgroundLocation()) {
                 requestBackgroundLocationPermission(context, preference.getKey());
                 return false;
             }
@@ -221,29 +222,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     /**
-     * Check whether user granted background location permission.
-     * Background location permission only needed on API 30+
-     * when application is started without user interaction
-     *
-     * @param context Context
-     * @return True if has permission, false otherwise
-     */
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    @SuppressWarnings({"BooleanMethodIsAlwaysInverted", "RedundantSuppression"})
-    private boolean hasBackgroundLocationPermission(@NonNull Context context) {
-        return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    /**
-     * Check whether user granted location permission
-     * @param context Context
-     * @return True if has permission, false otherwise
-     */
-    private boolean hasForwardLocationPermission(@NonNull Context context) {
-        return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    /**
      * Request permission when given preference key changed
      * @param context Context
      * @param key Key
@@ -252,7 +230,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private void requestBackgroundLocationPermission(@NonNull Context context, @NonNull String key) {
         List<String> permissions = new ArrayList<>();
         // Background location permission can only be granted when forward location is permitted
-        if (hasForwardLocationPermission(context)) {
+        LocationHelper locationHelper = LocationHelper.getInstance(context);
+        if (locationHelper.canAccessLocation()) {
             permissions.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         } else {
             if (Logger.DEBUG) { Log.d(TAG, "[forward location permission denied]"); }
@@ -265,21 +244,30 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         if (permissions.contains(Manifest.permission.ACCESS_BACKGROUND_LOCATION) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            final CharSequence option = getBackgroundPermissionOptionLabel(context);
+            final CharSequence label = getBackgroundPermissionOptionLabel(context);
             Alert.showConfirm(
                     context,
                     getString(R.string.background_location_required),
-                    getString(R.string.background_location_rationale, option),
+                    getString(R.string.background_location_rationale, label),
                     (dialog, which) -> {
                         dialog.dismiss();
-                        getResultLauncher(key).launch(new String[]{ Manifest.permission.ACCESS_BACKGROUND_LOCATION });
+                        setPreferenceOnLocationPermissionGranted(key, new String[]{ Manifest.permission.ACCESS_BACKGROUND_LOCATION });
                     }
             );
         } else {
-            if (Logger.DEBUG) { Log.d(TAG, "[request permission " + permissions + "]"); }
-            getResultLauncher(key).launch(permissions.toArray(new String[0]));
+            setPreferenceOnLocationPermissionGranted(key, permissions.toArray(new String[0]));
         }
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    void setPreferenceOnLocationPermissionGranted(@NonNull String key, @NonNull String[] permissions) {
+        if (Logger.DEBUG) { Log.d(TAG, "[request permission " + Arrays.toString(permissions) + "]"); }
+        if (key.equals(KEY_ALLOW_EXTERNAL)) {
+            setAllowExternalOnLocationPermissionGranted.launch(permissions);
+        } else if (key.equals(KEY_AUTO_START)) {
+            setAutoStartOnLocationPermissionGranted.launch(permissions);
+        }
     }
 
     /**
@@ -290,10 +278,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
      */
     @RequiresApi(api = Build.VERSION_CODES.R)
     private CharSequence getBackgroundPermissionOptionLabel(Context context) {
-        CharSequence option = context.getPackageManager().getBackgroundPermissionOptionLabel();
+        CharSequence label = context.getPackageManager().getBackgroundPermissionOptionLabel();
+        CharSequence defaultLabel = "Allow all the time";
 
         if (Locale.getDefault().getLanguage().equals("en")) {
-            return option;
+            return label.length() > 0 ? label : defaultLabel;
         }
 
         CharSequence translated = context.getString(R.string.background_location_rationale);
@@ -301,22 +290,29 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         config.setLocale(Locale.ENGLISH);
         CharSequence defaultText = context.createConfigurationContext(config).getText(R.string.background_location_rationale);
 
-        return translated.equals(defaultText) ? "Allow all the time" : option;
+        return translated.equals(defaultText) ? defaultLabel : label;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    final ActivityResultLauncher<String[]> setAllowExternalOnLocationPermissionGranted = getResultLauncher(KEY_ALLOW_EXTERNAL);
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    final ActivityResultLauncher<String[]> setAutoStartOnLocationPermissionGranted = getResultLauncher(KEY_AUTO_START);
+
     /**
-     * Get ActivityResultLauncher profiled for given preference key
+     * Get ActivityResultLauncher for requesting location permission profiled for given preference key
      * @param key Preference key
      * @return ActivityResultLauncher
      */
     @RequiresApi(api = Build.VERSION_CODES.R)
     private ActivityResultLauncher<String[]> getResultLauncher(@NonNull String key) {
-        return registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), results -> {
+        return registerForActivityResult(new RequestMultiplePermissions(), results -> {
             if (Logger.DEBUG) { Log.d(TAG, "[RequestMultiplePermissions: " + key + ", permissions: " + results.entrySet() + "]"); }
             boolean isGranted = false;
             for (Map.Entry<String, Boolean> result : results.entrySet()) {
                 if (result.getValue()) {
                     isGranted = true;
+                    break;
                 }
             }
             if (isGranted) {
@@ -335,9 +331,5 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
     }
-
-
-
-
 
 }
