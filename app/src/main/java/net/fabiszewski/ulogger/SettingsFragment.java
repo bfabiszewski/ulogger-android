@@ -56,6 +56,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setListeners();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {
         if (preference instanceof EditTextPreference && KEY_HOST.equals(preference.getKey())) {
