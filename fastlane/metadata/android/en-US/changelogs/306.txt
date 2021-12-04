@@ -1,0 +1,9 @@
+3.6: μlogger
+
+Changes:
+- Fixed problem with hanging synchronization on Android 10+
+- Support for Android 12
+- Refactored deprecated SDK items
+
+Translations:
+- Updated translations

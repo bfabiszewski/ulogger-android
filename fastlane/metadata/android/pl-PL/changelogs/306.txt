@@ -1,0 +1,9 @@
+3.6: μlogger
+
+Zmiany:
+- Naprawione zawieszanie się synchronizacji w Androidzie 10+
+- Wsparcie dla Androida 12
+- Zastąpione wycofywane elementy SDK
+
+Tłumaczenia:
+- Zaktualizowane tłumaczenia
