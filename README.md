@@ -28,9 +28,9 @@ Together they make a complete self owned and controlled client–server solution
 
 led | tracking | synchronization
 -|-------- | ---------------
-![status green](https://placehold.it/10/00ff00/000000?text=+) |  on, recently updated | synchronized
-![status yellow](https://placehold.it/10/ffe600/000000?text=+) | on, long time since last update | synchronization delay
-![status red](https://placehold.it/10/ff0000/000000?text=+) | off | synchronization error
+![status green](https://dummyimage.com/10/00ff00) |  on, recently updated | synchronized
+![status yellow](https://dummyimage.com/10/ffe600) | on, long time since last update | synchronization delay
+![status red](https://dummyimage.com/10/ff0000) | off | synchronization error
 
 - clicking on current track's name will show track statistics
 
