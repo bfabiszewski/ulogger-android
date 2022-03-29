@@ -15,9 +15,17 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: '8'
+          java-version: '11'
       - name: build
         run: ./gradlew build
+      - name: show logs on failure
+        if: ${{ failure() }}
+        run: |
+          cat app/build/reports/checkstyle.html
+          cat app/build/reports/lint-results.xml
+          cat app/build/reports/lint-results.html
+          cat app/build/reports/findbugs.html
+          cat app/build/reports/pmd.html
 
   upload-to-transifex:
     runs-on: ubuntu-latest
@@ -51,7 +59,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: '8'
+          java-version: '11'
       - name: download coverity tools
         run: |
           curl -Lf \
