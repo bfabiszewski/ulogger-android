@@ -1,0 +1,83 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '8'
+      - name: build
+        run: ./gradlew build
+
+  upload-to-transifex:
+    runs-on: ubuntu-latest
+    if: github.event == 'push'
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3   
+      
+      - name: push to transifex
+        env:
+          TRANSIFEX_PASSWORD: ${{ secrets.TX_TOKEN }}
+        run: |
+            if [ ! -z "$TRANSIFEX_PASSWORD" ]; then
+              pip install --user virtualenv
+              virtualenv ~/env
+              source ~/env/bin/activate
+              pip install transifex-client
+              echo -e "[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = api\npassword = ${TRANSIFEX_PASSWORD}\n" > ~/.transifexrc
+              tx push -s --no-interactive
+            fi
+
+  upload-to-coverity:
+    runs-on: ubuntu-latest
+    if: github.event == 'push'
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '8'
+      - name: download coverity tools
+        run: |
+          curl -Lf \
+            -o cov-analysis-linux64.tar.gz \
+            --form project=bfabiszewski/ulogger-android \
+            --form token=$TOKEN \
+            https://scan.coverity.com/download/linux64 
+          mkdir cov-analysis-linux64
+          tar xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
+        env:
+          TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+          
+      - name: build with cov-build
+        run: |
+          export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
+          cov-build --dir cov-int ./gradlew -Dorg.gradle.jvmargs= --no-daemon assemble
+
+      - name: upload results to coverity-scan
+        run: |
+          tar czvf cov-int.tgz cov-int
+          curl -Lf \
+            --form token=$TOKEN \
+            --form email=scan.coverity@fabiszewski.net \
+            --form file=@cov-int.tgz \
+            --form version="`git describe --tags`" \
+            --form description="ulogger-android `git describe --tags`" \
+            "https://scan.coverity.com/builds?project=bfabiszewski/ulogger-android"
+        env:
+          TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}       
