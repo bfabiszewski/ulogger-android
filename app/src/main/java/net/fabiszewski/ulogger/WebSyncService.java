@@ -72,7 +72,7 @@ public class WebSyncService extends Service {
         if (Logger.DEBUG) { Log.d(TAG, "[websync create]"); }
 
         web = new WebHelper(this);
-        notificationHelper = new NotificationHelper(this);
+        notificationHelper = new NotificationHelper(this, true);
 
         thread = new HandlerThread("WebSyncThread", THREAD_PRIORITY_BACKGROUND);
         thread.start();

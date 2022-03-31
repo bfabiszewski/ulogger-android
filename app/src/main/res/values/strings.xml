@@ -13,6 +13,7 @@
     <string name="button_newtrack">New track</string>
     <string name="button_upload">Upload</string>
     <string name="is_running" comment="substituted app_name">%s is running</string>
+    <string name="is_uploading" comment="substituted app_name">%s is uploading positions</string>
     <string name="title_newtrack">New track</string>
     <string name="label_track">Current track</string>
     <string name="label_newtrack_name">New track name</string>
