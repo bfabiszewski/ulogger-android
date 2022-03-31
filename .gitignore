@@ -45,6 +45,9 @@ captures/
 *.iml
 .idea/
 
+# VScode
+.vscode/
+
 # Keystore files
 *.jks
 
