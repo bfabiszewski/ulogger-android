@@ -24,7 +24,7 @@ jobs:
 
   upload-to-transifex:
     runs-on: ubuntu-latest
-    if: github.event == 'push'
+    if: ${{ github.event_name == 'push' }}
     needs: build
 
     steps:
@@ -46,7 +46,7 @@ jobs:
 
   upload-to-coverity:
     runs-on: ubuntu-latest
-    if: github.event == 'push'
+    if: ${{ github.event_name == 'push' }}
     needs: build
 
     steps:
