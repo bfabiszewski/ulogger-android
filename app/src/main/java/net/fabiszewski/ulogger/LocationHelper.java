@@ -111,6 +111,7 @@ class LocationHelper {
      *
      * @return True if permission granted, false otherwise
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean canAccessBackgroundLocation() {
         boolean ret = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

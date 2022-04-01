@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  * with WEB_URL pattern relaxed
  */
 
+@SuppressWarnings({"RegExpUnnecessaryNonCapturingGroup,RegExpRedundantNestedCharacterClass"})
 class WebPatterns {
 
     /**

@@ -20,6 +20,7 @@ import static net.fabiszewski.ulogger.SettingsActivity.KEY_PROVIDER;
 import static net.fabiszewski.ulogger.SettingsActivity.KEY_USERNAME;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -277,6 +278,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
      * @param context Context
      * @return Localized label
      */
+    @SuppressLint("AppBundleLocaleChanges")
     @RequiresApi(api = Build.VERSION_CODES.R)
     private CharSequence getBackgroundPermissionOptionLabel(Context context) {
         CharSequence label = context.getPackageManager().getBackgroundPermissionOptionLabel();

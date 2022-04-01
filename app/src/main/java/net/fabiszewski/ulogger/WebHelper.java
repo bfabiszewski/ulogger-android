@@ -347,7 +347,6 @@ class WebHelper {
 
     /**
      * Get text/plain parameters as part of multipart form
-     * @param out Output stream
      * @param params Parameters
      * @return Multipart body for text parameters
      * @throws IOException Exception on failure
