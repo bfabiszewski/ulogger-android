@@ -65,6 +65,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private Button saveButton;
     private ImageView thumbnailImageView;
     private SwipeRefreshLayout swipe;
+    private AlertDialog dialog;
 
     private LoggerTask loggerTask;
     private ImageTask imageTask;
@@ -308,6 +309,10 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     @Override
     public void onDestroy() {
         ImageHelper.clearImageCache(requireContext());
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
         super.onDestroy();
     }
 
@@ -421,14 +426,16 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
             TextView photoTextView = dialogView.findViewById(R.id.action_photo);
             TextView libraryTextView = dialogView.findViewById(R.id.action_library);
 
-            final AlertDialog dialog = builder.create();
+            dialog = builder.create();
             photoTextView.setOnClickListener(v -> {
                 takePhoto();
                 dialog.dismiss();
+                dialog = null;
             });
             libraryTextView.setOnClickListener(v -> {
                 pickImage();
                 dialog.dismiss();
+                dialog = null;
             });
             dialog.show();
         } else {
