@@ -53,8 +53,8 @@ import java.util.concurrent.ExecutorService;
 public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback, ImageTask.ImageTaskCallback {
 
     private static final String KEY_URI = "keyPhotoUri";
-    private static final String KEY_THUMB = "keyPhotoThumb";
     private static final String KEY_LOCATION = "keyLocation";
+    private static final String KEY_WAITING = "keyWaiting";
 
     private static final String TAG = WaypointFragment.class.getSimpleName();
 
@@ -72,8 +72,73 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     private Location location = null;
     private Uri photoUri = null;
     private Bitmap photoThumb = null;
+    private boolean isWaitingForCamera = false;
 
     private final ExecutorService executor = newCachedThreadPool();
+
+    /**
+     * Request location permission(s), on granted run logger task
+     */
+    final ActivityResultLauncher<String[]> requestLocationPermission = registerForActivityResult(new RequestMultiplePermissions(), results -> {
+        if (Logger.DEBUG) { Log.d(TAG, "[requestLocationPermission: " + results.entrySet() + "]"); }
+        boolean isGranted = false;
+        for (Map.Entry<String, Boolean> result : results.entrySet()) {
+            if (result.getValue()) {
+                isGranted = true;
+            }
+        }
+        if (isGranted) {
+            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: granted]"); }
+            runLoggerTask();
+        } else {
+            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: refused]"); }
+            finish();
+        }
+    });
+
+    /**
+     * Request write permission, on granted take picture
+     */
+    final ActivityResultLauncher<String> requestWritePermission = registerForActivityResult(new RequestPermission(), isGranted -> {
+        if (Logger.DEBUG) { Log.d(TAG, "[requestWritePermission: " + isGranted + "]"); }
+        if (isGranted) {
+            requestImageCapture();
+        }
+    });
+
+    /**
+     * Take picture, then run image task
+     */
+    final ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new TakePicture() {
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull Context context, @NonNull Uri input) {
+            isWaitingForCamera = true;
+            int flags = FLAG_GRANT_WRITE_URI_PERMISSION|FLAG_GRANT_READ_URI_PERMISSION|FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+            return super.createIntent(context, input).addFlags(flags);
+        }
+    }, isSaved -> {
+        if (Logger.DEBUG) { Log.d(TAG, "[TakePicture result]"); }
+        if (isSaved) {
+            if (photoUri != null) {
+                ImageHelper.galleryAdd(requireContext(), photoUri);
+                runImageTask(photoUri);
+            }
+        } else {
+            clearImage();
+        }
+        isWaitingForCamera = false;
+    });
+
+    /**
+     * Open image file, then run image task
+     */
+    final ActivityResultLauncher<String[]> openPicture = registerForActivityResult(new OpenLocalDocument(), uri -> {
+        if (uri != null) {
+            photoUri = uri;
+            runImageTask(photoUri);
+        }
+    });
 
     public WaypointFragment() { }
 
@@ -84,13 +149,13 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //noinspection deprecation
-        setRetainInstance(true);
+        if (Logger.DEBUG) { Log.d(TAG, "[onCreate]"); }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (Logger.DEBUG) { Log.d(TAG, "[onCreateView]"); }
         View layout = inflater.inflate(R.layout.fragment_waypoint, container, false);
 
         locationNotFoundTextView = layout.findViewById(R.id.waypointLocationNotFound);
@@ -111,13 +176,12 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     }
 
     private void restoreState(Bundle savedInstanceState) {
+        if (Logger.DEBUG) { Log.d(TAG, "[restoreState]"); }
+        if (savedInstanceState.containsKey(KEY_WAITING)) {
+            isWaitingForCamera = true;
+        }
         if (savedInstanceState.containsKey(KEY_URI)) {
             photoUri = savedInstanceState.getParcelable(KEY_URI);
-            setThumbnail(photoThumb);
-        }
-        if (savedInstanceState.containsKey(KEY_THUMB)) {
-            photoThumb = savedInstanceState.getParcelable(KEY_THUMB);
-            setThumbnail(photoThumb);
         }
         if (savedInstanceState.containsKey(KEY_LOCATION)) {
             location = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -134,22 +198,27 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        if (Logger.DEBUG) { Log.d(TAG, "[onSaveInstanceState]"); }
         if (photoUri != null) {
             outState.putParcelable(KEY_URI, photoUri);
         }
-        if (photoThumb != null) {
-            outState.putParcelable(KEY_THUMB, photoThumb);
-        }
         if (location != null) {
             outState.putParcelable(KEY_LOCATION, location);
+        }
+        if (isWaitingForCamera) {
+            outState.putBoolean(KEY_WAITING, true);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (Logger.DEBUG) { Log.d(TAG, "[onResume]"); }
         if (!hasLocation()) {
             runLoggerTask();
+        }
+        if (photoUri != null && photoThumb == null && !isWaitingForCamera) {
+            runThumbnailTask(photoUri);
         }
     }
 
@@ -196,12 +265,29 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
 
     /**
      * Start image task
+     * Transforms image if needed and generates thumbnail for URI
+     * @param uri URI
      */
     private void runImageTask(@NonNull Uri uri) {
         if (imageTask == null || !imageTask.isRunning()) {
+            if (Logger.DEBUG) { Log.d(TAG, "[runImageTask]"); }
             clearImage();
             saveButton.setEnabled(false);
             imageTask = new ImageTask(uri, this);
+            executor.execute(imageTask);
+            setRefreshing(true);
+        }
+    }
+
+    /**
+     * Start thumbnail task
+     * Generates thumbnail for URI
+     * @param uri URI
+     */
+    private void runThumbnailTask(@NonNull Uri uri) {
+        if (imageTask == null || !imageTask.isRunning()) {
+            if (Logger.DEBUG) { Log.d(TAG, "[runThumbnailTask]"); }
+            imageTask = new ImageTask(uri, this, true);
             executor.execute(imageTask);
             setRefreshing(true);
         }
@@ -214,6 +300,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     @Override
     public void onDetach() {
         super.onDetach();
+        if (Logger.DEBUG) { Log.d(TAG, "[onDetach]"); }
         cancelLoggerTask();
         cancelImageTask();
     }
@@ -361,63 +448,6 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
             showToast(getString(R.string.cannot_open_picker));
         }
     }
-
-    /**
-     * Request location permission(s), on granted run logger task
-     */
-    final ActivityResultLauncher<String[]> requestLocationPermission = registerForActivityResult(new RequestMultiplePermissions(), results -> {
-        if (Logger.DEBUG) { Log.d(TAG, "[requestLocationPermission: " + results.entrySet() + "]"); }
-        boolean isGranted = false;
-        for (Map.Entry<String, Boolean> result : results.entrySet()) {
-            if (result.getValue()) {
-                isGranted = true;
-            }
-        }
-        if (isGranted) {
-            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: granted]"); }
-            runLoggerTask();
-        } else {
-            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: refused]"); }
-            finish();
-        }
-    });
-
-    /**
-     * Request write permission, on granted take picture
-     */
-    final ActivityResultLauncher<String> requestWritePermission = registerForActivityResult(new RequestPermission(), isGranted -> {
-        if (Logger.DEBUG) { Log.d(TAG, "[requestWritePermission: " + isGranted + "]"); }
-        if (isGranted) {
-            requestImageCapture();
-        }
-    });
-
-    /**
-     * Take picture, then run image task
-     */
-    final ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new TakePicture() {
-        @NonNull
-        @Override
-        public Intent createIntent(@NonNull Context context, @NonNull Uri input) {
-            int flags = FLAG_GRANT_WRITE_URI_PERMISSION|FLAG_GRANT_READ_URI_PERMISSION|FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-            return super.createIntent(context, input).addFlags(flags);
-        }
-    }, isSaved -> {
-        if (isSaved && photoUri != null) {
-            ImageHelper.galleryAdd(requireContext(), photoUri);
-            runImageTask(photoUri);
-        }
-    });
-
-    /**
-     * Open image file, then run image task
-     */
-    final ActivityResultLauncher<String[]> openPicture = registerForActivityResult(new OpenLocalDocument(), uri -> {
-        if (uri != null) {
-            photoUri = uri;
-            runImageTask(photoUri);
-        }
-    });
 
     /**
      * Update state on location received

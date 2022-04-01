@@ -47,12 +47,18 @@ class ImageTask implements Runnable {
 
     private boolean isRunning = false;
     private boolean isCancelled = false;
+    private final boolean onlyThumbnail;
 
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
     ImageTask(Uri uri, ImageTaskCallback callback) {
+        this(uri, callback, false);
+    }
+
+    ImageTask(Uri uri, ImageTaskCallback callback, boolean onlyThumbnail) {
         this.uri = uri;
         weakCallback = new WeakReference<>(callback);
+        this.onlyThumbnail = onlyThumbnail;
     }
 
     @Override
@@ -83,22 +89,28 @@ class ImageTask implements Runnable {
         if (activity == null) {
             return null;
         }
+
         ImageTaskResult result = null;
         try {
             Uri savedUri;
             Bitmap thumbnail;
 
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-            int dstWidth = Integer.parseInt(prefs.getString(SettingsActivity.KEY_IMAGE_SIZE, activity.getString(R.string.pref_imagesize_default)));
-            if (dstWidth == 0) {
+            if (onlyThumbnail) {
                 savedUri = uri;
-                getPersistablePermission(activity, uri);
                 thumbnail = getThumbnail(activity, uri);
             } else {
-                Bitmap bitmap = getResampledBitmap(activity, uri, dstWidth);
-                savedUri = saveToCache(activity, bitmap);
-                thumbnail = getThumbnail(activity, bitmap);
-                bitmap.recycle();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+                int dstWidth = Integer.parseInt(prefs.getString(SettingsActivity.KEY_IMAGE_SIZE, activity.getString(R.string.pref_imagesize_default)));
+                if (dstWidth == 0) {
+                    savedUri = uri;
+                    getPersistablePermission(activity, uri);
+                    thumbnail = getThumbnail(activity, uri);
+                } else {
+                    Bitmap bitmap = getResampledBitmap(activity, uri, dstWidth);
+                    savedUri = saveToCache(activity, bitmap);
+                    thumbnail = getThumbnail(activity, bitmap);
+                    bitmap.recycle();
+                }
             }
             if (savedUri != null && thumbnail != null) {
                 result = new ImageTaskResult(savedUri, thumbnail);
