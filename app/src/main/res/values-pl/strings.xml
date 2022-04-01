@@ -11,6 +11,7 @@
     <string name="button_newtrack">Nowa trasa</string>
     <string name="button_upload">Wyślij</string>
     <string name="is_running" comment="substituted app_name">%s jest uruchomiony</string>
+    <string name="is_uploading" comment="substituted app_name">%s wysyła pozycje</string>
     <string name="title_newtrack">Nowa trasa</string>
     <string name="label_track">Bieżąca trasa</string>
     <string name="label_newtrack_name">Nazwa nowej trasy</string>
