@@ -34,6 +34,7 @@ import javax.net.ssl.SSLSocketFactory;
  * TLSv1        1+                      1+
  * TLSv1.1      16+                     20+
  * TLSv1.2      16+                     20+
+ * TLSv1.3		29+ 					29+
  */
 
 @SuppressWarnings("RedundantThrows")
@@ -73,6 +74,7 @@ class TlsSocketFactory extends SSLSocketFactory {
             SSLSession session = sslSocket.getSession();
             if (!session.isValid()) {
                 if (Logger.DEBUG) { Log.d(TAG, "[Handshake failure]"); }
+                sslSocket.close();
                 throw new SSLHandshakeException("Handshake failure");
             }
 
