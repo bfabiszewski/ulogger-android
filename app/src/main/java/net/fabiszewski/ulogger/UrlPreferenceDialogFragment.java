@@ -15,12 +15,14 @@ import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.EditTextPreference;
 import androidx.preference.EditTextPreferenceDialogFragmentCompat;
 
 public class UrlPreferenceDialogFragment extends EditTextPreferenceDialogFragmentCompat {
 
+    @NonNull
     public static UrlPreferenceDialogFragment newInstance(String key) {
         final UrlPreferenceDialogFragment fragment = new UrlPreferenceDialogFragment();
         final Bundle b = new Bundle(1);

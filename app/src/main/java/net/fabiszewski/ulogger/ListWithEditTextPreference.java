@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.BidiFormatter;
 import androidx.preference.ListPreference;
@@ -76,7 +77,7 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
      * @return {@code true} to update the state of the preference with the new value
      */
     @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
+    public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
         if (newValue.toString().equals(OTHER)) {
             showOtherDialog(preference);
             return false;

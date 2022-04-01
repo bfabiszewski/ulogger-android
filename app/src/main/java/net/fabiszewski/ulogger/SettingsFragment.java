@@ -58,7 +58,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @SuppressWarnings("deprecation")
     @Override
-    public void onDisplayPreferenceDialog(Preference preference) {
+    public void onDisplayPreferenceDialog(@NonNull Preference preference) {
         if (preference instanceof EditTextPreference && KEY_HOST.equals(preference.getKey())) {
             final UrlPreferenceDialogFragment fragment = UrlPreferenceDialogFragment.newInstance(preference.getKey());
             fragment.setTargetFragment(this, 0);

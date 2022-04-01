@@ -49,7 +49,7 @@ class PasswordPreference extends EditTextPreference implements EditTextPreferenc
     public CharSequence getSummary() {
         if ((getSummaryProvider() != null)) {
             final String text = super.getText();
-            if (!TextUtils.isEmpty(text)) {
+            if (text != null && !TextUtils.isEmpty(text)) {
                 return getMaskedText(text);
             }
         }

@@ -15,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DialogPreference;
 import androidx.preference.ListPreferenceDialogFragmentCompat;
 
 public class ListPreferenceDialogWithMessageFragment extends ListPreferenceDialogFragmentCompat {
 
+    @NonNull
     public static ListPreferenceDialogWithMessageFragment newInstance(String key) {
         final ListPreferenceDialogWithMessageFragment fragment = new ListPreferenceDialogWithMessageFragment();
         final Bundle b = new Bundle(1);
@@ -34,11 +36,11 @@ public class ListPreferenceDialogWithMessageFragment extends ListPreferenceDialo
      * @param builder AlertDialog builder
      */
     @Override
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+    protected void onPrepareDialogBuilder(@NonNull AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
         final DialogPreference preference = getPreference();
         @SuppressLint("InflateParams")
-        View customTitleView = LayoutInflater.from(getActivity()).inflate(R.layout.alert_dialog_title, null);
+        View customTitleView = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_dialog_title, null);
         final TextView dialogTitle = customTitleView.findViewById(R.id.customTitle);
         dialogTitle.setText(preference.getDialogTitle());
         final TextView messageView = customTitleView.findViewById(R.id.customMessage);

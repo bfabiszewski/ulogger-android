@@ -77,7 +77,10 @@ public class WebSyncService extends Service {
         thread = new HandlerThread("WebSyncThread", THREAD_PRIORITY_BACKGROUND);
         thread.start();
         Looper looper = thread.getLooper();
-        serviceHandler = new ServiceHandler(looper);
+        if (looper != null) {
+            if (Logger.DEBUG) { Log.d(TAG, "[websync fatal error: looper is null]"); }
+            serviceHandler = new ServiceHandler(looper);
+        }
 
         // keep database open during whole service runtime
         db = DbAccess.getInstance();
@@ -88,7 +91,7 @@ public class WebSyncService extends Service {
      * Handler to do synchronization on background thread
      */
     private final class ServiceHandler extends Handler {
-        public ServiceHandler(Looper looper) {
+        public ServiceHandler(@NonNull Looper looper) {
             super(looper);
         }
 
@@ -122,12 +125,17 @@ public class WebSyncService extends Service {
      * @param intent Intent
      * @param flags Flags
      * @param startId Unique id
-     * @return Always returns START_STICKY
+     * @return START_STICKY on success
      */
     @Override
     public int onStartCommand(@NonNull Intent intent, int flags, int startId) {
         if (Logger.DEBUG) { Log.d(TAG, "[websync start]"); }
 
+        if (serviceHandler == null) {
+            if (Logger.DEBUG) { Log.d(TAG, "[websync give up on serviceHandler not initialized]"); }
+            stopSelf();
+            return START_NOT_STICKY;
+        }
         final Notification notification = notificationHelper.showNotification();
         startForeground(notificationHelper.getId(), notification);
 
