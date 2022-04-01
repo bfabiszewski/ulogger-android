@@ -308,7 +308,11 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
 
     @Override
     public void onDestroy() {
-        ImageHelper.clearImageCache(requireContext());
+        if (Logger.DEBUG) { Log.d(TAG, "[onDestroy]"); }
+        if (isRemoving()) {
+            if (Logger.DEBUG) { Log.d(TAG, "[onDestroy isRemoving]"); }
+            ImageHelper.clearImageCache(requireContext());
+        }
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;
