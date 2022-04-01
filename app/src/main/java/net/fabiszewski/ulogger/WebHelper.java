@@ -288,8 +288,8 @@ class WebHelper {
      * @param data Text part data
      * @return Length in bytes
      */
-    private int getMultipartLength(@NonNull Uri uri, byte[] data) {
-        int length = 0;
+    private long getMultipartLength(@NonNull Uri uri, byte[] data) {
+        long length = 0;
         String fileMime = ImageHelper.getFileMime(context, uri);
         if (fileMime != null) {
             // text part size
