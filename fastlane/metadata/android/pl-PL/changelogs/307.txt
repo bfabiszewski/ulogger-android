@@ -1,0 +1,10 @@
+3.7: μlogger
+
+Zmiany:
+- Minimalna wymagane API zwiększone do 21 (Lollipop 5.0)
+- Poprawiona regresja: znikająca ikona powiadomienia w Androidzie 7 i niższych
+- Poprawione problemy z miniaturką obrazu na ekranie ręcznego dodawania pozycji
+- Inne drobne poprawki
+
+Tłumaczenia:
+- Zaktualizowane tłumaczenia

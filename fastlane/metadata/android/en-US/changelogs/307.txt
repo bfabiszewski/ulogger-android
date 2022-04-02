@@ -1,0 +1,10 @@
+3.7: μlogger
+
+Changes:
+- Raises minimum supported version to Lollipop 5.0 (API 21)
+- Fixed regression: disappearing notification icon on Android 7 and lower
+- Fixed issues with image thumbnail on waypoint screen
+- Some smaller fixes and cleanups
+
+Translations:
+- Updated translations
