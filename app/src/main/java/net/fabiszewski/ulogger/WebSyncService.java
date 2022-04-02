@@ -69,7 +69,7 @@ public class WebSyncService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (Logger.DEBUG) { Log.d(TAG, "[websync create]"); }
+        if (Logger.DEBUG) { Log.d(TAG, "[onCreate]"); }
 
         web = new WebHelper(this);
         notificationHelper = new NotificationHelper(this, true);
@@ -78,10 +78,8 @@ public class WebSyncService extends Service {
         thread.start();
         Looper looper = thread.getLooper();
         if (looper != null) {
-            if (Logger.DEBUG) { Log.d(TAG, "[websync fatal error: looper is null]"); }
             serviceHandler = new ServiceHandler(looper);
         }
-
         // keep database open during whole service runtime
         db = DbAccess.getInstance();
         db.open(this);
@@ -129,10 +127,10 @@ public class WebSyncService extends Service {
      */
     @Override
     public int onStartCommand(@NonNull Intent intent, int flags, int startId) {
-        if (Logger.DEBUG) { Log.d(TAG, "[websync start]"); }
+        if (Logger.DEBUG) { Log.d(TAG, "[onStartCommand]"); }
 
         if (serviceHandler == null) {
-            if (Logger.DEBUG) { Log.d(TAG, "[websync give up on serviceHandler not initialized]"); }
+            if (Logger.DEBUG) { Log.d(TAG, "[Give up on serviceHandler not initialized]"); }
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -164,11 +162,11 @@ public class WebSyncService extends Service {
                 trackId = web.startTrack(trackName);
                 db.setTrackId(trackId);
             } catch (IOException e) {
-                if (Logger.DEBUG) { Log.d(TAG, "[websync io exception: " + e + "]"); }
+                if (Logger.DEBUG) { Log.d(TAG, "[getTrackId: io exception: " + e + "]"); }
                 // schedule retry
                 handleError(e);
             } catch (WebAuthException e) {
-                if (Logger.DEBUG) { Log.d(TAG, "[websync auth exception: " + e + "]"); }
+                if (Logger.DEBUG) { Log.d(TAG, "[getTrackId: auth exception: " + e + "]"); }
                 WebHelper.deauthorize();
                 try {
                     // reauthorize and retry
@@ -204,13 +202,13 @@ public class WebSyncService extends Service {
         } catch (IOException e) {
             // handle web errors
             if (Logger.DEBUG) {
-                Log.d(TAG, "[websync io exception: " + e + "]");
+                Log.d(TAG, "[doSync: io exception: " + e + "]");
             }
             // schedule retry
             handleError(e);
         } catch (WebAuthException e) {
             if (Logger.DEBUG) {
-                Log.d(TAG, "[websync auth exception: " + e + "]");
+                Log.d(TAG, "[doSync: auth exception: " + e + "]");
             }
             WebHelper.deauthorize();
             try {
@@ -244,7 +242,7 @@ public class WebSyncService extends Service {
         } else {
             message = reason;
         }
-        if (Logger.DEBUG) { Log.d(TAG, "[websync retry: " + message + "]"); }
+        if (Logger.DEBUG) { Log.d(TAG, "[handleError: retry: " + message + "]"); }
 
         db.setError(message);
         Intent intent = new Intent(BROADCAST_SYNC_FAILED);
@@ -260,7 +258,7 @@ public class WebSyncService extends Service {
      * Set pending alarm
      */
     private void setPending() {
-        if (Logger.DEBUG) { Log.d(TAG, "[websync set alarm]"); }
+        if (Logger.DEBUG) { Log.d(TAG, "[setPending alarm]"); }
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent syncIntent = new Intent(getApplicationContext(), WebSyncService.class);
         int flags = FLAG_ONE_SHOT;
@@ -278,7 +276,7 @@ public class WebSyncService extends Service {
      */
     private void cancelPending() {
         if (hasPending()) {
-            if (Logger.DEBUG) { Log.d(TAG, "[websync cancel alarm]"); }
+            if (Logger.DEBUG) { Log.d(TAG, "[cancelPending alarm]"); }
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             if (am != null) {
                 am.cancel(pi);
@@ -335,7 +333,7 @@ public class WebSyncService extends Service {
      */
     @Override
     public void onDestroy() {
-        if (Logger.DEBUG) { Log.d(TAG, "[websync stop]"); }
+        if (Logger.DEBUG) { Log.d(TAG, "[onDestroy]"); }
         if (db != null) {
             db.close();
         }
