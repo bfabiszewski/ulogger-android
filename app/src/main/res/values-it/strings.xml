@@ -11,6 +11,7 @@
     <string name="button_newtrack">Nuova traccia</string>
     <string name="button_upload">Carica</string>
     <string name="is_running" comment="substituted app_name">%s è in esecuzione</string>
+    <string name="is_uploading" comment="substituted app_name">%s sta caricando le posizioni</string>
     <string name="title_newtrack">Nuova traccia</string>
     <string name="label_track">Traccia corrente</string>
     <string name="label_newtrack_name">Nome della nuova traccia</string>

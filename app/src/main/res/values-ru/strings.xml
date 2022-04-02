@@ -11,6 +11,7 @@
     <string name="button_newtrack">Новый трeк</string>
     <string name="button_upload">Опубликовать</string>
     <string name="is_running" comment="substituted app_name">%s запущен</string>
+    <string name="is_uploading" comment="substituted app_name">%s загружает позиции</string>
     <string name="title_newtrack">Новый трeк</string>
     <string name="label_track">Текущий трeк</string>
     <string name="label_newtrack_name">Имя нового трека</string>

@@ -11,6 +11,7 @@
     <string name="button_newtrack">Nueva ruta</string>
     <string name="button_upload">Subir</string>
     <string name="is_running" comment="substituted app_name">%s está en ejecución</string>
+    <string name="is_uploading" comment="substituted app_name">%s está subiendo posiciones</string>
     <string name="title_newtrack">Nueva ruta</string>
     <string name="label_track">Ruta actual</string>
     <string name="label_newtrack_name">Nombre de la nueva ruta</string>

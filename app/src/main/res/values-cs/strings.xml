@@ -7,10 +7,11 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="button_newtrack">Nová trasa</string>
     <string name="button_upload">Nahrát</string>
     <string name="is_running" comment="substituted app_name">%s běží</string>
+    <string name="is_uploading" comment="substituted app_name">%s nahrává pozice</string>
     <string name="title_newtrack">Nová trasa</string>
     <string name="label_track">Aktuální trasa</string>
     <string name="label_newtrack_name">Nový název trasy</string>
@@ -73,7 +74,7 @@
     <string name="uploading_done">Nahrávání hotovo</string>
     <string name="track_summary">Souhrn trasy</string>
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
-    <plurals name="summary_positions" tools:ignore="UnusedQuantity">
+    <plurals name="summary_positions">
         <item quantity="one">%d pozice</item>
         <item quantity="few">%d pozic</item>
         <item quantity="many">%d pozic</item>
@@ -105,7 +106,7 @@
     <string name="export_failed">Export se nezdařil</string>
     <string name="unknown_track">Neznámá trasa</string>
     <string name="export_started">Export začal</string>
-    <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
+    <plurals name="label_positions_behind">
         <item quantity="one">%d pozice zbývá</item>
         <item quantity="few">%d pozice zbývají</item>
         <item quantity="many">%d pozic zbývá</item>

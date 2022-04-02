@@ -11,6 +11,7 @@
     <string name="button_newtrack">Nouvelle trace</string>
     <string name="button_upload">Envoyer</string>
     <string name="is_running" comment="substituted app_name">%s est lancé</string>
+    <string name="is_uploading" comment="substituted app_name">%s envoie des positions</string>
     <string name="title_newtrack">Nouvelle trace</string>
     <string name="label_track">Trace actuelle</string>
     <string name="label_newtrack_name">Nom de la nouvelle trace</string>
