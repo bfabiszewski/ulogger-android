@@ -1,5 +1,6 @@
 [main]
 host = https://www.transifex.com
+lang_map = pt_BR: pt-rBR
 
 [ulogger.strings-xml]
 file_filter = ./app/src/main/res/values-<lang>/strings.xml
