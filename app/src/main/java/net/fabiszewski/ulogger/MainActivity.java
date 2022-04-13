@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -248,6 +249,8 @@ public class MainActivity extends AppCompatActivity
         if (descriptionLabel != null && description2Label != null) {
             descriptionLabel.setText(HtmlCompat.fromHtml(getString(R.string.about_description), HtmlCompat.FROM_HTML_MODE_LEGACY));
             description2Label.setText(HtmlCompat.fromHtml(getString(R.string.about_description2), HtmlCompat.FROM_HTML_MODE_LEGACY));
+            descriptionLabel.setMovementMethod(LinkMovementMethod.getInstance());
+            description2Label.setMovementMethod(LinkMovementMethod.getInstance());
         }
         final Button okButton = dialog.findViewById(R.id.about_button_ok);
         if (okButton != null) {
