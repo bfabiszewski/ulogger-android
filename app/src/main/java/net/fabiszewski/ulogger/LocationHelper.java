@@ -19,6 +19,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.CancellationSignal;
 import android.os.Looper;
+import android.os.OperationCanceledException;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -213,6 +214,8 @@ class LocationHelper {
         } catch (SecurityException e) {
             if (Logger.DEBUG) { Log.d(TAG, "[requestProviderUpdates permission denied: " + provider + " (" + singleShot + ")]"); }
             throw new LoggerException("Permission denied", LoggerException.E_PERMISSION);
+        } catch (OperationCanceledException e) {
+            if (Logger.DEBUG) { Log.d(TAG, "[requestProviderUpdates operation cancelled: " + provider + " (" + singleShot + ")]"); }
         }
     }
 
