@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="net.fabiszewski.ulogger">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <queries>
         <intent>
@@ -11,6 +10,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Only needed when started without user interaction (external command or auto-start) -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- For writing camera images API <= 28 -->
@@ -23,13 +24,14 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- For foreground services API >= 28 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- For notifications API >= 33 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <!-- For location API >= 21 -->
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
     <uses-feature android:name="android.hardware.location.network" />
     <!-- For attaching images to waypoints -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <!-- Only needed when started without user interaction (external command or auto-start) -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
