@@ -19,6 +19,10 @@ class CreateGpxDocument extends ActivityResultContracts.CreateDocument {
 
     public static final String GPX_MIME = "application/gpx+xml";
 
+    public CreateGpxDocument() {
+        super(GPX_MIME);
+    }
+
     @NonNull
     @Override
     public Intent createIntent(@NonNull Context context, @NonNull String input) {

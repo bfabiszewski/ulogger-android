@@ -176,16 +176,25 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         return layout;
     }
 
+    @SuppressWarnings({"deprecation", "RedundantSuppression"})
     private void restoreState(Bundle savedInstanceState) {
         if (Logger.DEBUG) { Log.d(TAG, "[restoreState]"); }
         if (savedInstanceState.containsKey(KEY_WAITING)) {
             isWaitingForCamera = true;
         }
         if (savedInstanceState.containsKey(KEY_URI)) {
-            photoUri = savedInstanceState.getParcelable(KEY_URI);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                photoUri = savedInstanceState.getParcelable(KEY_URI, Uri.class);
+            } else {
+                photoUri = savedInstanceState.getParcelable(KEY_URI);
+            }
         }
         if (savedInstanceState.containsKey(KEY_LOCATION)) {
-            location = savedInstanceState.getParcelable(KEY_LOCATION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                location = savedInstanceState.getParcelable(KEY_LOCATION, Location.class);
+            } else {
+                location = savedInstanceState.getParcelable(KEY_LOCATION);
+            }
             setLocationText();
             saveButton.setEnabled(true);
         }
