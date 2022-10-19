@@ -333,11 +333,13 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * Display location details
      */
     private void setLocationText() {
-        LocationFormatter formatter = new LocationFormatter(location);
-        locationNotFoundTextView.setVisibility(View.GONE);
-        locationTextView.setText(String.format("%s\n—\n%s", formatter.getLongitudeDMS(), formatter.getLatitudeDMS()));
-        locationTextView.setVisibility(View.VISIBLE);
-        locationDetailsTextView.setText(formatter.getDetails(requireContext()));
+        if (location != null) {
+            LocationFormatter formatter = new LocationFormatter(location);
+            locationNotFoundTextView.setVisibility(View.GONE);
+            locationTextView.setText(String.format("%s\n—\n%s", formatter.getLongitudeDMS(), formatter.getLatitudeDMS()));
+            locationTextView.setVisibility(View.VISIBLE);
+            locationDetailsTextView.setText(formatter.getDetails(requireContext()));
+        }
     }
 
 
@@ -474,7 +476,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * @param location Current location
      */
     @Override
-    public void onLoggerTaskCompleted(Location location) {
+    public void onLoggerTaskCompleted(@NonNull Location location) {
         if (Logger.DEBUG) { Log.d(TAG, "[onLoggerTaskCompleted: " + location + "]"); }
         this.location = location;
         if (imageTask == null || !imageTask.isRunning()) {

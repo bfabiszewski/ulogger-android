@@ -238,7 +238,7 @@ class LoggerTask implements LocationListener, Runnable {
     }
 
     interface LoggerTaskCallback {
-        void onLoggerTaskCompleted(Location location);
+        void onLoggerTaskCompleted(@NonNull Location location);
         void onLoggerTaskFailure(int reason);
         Activity getActivity();
     }
