@@ -54,6 +54,10 @@ led | tracking | synchronization
 Starting with Android 11, if you want to use the application without user interaction (automating, autostart on boot), it is necessary to grant application background location permission ("Allow all the time" option).
 In all other cases, when you start tracking from app screen, it is enough to grant "Allow only while using the app" option.
 
+## Battery optimization
+For reliable work battery optimization should be turned off for µlogger. Otherwise location service working in the background may be stopped by the operating system.
+On Android 12+ the application will refuse to start from background without user interaction (automation, autostart) with battery optimization turned on.
+
 ## App settings guidelines
 Finding the optimized settings for your practice can be a bit complex and may require you to do a lot of testing.
 As a first approach, here are some parameters that offer a good compromise between precision and the number of points acquired by your server.
