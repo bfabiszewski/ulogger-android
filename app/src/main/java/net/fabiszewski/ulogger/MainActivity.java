@@ -39,6 +39,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import java.util.concurrent.ExecutorService;
@@ -140,6 +141,13 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.menu_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             settingsLauncher.launch(intent);
+            return true;
+        } else if (id == R.id.menu_self_check) {
+            SelfCheckFragment fragment = new SelfCheckFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_placeholder, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
             return true;
         } else if (id == R.id.menu_about) {
             showAbout();

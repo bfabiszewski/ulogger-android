@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ Copyright (c) 2023 Bartek Fabiszewski
   ~ http://www.fabiszewski.net
   ~
   ~ This file is part of μlogger-android.
@@ -21,6 +21,12 @@
         android:icon="@drawable/ic_file_download_white_24dp"
         android:tint="@android:color/background_light"
         android:title="@string/export"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_self_check"
+        android:icon="@drawable/ic_baseline_check_box_24"
+        android:tint="@android:color/background_light"
+        android:title="@string/label_self_check"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_clear"

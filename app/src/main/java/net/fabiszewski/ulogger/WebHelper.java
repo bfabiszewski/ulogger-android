@@ -12,6 +12,9 @@ package net.fabiszewski.ulogger;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
@@ -457,6 +460,78 @@ class WebHelper {
             store.removeAll();
         }
         isAuthorized = false;
+    }
+
+    void checkAuthorization() throws JSONException, IOException, WebAuthException {
+        boolean wasAuthorized = isAuthorized;
+        try {
+            authorize();
+            if (!wasAuthorized) {
+                deauthorize();
+            }
+        } catch (IOException | WebAuthException | JSONException e) {
+            if (Logger.DEBUG) { Log.d(TAG, "[isValidAccount exception: " + e + "]"); }
+            throw e;
+        }
+    }
+
+    /**
+     * Ping server without authorization
+     * @throws IOException Exception on timeout or server internal error
+     */
+    boolean isReachable() throws IOException {
+        if (!isNetworkAvailable()) {
+            return false;
+        }
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(host + "/" + CLIENT_SCRIPT);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.setRequestProperty("User-Agent", userAgent);
+            connection.setConnectTimeout(SOCKET_TIMEOUT);
+            connection.setReadTimeout(SOCKET_TIMEOUT);
+            int responseCode = connection.getResponseCode();
+            if (Logger.DEBUG) { Log.d(TAG, "[isReachable " + host + ": " + responseCode + "]"); }
+            if (responseCode / 100 == 5) {
+                throw new IOException(context.getString(R.string.e_http_code, responseCode));
+            }
+            return true;
+        } catch (IOException e) {
+            if (Logger.DEBUG) { Log.d(TAG, "[isReachable exception: " + e + "]"); }
+            throw e;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        boolean isAvailable = false;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+                if (capabilities != null) {
+                    isAvailable = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+                }
+            } else {
+                isAvailable = isNetworkAvailableApi21(connectivityManager);
+            }
+
+        }
+        if (Logger.DEBUG) { Log.d(TAG, "[isNetworkAvailable " + isAvailable + "]"); }
+        return isAvailable;
+    }
+
+    @SuppressWarnings({"deprecation", "RedundantSuppression"})
+    private boolean isNetworkAvailableApi21(ConnectivityManager connectivityManager) {
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        return info != null && info.isAvailable() && info.isConnected();
     }
 
     /**
