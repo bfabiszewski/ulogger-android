@@ -33,8 +33,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     lint {
         disable 'GoogleAppIndexingWarning', 'MissingTranslation', 'NotificationIconCompatibility'
@@ -44,12 +44,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation('androidx.preference:preference:1.2.0') {
-        // workaround for appcompat:1.5.1
-        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
-        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
-    }
-    implementation 'androidx.exifinterface:exifinterface:1.3.4'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.exifinterface:exifinterface:1.3.5'
     testImplementation 'junit:junit:4.13.2'
 }

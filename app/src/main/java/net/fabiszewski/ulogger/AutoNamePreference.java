@@ -32,16 +32,16 @@ class AutoNamePreference extends TrimmedEditTextPreference {
     private static final Pattern PATTERN = Pattern.compile("%[%ymdHMS]|'");
     private static final Map<String, String> PLACEHOLDERS;
     static {
-        Map<String, String> map = new HashMap<>();
-        map.put("%%", "%");
-        map.put("%y", "yyyy");
-        map.put("%m", "MM");
-        map.put("%d", "dd");
-        map.put("%H", "HH");
-        map.put("%M", "mm");
-        map.put("%S", "ss");
-        map.put("'", "''");
-        PLACEHOLDERS = Collections.unmodifiableMap(map);
+        PLACEHOLDERS = Map.of(
+                "%%", "%",
+                "%y", "yyyy",
+                "%m", "MM",
+                "%d", "dd",
+                "%H", "HH",
+                "%M", "mm",
+                "%S", "ss",
+                "'", "''"
+        );
     }
 
     public AutoNamePreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
