@@ -10,7 +10,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">μlogger</string>
     <string name="app_name_ascii" translatable="false">ulogger</string>
-    <string name="button_newtrack">New track</string>
     <string name="button_upload">Upload</string>
     <string name="is_running" comment="substituted app_name">%s is running</string>
     <string name="is_uploading" comment="substituted app_name">%s is uploading positions</string>
@@ -151,4 +150,18 @@
     <string name="image_task_failed">Image resampling failed</string>
     <string name="background_location_rationale">Background location permission is only needed when tracking is started without user interaction: through external command or when application is automatically started on system boot.\nFor this functionality to work you must select \"%s\" option in the location permission dialog.\nProceed to application permissions?</string>
     <string name="background_location_required">Background location permission required</string>
+    <string name="label_self_check">Self-check</string>
+    <string name="self_check_approximate_location_rationale">Required. Without this permission application will not be able to acquire location</string>
+    <string name="self_check_precise_location_rationale">Optional. Must be enabled to use precise location from GPS</string>
+    <string name="self_check_background_location_rationale">Optional. Required only when application is started in an automated way*</string>
+    <string name="self_check_storage_rationale">Optional. Only necessary if you want to attach camera images to waypoints.</string>
+    <string name="self_check_notifications_rationale">Optional. If allowed you will be notified about application working in the background.</string>
+    <string name="self_check_battery_unrestricted_rationale">Optional. Highly recommended for reliable work. If not allowed the system may stop application while running in background in order to save battery. Required for automated usage*</string>
+    <string name="self_check_battery_unrestricted_title">Unrestricted battery usage</string>
+    <string name="self_check_permissions_title">Permissions</string>
+    <string name="self_check_providers_title">Location providers</string>
+    <string name="self_check_server_configured">Server configured</string>
+    <string name="self_check_server_reachable">Server reachable</string>
+    <string name="self_check_valid_server_account">Valid server account</string>
+    <string name="self_check_automated_usage">* Automated usage: starting logging without user interaction from external application or on system boot</string>
 </resources>

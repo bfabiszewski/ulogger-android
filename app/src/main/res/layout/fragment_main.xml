@@ -12,7 +12,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/share_button"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -69,7 +68,7 @@
                 android:drawableTop="@drawable/ic_library_add_white_24dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:text="@string/button_newtrack"
+                android:text="@string/title_newtrack"
                 android:textColor="?android:attr/textColorAlertDialogListItem"
                 android:textStyle="bold" />
 

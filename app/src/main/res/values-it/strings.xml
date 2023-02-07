@@ -8,7 +8,6 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="button_newtrack">Nuova traccia</string>
     <string name="button_upload">Carica</string>
     <string name="is_running" comment="substituted app_name">%s è in esecuzione</string>
     <string name="is_uploading" comment="substituted app_name">%s sta caricando le posizioni</string>
