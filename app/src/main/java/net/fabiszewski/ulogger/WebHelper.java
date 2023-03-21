@@ -158,6 +158,7 @@ class WebHelper {
             if (dataString.length() > 0) {
                 dataString.append("&");
             }
+            //noinspection CharsetObjectCanBeUsed
             dataString.append(URLEncoder.encode(key, "UTF-8"))
                       .append("=")
                       .append(URLEncoder.encode(value, "UTF-8"));
