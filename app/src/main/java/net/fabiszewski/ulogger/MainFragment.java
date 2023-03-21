@@ -12,7 +12,6 @@ package net.fabiszewski.ulogger;
 import static net.fabiszewski.ulogger.Alert.showAlert;
 import static net.fabiszewski.ulogger.Alert.showConfirm;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,7 +21,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -36,8 +34,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -48,16 +44,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 @SuppressWarnings("WeakerAccess")
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements PermissionHelper.PermissionRequester {
 
     private final String TAG = MainFragment.class.getSimpleName();
 
@@ -85,7 +78,11 @@ public class MainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    final PermissionHelper permissionHelper;
+
+
     public MainFragment() {
+        permissionHelper = new PermissionHelper(this, this);
     }
 
     static MainFragment newInstance() {
@@ -602,6 +599,20 @@ public class MainFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPermissionGranted(@Nullable String requestCode) {
+        if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: granted]"); }
+        Context context = getContext();
+        if (context != null) {
+            startLogger(context);
+        }
+    }
+
+    @Override
+    public void onPermissionDenied(@Nullable String requestCode) {
+        if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: denied]"); }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -712,36 +723,10 @@ public class MainFragment extends Fragment {
                 case LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED:
                     showToast(getString(R.string.location_permission_denied));
                     setLocLed(LED_RED);
-                    List<String> permissions = new ArrayList<>();
-                    permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        // On Android 12+ coarse location permission must be also requested
-                        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-                    }
-                    requestLocationPermission.launch(permissions.toArray(new String[0]));
+                    permissionHelper.requestFineLocationPermission();
                     break;
             }
         }
     };
-
-    /**
-     * Request location permission, on granted start logger service
-     */
-    final ActivityResultLauncher<String[]> requestLocationPermission = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), results -> {
-        if (Logger.DEBUG) { Log.d(TAG, "[requestLocationPermission: " + results.entrySet() + "]"); }
-        boolean isGranted = false;
-        for (Map.Entry<String, Boolean> result : results.entrySet()) {
-            if (result.getValue()) {
-                isGranted = true;
-            }
-        }
-        if (isGranted) {
-            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: granted]"); }
-            Context context = getContext();
-            if (context != null) {
-                startLogger(context);
-            }
-        }
-    });
 
 }

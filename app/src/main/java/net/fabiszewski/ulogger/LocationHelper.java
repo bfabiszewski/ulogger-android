@@ -9,10 +9,8 @@
 
 package net.fabiszewski.ulogger;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,7 +23,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import java.util.ArrayList;
@@ -52,10 +49,13 @@ class LocationHelper {
     private long maxTimeMillis;
     private final List<String> userProviders = new ArrayList<>();
 
+    private final PermissionHelper permissionHelper;
+
 
     private LocationHelper(@NonNull Context context) {
         this.context = context.getApplicationContext();
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        permissionHelper = new PermissionHelper(context);
         updatePreferences();
     }
 
@@ -101,10 +101,7 @@ class LocationHelper {
      * @return True if permission granted, false otherwise
      */
     boolean canAccessLocation() {
-        boolean ret = (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) ||
-                (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        if (Logger.DEBUG) { Log.d(TAG, "[canAccessLocation: " + ret + "]"); }
-        return ret;
+        return permissionHelper.hasForegroundLocationPermission();
     }
 
     /**
@@ -114,12 +111,7 @@ class LocationHelper {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean canAccessBackgroundLocation() {
-        boolean ret = true;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ret = (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        }
-        if (Logger.DEBUG) { Log.d(TAG, "[canAccessBackgroundLocation: " + ret + "]"); }
-        return ret;
+        return permissionHelper.hasBackgroundLocationPermission();
     }
 
     /**
@@ -315,7 +307,7 @@ class LocationHelper {
 
     /**
      * Fix GPS week count rollover bug if needed
-     * https://galileognss.eu/gps-week-number-rollover-april-6-2019/
+     * <a href="https://galileognss.eu/gps-week-number-rollover-april-6-2019/">https://galileognss.eu/gps-week-number-rollover-april-6-2019/</a>
      * @param location Location
      */
     static void handleRolloverBug(@NonNull Location location) {

@@ -1,8 +1,6 @@
 package net.fabiszewski.ulogger;
 
-import static android.Manifest.permission.ACCESS_BACKGROUND_LOCATION;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -15,6 +13,7 @@ import android.util.Log;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,18 +27,35 @@ import java.util.Map;
 public class PermissionHelper {
 
     public interface PermissionRequester {
-        void onPermissionGranted(String requestCode);
-        void onPermissionDenied(String requestCode);
+        void onPermissionGranted(@Nullable String requestCode);
+        void onPermissionDenied(@Nullable String requestCode);
     }
 
     private static final String TAG = PermissionHelper.class.getSimpleName();
+    @Nullable
     private String requestCode;
-
-    final ActivityResultLauncher<String[]> resultLauncher;
-    final Fragment fragment;
+    @Nullable
+    private ActivityResultLauncher<String[]> resultLauncher;
+    @Nullable
+    private Fragment fragment;
+    @Nullable
+    private Context context;
     boolean isLocationStageTwoNeeded = false;
 
-    public PermissionHelper(Fragment fragment, PermissionRequester requester) {
+    /**
+     * Constructor for simple usage, without requesting permissions
+     * @param context Context
+     */
+    public PermissionHelper(@NonNull Context context) {
+        this.context = context;
+    }
+
+    /**
+     * Constructor for extended usage with requesting permissions
+     * @param fragment Fragment
+     * @param requester Permission requester
+     */
+    public PermissionHelper(@NonNull Fragment fragment, @NonNull PermissionRequester requester) {
         this.fragment = fragment;
         resultLauncher = fragment.registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), results -> {
             if (Logger.DEBUG) { Log.d(TAG, "[requestPermission: " + results.entrySet() + "]"); }
@@ -47,6 +63,7 @@ public class PermissionHelper {
             for (Map.Entry<String, Boolean> result : results.entrySet()) {
                 if (result.getValue()) {
                     isGranted = true;
+                    break;
                 }
             }
             boolean isStageTwoNeeded = isLocationStageTwoNeeded;
@@ -68,16 +85,38 @@ public class PermissionHelper {
         });
     }
 
-    public void requestWritePermission(String requestCode) {
-        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, requestCode);
+    @Nullable
+    private Context getContext() {
+        return fragment != null ? fragment.getContext() : context;
     }
 
+    /**
+     * @param requestCode Request code will be returned with callback
+     */
+    public void requestWriteExternalStoragePermission(@Nullable String requestCode) {
+        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, requestCode);
+    }
+    public void requestWriteExternalStoragePermission() {
+        requestWriteExternalStoragePermission(null);
+    }
+
+    /**
+     * @param requestCode Request code will be returned with callback
+     */
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void requestNotificationsPermission(String requestCode) {
+    public void requestNotificationsPermission(@Nullable String requestCode) {
         requestPermission(Manifest.permission.POST_NOTIFICATIONS, requestCode);
     }
 
-    public void requestFineLocationPermission(String requestCode) {
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public void requestNotificationsPermission() {
+        requestNotificationsPermission(null);
+    }
+
+    /**
+     * @param requestCode Request code will be returned with callback
+     */
+    public void requestFineLocationPermission(@Nullable String requestCode) {
         List<String> permissions = new ArrayList<>();
         permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -87,16 +126,33 @@ public class PermissionHelper {
         requestPermissions(permissions, requestCode);
     }
 
-    public void requestCoarseLocationPermission(String requestCode) {
+    public void requestFineLocationPermission() {
+        requestFineLocationPermission(null);
+    }
+
+    /**
+     * @param requestCode Request code will be returned with callback
+     */
+    public void requestCoarseLocationPermission(@Nullable String requestCode) {
         requestPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION, requestCode);
     }
 
+    public void requestCoarseLocationPermission() {
+        requestCoarseLocationPermission(null);
+    }
 
+    /**
+     * @param requestCode Request code will be returned with callback
+     */
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public void requestBackgroundLocationPermission(String requestCode) {
+    public void requestBackgroundLocationPermission(@Nullable String requestCode) {
+        if (fragment == null || fragment.getActivity() == null || resultLauncher == null) {
+            if (Logger.DEBUG) { Log.d(TAG, "[requestBackgroundLocationPermission: missing fragment context]"); }
+            return;
+        }
         List<String> permissions = new ArrayList<>();
         // Background location permission can only be granted when forward location is permitted
-        if (hasForwardLocationPermission()) {
+        if (hasForegroundLocationPermission()) {
             permissions.add(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         } else {
             if (Logger.DEBUG) { Log.d(TAG, "[forward location permission denied]"); }
@@ -109,52 +165,101 @@ public class PermissionHelper {
 
         if (permissions.contains(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(fragment.requireActivity(), android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            final CharSequence label = getBackgroundPermissionOptionLabel(fragment.requireContext());
-            Alert.showConfirm(
-                    fragment.requireContext(),
-                    fragment.getString(R.string.background_location_required),
-                    fragment.getString(R.string.background_location_rationale, label),
-                    (dialog, which) -> {
-                        dialog.dismiss();
-                        requestPermissions(permissions, requestCode);
-                    }
-            );
+            showBackgroundLocationPermissionRationale(permissions, requestCode);
         } else {
             requestPermissions(permissions, requestCode);
         }
-
     }
 
-    public void requestPermission(String permission, String requestCode) {
+    /**
+     * Show permission rationale dialog, on accept request permission
+     * 
+     * @param permissions Requested permissions
+     * @param requestCode Request code which will be returned with callback
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void showBackgroundLocationPermissionRationale(List<String> permissions, @Nullable String requestCode) {
+        final Context ctx = getContext();
+        if (ctx == null) {
+            if (Logger.DEBUG) { Log.d(TAG, "[requestBackgroundLocationPermission: missing context]"); }
+            return;
+        }
+        final CharSequence label = getBackgroundPermissionOptionLabel(ctx);
+        Alert.showConfirm(
+                ctx,
+                ctx.getString(R.string.background_location_required),
+                ctx.getString(R.string.background_location_rationale, label),
+                (dialog, which) -> {
+                    dialog.dismiss();
+                    requestPermissions(permissions, requestCode);
+                }
+        );
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void requestBackgroundLocationPermission() {
+        requestBackgroundLocationPermission(null);
+    }
+
+    /**
+     * @param permission Requested permission
+     * @param requestCode Request code which will be returned with callback
+     */
+    public void requestPermission(@NonNull String permission, @Nullable String requestCode) {
         List<String> permissions = new ArrayList<>();
         permissions.add(permission);
         requestPermissions(permissions, requestCode);
     }
 
-    public void requestPermissions(List<String> permissions, String requestCode) {
-        this.requestCode = requestCode;
-        resultLauncher.launch(permissions.toArray(new String[0]));
-    }
-
-    public boolean hasPermission(String permission) {
-        Context context = fragment.getContext();
-        if (context == null) {
-            if (Logger.DEBUG) { Log.d(TAG, "[hasPermission: null context]"); }
-            return false;
+    /**
+     * @param permissions Requested permissions
+     * @param requestCode Request code which will be returned with callback
+     */
+    public void requestPermissions(@NonNull List<String> permissions, @Nullable String requestCode) {
+        if (fragment != null && resultLauncher != null) {
+            this.requestCode = requestCode;
+            resultLauncher.launch(permissions.toArray(new String[0]));
+        } else {
+            if (Logger.DEBUG) { Log.d(TAG, "[requestPermissions: missing fragment context]"); }
         }
-        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
-     * Check if user granted permission to access location.
+     * Check if user granted given permission.
+     *
+     * @param permission Requested permission
+     * @return True if has requested permission
+     */
+    public boolean hasPermission(@NonNull String permission) {
+        final Context ctx = getContext();
+        if (ctx == null) {
+            if (Logger.DEBUG) { Log.d(TAG, "[hasPermission: missing context]"); }
+            return false;
+        }
+        boolean ret = ContextCompat.checkSelfPermission(ctx, permission) == PackageManager.PERMISSION_GRANTED;
+        if (Logger.DEBUG) { Log.d(TAG, "[has " + permission + " permission: " + ret + "]"); }
+        return ret;
+    }
+
+    /**
+     * Check if user granted permission to write external storage.
      *
      * @return True if permission granted, false otherwise
      */
-    boolean hasForwardLocationPermission() {
-        boolean ret = (ActivityCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) ||
-                (ActivityCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        if (Logger.DEBUG) { Log.d(TAG, "[hasForwardLocationPermission: " + ret + "]"); }
-        return ret;
+    boolean hasWriteExternalStoragePermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            return hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        return true;
+    }
+
+    /**
+     * Check if user granted permission to access location (coarse or fine).
+     *
+     * @return True if permission granted, false otherwise
+     */
+    boolean hasForegroundLocationPermission() {
+        return hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) || hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
     /**
@@ -165,39 +270,31 @@ public class PermissionHelper {
     boolean hasBackgroundLocationPermission() {
         boolean ret = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ret = (ActivityCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED);
+            ret = hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         }
-        if (Logger.DEBUG) { Log.d(TAG, "[hasBackgroundLocationPermission: " + ret + "]"); }
         return ret;
-    }
-
-    public static boolean isLocationPermission(@NonNull String permission) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ACCESS_BACKGROUND_LOCATION.equals(permission)) {
-            return true;
-        }
-        return ACCESS_COARSE_LOCATION.equals(permission) || ACCESS_FINE_LOCATION.equals(permission);
     }
 
     /**
      * Wrapper for getBackgroundPermissionOptionLabel() method
      * Will return translated label only when context string was also translated
-     * @param context Context
+     * @param ctx Context
      * @return Localized label
      */
     @SuppressLint("AppBundleLocaleChanges")
     @RequiresApi(api = Build.VERSION_CODES.R)
-    private CharSequence getBackgroundPermissionOptionLabel(Context context) {
-        CharSequence label = context.getPackageManager().getBackgroundPermissionOptionLabel();
+    private CharSequence getBackgroundPermissionOptionLabel(@NonNull Context ctx) {
+        CharSequence label = ctx.getPackageManager().getBackgroundPermissionOptionLabel();
         CharSequence defaultLabel = "Allow all the time";
 
         if (Locale.getDefault().getLanguage().equals("en")) {
             return label.length() > 0 ? label : defaultLabel;
         }
 
-        CharSequence translated = context.getString(R.string.background_location_rationale);
-        Configuration config = new Configuration(context.getResources().getConfiguration());
+        CharSequence translated = ctx.getString(R.string.background_location_rationale);
+        Configuration config = new Configuration(ctx.getResources().getConfiguration());
         config.setLocale(Locale.ENGLISH);
-        CharSequence defaultText = context.createConfigurationContext(config).getText(R.string.background_location_rationale);
+        CharSequence defaultText = ctx.createConfigurationContext(config).getText(R.string.background_location_rationale);
 
         return translated.equals(defaultText) ? defaultLabel : label;
     }

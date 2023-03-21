@@ -266,22 +266,22 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
                 if (isChecked) {
                     switch (permission) {
                         case ACCESS_COARSE_LOCATION:
-                            permissionHelper.requestFineLocationPermission(null);
+                            permissionHelper.requestCoarseLocationPermission();
                             break;
                         case ACCESS_FINE_LOCATION:
-                            permissionHelper.requestCoarseLocationPermission(null);
+                            permissionHelper.requestFineLocationPermission();
                             break;
                         case ACCESS_BACKGROUND_LOCATION:
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                permissionHelper.requestBackgroundLocationPermission(null);
+                                permissionHelper.requestBackgroundLocationPermission();
                             }
                             break;
                         case WRITE_EXTERNAL_STORAGE:
-                            permissionHelper.requestWritePermission(null);
+                            permissionHelper.requestWriteExternalStoragePermission();
                             break;
                         case POST_NOTIFICATIONS:
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                permissionHelper.requestNotificationsPermission(null);
+                                permissionHelper.requestNotificationsPermission();
                             }
                             break;
                     }

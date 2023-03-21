@@ -12,12 +12,9 @@ package net.fabiszewski.ulogger;
 import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
-import static androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions;
-import static androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import static androidx.activity.result.contract.ActivityResultContracts.TakePicture;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
-import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -41,22 +38,19 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback, ImageTask.ImageTaskCallback {
+public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskCallback, ImageTask.ImageTaskCallback, PermissionHelper.PermissionRequester {
 
+    private static final String TAG = WaypointFragment.class.getSimpleName();
     private static final String KEY_URI = "keyPhotoUri";
     private static final String KEY_LOCATION = "keyLocation";
     private static final String KEY_WAITING = "keyWaiting";
-
-    private static final String TAG = WaypointFragment.class.getSimpleName();
+    private static final String PERMISSION_LOCATION = "permissionLocation";
+    private static final String PERMISSION_WRITE = "permissionWrite";
 
     private TextView locationNotFoundTextView;
     private TextView locationTextView;
@@ -77,35 +71,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
 
     private final ExecutorService executor = newCachedThreadPool();
 
-    /**
-     * Request location permission(s), on granted run logger task
-     */
-    final ActivityResultLauncher<String[]> requestLocationPermission = registerForActivityResult(new RequestMultiplePermissions(), results -> {
-        if (Logger.DEBUG) { Log.d(TAG, "[requestLocationPermission: " + results.entrySet() + "]"); }
-        boolean isGranted = false;
-        for (Map.Entry<String, Boolean> result : results.entrySet()) {
-            if (result.getValue()) {
-                isGranted = true;
-            }
-        }
-        if (isGranted) {
-            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: granted]"); }
-            runLoggerTask();
-        } else {
-            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: refused]"); }
-            finish();
-        }
-    });
-
-    /**
-     * Request write permission, on granted take picture
-     */
-    final ActivityResultLauncher<String> requestWritePermission = registerForActivityResult(new RequestPermission(), isGranted -> {
-        if (Logger.DEBUG) { Log.d(TAG, "[requestWritePermission: " + isGranted + "]"); }
-        if (isGranted) {
-            requestImageCapture();
-        }
-    });
+    final PermissionHelper permissionHelper;
 
     /**
      * Take picture, then run image task
@@ -141,7 +107,9 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         }
     });
 
-    public WaypointFragment() { }
+    public WaypointFragment() {
+        permissionHelper = new PermissionHelper(this, this);
+    }
 
     static WaypointFragment newInstance() {
         return new WaypointFragment();
@@ -392,10 +360,9 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     }
 
     private boolean hasStoragePermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (!permissionHelper.hasWriteExternalStoragePermission()) {
             showToast("You must accept permission for writing photo to external storage");
-            requestWritePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            permissionHelper.requestWriteExternalStoragePermission(PERMISSION_WRITE);
             return false;
         }
         return true;
@@ -500,13 +467,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         locationNotFoundTextView.setVisibility(View.VISIBLE);
         if ((reason & LoggerTask.E_PERMISSION) != 0) {
             showToast(getString(R.string.location_permission_denied));
-            List<String> permissions = new ArrayList<>();
-            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                // On Android 12+ coarse location permission must be also requested
-                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
-            requestLocationPermission.launch(permissions.toArray(new String[0]));
+            permissionHelper.requestFineLocationPermission(PERMISSION_LOCATION);
         }
         if ((reason & LoggerTask.E_DISABLED) != 0) {
             showToast(getString(R.string.location_disabled));
@@ -565,6 +526,29 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         if (photoThumb != null) {
             photoThumb = null;
             setThumbnail(null);
+        }
+    }
+
+    @Override
+    public void onPermissionGranted(@Nullable String requestCode) {
+        if (PERMISSION_LOCATION.equals(requestCode)) {
+            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: granted]"); }
+            runLoggerTask();
+        } else if (PERMISSION_WRITE.equals(requestCode)) {
+            if (Logger.DEBUG) { Log.d(TAG, "[WritePermission: granted]"); }
+            requestImageCapture();
+        }
+
+    }
+
+    @Override
+    public void onPermissionDenied(@Nullable String requestCode) {
+        if (PERMISSION_LOCATION.equals(requestCode)) {
+            if (Logger.DEBUG) { Log.d(TAG, "[LocationPermission: refused]"); }
+            finish();
+        } else if (PERMISSION_WRITE.equals(requestCode)) {
+            if (Logger.DEBUG) { Log.d(TAG, "[WritePermission: refused]"); }
+
         }
     }
 }
