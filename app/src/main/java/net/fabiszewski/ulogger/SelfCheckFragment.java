@@ -15,7 +15,9 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
@@ -25,28 +27,33 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.json.JSONException;
 
 import java.io.IOException;
 
-public class SelfCheckFragment extends Fragment {
+public class SelfCheckFragment extends Fragment implements PermissionHelper.PermissionRequester {
 
     private static final String TAG = SelfCheckFragment.class.getSimpleName();
 
+    private SwipeRefreshLayout swipe;
     private SwitchCompat preciseLocationSwitch;
     private TextView approximateLocationLabel;
     private SwitchCompat approximateLocationSwitch;
@@ -70,15 +77,19 @@ public class SelfCheckFragment extends Fragment {
     private SwitchCompat validAccountSwitch;
     private View batteryUsageLayout;
     private SwitchCompat batteryUsageSwitch;
+    final PermissionHelper permissionHelper;
 
-
-    public SelfCheckFragment() { }
+    public SelfCheckFragment() {
+        permissionHelper = new PermissionHelper(this, this);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (Logger.DEBUG) { Log.d(TAG, "[onCreateView]"); }
         View layout = inflater.inflate(R.layout.fragment_self_check, container, false);
+        swipe = (SwipeRefreshLayout) layout;
+        swipe.setOnRefreshListener(this::selfCheck);
         approximateLocationSwitch = layout.findViewById(R.id.permissionApproximateLocationResult);
         approximateLocationLabel = layout.findViewById(R.id.permissionApproximateLocationLabel);
         preciseLocationSwitch = layout.findViewById(R.id.permissionPreciseLocationResult);
@@ -111,20 +122,24 @@ public class SelfCheckFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermissions();
         }
-
         checkProviders();
-
         checkServer();
+    }
+
+    private void setRefreshing(boolean refreshing) {
+        swipe.setRefreshing(refreshing);
     }
 
     private void checkServer() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String host = prefs.getString(SettingsActivity.KEY_HOST, "").replaceAll("/+$", "");
 
-        serverConfiguredSwitch.setChecked(!host.isEmpty());
-        serverReachableSwitch.setChecked(false);
-        validAccountSwitch.setChecked(false);
+        setupServerSwitch(serverConfiguredSwitch, !host.isEmpty());
+        setupServerSwitch(serverReachableSwitch, false);
+        setupServerSwitch(validAccountSwitch, false);
+
         if (!host.isEmpty()) {
+            setRefreshing(true);
             Handler handler = new Handler(Looper.getMainLooper());
 
             new Thread(() -> {
@@ -161,15 +176,62 @@ public class SelfCheckFragment extends Fragment {
                         validAccountSwitch.setChecked(finalIsValidAccount);
                     });
                 }
+                handler.post(() -> setRefreshing(false));
             }).start();
-
+        } else {
+            setRefreshing(false);
         }
     }
 
+    private void setupServerSwitch(SwitchCompat serverSwitch, boolean state) {
+        serverSwitch.setChecked(state);
+        disableSwitch(serverSwitch);
+        serverSwitch.setOnCheckedChangeListener((view, isChecked) -> {
+            if (isChecked) {
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
+                preferencesLauncher.launch(intent);
+            }
+        });
+    }
+
+    final ActivityResultLauncher<Intent> preferencesLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> checkServer());
+
+    final ActivityResultLauncher<Intent> locationSettingsLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (Logger.DEBUG) { Log.d(TAG, "[locationSettingsLauncher result: " + result.getResultCode() + "]"); }
+                checkProviders();
+
+            });
+
+    final ActivityResultLauncher<Intent> batterySettingsLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    checkBatteryUsage();
+                }
+            });
+
     private void checkProviders() {
+        checkProvider(LocationManager.GPS_PROVIDER, locationGpsSwitch);
+        checkProvider(LocationManager.NETWORK_PROVIDER, locationNetSwitch);
+    }
+
+    private void checkProvider(String provider, SwitchCompat providerSwitch) {
         LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
-        locationGpsSwitch.setChecked(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
-        locationNetSwitch.setChecked(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
+        boolean isGpsProviderEnabled = locationManager.isProviderEnabled(provider);
+        providerSwitch.setChecked(isGpsProviderEnabled);
+        disableSwitch(providerSwitch);
+        if (!isGpsProviderEnabled) {
+            providerSwitch.setOnCheckedChangeListener((view, isChecked) -> {
+                if (isChecked) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    locationSettingsLauncher.launch(intent);
+                }
+            });
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -191,20 +253,54 @@ public class SelfCheckFragment extends Fragment {
         checkBatteryUsage();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void setItem(@Nullable View layout, @NonNull TextView label, @NonNull SwitchCompat switchCompat, @NonNull String permission) {
         if (layout != null) {
             layout.setVisibility(View.VISIBLE);
         }
-        switchCompat.setChecked(isAllowed(permission));
+        boolean hasPermission = permissionHelper.hasPermission(permission);
+        switchCompat.setChecked(hasPermission);
+        disableSwitch(switchCompat);
         label.setText(getPermissionLabel(permission));
+        if (!hasPermission) {
+            switchCompat.setOnCheckedChangeListener((view, isChecked) -> {
+                if (isChecked) {
+                    switch (permission) {
+                        case ACCESS_COARSE_LOCATION:
+                            permissionHelper.requestFineLocationPermission(null);
+                            break;
+                        case ACCESS_FINE_LOCATION:
+                            permissionHelper.requestCoarseLocationPermission(null);
+                            break;
+                        case ACCESS_BACKGROUND_LOCATION:
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                permissionHelper.requestBackgroundLocationPermission(null);
+                            }
+                            break;
+                        case WRITE_EXTERNAL_STORAGE:
+                            permissionHelper.requestWritePermission(null);
+                            break;
+                        case POST_NOTIFICATIONS:
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                permissionHelper.requestNotificationsPermission(null);
+                            }
+                            break;
+                    }
+                }
+            });
+        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private boolean isAllowed(@NonNull String permission) {
-        boolean isAllowed =  ActivityCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED;
-        if (Logger.DEBUG) { Log.d(TAG, "[isAllowed " + permission + ": " + isAllowed + " ]"); }
-        return isAllowed;
+    @SuppressLint("ClickableViewAccessibility")
+    private void disableSwitch(@NonNull SwitchCompat switchCompat) {
+        switchCompat.setOnTouchListener((view, event) -> {
+            if (switchCompat.isChecked()) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    switchCompat.setChecked(true);
+                }
+                return true;
+            }
+            return false;
+        });
     }
 
     private CharSequence getPermissionLabel(@NonNull String permission) {
@@ -227,8 +323,31 @@ public class SelfCheckFragment extends Fragment {
         PowerManager pm = (PowerManager) requireContext().getSystemService(Context.POWER_SERVICE);
         boolean isIgnoringOptimizations = pm.isIgnoringBatteryOptimizations(requireContext().getPackageName());
         batteryUsageSwitch.setChecked(isIgnoringOptimizations);
+        disableSwitch(batteryUsageSwitch);
+        if (!isIgnoringOptimizations) {
+            batteryUsageSwitch.setOnCheckedChangeListener((view, isChecked) -> {
+                if (isChecked) {
+                    Intent intent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                    batterySettingsLauncher.launch(intent);
+                }
+            });
+        }
         if (Logger.DEBUG) { Log.d(TAG, "[isIgnoringOptimizations: " + isIgnoringOptimizations + " ]"); }
     }
 
+    @Override
+    public void onPermissionGranted(String requestCode) {
+        if (Logger.DEBUG) { Log.d(TAG, "[onPermissionGranted]"); }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermissions();
+        }
+    }
 
+    @Override
+    public void onPermissionDenied(String requestCode) {
+        if (Logger.DEBUG) { Log.d(TAG, "[onPermissionDenied]"); }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermissions();
+        }
+    }
 }
