@@ -62,9 +62,10 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         setOnPreferenceChangeListener(this);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ListWithEditTextPreference, defStyleAttr, defStyleRes);
-        otherSummary = a.getText(R.styleable.ListWithEditTextPreference_otherSummary);
-        a.recycle();
+        try (TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.ListWithEditTextPreference,
+                defStyleAttr, defStyleRes)) {
+            otherSummary = attributes.getText(R.styleable.ListWithEditTextPreference_otherSummary);
+        }
     }
 
 

@@ -128,10 +128,10 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
         int resId = android.R.layout.select_dialog_singlechoice;
         final Context context = getContext();
         if (context != null) {
-            final TypedArray typedArray = context.obtainStyledAttributes(null, R.styleable.AlertDialog,
-                    R.attr.alertDialogStyle, 0);
-            resId = typedArray.getResourceId(R.styleable.AlertDialog_singleChoiceItemLayout, resId);
-            typedArray.recycle();
+            try (final TypedArray attributes = context.obtainStyledAttributes(null, R.styleable.AlertDialog,
+                    R.attr.alertDialogStyle, 0)) {
+                resId = attributes.getResourceId(R.styleable.AlertDialog_singleChoiceItemLayout, resId);
+            }
         }
         return resId;
     }
