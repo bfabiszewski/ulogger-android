@@ -94,7 +94,11 @@ class NotificationHelper {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, flags);
         builder.setContentIntent(resultPendingIntent);
         Notification notification = builder.build();
-        notificationManager.notify(notificationId, notification);
+        try {
+            notificationManager.notify(notificationId, notification);
+        } catch (SecurityException e) {
+            if (Logger.DEBUG) { Log.d(TAG, "[notification not allowed: " + e + "]"); }
+        }
         return notification;
     }
 
