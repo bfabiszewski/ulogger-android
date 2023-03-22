@@ -57,32 +57,43 @@ public class PermissionHelper {
      */
     public PermissionHelper(@NonNull Fragment fragment, @NonNull PermissionRequester requester) {
         this.fragment = fragment;
-        resultLauncher = fragment.registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), results -> {
-            if (Logger.DEBUG) { Log.d(TAG, "[requestPermission: " + results.entrySet() + "]"); }
-            boolean isGranted = false;
-            for (Map.Entry<String, Boolean> result : results.entrySet()) {
-                if (result.getValue()) {
-                    isGranted = true;
-                    break;
-                }
-            }
-            boolean isStageTwoNeeded = isLocationStageTwoNeeded;
-            isLocationStageTwoNeeded = false;
-            if (isStageTwoNeeded && isGranted) {
-                if (Logger.DEBUG) { Log.d(TAG, "[PermissionHelper: stage two needed]"); }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    requestBackgroundLocationPermission(this.requestCode);
-                }
-            }
-            else if (isGranted) {
-                if (Logger.DEBUG) { Log.d(TAG, "[PermissionHelper: permission granted]"); }
-                requester.onPermissionGranted(this.requestCode);
+        resultLauncher = fragment.registerForActivityResult(
+                new ActivityResultContracts.RequestMultiplePermissions(),
+                results -> onPermissionsResult(requester, results));
+    }
 
-            } else {
-                if (Logger.DEBUG) { Log.d(TAG, "[PermissionHelper: permission refused]"); }
-                requester.onPermissionDenied(this.requestCode);
+    /**
+     * Invoked on activity result.
+     * Calls success callback if any of the requested permissions is granted
+     *
+     * @param requester Requester
+     * @param results Results
+     */
+    private void onPermissionsResult(@NonNull PermissionRequester requester, @NonNull Map<String, Boolean> results) {
+        if (Logger.DEBUG) { Log.d(TAG, "[requestPermission: " + results.entrySet() + "]"); }
+        boolean isGranted = false;
+        for (Map.Entry<String, Boolean> result : results.entrySet()) {
+            if (result.getValue()) {
+                isGranted = true;
+                break;
             }
-        });
+        }
+        boolean isStageTwoNeeded = isLocationStageTwoNeeded;
+        isLocationStageTwoNeeded = false;
+        if (isStageTwoNeeded && isGranted) {
+            if (Logger.DEBUG) { Log.d(TAG, "[PermissionHelper: stage two needed]"); }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                requestBackgroundLocationPermission(this.requestCode);
+            }
+        }
+        else if (isGranted) {
+            if (Logger.DEBUG) { Log.d(TAG, "[PermissionHelper: permission granted]"); }
+            requester.onPermissionGranted(this.requestCode);
+
+        } else {
+            if (Logger.DEBUG) { Log.d(TAG, "[PermissionHelper: permission refused]"); }
+            requester.onPermissionDenied(this.requestCode);
+        }
     }
 
     @Nullable
