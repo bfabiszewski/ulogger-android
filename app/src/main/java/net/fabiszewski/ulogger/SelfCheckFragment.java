@@ -118,7 +118,7 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
         return layout;
     }
 
-    private void selfCheck() {
+    public void selfCheck() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermissions();
         }
@@ -126,7 +126,7 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
         checkServer();
     }
 
-    private void setRefreshing(boolean refreshing) {
+    public void setRefreshing(boolean refreshing) {
         swipe.setRefreshing(refreshing);
     }
 
