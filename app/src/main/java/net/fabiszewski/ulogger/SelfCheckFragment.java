@@ -134,64 +134,72 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String host = prefs.getString(SettingsActivity.KEY_HOST, "").replaceAll("/+$", "");
 
+        serverReachableDetails.setText("");
+        validAccountDetails.setText("");
         setupServerSwitch(serverConfiguredSwitch, !host.isEmpty());
-        setupServerSwitch(serverReachableSwitch, false);
-        setupServerSwitch(validAccountSwitch, false);
 
         if (!host.isEmpty()) {
             setRefreshing(true);
-            Handler handler = new Handler(Looper.getMainLooper());
+            final Handler handler = new Handler(Looper.getMainLooper());
 
-            new Thread(() -> {
-                WebHelper webHelper = new WebHelper(requireContext());
-                boolean isReachable = false;
-                String details = null;
-                try {
-                    isReachable = webHelper.isReachable();
-                } catch (IOException e) {
-                    details = e.getLocalizedMessage();
-                }
-                boolean finalIsReachable = isReachable;
-                String finalDetails = details;
-                handler.post(() -> {
-                    if (finalDetails != null) {
-                        serverReachableDetails.setText(finalDetails);
-                    }
-                    serverReachableSwitch.setChecked(finalIsReachable);
-                });
-                if (isReachable) {
-                    boolean isValidAccount = false;
-                    try {
-                        webHelper.checkAuthorization();
-                        isValidAccount = true;
-                    } catch (IOException | WebAuthException | JSONException e) {
-                        details = e.getLocalizedMessage();
-                    }
-                    boolean finalIsValidAccount = isValidAccount;
-                    String finalAccountDetails = details;
-                    handler.post(() -> {
-                        if (finalAccountDetails != null) {
-                            validAccountDetails.setText(finalAccountDetails);
-                        }
-                        validAccountSwitch.setChecked(finalIsValidAccount);
-                    });
-                }
-                handler.post(() -> setRefreshing(false));
-            }).start();
+            new Thread(() -> serverThreadChecks(handler)).start();
         } else {
             setRefreshing(false);
+            setupServerSwitch(serverReachableSwitch, false);
+            setupServerSwitch(validAccountSwitch, false);
         }
     }
 
-    private void setupServerSwitch(SwitchCompat serverSwitch, boolean state) {
+    private void serverThreadChecks(@NonNull Handler handler) {
+        final WebHelper webHelper = new WebHelper(requireContext());
+        boolean isReachable = false;
+        boolean isValidAccount = false;
+        String details = null;
+        try {
+            isReachable = webHelper.isReachable();
+        } catch (IOException e) {
+            details = e.getLocalizedMessage();
+        }
+        postServerCheckResults(handler, serverReachableDetails, serverReachableSwitch, details, isReachable);
+        if (isReachable) {
+            try {
+                webHelper.checkAuthorization();
+                isValidAccount = true;
+            } catch (IOException | WebAuthException | JSONException e) {
+                details = e.getLocalizedMessage();
+            }
+            postServerCheckResults(handler, validAccountDetails, validAccountSwitch, details, isValidAccount);
+        }
+        boolean finalIsReachable = isReachable;
+        boolean finalIsValidAccount = isValidAccount;
+        handler.post(() -> {
+            setupServerSwitch(serverReachableSwitch, finalIsReachable);
+            setupServerSwitch(validAccountSwitch, finalIsValidAccount);
+            setRefreshing(false);
+        });
+    }
+
+    private void postServerCheckResults(@NonNull Handler handler, @NonNull TextView textView,
+                                        @NonNull SwitchCompat switchCompat, @Nullable String details, boolean state) {
+        handler.post(() -> {
+            if (details != null) {
+                textView.setText(details);
+            }
+            switchCompat.setChecked(state);
+        });
+    }
+
+    private void setupServerSwitch(@NonNull SwitchCompat serverSwitch, boolean state) {
         serverSwitch.setChecked(state);
         disableSwitch(serverSwitch);
-        serverSwitch.setOnCheckedChangeListener((view, isChecked) -> {
-            if (isChecked) {
-                Intent intent = new Intent(getContext(), SettingsActivity.class);
-                preferencesLauncher.launch(intent);
-            }
-        });
+        if (!state) {
+            serverSwitch.setOnCheckedChangeListener((view, isChecked) -> {
+                if (isChecked) {
+                    Intent intent = new Intent(getContext(), SettingsActivity.class);
+                    preferencesLauncher.launch(intent);
+                }
+            });
+        }
     }
 
     final ActivityResultLauncher<Intent> preferencesLauncher = registerForActivityResult(
@@ -219,7 +227,7 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
         checkProvider(LocationManager.NETWORK_PROVIDER, locationNetSwitch);
     }
 
-    private void checkProvider(String provider, SwitchCompat providerSwitch) {
+    private void checkProvider(@NonNull String provider, @NonNull SwitchCompat providerSwitch) {
         LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         boolean isGpsProviderEnabled = locationManager.isProviderEnabled(provider);
         providerSwitch.setChecked(isGpsProviderEnabled);
@@ -336,7 +344,7 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
     }
 
     @Override
-    public void onPermissionGranted(String requestCode) {
+    public void onPermissionGranted(@Nullable String requestCode) {
         if (Logger.DEBUG) { Log.d(TAG, "[onPermissionGranted]"); }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermissions();
@@ -344,7 +352,7 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
     }
 
     @Override
-    public void onPermissionDenied(String requestCode) {
+    public void onPermissionDenied(@Nullable String requestCode) {
         if (Logger.DEBUG) { Log.d(TAG, "[onPermissionDenied]"); }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermissions();
