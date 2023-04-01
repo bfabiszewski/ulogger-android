@@ -1,17 +1,18 @@
 [main]
-host = https://www.transifex.com
+host     = https://www.transifex.com
 lang_map = pt_BR: pt-rBR
 
-[ulogger.strings-xml]
-file_filter = ./app/src/main/res/values-<lang>/strings.xml
+[o:bfabiszewski:p:ulogger:r:arrays-xml]
+file_filter  = ./app/src/main/res/values-<lang>/arrays.xml
+source_file  = ./app/src/main/res/values/arrays.xml
+source_lang  = en
+type         = ANDROID
 minimum_perc = 0
-source_file = ./app/src/main/res/values/strings.xml
-source_lang = en
-type = ANDROID
 
-[ulogger.arrays-xml]
-file_filter = ./app/src/main/res/values-<lang>/arrays.xml
+[o:bfabiszewski:p:ulogger:r:strings-xml]
+file_filter  = ./app/src/main/res/values-<lang>/strings.xml
+source_file  = ./app/src/main/res/values/strings.xml
+source_lang  = en
+type         = ANDROID
 minimum_perc = 0
-source_file = ./app/src/main/res/values/arrays.xml
-source_lang = en
-type = ANDROID
+
