@@ -140,7 +140,9 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
     private void checkServer() {
         boolean isValidServerSetup = isValidServerSetup(requireContext());
         serverReachableDetails.setText("");
+        serverReachableDetails.setVisibility(View.GONE);
         validAccountDetails.setText("");
+        validAccountDetails.setVisibility(View.GONE);
         setupServerSwitch(serverConfiguredSwitch, isValidServerSetup);
         setupServerSwitch(serverReachableSwitch, false);
         setupServerSwitch(validAccountSwitch, false);
@@ -182,6 +184,7 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
                                         @NonNull SwitchCompat switchCompat, @Nullable String details, boolean state) {
         handler.post(() -> {
             if (details != null) {
+                textView.setVisibility(View.VISIBLE);
                 textView.setText(details);
             }
             setSwitch(switchCompat, state);

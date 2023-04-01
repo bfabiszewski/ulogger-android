@@ -44,7 +44,8 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/colorBlue"
                 android:textSize="13sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/permissionApproximateLocation"
@@ -52,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -79,13 +81,14 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/permissionApproximateLocationResult"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
                     android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
                     tools:checked="true" />
             </LinearLayout>
 
@@ -96,7 +99,8 @@
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -123,13 +127,14 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/permissionPreciseLocationResult"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -139,7 +144,8 @@
                 android:layout_marginTop="15dp"
                 android:gravity="top"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="0dip"
@@ -169,9 +175,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:focusable="false"
+                    android:gravity="top"
+                    android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -181,7 +189,8 @@
                 android:layout_marginTop="15dp"
                 android:gravity="top"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="0dip"
@@ -211,6 +220,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:focusable="false"
+                    android:gravity="top"
+                    android:minHeight="48dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:paddingTop="5dp" />
@@ -223,7 +234,8 @@
                 android:layout_marginTop="15dp"
                 android:gravity="top"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="0dip"
@@ -253,6 +265,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:focusable="false"
+                    android:gravity="top"
+                    android:minHeight="48dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:paddingTop="5dp" />
@@ -265,7 +279,8 @@
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -293,7 +308,8 @@
                     android:focusable="false"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:paddingStart="10dp"
+                    android:gravity="top"
+                    android:minHeight="48dp"                    android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:paddingTop="5dp" />
 
@@ -326,35 +342,25 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                <TextView
                     android:layout_width="0dip"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:text="@string/provider_gps"
-                        android:textSize="18sp"
-                        android:labelFor="@id/providerGpsResult" />
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:labelFor="@id/providerGpsResult"
+                    android:text="@string/provider_gps"
+                    android:textSize="18sp" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:focusable="false"
                     android:id="@+id/providerGpsResult"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
 
             </LinearLayout>
 
@@ -364,35 +370,25 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:layout_width="0dip"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:text="@string/provider_network"
-                        android:textSize="18sp"
-                        android:labelFor="@id/providerNetResult" />
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                    android:text="@string/provider_network"
+                    android:textSize="18sp"
+                    android:labelFor="@id/providerNetResult" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/providerNetResult"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
 
             </LinearLayout>
 
@@ -412,36 +408,25 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:layout_width="0dip"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:text="@string/self_check_server_configured"
-                        android:textSize="18sp"
-                        android:labelFor="@id/serverConfiguredResult" />
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
+                    android:text="@string/self_check_server_configured"
+                    android:textSize="18sp"
+                    android:labelFor="@id/serverConfiguredResult" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/serverConfiguredResult"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
 
             </LinearLayout>
 
@@ -459,29 +444,34 @@
 
                     <TextView
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
                         android:layout_width="match_parent"
+                        android:layout_marginBottom="5dp"
                         android:text="@string/self_check_server_reachable"
                         android:textSize="18sp"
                         android:labelFor="@id/serverReachableResult" />
 
                     <TextView
                         android:id="@+id/serverReachableDetails"
-                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:textColor="@color/colorPink"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        tools:text="Connection timeout"
+                        tools:visibility="visible" />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/serverReachableResult"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
 
             </LinearLayout>
 
@@ -498,31 +488,35 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
+                        android:labelFor="@id/validAccountResult"
                         android:text="@string/self_check_valid_server_account"
-                        android:textSize="18sp"
-                        android:labelFor="@id/validAccountResult" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/validAccountDetails"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:layout_marginBottom="5dp"
                         android:textColor="@color/colorPink"
-                        tools:text="Read timed out"
-                        android:textSize="12sp" />
+                        tools:text="Authorization failed: 401"
+                        tools:visibility="visible"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/validAccountResult"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
 
             </LinearLayout>
         </LinearLayout>
