@@ -35,6 +35,7 @@
                 android:textAlignment="viewStart"
                 android:textSize="25sp" />
             <TextView
+                android:id="@+id/permissionsLabel"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="10dp"
@@ -42,13 +43,16 @@
                 android:text="@string/self_check_permissions_title"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorBlue"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/permissionApproximateLocation"
                 android:gravity="top"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -74,8 +78,8 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:focusable="false"
                     android:id="@+id/permissionApproximateLocationResult"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:minHeight="48dp"
@@ -86,11 +90,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/permissionPreciseLocation"
                 android:gravity="top"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -116,8 +122,8 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:focusable="false"
                     android:id="@+id/permissionPreciseLocationResult"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:minHeight="48dp"
@@ -283,8 +289,8 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:focusable="false"
                     android:id="@+id/batteryUnrestrictedUsageResult"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:paddingStart="10dp"
@@ -294,6 +300,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/automatedUsageLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -301,7 +308,8 @@
                 android:drawablePadding="2sp"
                 android:text="@string/self_check_automated_usage"
                 android:textAlignment="textStart"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
@@ -377,8 +385,8 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:focusable="false"
                     android:id="@+id/providerNetResult"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:minHeight="48dp"
@@ -426,8 +434,8 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:focusable="false"
                     android:id="@+id/serverConfiguredResult"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:minHeight="48dp"
@@ -466,8 +474,8 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:focusable="false"
                     android:id="@+id/serverReachableResult"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:minHeight="48dp"
@@ -507,8 +515,8 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:focusable="false"
                     android:id="@+id/validAccountResult"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:minHeight="48dp"

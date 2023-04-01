@@ -53,9 +53,13 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
     private static final String TAG = SelfCheckFragment.class.getSimpleName();
 
     private SwipeRefreshLayout swipe;
-    private SwitchCompat preciseLocationSwitch;
+    private TextView permissionsLabel;
+    private TextView automatedUsageLabel;
+    private View approximateLocationLayout;
     private TextView approximateLocationLabel;
     private SwitchCompat approximateLocationSwitch;
+    private View preciseLocationLayout;
+    private SwitchCompat preciseLocationSwitch;
     private TextView preciseLocationLabel;
     private View backgroundLocationLayout;
     private TextView backgroundLocationLabel;
@@ -89,8 +93,12 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
         View layout = inflater.inflate(R.layout.fragment_self_check, container, false);
         swipe = (SwipeRefreshLayout) layout;
         swipe.setOnRefreshListener(this::selfCheck);
+        permissionsLabel = layout.findViewById(R.id.permissionsLabel);
+        automatedUsageLabel = layout.findViewById(R.id.automatedUsageLabel);
+        approximateLocationLayout = layout.findViewById(R.id.permissionApproximateLocation);
         approximateLocationSwitch = layout.findViewById(R.id.permissionApproximateLocationResult);
         approximateLocationLabel = layout.findViewById(R.id.permissionApproximateLocationLabel);
+        preciseLocationLayout = layout.findViewById(R.id.permissionPreciseLocation);
         preciseLocationSwitch = layout.findViewById(R.id.permissionPreciseLocationResult);
         preciseLocationLabel = layout.findViewById(R.id.permissionPreciseLocationLabel);
         backgroundLocationLayout = layout.findViewById(R.id.permissionBackgroundLocationSelfCheck);
@@ -242,8 +250,11 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void checkPermissions() {
-        setItem(null, approximateLocationLabel, approximateLocationSwitch, ACCESS_COARSE_LOCATION);
-        setItem(null, preciseLocationLabel, preciseLocationSwitch, ACCESS_FINE_LOCATION);
+        permissionsLabel.setVisibility(View.VISIBLE);
+        automatedUsageLabel.setVisibility(View.VISIBLE);
+
+        setItem(approximateLocationLayout, approximateLocationLabel, approximateLocationSwitch, ACCESS_COARSE_LOCATION);
+        setItem(preciseLocationLayout, preciseLocationLabel, preciseLocationSwitch, ACCESS_FINE_LOCATION);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             setItem(backgroundLocationLayout, backgroundLocationLabel, backgroundLocationSwitch, ACCESS_BACKGROUND_LOCATION);
