@@ -41,6 +41,7 @@ public class PermissionHelper {
     @Nullable
     private Context context;
     boolean isLocationStageTwoNeeded = false;
+    boolean isBackgroundLocationRationaleAccepted = false;
 
     /**
      * Constructor for simple usage, without requesting permissions
@@ -161,11 +162,13 @@ public class PermissionHelper {
             if (Logger.DEBUG) { Log.d(TAG, "[requestBackgroundLocationPermission: missing fragment context]"); }
             return;
         }
+
         List<String> permissions = new ArrayList<>();
         // Background location permission can only be granted when forward location is permitted
         if (hasForegroundLocationPermission()) {
             permissions.add(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         } else {
+            isLocationStageTwoNeeded = true;
             if (Logger.DEBUG) { Log.d(TAG, "[forward location permission denied]"); }
             permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -174,9 +177,9 @@ public class PermissionHelper {
             }
         }
 
-        if (permissions.contains(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) &&
+        if (!isBackgroundLocationRationaleAccepted &&
                 ActivityCompat.shouldShowRequestPermissionRationale(fragment.requireActivity(), android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            showBackgroundLocationPermissionRationale(permissions, requestCode);
+            requestPermissionOnRationaleAccepted(permissions, requestCode);
         } else {
             requestPermissions(permissions, requestCode);
         }
@@ -189,7 +192,7 @@ public class PermissionHelper {
      * @param requestCode Request code which will be returned with callback
      */
     @RequiresApi(api = Build.VERSION_CODES.R)
-    private void showBackgroundLocationPermissionRationale(List<String> permissions, @Nullable String requestCode) {
+    private void requestPermissionOnRationaleAccepted(List<String> permissions, @Nullable String requestCode) {
         final Context ctx = getContext();
         if (ctx == null) {
             if (Logger.DEBUG) { Log.d(TAG, "[requestBackgroundLocationPermission: missing context]"); }
@@ -203,6 +206,7 @@ public class PermissionHelper {
                 (dialog, which) -> {
                     dialog.dismiss();
                     requestPermissions(permissions, requestCode);
+                    isBackgroundLocationRationaleAccepted = true;
                 }
         );
     }
