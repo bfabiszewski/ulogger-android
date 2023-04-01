@@ -14,11 +14,11 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static net.fabiszewski.ulogger.SettingsFragment.isValidServerSetup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
 import android.location.LocationManager;
@@ -42,7 +42,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.json.JSONException;
@@ -131,16 +130,14 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
     }
 
     private void checkServer() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        String host = prefs.getString(SettingsActivity.KEY_HOST, "").replaceAll("/+$", "");
-
+        boolean isValidServerSetup = isValidServerSetup(requireContext());
         serverReachableDetails.setText("");
         validAccountDetails.setText("");
-        setupServerSwitch(serverConfiguredSwitch, !host.isEmpty());
+        setupServerSwitch(serverConfiguredSwitch, isValidServerSetup);
         setupServerSwitch(serverReachableSwitch, false);
         setupServerSwitch(validAccountSwitch, false);
 
-        if (!host.isEmpty()) {
+        if (isValidServerSetup) {
             setRefreshing(true);
             final Handler handler = new Handler(Looper.getMainLooper());
 

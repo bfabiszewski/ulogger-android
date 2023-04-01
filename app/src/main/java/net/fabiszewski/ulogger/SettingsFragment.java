@@ -197,7 +197,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Permis
      * @param context Context
      * @return boolean True if set
      */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isValidServerSetup(@NonNull Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final String host = prefs.getString(KEY_HOST, null);
