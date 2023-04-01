@@ -105,16 +105,6 @@ class LocationHelper {
     }
 
     /**
-     * Check if user granted permission to access background location.
-     *
-     * @return True if permission granted, false otherwise
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    boolean canAccessBackgroundLocation() {
-        return permissionHelper.hasBackgroundLocationPermission();
-    }
-
-    /**
      * Check if given provider exists on device
      * @param provider Provider
      * @return True if exists, false otherwise
