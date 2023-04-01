@@ -137,4 +137,4 @@
     <string name="image_task_failed">Error en el remuestreo de la imagen</string>
     <string name="background_location_rationale">El permiso de ubicación en segundo plano solo es necesario cuando el seguimiento se inicia sin la interacción del usuario: a través de un comando externo o cuando la aplicación se inicia automáticamente al arrancar el sistema.\nPara que esta funcionalidad funcione, debe seleccionar la opción \"%s\" en el diálogo de permisos de ubicación.\n¿Continuar con los permisos de la aplicación? </string>
     <string name="background_location_required">Se requiere permiso de ubicación en segundo plano</string>
-</resources>
+    </resources>

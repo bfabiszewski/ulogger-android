@@ -7,7 +7,7 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="button_upload">Nahrať</string>
     <string name="is_running" comment="substituted app_name">%s je aktívna</string>
     <string name="title_newtrack">Nová cesta</string>
@@ -72,7 +72,7 @@
     <string name="uploading_done">Nahrávanie dokončené</string>
     <string name="track_summary">Zhrnutie cesty</string>
     <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
-    <plurals name="summary_positions" tools:ignore="UnusedQuantity">
+    <plurals name="summary_positions">
         <item quantity="one">%d miesto</item>
         <item quantity="few">%d miest</item>
         <item quantity="many">%d miest</item>
@@ -104,7 +104,7 @@
     <string name="export_failed">Exportovanie sa nepodarilo</string>
     <string name="unknown_track">Neznáma cesta</string>
     <string name="export_started">Exportovanie sa začalo</string>
-    <plurals name="label_positions_behind" tools:ignore="UnusedQuantity">
+    <plurals name="label_positions_behind">
         <item quantity="one">Počet nezapísaných polôh: %d </item>
         <item quantity="few">Počet nezapísaných polôh: %d</item>
         <item quantity="many">Počet nezapísaných polôh: %d</item>
@@ -137,4 +137,4 @@
     <string name="tracking">Sledovanie</string>
     <string name="clear">Vymazať cestu</string>
     <string name="share_link">Zdielať odkaz na cestu</string>
-</resources>
+    </resources>

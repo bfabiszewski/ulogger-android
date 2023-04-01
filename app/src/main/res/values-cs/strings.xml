@@ -141,4 +141,4 @@
     <string name="image_task_failed">Převzorkování obrázku se nezdařilo</string>
     <string name="background_location_rationale">Oprávnění polohy na pozadí je potřeba pouze, když je tracking spuštěn bez zásahu uživatele: pomocí externího příkazu nebo pokud je aplikace automaticky spuštěna po startu systému.\nAby tato funkce fungovala, musíte vybrat \"%s\" možnost v dialogu oprávnění polohy. .\nPokračovat k oprávněním aplikace?</string>
     <string name="background_location_required">Požadováno oprávnění polohy na pozadí</string>
-</resources>
+    </resources>

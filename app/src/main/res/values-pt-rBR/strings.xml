@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2022 Bartek Fabiszewski
+  ~ Copyright (c) 2017 Bartek Fabiszewski
   ~ http://www.fabiszewski.net
   ~
   ~ This file is part of μlogger-android.
@@ -137,4 +137,4 @@
     <string name="image_task_failed">Erro ao redimensionar a imagem</string>
     <string name="background_location_rationale">A permissão de localização em segundo plano só é necessária quando o rastreamento é iniciado sem interação de usuário: através de comando externo ou quando o app é automaticamente executado na inicialização do sistema.\nPara que esta funcionalidade funcione, você deve selecionar a opção \"%s\" no aviso sobre permissão de localização.\nProsseguir para as permissões do app?</string>
     <string name="background_location_required">Necessária a permissão de localização em segundo plano</string>
-</resources>
+    </resources>

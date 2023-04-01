@@ -141,4 +141,18 @@
     <string name="image_task_failed">Błąd konwersji obrazu</string>
     <string name="background_location_rationale">Zgoda na lokalizację w tle jest wymagana jedynie wtedy, gdy śledzenie jest uruchamiane bez udziału użytkownika: poprzez komendę z innej aplikacji lub podczas automatycznego uruchamiania przy starcie systemu. Aby funkcjonalności te działały poprawnie należy wybrać opcję „%s” w dialogu dostępu do lokalizacji.\nCzy przejść do uprawnień aplikacji?</string>
     <string name="background_location_required">Wymagana zgoda na lokalizację w tle</string>
+    <string name="label_self_check">Diagnostyka</string>
+    <string name="self_check_approximate_location_rationale">Wymagane. Bez tej zgody aplikacja nie będzie mogła miała dostępu do lokalizacji</string>
+    <string name="self_check_precise_location_rationale">Opcjonalne. Potrzebne, jeśli aplikacja ma mieć dostęp do dokładnej lokalizacji za pomocą systemu GPS</string>
+    <string name="self_check_background_location_rationale">Opcjonalne. Wymagane jedynie w sytuacji, kiedy aplikacja jest uruchamiana w sposób automatyczny*</string>
+    <string name="self_check_storage_rationale">Opcjonalne. Potrzebne, jeśli chcesz dodawać do punktów zdjęcia z aparatu</string>
+    <string name="self_check_notifications_rationale">Opcjonalne. Potrzebne jeśli chcesz być powiadamiany o tym, że aplikacja pracuje w tle</string>
+    <string name="self_check_battery_unrestricted_rationale">Opcjonalne. Zalecane dla stabilnej pracy. Bez tej zgody system może zatrzymać aplikację działającą w tle w celu oszczędzania baterii. Wymagane w przypadku automatyzacji*</string>
+    <string name="self_check_battery_unrestricted_title">Nieograniczone użycie baterii</string>
+    <string name="self_check_permissions_title">Uprawnienia</string>
+    <string name="self_check_providers_title">Usługi lokalizacji</string>
+    <string name="self_check_server_configured">Konfiguracja serwera</string>
+    <string name="self_check_server_reachable">Dostępność serwera</string>
+    <string name="self_check_valid_server_account">Aktywne konto na serwerze</string>
+    <string name="self_check_automated_usage">*Automatyzacja: uruchamianie logowania bez udziału użytkownika, z innej aplikacji lub przy starcie systemu</string>
 </resources>

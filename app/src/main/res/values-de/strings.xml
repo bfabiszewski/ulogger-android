@@ -137,4 +137,4 @@
     <string name="image_task_failed">Resampling des Fotos fehlgeschlagen</string>
     <string name="background_location_rationale">Die Berechtigung zum Standort-Zugriff im Hintergrund wird nur benötigt, wenn die Trackaufzeichnung ohne Benutzerinterkation gestartet wird: durch einen externen Aufruf oder wenn die Anwendung beim Booten automatisch gestartet wird. Für diese Funktionalität mußt Du im Standort-Berechtigungsdialog \"%s\" auswählen.\nWeiter zu den Berechtigungseinstellungen?</string>
     <string name="background_location_required">Berechtigung für Standort-Zugriff im Hintergrund benötigt</string>
-</resources>
+    </resources>
