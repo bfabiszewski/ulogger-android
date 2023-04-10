@@ -141,4 +141,18 @@
     <string name="image_task_failed">Převzorkování obrázku se nezdařilo</string>
     <string name="background_location_rationale">Oprávnění polohy na pozadí je potřeba pouze, když je tracking spuštěn bez zásahu uživatele: pomocí externího příkazu nebo pokud je aplikace automaticky spuštěna po startu systému.\nAby tato funkce fungovala, musíte vybrat \"%s\" možnost v dialogu oprávnění polohy. .\nPokračovat k oprávněním aplikace?</string>
     <string name="background_location_required">Požadováno oprávnění polohy na pozadí</string>
-    </resources>
+    <string name="label_self_check">Vlastní kontrola</string>
+    <string name="self_check_approximate_location_rationale">Požadováno. Bez tohoto povolení nebude možné získat lokaci.</string>
+    <string name="self_check_precise_location_rationale">Volitelné. Musí být povoleno pro použití přesné polohy z GPS</string>
+    <string name="self_check_background_location_rationale">Volitelně. Vyžaduje se pouze v případě, že je aplikace spuštěna automatizovaně*.</string>
+    <string name="self_check_storage_rationale">Volitelně. Nutné pouze v případě, že chcete k trasovým bodům připojit snímky z kamery.</string>
+    <string name="self_check_notifications_rationale">Volitelné. Pokud je povoleno, budete upozorněni na práci aplikace na pozadí.</string>
+    <string name="self_check_battery_unrestricted_rationale">Volitelné. Důrazně doporučujeme pro spolehlivou práci. Pokud to není povoleno, může systém zastavit aplikaci běžící na pozadí, aby šetřil baterii. Vyžadováno pro automatizované použití*</string>
+    <string name="self_check_battery_unrestricted_title">Neomezené používání baterie</string>
+    <string name="self_check_permissions_title">Oprávnění</string>
+    <string name="self_check_providers_title">Poskytovatelé umístění</string>
+    <string name="self_check_server_configured">Konfigurace serveru</string>
+    <string name="self_check_server_reachable">Server je dosažitelný</string>
+    <string name="self_check_valid_server_account">Platný účet serveru</string>
+    <string name="self_check_automated_usage">* Automatizované použití: spuštění protokolování bez interakce uživatele z externí aplikace nebo při spuštění systému.</string>
+</resources>
