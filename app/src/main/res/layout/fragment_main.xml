@@ -74,21 +74,35 @@
 
         </LinearLayout>
 
-        <net.fabiszewski.ulogger.SwipeSwitch
-            android:id="@+id/switchLogger"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:paddingTop="30dp"
-            android:paddingBottom="20dp"
-            android:text="@string/tracking"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textIsSelectable="false"
-            android:textSize="16sp"
-            android:thumb="@drawable/thumb_selector"
-            app:switchMinWidth="200dp"
-            app:track="@drawable/track_selector" />
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <net.fabiszewski.ulogger.SwipeSwitch
+                android:id="@+id/switchLogger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:paddingTop="30dp"
+                android:paddingBottom="20dp"
+                android:text="@string/tracking"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textIsSelectable="false"
+                android:textSize="16sp"
+                android:thumb="@drawable/thumb_selector"
+                app:switchMinWidth="200dp"
+                app:switchPadding="20dp"
+                app:track="@drawable/track_selector"
+                android:maxLines="1" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -11,22 +11,12 @@ package net.fabiszewski.ulogger;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Rect;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SwitchCompat;
 
-import java.util.Collections;
-
 public class SwipeSwitch extends SwitchCompat {
-
-    private final String TAG = SwipeSwitch.class.getSimpleName();
-    private final Rect exclusionRect = new Rect();
-
 
     public SwipeSwitch(Context context) {
         super(context);
@@ -56,22 +46,6 @@ public class SwipeSwitch extends SwitchCompat {
             setChecked(isChecked());
         }
         return ret;
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (Build.VERSION.SDK_INT >= 29) {
-            setGestureExclusionRects();
-        }
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    private void setGestureExclusionRects() {
-        exclusionRect.set(0, 0, getWidth(), getHeight());
-        if (Logger.DEBUG) { Log.d(TAG, "[setGestureExclusionRects: " + exclusionRect + "]"); }
-        setSystemGestureExclusionRects(Collections.singletonList(exclusionRect));
     }
 
 }
