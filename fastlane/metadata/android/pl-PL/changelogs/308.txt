@@ -1,0 +1,13 @@
+3.8: μlogger
+
+Zmiany:
+- Dodana obsługa powiadomień dla Androida 13+
+- Dodane menu Diagnostyka
+- Poprawiony konflikt przełącznika z gestami nawigacji
+- Poprawione nieklikalne linki w oknie „O programie”
+- Dodany oddzielny układ strony dla szerszych ekranów
+- Dodana monochromatyczna ikona
+- Inne drobne poprawki
+
+Tłumaczenia:
+- Dodany portugalski (mezysinc), zaktualizowany czeski (trendspotter)

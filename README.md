@@ -5,6 +5,9 @@ Application works in background. Track points are saved automatically at chosen 
 This client works with [μlogger web server](https://github.com/bfabiszewski/ulogger-server). 
 Together they make a complete self owned and controlled client–server solution.
 
+## Download
+[![Download from f-droid](https://img.shields.io/f-droid/v/net.fabiszewski.ulogger.svg?color=green)](https://f-droid.org/app/net.fabiszewski.ulogger)
+
 ## Features
 - meant to be simple and small (*μ*)
 - low memory and battery impact
@@ -15,13 +18,16 @@ Together they make a complete self owned and controlled client–server solution
 - allows adding waypoints with attached images and comments (required μlogger server version 1.0+ for synchronization)
 - configurable tracking settings
 - export to GPX format
+- self-check screen for basic diagnostics
 - automation
 
 ## Screenshots
 <img alt="main" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot1.png" width="30%"> <img alt="waypoint" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot2.png" width="30%"> <img alt="settings" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot3.png" width="30%">
 
-## Download
-[![Download from f-droid](https://img.shields.io/f-droid/v/net.fabiszewski.ulogger.svg?color=green)](https://f-droid.org/app/net.fabiszewski.ulogger)
+## Self-check
+In case of problems, you may go to Self-check menu. It will check whether all necessary permissions are granted and all settings are properly configured.
+
+<img alt="self-check" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot7.png" width="30%">
 
 ## Help
 - μlogger's current status is shown by two leds, one for location tracking and one for web synchronization: 

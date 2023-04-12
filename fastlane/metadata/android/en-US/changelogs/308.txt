@@ -1,0 +1,13 @@
+3.8: μlogger
+
+Changes:
+- Add notification permissions support for Android 13+
+- Add Self-check screen for problem diagnostics
+- Fix switch conflicting with gesture navigation
+- Fix non-clickable links in About dialog
+- Add separate layout for wider screens
+- Add monochrome launcher icon
+- Some smaller fixes and cleanups
+
+Translations:
+- Added Portuguese (mezysinc), updated Czech (trendspotter)
