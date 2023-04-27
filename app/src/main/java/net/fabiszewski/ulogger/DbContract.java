@@ -34,7 +34,9 @@ final class DbContract {
         static final String COLUMN_COMMENT = "comment";
         static final String COLUMN_IMAGE_URI = "imageUri";
         static final String COLUMN_SYNCED = "synced";
-        static final String COLUMN_ERROR = "error";
+
+        static final String INDEX_TIME = "timeIdx";
+        static final String INDEX_SYNCED = "syncedIdx";
     }
 
     /** Track table */
@@ -42,5 +44,6 @@ final class DbContract {
         static final String TABLE_NAME = "track";
         static final String COLUMN_ID = "id";
         static final String COLUMN_NAME = "name";
+        static final String COLUMN_ERROR = "error";
     }
 }

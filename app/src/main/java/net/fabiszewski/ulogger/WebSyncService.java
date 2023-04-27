@@ -188,6 +188,7 @@ public class WebSyncService extends Service {
      * @param trackId Current track id
      */
     private void doSync(int trackId) {
+        db.resetError();
         // iterate over positions in db
         try (Cursor cursor = db.getUnsynced()) {
             while (cursor.moveToNext()) {

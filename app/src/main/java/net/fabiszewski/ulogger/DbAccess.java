@@ -18,6 +18,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
@@ -32,10 +33,10 @@ import java.util.TimeZone;
 class DbAccess implements AutoCloseable {
 
     private static int openCount;
-    private static DbAccess sInstance;
+    private static DbAccess instance;
 
     private static SQLiteDatabase db;
-    private static DbHelper mDbHelper;
+    private static DbHelper dbHelper;
     private static final String TAG = DbAccess.class.getSimpleName();
 
     /**
@@ -50,10 +51,10 @@ class DbAccess implements AutoCloseable {
      * @return DbAccess singleton
      */
     static synchronized DbAccess getInstance() {
-        if (sInstance == null) {
-            sInstance = new DbAccess();
+        if (instance == null) {
+            instance = new DbAccess();
         }
-        return sInstance;
+        return instance;
     }
 
     /**
@@ -63,11 +64,11 @@ class DbAccess implements AutoCloseable {
      * @return DbAccess singleton
      */
     static synchronized DbAccess getOpenInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new DbAccess();
+        if (instance == null) {
+            instance = new DbAccess();
         }
-        sInstance.open(context);
-        return sInstance;
+        instance.open(context);
+        return instance;
     }
 
     /**
@@ -81,8 +82,8 @@ class DbAccess implements AutoCloseable {
                 if (Logger.DEBUG) {
                     Log.d(TAG, "[open]");
                 }
-                mDbHelper = DbHelper.getInstance(context.getApplicationContext());
-                db = mDbHelper.getWritableDatabase();
+                dbHelper = DbHelper.getInstance(context.getApplicationContext());
+                db = dbHelper.getWritableDatabase();
             }
             if (Logger.DEBUG) {
                 Log.d(TAG, "[+openCount = " + openCount + "]");
@@ -157,9 +158,9 @@ class DbAccess implements AutoCloseable {
      */
     Cursor getPositions() {
         return db.query(DbContract.Positions.TABLE_NAME,
-                new String[]{"*"},
+                new String[]{ "*" },
                 null, null, null, null,
-                DbContract.Positions._ID);
+                DbContract.Positions.COLUMN_TIME);
     }
 
     /**
@@ -171,9 +172,9 @@ class DbAccess implements AutoCloseable {
      @Nullable
      private Uri getImageUri(int id) {
         Cursor query = db.query(DbContract.Positions.TABLE_NAME,
-                new String[]{DbContract.Positions.COLUMN_IMAGE_URI},
-                DbContract.Positions._ID + "=?",
-                new String[]{Integer.toString(id)},
+                new String[]{ DbContract.Positions.COLUMN_IMAGE_URI },
+                DbContract.Positions._ID + " = ?",
+                new String[]{ Integer.toString(id) },
                 null, null, null);
         Uri uri = null;
         if (query.moveToFirst()) {
@@ -193,37 +194,34 @@ class DbAccess implements AutoCloseable {
      */
     Cursor getUnsynced() {
         return db.query(DbContract.Positions.TABLE_NAME,
-                new String[]{"*"},
-                DbContract.Positions.COLUMN_SYNCED + "=?",
-                new String[]{"0"},
+                new String[]{ "*" },
+                DbContract.Positions.COLUMN_SYNCED + " = ?",
+                new String[]{ "0" },
                 null, null,
-                DbContract.Positions._ID);
+                DbContract.Positions.COLUMN_TIME);
     }
 
     /**
-     * Get error message from first not synchronized position.
+     * Get error message stored in track table.
      *
      * @return Error message or null if none
      */
     @Nullable
     private String getError() {
-        Cursor query = db.query(DbContract.Positions.TABLE_NAME,
-                new String[]{DbContract.Positions.COLUMN_ERROR},
-                DbContract.Positions.COLUMN_SYNCED + "=?",
-                new String[]{"0"},
-                null, null,
-                DbContract.Positions._ID,
+        Cursor track = db.query(DbContract.Track.TABLE_NAME,
+                new String[]{ DbContract.Track.COLUMN_ERROR },
+                null, null, null, null, null,
                 "1");
         String error = null;
-        if (query.moveToFirst()) {
-            error = query.getString(0);
+        if (track.moveToFirst()) {
+            error = track.getString(0);
         }
-        query.close();
+        track.close();
         return error;
     }
 
     /**
-     * Get error message from first not synchronized position.
+     * Get error message from track table.
      *
      * @param context Context
      * @return Error message or null if none
@@ -236,20 +234,22 @@ class DbAccess implements AutoCloseable {
     }
 
     /**
-     * Add error message to first not synchronized position.
+     * Add error message to track table.
      *
      * @param error Error message
      */
-    void setError(String error) {
+    void setError(@Nullable String error) {
         ContentValues values = new ContentValues();
-        values.put(DbContract.Positions.COLUMN_ERROR, error);
-        db.update(DbContract.Positions.TABLE_NAME,
+        values.put(DbContract.Track.COLUMN_ERROR, error);
+        db.update(DbContract.Track.TABLE_NAME,
                 values,
-                DbContract.Positions._ID +
-                        "=(SELECT MIN(" + DbContract.Positions._ID + ") " +
-                        "FROM " + DbContract.Positions.TABLE_NAME + " " +
-                        "WHERE " + DbContract.Positions.COLUMN_SYNCED + "=?)",
-                new String[]{"0"});
+                null, null);
+    }
+
+    void resetError() {
+        if (getError() != null) {
+            setError(null);
+        }
     }
 
     /**
@@ -260,11 +260,10 @@ class DbAccess implements AutoCloseable {
     void setSynced(Context context, int id) {
         ContentValues values = new ContentValues();
         values.put(DbContract.Positions.COLUMN_SYNCED, "1");
-        values.putNull(DbContract.Positions.COLUMN_ERROR);
         db.update(DbContract.Positions.TABLE_NAME,
                 values,
-                DbContract.Positions._ID + "=?",
-                new String[]{String.valueOf(id)});
+                DbContract.Positions._ID + " = ?",
+                new String[]{ String.valueOf(id) } );
         Uri uri = getImageUri(id);
         if (uri != null) {
             ImageHelper.deleteLocalImage(context, uri);
@@ -286,17 +285,8 @@ class DbAccess implements AutoCloseable {
      * @return Count
      */
     private int countUnsynced() {
-        Cursor count = db.query(DbContract.Positions.TABLE_NAME,
-                new String[]{"COUNT(*)"},
-                DbContract.Positions.COLUMN_SYNCED + "=?",
-                new String[]{"0"},
-                null, null, null);
-        int result = 0;
-        if (count.moveToFirst()) {
-            result = count.getInt(0);
-        }
-        count.close();
-        return result;
+        return (int) DatabaseUtils.queryNumEntries(db, DbContract.Positions.TABLE_NAME,
+                DbContract.Positions.COLUMN_SYNCED + " = 0");
     }
 
     /**
@@ -317,16 +307,8 @@ class DbAccess implements AutoCloseable {
      * @return Count
      */
     private int countImages() {
-        Cursor count = db.query(DbContract.Positions.TABLE_NAME,
-                new String[]{"COUNT(*)"},
-                DbContract.Positions.COLUMN_IMAGE_URI + " IS NOT NULL",
-                null, null, null, null);
-        int result = 0;
-        if (count.moveToFirst()) {
-            result = count.getInt(0);
-        }
-        count.close();
-        return result;
+        return (int) DatabaseUtils.queryNumEntries(db, DbContract.Positions.TABLE_NAME,
+                DbContract.Positions.COLUMN_IMAGE_URI + " IS NOT NULL");
     }
 
     /**
@@ -348,7 +330,7 @@ class DbAccess implements AutoCloseable {
      * @return True if synchronization needed, false otherwise
      */
     private boolean needsSync() {
-        return (countUnsynced() > 0);
+        return countUnsynced() > 0;
     }
 
     /**
@@ -370,17 +352,7 @@ class DbAccess implements AutoCloseable {
      * @return UTC timestamp in seconds
      */
     long getFirstTimestamp() {
-        Cursor query = db.query(DbContract.Positions.TABLE_NAME,
-                new String[]{DbContract.Positions.COLUMN_TIME},
-                null, null, null, null,
-                DbContract.Positions._ID + " ASC",
-                "1");
-        long timestamp = 0;
-        if (query.moveToFirst()) {
-            timestamp = query.getInt(0);
-        }
-        query.close();
-        return timestamp;
+        return getLimitTimestamp("ASC");
     }
 
     /**
@@ -389,10 +361,20 @@ class DbAccess implements AutoCloseable {
      * @return UTC timestamp in seconds
      */
     private long getLastTimestamp() {
+        return getLimitTimestamp("DESC");
+    }
+
+    /**
+     * Get limiting timestamp: start or stop
+     * 
+     * @param sortDirection SQLite sort order keyword, one of "ASC" or "DESC"
+     * @return UTC timestamp in seconds
+     */
+    private long getLimitTimestamp(@NonNull String sortDirection) {
         Cursor query = db.query(DbContract.Positions.TABLE_NAME,
-                new String[]{DbContract.Positions.COLUMN_TIME},
+                new String[]{ DbContract.Positions.COLUMN_TIME },
                 null, null, null, null,
-                DbContract.Positions._ID + " DESC",
+                DbContract.Positions.COLUMN_TIME + " " + sortDirection,
                 "1");
         long timestamp = 0;
         if (query.moveToFirst()) {
@@ -421,7 +403,7 @@ class DbAccess implements AutoCloseable {
      */
     int getTrackId() {
         Cursor track = db.query(DbContract.Track.TABLE_NAME,
-                new String[]{DbContract.Track.COLUMN_ID},
+                new String[]{ DbContract.Track.COLUMN_ID },
                 DbContract.Track.COLUMN_ID + " IS NOT NULL",
                 null, null, null, null,
                 "1");
@@ -441,7 +423,7 @@ class DbAccess implements AutoCloseable {
     @Nullable
     String getTrackName() {
         Cursor track = db.query(DbContract.Track.TABLE_NAME,
-                new String[]{DbContract.Track.COLUMN_NAME},
+                new String[]{ DbContract.Track.COLUMN_NAME },
                 null, null, null, null, null,
                 "1");
         String trackName = null;
@@ -484,9 +466,7 @@ class DbAccess implements AutoCloseable {
     void setTrackId(int id) {
         ContentValues values = new ContentValues();
         values.put(DbContract.Track.COLUMN_ID, id);
-        db.update(DbContract.Track.TABLE_NAME,
-                values,
-                null, null);
+        db.update(DbContract.Track.TABLE_NAME, values, null, null);
     }
 
     /**
@@ -541,6 +521,7 @@ class DbAccess implements AutoCloseable {
     /**
      * Set up new track with default name if there is no active track.
      * To be used in automated context
+     *
      * @param context Context
      */
     static void newAutoTrack(Context context) {
@@ -562,15 +543,15 @@ class DbAccess implements AutoCloseable {
             if (positions.moveToFirst()) {
                 double distance = 0.0;
                 long count = 1;
-                double startLon = positions.getDouble(positions.getColumnIndexOrThrow(DbContract.Positions.COLUMN_LONGITUDE));
-                double startLat = positions.getDouble(positions.getColumnIndexOrThrow(DbContract.Positions.COLUMN_LATITUDE));
-                long startTime = positions.getLong(positions.getColumnIndexOrThrow(DbContract.Positions.COLUMN_TIME));
+                double startLon = getLongitudeAsDouble(positions);
+                double startLat = getLatitudeAsDouble(positions);
+                long startTime = getTimeAsLong(positions);
                 long endTime = startTime;
                 while (positions.moveToNext()) {
                     count++;
-                    double endLon = positions.getDouble(positions.getColumnIndexOrThrow(DbContract.Positions.COLUMN_LONGITUDE));
-                    double endLat = positions.getDouble(positions.getColumnIndexOrThrow(DbContract.Positions.COLUMN_LATITUDE));
-                    endTime = positions.getLong(positions.getColumnIndexOrThrow(DbContract.Positions.COLUMN_TIME));
+                    double endLon = getLongitudeAsDouble(positions);
+                    double endLat = getLatitudeAsDouble(positions);
+                    endTime = getTimeAsLong(positions);
                     float[] results = new float[1];
                     Location.distanceBetween(startLat, startLon, endLat, endLon, results);
                     distance += results[0];
@@ -612,8 +593,8 @@ class DbAccess implements AutoCloseable {
                 if (db != null) {
                     db.close();
                 }
-                if (mDbHelper != null) {
-                    mDbHelper.close();
+                if (dbHelper != null) {
+                    dbHelper.close();
                 }
             }
             if (Logger.DEBUG) {
@@ -629,7 +610,7 @@ class DbAccess implements AutoCloseable {
      * @return String accuracy
      */
     static String getAccuracy(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_ACCURACY));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_ACCURACY);
     }
 
     /**
@@ -639,7 +620,7 @@ class DbAccess implements AutoCloseable {
      * @return True if has accuracy data
      */
     static boolean hasAccuracy(Cursor cursor) {
-        return !cursor.isNull(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_ACCURACY));
+        return isColumnNotNull(cursor, DbContract.Positions.COLUMN_ACCURACY);
     }
 
     /**
@@ -649,7 +630,7 @@ class DbAccess implements AutoCloseable {
      * @return String speed
      */
     static String getSpeed(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_SPEED));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_SPEED);
     }
 
     /**
@@ -659,7 +640,7 @@ class DbAccess implements AutoCloseable {
      * @return True if has speed data
      */
     static boolean hasSpeed(Cursor cursor) {
-        return !cursor.isNull(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_SPEED));
+        return isColumnNotNull(cursor, DbContract.Positions.COLUMN_SPEED);
     }
 
     /**
@@ -669,7 +650,7 @@ class DbAccess implements AutoCloseable {
      * @return String bearing
      */
     static String getBearing(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_BEARING));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_BEARING);
     }
 
     /**
@@ -679,7 +660,7 @@ class DbAccess implements AutoCloseable {
      * @return True if has bearing data
      */
     static boolean hasBearing(Cursor cursor) {
-        return !cursor.isNull(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_BEARING));
+        return isColumnNotNull(cursor, DbContract.Positions.COLUMN_BEARING);
     }
 
     /**
@@ -689,7 +670,7 @@ class DbAccess implements AutoCloseable {
      * @return String altitude
      */
     static String getAltitude(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_ALTITUDE));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_ALTITUDE);
     }
 
     /**
@@ -699,7 +680,7 @@ class DbAccess implements AutoCloseable {
      * @return True if has altitude data
      */
     static boolean hasAltitude(Cursor cursor) {
-        return !cursor.isNull(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_ALTITUDE));
+        return isColumnNotNull(cursor, DbContract.Positions.COLUMN_ALTITUDE);
     }
 
     /**
@@ -709,7 +690,7 @@ class DbAccess implements AutoCloseable {
      * @return String provider
      */
     static String getProvider(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_PROVIDER));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_PROVIDER);
     }
 
     /**
@@ -719,7 +700,7 @@ class DbAccess implements AutoCloseable {
      * @return True if has provider data
      */
     static boolean hasProvider(Cursor cursor) {
-        return !cursor.isNull(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_PROVIDER));
+        return isColumnNotNull(cursor, DbContract.Positions.COLUMN_PROVIDER);
     }
 
     /**
@@ -729,7 +710,7 @@ class DbAccess implements AutoCloseable {
      * @return String comment
      */
     static String getComment(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_COMMENT));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_COMMENT);
     }
 
     /**
@@ -739,7 +720,7 @@ class DbAccess implements AutoCloseable {
      * @return True if has image URI
      */
     static boolean hasImageUri(Cursor cursor) {
-        return !cursor.isNull(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_IMAGE_URI));
+        return isColumnNotNull(cursor, DbContract.Positions.COLUMN_IMAGE_URI);
     }
 
     /**
@@ -749,7 +730,7 @@ class DbAccess implements AutoCloseable {
      * @return String URI
      */
     static String getImageUri(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_IMAGE_URI));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_IMAGE_URI);
     }
 
     /**
@@ -759,7 +740,7 @@ class DbAccess implements AutoCloseable {
      * @return True if has comment data
      */
     static boolean hasComment(Cursor cursor) {
-        return !cursor.isNull(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_COMMENT));
+        return isColumnNotNull(cursor, DbContract.Positions.COLUMN_COMMENT);
     }
 
     /**
@@ -769,7 +750,7 @@ class DbAccess implements AutoCloseable {
      * @return String latitude
      */
     static String getLatitude(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_LATITUDE));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_LATITUDE);
     }
 
     /**
@@ -779,7 +760,27 @@ class DbAccess implements AutoCloseable {
      * @return String longitude
      */
     static String getLongitude(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_LONGITUDE));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_LONGITUDE);
+    }
+
+    /**
+     * Get longitude from positions cursor
+     *
+     * @param cursor Cursor
+     * @return Longitude
+     */
+    private static double getLongitudeAsDouble(Cursor cursor) {
+        return getColumnAsDouble(cursor, DbContract.Positions.COLUMN_LONGITUDE);
+    }
+
+    /**
+     * Get latitude from positions cursor
+     *
+     * @param cursor Cursor
+     * @return Longitude
+     */
+    private static double getLatitudeAsDouble(Cursor cursor) {
+        return getColumnAsDouble(cursor, DbContract.Positions.COLUMN_LATITUDE);
     }
 
     /**
@@ -789,7 +790,7 @@ class DbAccess implements AutoCloseable {
      * @return String time
      */
     static String getTime(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_TIME));
+        return getColumnAsString(cursor, DbContract.Positions.COLUMN_TIME);
     }
 
     /**
@@ -804,13 +805,23 @@ class DbAccess implements AutoCloseable {
     }
 
     /**
+     * Get time from positions cursor
+     *
+     * @param cursor Cursor
+     * @return Time
+     */
+    private static long getTimeAsLong(Cursor cursor) {
+        return cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_TIME));
+    }
+
+    /**
      * Get ID from positions cursor
      *
      * @param cursor Cursor
      * @return String ID
      */
     static String getID(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Positions._ID));
+        return getColumnAsString(cursor, DbContract.Positions._ID);
     }
 
     /**
@@ -823,5 +834,38 @@ class DbAccess implements AutoCloseable {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         return df.format(timestamp * 1000);
+    }
+
+    /**
+     * Get given column value as double
+     *
+     * @param cursor Result set
+     * @param column Column name
+     * @return Column value
+     */
+    private static double getColumnAsDouble(Cursor cursor, String column) {
+        return cursor.getDouble(cursor.getColumnIndexOrThrow(column));
+    }
+
+    /**
+     * Get given column value as string
+     *
+     * @param cursor Result set
+     * @param column Column name
+     * @return Column value
+     */
+    private static String getColumnAsString(Cursor cursor, String column) {
+        return cursor.getString(cursor.getColumnIndexOrThrow(column));
+    }
+
+    /**
+     * Check given column is not null
+     *
+     * @param cursor Result set
+     * @param column Column name
+     * @return True if not null
+     */
+    private static boolean isColumnNotNull(Cursor cursor, String column) {
+        return !cursor.isNull(cursor.getColumnIndexOrThrow(column));
     }
 }
