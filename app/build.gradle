@@ -17,8 +17,8 @@ android {
         applicationId 'net.fabiszewski.ulogger'
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 308
-        versionName '3.8'
+        versionCode 309
+        versionName '3.9'
     }
 
     buildTypes {

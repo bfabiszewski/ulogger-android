@@ -1,0 +1,7 @@
+3.9: μlogger
+
+Changes:
+- Fix rare issues caused by manual waypoints added out of chronological order
+
+Translations:
+- Added Greek (rafaila42)

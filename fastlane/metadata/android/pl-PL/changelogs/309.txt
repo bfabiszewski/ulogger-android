@@ -1,0 +1,7 @@
+3.9: μlogger
+
+Zmiany:
+- Poprawione potencjalne problemy związane z ręcznym dodawaniem punktów poza chronologicznym porządkiem
+
+Tłumaczenia:
+- Dodany grecki (rafaila42)
