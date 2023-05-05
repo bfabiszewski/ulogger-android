@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+    <string-array name="minTimeEntries">
+        <item>10 δευτερόλεπτα</item>
+        <item>30 δευτερόλεπτα</item>
+        <item>1 λεπτό</item>
+        <item>5 λεπτά</item>
+        <item>15 λεπτά</item>
+        <item>30 λεπτά</item>
+        <item>1 ώρα</item>
+        <item>Άλλο</item>
+    </string-array>
+
+    <string-array name="minDistanceEntries">
+        <item>χωρίς ελάχιστο</item>
+        <item>50 μ.</item>
+        <item>100 μ.</item>
+        <item>250 μ.</item>
+        <item>500 μ.</item>
+        <item>1 χλμ.</item>
+        <item>5 χλμ.</item>
+        <item>άλλο</item>
+    </string-array>
+
+    <string-array name="minAccuracyEntries">
+        <item>10 μ.</item>
+        <item>25 μ.</item>
+        <item>50 μ.</item>
+        <item>100 μ.</item>
+        <item>250 μ.</item>
+        <item>500 μ.</item>
+        <item>1 χλμ.</item>
+        <item>5 χλμ.</item>
+        <item>άλλο</item>
+    </string-array>
+
+    <string-array name="imageSizeEntries">
+        <item>πραγματικό μέγεθος</item>
+        <item>800 px</item>
+        <item>1080 px</item>
+        <item>1280 px</item>
+        <item>1920 px</item>
+        <item>άλλο</item>
+    </string-array>
+
+    </resources>

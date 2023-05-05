@@ -1,0 +1,140 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_upload">Αποστολή</string>
+    <string name="is_running" comment="substituted app_name">%s εκτελείται</string>
+    <string name="is_uploading" comment="substituted app_name">Ο %sαποστέλλει θέσεις</string>
+    <string name="title_newtrack">Καινούρια διαδρομή</string>
+    <string name="label_track">Τρέχουσα διαδρομή</string>
+    <string name="label_newtrack_name">Όνομα νέας διαδρομής</string>
+    <string name="label_name">Όνομα</string>
+    <string name="label_last_update">Τελευταία ανανέωση %s</string>
+    <string name="label_synchronized">Συγχρονίστηκε</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="submit">Υποβολή</string>
+    <string name="ok">OK</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="pref_username_title">Όνομα Χρήστη</string>
+    <string name="pref_username_summary">Σύνδεση Χρήστη στον απομακρυσμένο διακομιστή</string>
+    <string name="pref_pass_title">Κωδικός</string>
+    <string name="pref_pass_summary">Κωδικός Χρήστη στον απομακρυσμένο διακομιστή</string>
+    <string name="pref_host_title">URL Διακομιστή</string>
+    <string name="pref_host_summary">URL Βάσης του απομακρυσμένου διακομιστή</string>
+    <string name="pref_mintime_title">Ελάχιστος χρόνος</string>
+    <string name="pref_mintime_summary">Ελάχιστος χρόνος μεταξύ των ανανεώσεων θέσης</string>
+    <string name="pref_mindistance_title">Ελάχιστη απόσταση</string>
+    <string name="pref_mindistance_summary">Ελάχιστη απόσταση μεταξύ των ανανεώσεων θέσης</string>
+    <string name="pref_minaccuracy_title">Ελάχιστη ακρίβεια</string>
+    <string name="pref_minaccuracy_summary">Ελάχιστη ακρίβεια θέσης</string>
+    <string name="pref_imagesize_title">Μέγεθος εικόνας</string>
+    <string name="pref_imagesize_summary">Μέγιστο πλάτος/ύψος της αποσταλείσας  εικόνας σε πίξελ. Σε περίπτωση σμίκρυνσης, ένα αναδιαστασιολογημένο αντίγραφο θα αποθηκευθεί προσωρινά στο φάκελο της εφαρμογής πριν την αποστολή. Αν επιλέξετε \"πραγματικό μέγεθος\", δεν θα δημιουργηθεί αντίγραφο, δια τούτου τα αρχικά αρχεία θα πρέπει να διατίθενται κατά την αποστολή.</string>
+    <string name="pref_livesync_title">Συγχρονισμός σε πραγματικό χρόνο</string>
+    <string name="pref_livesync_summary">Αποστολή σε πραγματικό χρόνο των θέσεων στον διακομιστή.Απαιτεί έγκυρο Όνομα Χρήστη, κωδικό και URL του διακομιστή.</string>
+    <string name="pref_autostart_title">Αυτόματη εκκίνηση</string>
+    <string name="pref_autostart_summary">Η εφαρμογή θα εκκινηθεί κατά την εκκίνηση του συστήματος</string>
+    <string name="pref_external_title">Επιτρέψτε εξωτερικές εντολές</string>
+    <string name="pref_external_summary">Επιτρέψτε τη λήψη εντολών από άλλες εφαρμογές προς διευκόλυνση της αυτοματοποίησης και προσχεδιασμένων δράσεων.</string>
+    <string name="pref_provider_title">Πάροχος Θέσης</string>
+    <string name="pref_provider_summary">Η θέση σας μπορεί να παρέχεται από το GPS, το δίκτυο ή και τα δύο. Έκαστο παρέχει καλό αποτέλεσμα, αλλά καταναλώνει περισσότερη μπαταρία.</string>
+    <string name="pref_units_title">Μονάδες</string>
+    <string name="pref_units_summary">Προτιμώμενες μονάδες για την απεικόνιση σύνοψης διαδρομής</string>
+    <string name="pref_units_metric">Μετρικό</string>
+    <string name="pref_units_imperial">Αυτοκρατορικό</string>
+    <string name="pref_units_nautical">Ναυτικό</string>
+    <string name="pref_auto_name_title">Πρότυπο ονόματος διαδρομής</string>
+    <string name="pref_auto_name_summary" formatted="false">Πρότυπο ονόματος νέας διαδρομής. Τα ακόλουθα μοτίβα θα υποκαθιστώνται ως εξής: %y (έτος), %m (μήνας), %d (ημέρα), %H (ώρα), %M (λεπτό), %S (δευτερόλεπτο). Αν χρειάζεστε μεγαλύτερη ακρίβεια %%.</string>
+    <string name="label_status">Κατάσταση</string>
+    <string name="label_location">Θέση</string>
+    <string name="label_synchronization">Συγχρονισμός</string>
+    <string name="tracking_stopped">Η καταγραφή σταμάτησε</string>
+    <string name="tracking_started">Η καταγραφή ξεκίνησε</string>
+    <string name="uploading_started">Η αποστολή ξεκίνησε</string>
+    <string name="nothing_to_synchronize">Τίποτα προς συγχρονισμόν</string>
+    <string name="no_positions">Η τρέχουσα διαδρομή δεν έχει θέσεις</string>
+    <string name="warning">Προειδοποίηση</string>
+    <string name="notsync_warning">Η τρέχουσα διαδρομή περιέχει ασυγχρόνιστες θέσεις. Ο ορισμός νέας διαδρομής θα διαγράψει όλα αυτά τα δεδομένα.</string>
+    <string name="clear_warning">Θέλετε σίγουρα να διαγράψετε την τρέχουσα διαδρομή και όλα τα δεδομένα αυτής από την συσκευή σας; Δεν θα διαγραφούν δεδομένα από τον διακομιστή.</string>
+    <string name="no_track_warning">Παρακαλώ ορίστε πρώτα νέα διαδρομή.</string>
+    <string name="empty_trackname_warning">Το όνομα της διαδρομής δεν μπορείτε να το έχετε κενό</string>
+    <string name="logger_running_warning">Παρακαλώ σταματήστε την τρέχουσα καταγραφή</string>
+    <string name="about">Περί</string>
+    <string name="about_description">Απλός καταγραφέας θέσης με υποστήριξη καταγραφής πραγματικού χρόνου και αποστολή θέσεων σε δικό σας <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>μlogger server<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Για περισσότερες πληροφορίες παρακαλώ δείτε <xliff:g id="app_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-android\">]]></xliff:g> την ιστοσελίδα του μlogger <xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Έκδοση %s</string>
+    <string name="about_license">Τύπος αδείας: GPL</string>
+    <string name="uploading_failed">Η αποστολή απέτυχε:</string>
+    <string name="uploading_done">Η αποστολή τελείωσε</string>
+    <string name="track_summary">Σύνοψη διαδρομής</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d θέση</item>
+        <item quantity="other">%d θέσεις</item>
+    </plurals>
+    <string name="summary_duration">%1$dώρες %2$d λεπτά</string>
+    <string name="unit_kilometer">χιλ.</string>
+    <string name="unit_mile">μίλια</string>
+    <string name="provide_valid_url">Παρακαλώ ορίστε έγκυρο URL διακομιστού</string>
+    <string name="provide_user_pass_url">Παρακαλώ ορίστε Χρήστη, κωδικό και URL διακομιστού πρώτα</string>
+    <string name="e_illegal_state">Σφάλμα έκνομης κατάστασης: %s</string>
+    <string name="e_illegal_redirect">Εσφαλμένη εκτροπή: %d</string>
+    <string name="e_auth_failure">Αποτυχία πιστοποίησης: %d</string>
+    <string name="e_http_code">Κωδικός  σφάλματος HTTP: %d</string>
+    <string name="e_server_response">Σφάλμα απόκρισης διακομιστού</string>
+    <string name="e_unknown_host">Άγνωστος κεντρικός υπολογιστής: %s</string>
+    <string name="e_bad_url">Κακοδιατυπωμένη URL: %s</string>
+    <string name="e_connect">Σφάλμα σύνδεσης: %s</string>
+    <string name="gps_disabled_warning">Προειδοποίηση: Ο πάροχος GPS είναι απενεργοποιημένος</string>
+    <string name="net_disabled_warning">Προειδοποίηση: Ο πάροχος δικτύου είναι απενεργοποιημένος</string>
+    <string name="location_disabled">Πρέπει να ενεργοποιήσετε τουλάχιστον έναν πάροχο θέσης</string>
+    <string name="location_permission_denied">Πρέπει να δώσετε την άδειά σας για τις ανανεώσεις θέσης</string>
+    <string name="using_network">Χρήση  παρόχου δικτύου</string>
+    <string name="using_gps">Χρήση παρόχου GPS</string>
+    <string name="export">Εξαγωγή σε GPX</string>
+    <string name="waypoint">Γεωγραφικό σημείο</string>
+    <string name="nothing_to_export">Τίποτα προς εξαγωγήν</string>
+    <string name="export_done">Η διαδρομή αποθηκεύτηκε επιτυχώς</string>
+    <string name="export_failed">Η εξαγωγή απέτυχε</string>
+    <string name="unknown_track">Άγνωστη διαδρομή</string>
+    <string name="export_started">Η εξαγωγή ξεκίνησε</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d θέση πίσω</item>
+        <item quantity="other">%d θέσεις πίσω</item>
+    </plurals>
+    <string name="track_server_setup_warning">Αν αλλάξετε τη ρύθμιση του διακομιστή σας, ίσως να μη μπορέσετε να συγχρονίσετε την τρέχουσα διαδρομή.</string>
+    <string name="pref_mintime_other">Ελάχιστο χρονικό διάστημα σε δευτερόλεπτα</string>
+    <string name="pref_mindistance_other">Ελάχιστη απόσταση σε μέτρα</string>
+    <string name="pref_minaccuracy_other">Ελάχιστη ακρίβεια θέσης σε μέτρα</string>
+    <string name="pref_imagesize_other">Μέγιστο μήκος/ύψος σε πίξελ</string>
+    <string name="unit_nmile">νμ</string>
+    <string name="pref_cat_location">Καταγραφή σε εξέλιξη…</string>
+    <string name="pref_cat_server">Διακομιστής</string>
+    <string name="pref_cat_other">Άλλο</string>
+    <string name="illegal_template_warning">Το προσχέδιο περιέχει μη αποδεκτούς χαρακτήρες</string>
+    <string name="cannot_open_picker">Αδυναμία ανοίγματος διαλόγου επιλογής αρχείου</string>
+    <string name="e_open_out_stream">Αποτυχία ανοίγματος ροής εξόδου</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Δίκτυο</string>
+    <string name="provider_gps_network">Δίκτυο και GPS</string>
+    <string name="logger_task_failure">Αδυναμία εύρεσης Θέσης</string>
+    <string name="take_photo">Φωτογραφίστε</string>
+    <string name="from_library">Επιλογή από αρχειοθήκη</string>
+    <string name="accuracy_meters">%dμ. ακρίβεια</string>
+    <string name="meters_asl">%sμ. a.s.l.</string>
+    <string name="label_position">Θέση</string>
+    <string name="label_waypoint_description">Περιγραφή γεωγραφικού σημείου</string>
+    <string name="label_add_photo">Προσθήκη φωτογραφίας</string>
+    <string name="button_save">Αποθήκευση</string>
+    <string name="tracking">Καταγραφή σε εξέλιξη…</string>
+    <string name="clear">Εξάλειψη διαδρομής</string>
+    <string name="share_link">Κοινή χρήση της διαδρομής</string>
+    <string name="image_task_failed">Αποτυχία αναμορφοποίησης εικόνας</string>
+    <string name="background_location_rationale">Η έγκριση για εύρεση Θέσης στο παρασκήνιο απαιτείται μόνο όταν η καταγραφή έχει ξεκινήσει χωρίς άμεση ενέργεια του Χρήστη: Μέσω εξωτερικής εντολής ή αυτόματης εκτέλεσης κατά την εκκίνηση.\nΓια να λειτουργήσει αυτή η δυνατότητα, πρέπει να επιλέξετε \"%s\" στο ερώτημα για την άδεια.\nΣυνέχεια στις αδειοδοτήσεις της εφαρμογής;</string>
+    <string name="background_location_required">Απαιτείται έγκριση για εύρεση Θέσης στο παρασκήνιο</string>
+    </resources>
