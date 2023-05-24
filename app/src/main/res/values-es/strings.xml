@@ -41,6 +41,10 @@
     <string name="pref_autostart_summary">La aplicación se iniciará al arrancar el sistema</string>
     <string name="pref_external_title">Permitir comandos externos</string>
     <string name="pref_external_summary">Permite recibir comandos de otras aplicaciones para facilitar la automatización y la programación de tareas.</string>
+    <string name="pref_use_existing_track_title">Use la pista existente cuando no esté sincronizada</string>
+    <string name="pref_use_existing_track_summary">Si se permite una nueva pista cuando la existente aún no está sincronizada, use la pista existente en lugar de una nueva</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Permitir nueva pista cuando la existente no está sincronizada</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Permitir nueva pista cuando la existente no está sincronizada</string>
     <string name="pref_provider_title">Proveedor de ubicación</string>
     <string name="pref_provider_summary">La ubicación puede ser proporcionada por el proveedor de GPS, de la red o por ambos. Usar ambos proveedores proporcionará los mejores resultados, pero un mayor consumo de batería.</string>
     <string name="pref_units_title">Unidades</string>

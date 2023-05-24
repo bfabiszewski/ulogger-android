@@ -50,6 +50,12 @@
     <string name="pref_external_title">Allow external commands</string>
     <string name="pref_external_summary">Allow receiving commands from other applications to facilitate automation and tasks scheduling.</string>
     <string name="pref_external_default" translatable="false">false</string>
+    <string name="pref_use_existing_track_title">Use existing track when not synchronized</string>
+    <string name="pref_use_existing_track_summary">If allowed to new track when existing not yet synchronized, use the existing track instead of new one</string>
+    <string name="pref_use_existing_track_default" translatable="false">true</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Allow new track when existing one is not synchronized</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Allow new track when existing one is not synchronized</string>
+    <string name="pref_allow_new_track_when_not_sync_default" translatable="false">true</string>
     <string name="pref_provider_title">Location provider</string>
     <string name="pref_provider_summary">Location may be supplied by GPS provider, by network or by both. Both providers will give best results, but use more battery.</string>
     <string name="pref_units_title">Units</string>

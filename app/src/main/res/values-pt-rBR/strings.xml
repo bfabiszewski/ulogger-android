@@ -41,6 +41,10 @@
     <string name="pref_autostart_summary">O app será executado na inicialização do sistema</string>
     <string name="pref_external_title">Permitir comandos externos</string>
     <string name="pref_external_summary">Permitir o recebimento de comandos de outros apps para facilitar a automação e o agendamento de tarefas.</string>
+    <string name="pref_use_existing_track_title">Use a faixa existente quando não estiver sincronizada</string>
+    <string name="pref_use_existing_track_summary">Se permitido para uma nova faixa quando existente ainda não sincronizada, use a faixa existente em vez da nova</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Permitir nova faixa quando uma existente não estiver sincronizada</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Permitir nova faixa quando uma existente não estiver sincronizada</string>
     <string name="pref_provider_title">Fornecedor de localização</string>
     <string name="pref_provider_summary">A localização pode ser disponibilizada pelo provedor de GPS, pela rede ou por os dois. Ao usar os dois provedores você terá melhor resultado, mas consumo da bateria será maior.</string>
     <string name="pref_units_title">Unidades</string>

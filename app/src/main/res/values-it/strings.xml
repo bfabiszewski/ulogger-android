@@ -41,6 +41,10 @@
     <string name="pref_autostart_summary">L’applicazione sì avvierà all’accensione del dispositivo</string>
     <string name="pref_external_title">Consenti comandi esterni</string>
     <string name="pref_external_summary">Consenti comandi esterni da altre applicazioni per facilitare l’automazione e la programmazione di eventi.</string>
+    <string name="pref_use_existing_track_title">Usa la traccia esistente quando non è sincronizzata</string>
+    <string name="pref_use_existing_track_summary">Se consentito a una nuova traccia quando esistente non ancora sincronizzato, usa la traccia esistente invece di quella nuova</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Consenti nuova traccia quando quella esistente non è sincronizzata</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Consenti nuova traccia quando quella esistente non è sincronizzata</string>
     <string name="pref_provider_title">Fornitore della geolocalizzazione</string>
     <string name="pref_provider_summary">La posizione può essere ricavata dal GPS, dalla rete dati, o da entrambi. Usare sia il GPS che la rete darà risultati più accurati, a costo della batteria.</string>
     <string name="pref_units_title">Unità di misura</string>

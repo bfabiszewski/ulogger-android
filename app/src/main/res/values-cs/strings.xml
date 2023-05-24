@@ -41,6 +41,10 @@
     <string name="pref_autostart_summary">Aplikace se spustí při startu systému</string>
     <string name="pref_external_title">Povolit externí příkazy</string>
     <string name="pref_external_summary">Povolit přijímání příkazů z jiných aplikací pro usnadnění automatizace a plánování úloh.</string>
+    <string name="pref_use_existing_track_title">Použít existující stopu, když není synchronizována</string>
+    <string name="pref_use_existing_track_summary">Pokud je povolena nová stopa, když existující ještě není synchronizována, použijte stávající stopu místo nové</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Povolit novou stopu, když ta stávající není synchronizována</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Povolit novou stopu, když ta stávající není synchronizována</string>
     <string name="pref_provider_title">Poskytovatel umístění</string>
     <string name="pref_provider_summary">Umístění může být určeno přes GPS, přes internet, nebo oběma. Oba poskytovatelé poskytnou nejlepší výsledky, ale vyžadují více energie.</string>
     <string name="pref_units_title">Jednotky</string>

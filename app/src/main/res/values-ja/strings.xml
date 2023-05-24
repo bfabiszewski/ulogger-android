@@ -36,6 +36,10 @@
     <string name="pref_livesync_summary">場所のサーバーへのライブアップロード。 有効なユーザー名、パスワード、サーバー URL が必要です。</string>
     <string name="pref_autostart_title">自動開始</string>
     <string name="pref_autostart_summary">システム起動時にアプリケーションが開始します</string>
+    <string name="pref_use_existing_track_title">同期されていない場合は既存のトラックを使用する</string>
+    <string name="pref_use_existing_track_summary">既存のトラックがまだ同期されていないときに新しいトラックが許可されている場合は、新しいトラックの代わりに既存のトラックを使用します</string>
+    <string name="pref_allow_new_track_when_not_sync_title">既存のトラックが同期されていない場合に新しいトラックを許可する</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">既存のトラックが同期されていない場合に新しいトラックを許可する</string>
     <string name="pref_provider_title">位置プロバイダー</string>
     <string name="pref_provider_summary">GPS プロバイダー、ネットワーク、または両方で位置が提供されます。 両方のプロバイダーを使用すると最良の結果を得られますが、バッテリーを多く使用します。</string>
     <string name="pref_units_title">単位</string>

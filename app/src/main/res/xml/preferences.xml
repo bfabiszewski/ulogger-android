@@ -100,6 +100,18 @@
             android:summary="@string/pref_external_summary"
             android:defaultValue="@string/pref_external_default" />
 
+        <SwitchPreferenceCompat
+                android:key="prefUseExistingNotSync"
+                android:title="@string/pref_use_existing_track_title"
+                android:summary="@string/pref_use_existing_track_summary"
+                android:defaultValue="@string/pref_use_existing_track_default" />
+
+        <SwitchPreferenceCompat
+                android:key="prefAllowNewWhenNotSync"
+                android:title="@string/pref_allow_new_track_when_not_sync_title"
+                android:summary="@string/pref_allow_new_track_when_not_sync_summary"
+                android:defaultValue="@string/pref_allow_new_track_when_not_sync_default" />
+
         <ListPreference
             android:key="prefUnits"
             android:title="@string/pref_units_title"
