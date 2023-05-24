@@ -40,6 +40,10 @@
     <string name="pref_autostart_summary">Aplikácia sa spustí pri štarte systému</string>
     <string name="pref_external_title">Povoliť externé príkazy</string>
     <string name="pref_external_summary">Povoliť prijímanie príkazov z iných aplikácií na automatizovanie a plánovanie úloh.</string>
+    <string name="pref_use_existing_track_title">Použiť existujúcu trasu, keď nie je synchronizovaná</string>
+    <string name="pref_use_existing_track_summary">Ak je povolená nová trasa, keď existujúca ešte nie je synchronizovaná, použite existujúcu trasu namiesto novej</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Povoliť novú skladbu, keď existujúca nie je synchronizovaná</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Povoliť novú skladbu, keď existujúca nie je synchronizovaná</string>
     <string name="pref_provider_title">Poskytovateľ polohy</string>
     <string name="pref_provider_summary">Poloha môže byť poskytovaná cez GPS, cez sieť alebo cez oba zdroje. Oba poskytovatelia naraz dodávajú lepšie výsledky, ale vyžadujú viac energie baterky.</string>
     <string name="pref_units_title">Jednotky</string>

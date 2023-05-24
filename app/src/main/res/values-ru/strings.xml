@@ -41,6 +41,10 @@
     <string name="pref_autostart_summary">Приложение будет запускаться при загрузке системы</string>
     <string name="pref_external_title">Разрешить внешнее управление</string>
     <string name="pref_external_summary">Разрешить принимать команды от других приложений для автоматизации процессов и периодических задач.</string>
+    <string name="pref_use_existing_track_title">Использовать существующую дорожку, если она не синхронизирована</string>
+    <string name="pref_use_existing_track_summary">Если разрешен новый трек, когда существующий еще не синхронизирован, используйте существующий трек вместо нового</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Разрешить новый трек, если существующий не синхронизирован</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Разрешить новый трек, если существующий не синхронизирован</string>
     <string name="pref_provider_title">Настройки позиционирования</string>
     <string name="pref_provider_summary">Позиционирование может осуществляться по спутникам gps, или с использованием сети, а так же по обоим источникам. Использование всех источников обеспечит наилучшее позиционирование, но увеличит потребление энергии батареи.</string>
     <string name="pref_units_title">Единицы измерения</string>

@@ -41,6 +41,10 @@
     <string name="pref_autostart_summary">Aplikacja zostanie uruchomiona przy starcie systemu</string>
     <string name="pref_external_title">Zezwalaj na sterowanie</string>
     <string name="pref_external_summary">Przyjmuj komendy sterujące od innych aplikacji, aby ułatwić automatyzację i planowanie zadań.</string>
+    <string name="pref_use_existing_track_title">Użyj istniejącej ścieżki, gdy nie jest zsynchronizowana</string>
+    <string name="pref_use_existing_track_summary">Jeśli zezwolono na nową ścieżkę, gdy istniejąca nie została jeszcze zsynchronizowana, użyj istniejącej ścieżki zamiast nowej</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Zezwól na nową ścieżkę, gdy istniejąca nie jest zsynchronizowana</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Zezwól na nową ścieżkę, gdy istniejąca nie jest zsynchronizowana</string>
     <string name="pref_provider_title">Usługa lokalizacji</string>
     <string name="pref_provider_summary">Lokalizacja może być otrzymywana z GPS-a, z sieci (GSM/Wi-Fi) lub z obu na raz. Wybranie obu może dać lepsze rezultaty, ale kosztem większego zużycia baterii.</string>
     <string name="pref_units_title">Jednostki</string>

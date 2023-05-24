@@ -40,6 +40,10 @@
     <string name="pref_autostart_summary">L’aplicació s’iniciarà a l’arrancar el sistema</string>
     <string name="pref_external_title">Permetre comandes externes</string>
     <string name="pref_external_summary">Permetre rebre comandes d’altres aplicacions per facilitar l’automatització i la programació de tasques.</string>
+    <string name="pref_use_existing_track_title">Utilitzeu la pista existent quan no estigui sincronitzada</string>
+    <string name="pref_use_existing_track_summary">Si es permet fer una pista nova quan existeix encara no s’ha sincronitzat, utilitzeu la pista existent en lloc d’una de nova</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Permet una pista nova quan la existent no estigui sincronitzada</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Permet una pista nova quan la existent no estigui sincronitzada</string>
     <string name="pref_provider_title">Proveïdor d’ubicació</string>
     <string name="pref_provider_summary">L’ubicació pot ser proporcionada pel proveïdor de gps, de la xarxa o per ambdós. utilitzar ambdós proveïdors proporcionarà els millors resultats, però un major consum de bateria.</string>
     <string name="pref_units_title">Unitats</string>

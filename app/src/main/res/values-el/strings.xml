@@ -41,6 +41,10 @@
     <string name="pref_autostart_summary">Η εφαρμογή θα εκκινηθεί κατά την εκκίνηση του συστήματος</string>
     <string name="pref_external_title">Επιτρέψτε εξωτερικές εντολές</string>
     <string name="pref_external_summary">Επιτρέψτε τη λήψη εντολών από άλλες εφαρμογές προς διευκόλυνση της αυτοματοποίησης και προσχεδιασμένων δράσεων.</string>
+    <string name="pref_use_existing_track_title">Χρησιμοποιήστε το υπάρχον κομμάτι όταν δεν είναι συγχρονισμένο</string>
+    <string name="pref_use_existing_track_summary">Εάν επιτρέπεται σε νέο κομμάτι όταν το υπάρχον δεν είναι ακόμη συγχρονισμένο, χρησιμοποιήστε το υπάρχον κομμάτι αντί για νέο</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Να επιτρέπεται το νέο κομμάτι όταν το υπάρχον δεν είναι συγχρονισμένο</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Να επιτρέπεται το νέο κομμάτι όταν το υπάρχον δεν είναι συγχρονισμένο</string>
     <string name="pref_provider_title">Πάροχος Θέσης</string>
     <string name="pref_provider_summary">Η θέση σας μπορεί να παρέχεται από το GPS, το δίκτυο ή και τα δύο. Έκαστο παρέχει καλό αποτέλεσμα, αλλά καταναλώνει περισσότερη μπαταρία.</string>
     <string name="pref_units_title">Μονάδες</string>

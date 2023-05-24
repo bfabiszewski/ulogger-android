@@ -41,6 +41,10 @@
     <string name="pref_autostart_summary">Applikation beim Booten starten</string>
     <string name="pref_external_title">Aufrufe von dritten Applikation zulassen</string>
     <string name="pref_external_summary">Aufrufe von dritten Applikation zulassen um Automatisierung und Planung zu erlauben.</string>
+    <string name="pref_use_existing_track_title">Gebruik de bestaande track wanneer deze niet is gesynchroniseerd</string>
+    <string name="pref_use_existing_track_summary">Als een nieuwe track is toegestaan wanneer deze nog niet is gesynchroniseerd, gebruik dan de bestaande track in plaats van een nieuwe</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Sta een nieuwe track toe als de bestaande niet is gesynchroniseerd</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Sta een nieuwe track toe als de bestaande niet is gesynchroniseerd</string>
     <string name="pref_provider_title">Positionsquelle</string>
     <string name="pref_provider_summary">Position kann vom GPS, vom Netzwerk, oder von beiden ermittelt werden. Die Verwendung beider Positionsquellen liefert die besten Ergebnisse, aber benötigt mehr Batterie.</string>
     <string name="pref_units_title">Einheiten</string>

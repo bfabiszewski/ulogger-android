@@ -40,6 +40,10 @@
     <string name="pref_autostart_summary">Aplikazioa sistema abiatzean automatikoki hasiko da</string>
     <string name="pref_external_title">Kanpoko komandoak onartu</string>
     <string name="pref_external_summary">Beste aplikazioetatik komandoak jasotzea onartu, automatizazioa eta zereginen programazioa errazteko.</string>
+    <string name="pref_use_existing_track_title">Erabili lehendik dagoen pista sinkronizatuta ez dagoenean</string>
+    <string name="pref_use_existing_track_summary">Oraindik sinkronizatuta ez dagoenean pista berria egiteko baimena badago, erabili lehendik dagoen pista berria izan beharrean</string>
+    <string name="pref_allow_new_track_when_not_sync_title">Baimendu pista berria lehendik dagoena sinkronizatuta ez dagoenean</string>
+    <string name="pref_allow_new_track_when_not_sync_summary">Baimendu pista berria lehendik dagoena sinkronizatuta ez dagoenean</string>
     <string name="pref_provider_title">Kokapenaren jatorria</string>
     <string name="pref_provider_summary">Kokapena GPSak, datu-konexioak edo biek batera hornitu dezakete. Biak batera erabiliz doitasun handiena lortzen da, bateria gehiago erabiltzearen truk.</string>
     <string name="pref_units_title">Unitateak</string>

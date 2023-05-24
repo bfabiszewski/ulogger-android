@@ -57,7 +57,22 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
      * @param context Context
      */
     private void startNewLoggerService(Context context) {
-        DbAccess.newTrack(context, AutoNamePreference.getAutoTrackName(context));
+        if (DbAccess.needsSync(context)) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean allowNew = prefs.getBoolean(SettingsActivity.KEY_ALLOW_NEW_WHEN_NOT_SYNC, true);
+            boolean useExisting = prefs.getBoolean(SettingsActivity.KEY_USE_EXISTING_NOT_SYNC_TRACK, true);
+            if (allowNew) {
+                if (useExisting) {
+                    DbAccess.newAutoTrack(context);
+                } else {
+                    DbAccess.newTrack(context, AutoNamePreference.getAutoTrackName(context));
+                }
+            } else {
+                // Do nothing as not allowed
+            }
+        } else {
+            DbAccess.newTrack(context, AutoNamePreference.getAutoTrackName(context));
+        }
         Intent intent = new Intent(context, LoggerService.class);
         ContextCompat.startForegroundService(context, intent);
     }
