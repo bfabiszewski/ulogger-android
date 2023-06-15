@@ -185,6 +185,9 @@ class LoggerTask implements LocationListener, Runnable {
     @Override
     public void onLocationChanged(@NonNull Location location) {
         if (Logger.DEBUG) { Log.d(TAG, "[location changed: " + location + "]"); }
+
+        LocationHelper.handleRolloverBug(location);
+
         if (hasRequiredAccuracy(location)) {
             this.location = location;
             quitLoop();
