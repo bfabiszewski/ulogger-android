@@ -1,0 +1,154 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_upload">Lähetä</string>
+    <string name="is_running" comment="substituted app_name">%s on käynnissä</string>
+    <string name="is_uploading" comment="substituted app_name">%s lähettää verkkoon sijainteja</string>
+    <string name="title_newtrack">Uusi reitti</string>
+    <string name="label_track">Nykyinen reitti</string>
+    <string name="label_newtrack_name">Uuden reitin nimi</string>
+    <string name="label_name">Nimi</string>
+    <string name="label_last_update">Viimeisin päivitys: %s</string>
+    <string name="label_synchronized">Synkronoitu</string>
+    <string name="cancel">Peruuta</string>
+    <string name="submit">Lähetä</string>
+    <string name="ok">OK</string>
+    <string name="settings">Asetukset</string>
+    <string name="pref_username_title">Käyttäjänimi</string>
+    <string name="pref_username_summary">Käyttäjätunnus etäpalvelimella</string>
+    <string name="pref_pass_title">Salasana</string>
+    <string name="pref_pass_summary">Käyttäjän salasana etäpalvelimella</string>
+    <string name="pref_host_title">Palvelimen URL</string>
+    <string name="pref_host_summary">Etäpalvelimen perus-URL-osoite</string>
+    <string name="pref_mintime_title">Vähimmäisaika</string>
+    <string name="pref_mintime_summary">Vähimmäisaika sijaintitietojen päivityksien välillä</string>
+    <string name="pref_mindistance_title">Vähimmäisetäisyys</string>
+    <string name="pref_mindistance_summary">Vähimmäismatka sijaintitietojen päivityksien välillä</string>
+    <string name="pref_minaccuracy_title">Vähimmäistarkkuus</string>
+    <string name="pref_minaccuracy_summary">Sijainnin vähimmäistarkkuus</string>
+    <string name="pref_imagesize_title">Kuvan koko</string>
+    <string name="pref_imagesize_summary">Lähetettyjen kuvien enimmäisleveys ja -korkeus pikseleinä. Jos kuvan kokoa pienennetään, kooltaan muutetun kuvan kopio tallennetaan tilapäisesti sovelluksen hakemistoon ennen verkkoon lähetystä. Jos valitset \"alkuperäinen koko\"-valinnan, kopiointia ei tehdä, ja alkuperäisten tiedostojen tulee olla käytettävissä lähetyksen ajan.</string>
+    <string name="pref_livesync_title">Live-synkronointi</string>
+    <string name="pref_livesync_summary">Ajantasainen sijaintien lähetys palvelimelle. Edellyttää kelvollisen käyttäjätunnuksen, salasanan ja palvelimen URL-osoitteen.</string>
+    <string name="pref_autostart_title">Automaattinen käynnistys</string>
+    <string name="pref_autostart_summary">Sovellus käynnistyy järjestelmän käynnistyksessä</string>
+    <string name="pref_external_title">Salli ulkoiset komennot</string>
+    <string name="pref_external_summary">Salli komentojen vastaanottaminen muista sovelluksista automaation ja tehtävien ajastuksen mahdollistamiseksi.</string>
+    <string name="pref_provider_title">Sijaintitietojen tarjoaja</string>
+    <string name="pref_provider_summary">Sijaintitiedon voi tarjota GPS-tietojen tarjoaja, verkko tai molemmat. Kummankin tarjoajan käyttäminen antaa parhaan lopputuloksen, mutta käyttää enemmän akkua.</string>
+    <string name="pref_units_title">Yksiköt</string>
+    <string name="pref_units_summary">Ensisijaiset yksiköt reitin yhteenvedon näyttämiseksi</string>
+    <string name="pref_units_metric">Metrijärjestelmä</string>
+    <string name="pref_units_imperial">Anglosaksinen mittajärjestelmä</string>
+    <string name="pref_units_nautical">Meripeninkulmat</string>
+    <string name="pref_auto_name_title">Reitin nimen mallipohja</string>
+    <string name="pref_auto_name_summary" formatted="false">Uuden reitin nimen mallipohja. Seuraavat mallit korvataan nykyisen päivämäärän elementeillä: %y (vuosi), %m (kuukausi), %d (päivä), %H (tunti), %M (minuutti), %S (sekunti). Jos tarvitset prosenttimerkin, käytä %%.</string>
+    <string name="label_status">Tila</string>
+    <string name="label_location">Sijainti</string>
+    <string name="label_synchronization">Synkronointi</string>
+    <string name="tracking_stopped">Seuranta pysäytetty</string>
+    <string name="tracking_started">Seuranta aloitettu</string>
+    <string name="uploading_started">Verkkoon lataaminen aloitettu</string>
+    <string name="nothing_to_synchronize">Ei mitään synkronoitavaa</string>
+    <string name="no_positions">Nykyisellä reitillä ei ole sijainteja</string>
+    <string name="warning">Varoitus</string>
+    <string name="notsync_warning">Nykyisellä reitillä on synkronoimattomia sijainteja. Uuden reitin asettaminen poistaa kaikki nämä tiedot.</string>
+    <string name="clear_warning">Oletko varma, että haluat poistaa nykyisen reitin ja kaiken sen tiedot laitteelta? Poistaminen ei poista tietoja palvelimelta.</string>
+    <string name="no_track_warning">Määritä ensin uusi reitti</string>
+    <string name="empty_trackname_warning">Reitin nimi ei voi olla tyhjä</string>
+    <string name="logger_running_warning">Pysäytä ensin nykyinen seuranta</string>
+    <string name="about">Tietoja</string>
+    <string name="about_description">Yksinkertainen sijaintitietojen lokitusohjelma, joka tukee ajantasaista seurantaa ja sijaintitietojen lähettämistä omalle <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>μlogger-palvelimelle<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Lisätietoja ja ohjeita <xliff:g id="app_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-android\">]]></xliff:g>μloggerin kotisivulta <xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Versio %s</string>
+    <string name="about_license">Lisenssi: GPL</string>
+    <string name="uploading_failed">Verkkoon lataaminen epäonnistui:</string>
+    <string name="uploading_done">Verkkoon lataaminen valmis</string>
+    <string name="track_summary">Reitin yhteenveto</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d sijainti</item>
+        <item quantity="other">%d sijaintia</item>
+    </plurals>
+    <string name="summary_duration">%1$d t %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi</string>
+    <string name="provide_valid_url">Anna kelvollinen palvelimen URL-osoite</string>
+    <string name="provide_user_pass_url">Anna ensin käyttäjätunnus, salasana ja palvelimen URL</string>
+    <string name="e_illegal_state">Epäkelvon tilan virhe: %s</string>
+    <string name="e_illegal_redirect">Epäkelpo uudelleenohjaus: %d</string>
+    <string name="e_auth_failure">Tunnistautumisen virhe: %d</string>
+    <string name="e_http_code">HTTP-virhekoodi: %d</string>
+    <string name="e_server_response">Palvelimen vastausvirhe</string>
+    <string name="e_unknown_host">Tuntematon palvelin: %s</string>
+    <string name="e_bad_url">Virheellinen URL: %s</string>
+    <string name="e_connect">Yhteysvirhe: %s</string>
+    <string name="gps_disabled_warning">Varoitus: GPS-palveluntarjoaja ei ole käytettävissä</string>
+    <string name="net_disabled_warning">Varoitus: verkkopalveluiden tarjoaja ei ole käytössä</string>
+    <string name="location_disabled">Vähintään yksi sijaintitietojen tarjoaja tulee olla käytössä</string>
+    <string name="location_permission_denied">Sinun tulee hyväksyä käyttöoikeus sijaintien päivitykselle</string>
+    <string name="using_network">Käytä verkkopalveluiden tarjoajaa</string>
+    <string name="using_gps">Käytä GPS-tietojen tarjoajaa</string>
+    <string name="export">Vie GPX:ään</string>
+    <string name="waypoint">Reittipiste</string>
+    <string name="nothing_to_export">Ei tietoja vietäväksi</string>
+    <string name="export_done">Reitti tallennettu onnistuneesti</string>
+    <string name="export_failed">Vienti epäonnistui</string>
+    <string name="unknown_track">Tuntematon reitti</string>
+    <string name="export_started">Vienti aloitettu</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d sijainti jäljessä</item>
+        <item quantity="other">%d sijaintia jäljessä</item>
+    </plurals>
+    <string name="track_server_setup_warning">Jos vaihdat palvelimen asetuksia, et välttämättä pysty synkronoimaan nykyistä reittiä.</string>
+    <string name="pref_mintime_other">Vähimmäisaikaväli sekunteina</string>
+    <string name="pref_mindistance_other">Vähimmäisetäisyys metreinä</string>
+    <string name="pref_minaccuracy_other">Vähimmäistarkkuus metreinä</string>
+    <string name="pref_imagesize_other">Kuvan enimmäisleveys ja -korkeus pikseleinä</string>
+    <string name="unit_nmile">mpk</string>
+    <string name="pref_cat_location">Seuranta</string>
+    <string name="pref_cat_server">Palvelin</string>
+    <string name="pref_cat_other">Muut asetukset</string>
+    <string name="illegal_template_warning">Mallipohja sisältää epäkelpoja merkkejä</string>
+    <string name="cannot_open_picker">Ei voi avata tiedoston valitsinta</string>
+    <string name="e_open_out_stream">Tulostevirran avaaminen epäonnistui</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Verkko</string>
+    <string name="provider_gps_network">Verkko ja GPS</string>
+    <string name="logger_task_failure">Ei voitu hakea sijaintia</string>
+    <string name="take_photo">Ota valokuva</string>
+    <string name="from_library">Valitse kirjastosta</string>
+    <string name="accuracy_meters">%d m tarkkuus</string>
+    <string name="meters_asl">%s m mpy</string>
+    <string name="label_position">Sijainti</string>
+    <string name="label_waypoint_description">Reittipisteen kuvaus</string>
+    <string name="label_add_photo">Lisää valokuva</string>
+    <string name="button_save">Tallenna</string>
+    <string name="tracking">Seuranta</string>
+    <string name="clear">Tyhjennä reitti</string>
+    <string name="share_link">Jaa reitin linkki</string>
+    <string name="image_task_failed">Kuvan koon muuttaminen epäonnistui</string>
+    <string name="background_location_rationale">Käyttöoikeus sijaintitietojen taustalla toimimiseen tarvitaan vain, kun seuranta aloitetaan ilman käyttäjän toimintaa ulkoisen komennon kautta tai kun sovellus käynnistetään automaattisesti järjestelmän käynnistyksessä.\nTätä toiminnallisuutta varten valitse valinta \"%s\" sijainnin käyttöoikeuksien valintaikkunassa.\nSiirrytäänkö sovelluksen käyttöoikeuksiin?</string>
+    <string name="background_location_required">Taustasijainnin lupa vaaditaan</string>
+    <string name="label_self_check">Itsetarkastus</string>
+    <string name="self_check_approximate_location_rationale">Pakollinen. Ilman tätä käyttöoikeutta sovellus ei voi saada sijaintitietoa. </string>
+    <string name="self_check_precise_location_rationale">Valinnainen. Täytyy olla sallittu tarkkojen GPS-sijaintitietojen käyttämiseksi.</string>
+    <string name="self_check_background_location_rationale">Valinnainen. Pakollinen vain, jos sovellus käynnistetään automaattisesti*</string>
+    <string name="self_check_storage_rationale">Valinnainen. Tarpeen vain, jos haluat liittää kameran kuvia reittipisteisiin.</string>
+    <string name="self_check_notifications_rationale">Valinnainen. Jos sallittu, saat ilmoituksia sovelluksen taustalla toimimisesta.</string>
+    <string name="self_check_battery_unrestricted_rationale">Valinnainen. Erittäin suositeltava luotettavasti toimimiseksi. Jos ei sallittu, järjestelmä voi pysäyttää sovelluksen sen toimiessa taustalla akun säästämiseksi. Vaadittu automaatiokäyttöön*</string>
+    <string name="self_check_battery_unrestricted_title">Rajoittamaton akun käyttö</string>
+    <string name="self_check_permissions_title">Käyttöoikeudet</string>
+    <string name="self_check_providers_title">Sijaintitietojen tarjoajat</string>
+    <string name="self_check_server_configured">Palvelin määritetty</string>
+    <string name="self_check_server_reachable">Palvelin tavoitettavissa</string>
+    <string name="self_check_valid_server_account">Palvelintili on kelvollinen</string>
+    <string name="self_check_automated_usage">* Automaatiokäyttö: lokitus aloitetaan ilman käyttäjän toimia ulkoisesta sovelluksesta tai järjestelmän käynnistyksessä.</string>
+</resources>
