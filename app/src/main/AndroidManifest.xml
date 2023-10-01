@@ -26,6 +26,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- For notifications API >= 33 -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <!-- For notifications API >= 34 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
 
     <!-- For location API >= 21 -->
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
@@ -62,7 +65,8 @@
             android:foregroundServiceType="location" />
         <service
             android:name=".WebSyncService"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="dataSync"/>
 
         <receiver
             android:name=".RestartBroadcastReceiver"
