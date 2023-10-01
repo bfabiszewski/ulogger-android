@@ -643,7 +643,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
             filter.addAction(LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED);
             filter.addAction(WebSyncService.BROADCAST_SYNC_DONE);
             filter.addAction(WebSyncService.BROADCAST_SYNC_FAILED);
-            context.registerReceiver(broadcastReceiver, filter);
+            ContextCompat.registerReceiver(context, broadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
         }
     }
 

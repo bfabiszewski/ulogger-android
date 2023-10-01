@@ -131,7 +131,7 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
         final Context context = getContext();
         if (context != null) {
             final TypedArray typedArray = context.obtainStyledAttributes(null, R.styleable.AlertDialog,
-                    R.attr.alertDialogStyle, 0);
+                    androidx.appcompat.R.attr.alertDialogStyle, 0);
             resId = typedArray.getResourceId(R.styleable.AlertDialog_singleChoiceItemLayout, resId);
             typedArray.recycle();
         }

@@ -94,7 +94,7 @@ public class WebSyncService extends Service {
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(@NonNull Message msg) {
             cancelPending();
 
             if (!WebHelper.isAuthorized) {

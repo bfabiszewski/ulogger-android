@@ -27,6 +27,7 @@ import androidx.preference.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 class LocationHelper {
 
@@ -269,7 +270,7 @@ class LocationHelper {
      * @return True if is from GPS
      */
     static boolean isGps(@NonNull Location location) {
-        boolean ret = location.getProvider().equals(LocationManager.GPS_PROVIDER);
+        boolean ret = Objects.equals(location.getProvider(), LocationManager.GPS_PROVIDER);
         if (Logger.DEBUG) { Log.d(TAG, "[isGps: " + ret + "]"); }
         return ret;
     }
@@ -280,7 +281,7 @@ class LocationHelper {
      * @return True if is from Network
      */
     static boolean isNetwork(@NonNull Location location) {
-        boolean ret = location.getProvider().equals(LocationManager.NETWORK_PROVIDER);
+        boolean ret = Objects.equals(location.getProvider(), LocationManager.NETWORK_PROVIDER);
         if (Logger.DEBUG) { Log.d(TAG, "[isNetwork: " + ret + "]"); }
         return ret;
     }

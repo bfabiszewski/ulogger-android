@@ -302,7 +302,7 @@ public class PermissionHelper {
         CharSequence label = ctx.getPackageManager().getBackgroundPermissionOptionLabel();
         CharSequence defaultLabel = "Allow all the time";
 
-        if (Locale.getDefault().getLanguage().equals("en")) {
+        if ("en".equals(Locale.getDefault().getLanguage())) {
             return label.length() > 0 ? label : defaultLabel;
         }
 
@@ -311,6 +311,6 @@ public class PermissionHelper {
         config.setLocale(Locale.ENGLISH);
         CharSequence defaultText = ctx.createConfigurationContext(config).getText(R.string.background_location_rationale);
 
-        return translated.equals(defaultText) ? defaultLabel : label;
+        return CharSequence.compare(translated, defaultText) == 0 ? defaultLabel : label;
     }
 }

@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 class ImageHelper {
     private static final String TAG = ImageHelper.class.getSimpleName();
@@ -171,7 +172,7 @@ class ImageHelper {
         int sizePx = getThumbnailSize(context);
         Bitmap bitmap;
         ContentResolver cr = context.getContentResolver();
-        if (uri.getScheme().equals("content") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Objects.equals(uri.getScheme(), "content") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             bitmap = cr.loadThumbnail(uri, new Size(sizePx, sizePx), null);
         } else {
             try (InputStream is = cr.openInputStream(uri)) {
