@@ -25,7 +25,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-/**
+/*
  * This custom ssl socket factory will be used only with APIs 16-22
  * to ensure only TLSv1, TLSv1.1, TLSv1.2 are enabled, which is default for later APIs
  *
@@ -54,9 +54,8 @@ class TlsSocketFactory extends SSLSocketFactory {
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
         socket = factory.createSocket(socket, host, port, autoClose);
 
-        if (socket instanceof SSLSocket) {
+        if (socket instanceof SSLSocket sslSocket) {
             if (Logger.DEBUG) { Log.d(TAG, "[Preparing TLS socket]"); }
-            SSLSocket sslSocket = (SSLSocket) socket;
 
             // set default protocols of APIs 22+
             sslSocket.setEnabledProtocols(new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" });

@@ -39,19 +39,18 @@ public class RestartBroadcastReceiver extends BroadcastReceiver {
         if (intent != null && intent.getAction() != null) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             switch (intent.getAction()) {
-                case BOOT_COMPLETED:
-                case QUICKBOOT_POWERON:
+                case BOOT_COMPLETED, QUICKBOOT_POWERON -> {
                     boolean autoStart = prefs.getBoolean(SettingsActivity.KEY_AUTO_START, false);
                     if (autoStart) {
                         startLoggerService(context);
                     }
-                    break;
-                case MY_PACKAGE_REPLACED:
+                }
+                case MY_PACKAGE_REPLACED -> {
                     boolean wasRunning = prefs.getBoolean(SettingsActivity.KEY_LOGGER_RUNNING, false);
                     if (wasRunning) {
                         startLoggerService(context);
                     }
-                    break;
+                }
             }
         }
 

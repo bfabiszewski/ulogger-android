@@ -35,18 +35,10 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
             String command = intent.getStringExtra("command");
             if (command != null) {
                 switch (command) {
-                    case START_LOGGER:
-                        startLoggerService(context);
-                        break;
-                    case START_NEW_LOGGER:
-                        startNewLoggerService(context);
-                        break;
-                    case STOP_LOGGER:
-                        stopLogger(context);
-                        break;
-                    case START_UPLOAD:
-                        uploadData(context);
-                        break;
+                    case START_LOGGER -> startLoggerService(context);
+                    case START_NEW_LOGGER -> startNewLoggerService(context);
+                    case STOP_LOGGER -> stopLogger(context);
+                    case START_UPLOAD -> uploadData(context);
                 }
             }
         }

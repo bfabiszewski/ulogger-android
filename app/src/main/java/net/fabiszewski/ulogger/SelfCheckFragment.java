@@ -283,25 +283,21 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
                 view.setTag(false);
             } else if (isChecked) {
                 switch (permission) {
-                    case ACCESS_COARSE_LOCATION:
-                        permissionHelper.requestCoarseLocationPermission();
-                        break;
-                    case ACCESS_FINE_LOCATION:
-                        permissionHelper.requestFineLocationPermission();
-                        break;
-                    case ACCESS_BACKGROUND_LOCATION:
+                    case ACCESS_COARSE_LOCATION ->
+                            permissionHelper.requestCoarseLocationPermission();
+                    case ACCESS_FINE_LOCATION -> permissionHelper.requestFineLocationPermission();
+                    case ACCESS_BACKGROUND_LOCATION -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                             permissionHelper.requestBackgroundLocationPermission();
                         }
-                        break;
-                    case WRITE_EXTERNAL_STORAGE:
-                        permissionHelper.requestWriteExternalStoragePermission();
-                        break;
-                    case POST_NOTIFICATIONS:
+                    }
+                    case WRITE_EXTERNAL_STORAGE ->
+                            permissionHelper.requestWriteExternalStoragePermission();
+                    case POST_NOTIFICATIONS -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             permissionHelper.requestNotificationsPermission();
                         }
-                        break;
+                    }
                 }
             }
         });

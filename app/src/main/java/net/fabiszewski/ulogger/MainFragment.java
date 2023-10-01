@@ -49,7 +49,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-@SuppressWarnings("WeakerAccess")
 public class MainFragment extends Fragment implements PermissionHelper.PermissionRequester {
 
     private final String TAG = MainFragment.class.getSimpleName();
@@ -540,17 +539,9 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
     private void setLedColor(TextView led, int color) {
         Drawable l = TextViewCompat.getCompoundDrawablesRelative(led)[0];
         switch (color) {
-            case LED_RED:
-                l.setColorFilter(redFilter);
-                break;
-
-            case LED_GREEN:
-                l.setColorFilter(greenFilter);
-                break;
-
-            case LED_YELLOW:
-                l.setColorFilter(yellowFilter);
-                break;
+            case LED_RED -> l.setColorFilter(redFilter);
+            case LED_GREEN -> l.setColorFilter(greenFilter);
+            case LED_YELLOW -> l.setColorFilter(yellowFilter);
         }
         l.invalidateSelf();
     }
@@ -659,14 +650,14 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
             }
             MainActivity activity = (MainActivity) getActivity();
             switch (intent.getAction()) {
-                case LoggerService.BROADCAST_LOCATION_UPDATED:
+                case LoggerService.BROADCAST_LOCATION_UPDATED -> {
                     updateLocationLabel(LoggerService.lastUpdateRealtime());
                     setLocLed(LED_GREEN);
                     if (activity != null && !activity.preferenceLiveSync) {
                         updateSyncStatus(DbAccess.countUnsynced(context));
                     }
-                    break;
-                case WebSyncService.BROADCAST_SYNC_DONE:
+                }
+                case WebSyncService.BROADCAST_SYNC_DONE -> {
                     final int unsyncedCount = DbAccess.countUnsynced(context);
                     updateSyncStatus(unsyncedCount);
                     setSyncLed(LED_GREEN);
@@ -680,8 +671,8 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
                     if (buttonShare.getVisibility() == View.GONE) {
                         buttonShare.setVisibility(View.VISIBLE);
                     }
-                    break;
-                case (WebSyncService.BROADCAST_SYNC_FAILED): {
+                }
+                case (WebSyncService.BROADCAST_SYNC_FAILED) -> {
                     updateSyncStatus(DbAccess.countUnsynced(context));
                     setSyncLed(LED_RED);
                     // set error flag and label
@@ -692,39 +683,34 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
                         showToast(getString(R.string.uploading_failed) + "\n" + message);
                         isUploading = false;
                     }
-                    break;
                 }
-                case LoggerService.BROADCAST_LOCATION_STARTED:
+                case LoggerService.BROADCAST_LOCATION_STARTED -> {
                     switchLogger.setChecked(true);
                     showToast(getString(R.string.tracking_started));
                     setLocLed(LED_YELLOW);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_STOPPED:
+                }
+                case LoggerService.BROADCAST_LOCATION_STOPPED -> {
                     switchLogger.setChecked(false);
                     showToast(getString(R.string.tracking_stopped));
                     setLocLed(LED_RED);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_GPS_DISABLED:
-                    showToast(getString(R.string.gps_disabled_warning));
-                    break;
-                case LoggerService.BROADCAST_LOCATION_NETWORK_DISABLED:
-                    showToast(getString(R.string.net_disabled_warning));
-                    break;
-                case LoggerService.BROADCAST_LOCATION_DISABLED:
+                }
+                case LoggerService.BROADCAST_LOCATION_GPS_DISABLED ->
+                        showToast(getString(R.string.gps_disabled_warning));
+                case LoggerService.BROADCAST_LOCATION_NETWORK_DISABLED ->
+                        showToast(getString(R.string.net_disabled_warning));
+                case LoggerService.BROADCAST_LOCATION_DISABLED -> {
                     showToast(getString(R.string.location_disabled));
                     setLocLed(LED_RED);
-                    break;
-                case LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED:
-                    showToast(getString(R.string.using_network));
-                    break;
-                case LoggerService.BROADCAST_LOCATION_GPS_ENABLED:
-                    showToast(getString(R.string.using_gps));
-                    break;
-                case LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED:
+                }
+                case LoggerService.BROADCAST_LOCATION_NETWORK_ENABLED ->
+                        showToast(getString(R.string.using_network));
+                case LoggerService.BROADCAST_LOCATION_GPS_ENABLED ->
+                        showToast(getString(R.string.using_gps));
+                case LoggerService.BROADCAST_LOCATION_PERMISSION_DENIED -> {
                     showToast(getString(R.string.location_permission_denied));
                     setLocLed(LED_RED);
                     permissionHelper.requestFineLocationPermission();
-                    break;
+                }
             }
         }
     };

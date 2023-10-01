@@ -61,10 +61,11 @@ import static android.util.Base64.URL_SAFE;
 class WebHelper {
     private static final String TAG = WebSyncService.class.getSimpleName();
     private static final int BUFFER_SIZE = 16 * 1024;
-    private static final String MULTIPART_TEXT_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s";
-    private static final String MULTIPART_FILE_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"; filename=\"upload\"\r\n" +
-            "Content-Type: %s\r\n" +
-            "Content-Transfer-Encoding: binary\r\n\r\n";
+    private static final String CRLF = "\r\n";
+    private static final String MULTIPART_TEXT_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"" + CRLF + CRLF + "%s";
+    private static final String MULTIPART_FILE_TEMPLATE = "Content-Disposition: form-data; name=\"%s\"; filename=\"upload\"" + CRLF +
+            "Content-Type: %s" + CRLF +
+            "Content-Transfer-Encoding: binary" + CRLF + CRLF;
     private static CookieManager cookieManager = null;
 
     private static String host;
@@ -90,8 +91,6 @@ class WebHelper {
 
     // auth
     private static final String ACTION_AUTH = "auth";
-    // todo adduser not implemented (do we need it?)
-//    private static final String ACTION_ADDUSER = "adduser";
     private static final String PARAM_USER = "user";
     private static final String PARAM_PASS = "pass";
 
@@ -109,7 +108,6 @@ class WebHelper {
 
     static boolean isAuthorized = false;
     private byte[] delimiter;
-    private static final String CRLF = "\r\n";
     private static final String DASH = "--";
 
     /**

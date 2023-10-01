@@ -34,7 +34,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.TwoStatePreference;
 
-@SuppressWarnings("WeakerAccess")
 public class SettingsFragment extends PreferenceFragmentCompat implements PermissionHelper.PermissionRequester {
 
     private static final String TAG = SettingsFragment.class.getSimpleName();

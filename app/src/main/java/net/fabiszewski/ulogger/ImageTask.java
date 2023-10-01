@@ -161,13 +161,10 @@ class ImageTask implements Runnable {
         Activity getActivity();
     }
 
-    static class ImageTaskResult {
-        final Uri savedUri;
-        final Bitmap thumbnail;
-
-        ImageTaskResult(@NonNull Uri savedUri, @NonNull Bitmap thumbnail) {
-            this.savedUri = savedUri;
-            this.thumbnail = thumbnail;
+    record ImageTaskResult(Uri savedUri, Bitmap thumbnail) {
+            ImageTaskResult(@NonNull Uri savedUri, @NonNull Bitmap thumbnail) {
+                this.savedUri = savedUri;
+                this.thumbnail = thumbnail;
+            }
         }
-    }
 }
