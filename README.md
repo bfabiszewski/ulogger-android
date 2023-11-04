@@ -41,23 +41,28 @@ led | tracking | synchronization
 - clicking on current track's name will show track statistics
 
 ## Automating
-- μlogger may accept commands from other applications for starting or stopping its operations. To make it work you must explicitly enable this functionality in app settings ("Allow external commands" switch). 
+- μlogger may accept commands from other applications for starting or stopping its operations. To make it work you must explicitly enable this functionality in app settings ("Allow external commands" switch).
 - commands are sent as `broadcasts` with following `intent` parameters:
   - target package: `net.fabiszewski.ulogger`
   - target class: `net.fabiszewski.ulogger.ExternalCommandReceiver`
   - action: `net.fabiszewski.ulogger.intent.action.COMMAND`
-  - extra: `"command": [command name]`, where command name is one of: 
-    - `"start logger"` for starting position logging
-    - `"start new logger"` for creating a New Track and starting position logging to it 
-    - `"stop logger"` for stopping position logging
-    - `"start upload"` for starting track data upload to server (in case live tracking is off)
+  - extra: 
+    - `command: [command name]` (string value), where command name is one of: 
+      - `"start logger"` for starting position logging
+      - `"start new logger"` for creating a new track and starting position logging to it 
+      - `"stop logger"` for stopping position logging
+      - `"start upload"` for starting track data upload to server (in case live tracking is off)
+    - `overwrite: [true|false]` (boolean value), optional parameter for `start new logger` command:
+      - `true` (default) to ignore not synchronized track and overwrite it with new one
+      - `false` to abort if creating new track would overwrite not synchronized positions
 - third party examples:
   - Automate (LlamaLab) – Send broadcast block with `Package`, `Receiver Class` and `Action` fields as above and `Extras` field eg. `{"command": "start logger"}`
   - Tasker (joaomgcd) – System → Send intent. Fields `Action`, `Package`, `Class` as above and `Extra` field eg. `command:start logger`
-- command line: `am broadcast -a net.fabiszewski.ulogger.intent.action.COMMAND -e "command" "start logger" net.fabiszewski.ulogger net.fabiszewski.ulogger.ExternalCommandReceiver`
+- command line: `am broadcast -a net.fabiszewski.ulogger.intent.action.COMMAND --es command "start new logger" --ez overwrite false net.fabiszewski.ulogger net.fabiszewski.ulogger.ExternalCommandReceiver`
 
 ## Location permissions
 Starting with Android 11, if you want to use the application without user interaction (automating, autostart on boot), it is necessary to grant application background location permission ("Allow all the time" option).
+In case of automation the controlling application must also have the same background location permission granted.
 In all other cases, when you start tracking from app screen, it is enough to grant "Allow only while using the app" option.
 
 ## Battery optimization
