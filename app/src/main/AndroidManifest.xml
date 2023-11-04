@@ -85,7 +85,7 @@
             android:exported="true"
             tools:ignore="ExportedReceiver">
             <intent-filter>
-                <action android:name="net.fabiszewski.ulogger.intent.action.COMMAND" />
+                <action android:name="${applicationId}.intent.action.COMMAND" />
             </intent-filter>
         </receiver>
     </application>
