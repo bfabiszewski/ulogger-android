@@ -1,0 +1,10 @@
+3.10: μlogger
+
+Zmiany:
+- Wsparcie dla Androida 14
+- Dodany parametr dla komend sterujących, umożliwiający kontrolę nadpisywania niezsynchronizowanych tras
+- Naprawiony błąd: poprawka dotycząca starszych układów GPS (rollover bug) nie była stosowana w przypadku pojedynczych punktów
+- Inne drobne zmiany
+
+Tłumaczenia:
+- Dodany fiński (Timo Multanen)

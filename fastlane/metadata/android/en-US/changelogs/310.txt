@@ -1,0 +1,10 @@
+3.10: μlogger
+
+Changes:
+- Adjusted for Android 14
+- Added external command parameter to control overwriting of not synchronized tracks
+- Fix: GPS rollover bug was not corrected in single waypoint scenario
+- Other small fixes
+
+Translations:
+- Added Finnish (Timo Multanen)
