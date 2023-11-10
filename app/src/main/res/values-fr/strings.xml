@@ -139,4 +139,18 @@
     <string name="image_task_failed">Le redimensionnement des images a échoué</string>
     <string name="background_location_rationale">L\'autorisation de la localisation en arrière-plan est nécessaire lors d\'un enregistrement sans interaction utilisateur : quand l\'application est automatiquement lancée au démarrage du système ou démarrée par une commande externe.\nPour que la localisation fonctionne, vous devez sélectionner l\'option \"%s\" qui vous sera proposée.\nAller vers les autorisations accordées à l\'application ?</string>
     <string name="background_location_required">Autorisation de localisation en arrière-plan requise</string>
-    </resources>
+    <string name="label_self_check">Auto contrôle</string>
+    <string name="self_check_approximate_location_rationale">Requis : sans cette autorisation, il ne sera pas possible de vous localiser.</string>
+    <string name="self_check_precise_location_rationale">Optionnel : doit être activé pour utiliser la localisation précise du GPS</string>
+    <string name="self_check_background_location_rationale">Optionnel : Nécessaire uniquement lorsque l\'application est lancée de manière automatisée*.</string>
+    <string name="self_check_storage_rationale">Optionnel : nécessaire uniquement si vous souhaitez joindre des images de l\'appareil photo aux points de cheminement.</string>
+    <string name="self_check_notifications_rationale">Optionnel : si autorisé, vous serez informé du fonctionnement de l\'application en arrière-plan.</string>
+    <string name="self_check_battery_unrestricted_rationale">Optionnel mais fortement recommandé. Si non autorisé, le système peut arrêter l\'application lorsqu\'elle fonctionne en arrière-plan afin d\'économiser la batterie. Nécessaire pour une utilisation automatisée*</string>
+    <string name="self_check_battery_unrestricted_title">Utilisation sans restriction de la batterie</string>
+    <string name="self_check_permissions_title">Permissions</string>
+    <string name="self_check_providers_title">Services de localisation</string>
+    <string name="self_check_server_configured">Serveur configuré</string>
+    <string name="self_check_server_reachable">Serveur joignable</string>
+    <string name="self_check_valid_server_account">Compte valide sur le serveur</string>
+    <string name="self_check_automated_usage">* Utilisation automatisée : démarrage de la journalisation sans interaction de l\'utilisateur à partir d\'une application externe ou au démarrage du système.</string>
+</resources>
