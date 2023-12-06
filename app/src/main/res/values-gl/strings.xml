@@ -1,0 +1,154 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_upload">Subir</string>
+    <string name="is_running" comment="substituted app_name">%s está a funcionar</string>
+    <string name="is_uploading" comment="substituted app_name">%s está subindo posicións</string>
+    <string name="title_newtrack">Nova pista</string>
+    <string name="label_track">Pista actual</string>
+    <string name="label_newtrack_name">Novo nome da pista</string>
+    <string name="label_name">Nome</string>
+    <string name="label_last_update">Última actualización: %s</string>
+    <string name="label_synchronized">Sincronizado</string>
+    <string name="cancel">Desbotar</string>
+    <string name="submit">Enviar</string>
+    <string name="ok">OK</string>
+    <string name="settings">Axustes</string>
+    <string name="pref_username_title">Identificador</string>
+    <string name="pref_username_summary">Inicio de sesión no servidor remoto</string>
+    <string name="pref_pass_title">Contrasinal</string>
+    <string name="pref_pass_summary">Contrasinal da usuaria no servidor remoto</string>
+    <string name="pref_host_title">URL do servidor</string>
+    <string name="pref_host_summary">URL base do servidor remoto</string>
+    <string name="pref_mintime_title">Tempo mínimo</string>
+    <string name="pref_mintime_summary">Tempo mínimo entre actualizacións da posición</string>
+    <string name="pref_mindistance_title">Distancia mínima</string>
+    <string name="pref_mindistance_summary">Distancia mínima entre actualizacións da posición</string>
+    <string name="pref_minaccuracy_title">Precisión mínima</string>
+    <string name="pref_minaccuracy_summary">Precisión mínima da posición</string>
+    <string name="pref_imagesize_title">Tamaño da imaxe</string>
+    <string name="pref_imagesize_summary">Ancho/Alto máximo en píxeles para as imaxes subidas. En caso de reducilas gárdase no cartafol da aplicación unha copia temporal antes de subila. Se elixes a opción \"tamaño real\" entón non se fará copia, polo que os ficheiros orixinais deben estar dispoñibles para subilos.</string>
+    <string name="pref_livesync_title">Sincronización en directo</string>
+    <string name="pref_livesync_summary">Subir en directo as posicións ao servidor. Require un identificador válido, contrasinal e URL do servidor.</string>
+    <string name="pref_autostart_title">Inicio automático</string>
+    <string name="pref_autostart_summary">A aplicación iniciará ao arrancar o sistema</string>
+    <string name="pref_external_title">Permitir ordes externas</string>
+    <string name="pref_external_summary">Permite recibir ordes desde outras aplicacións para facilitar a automatización e programar tarefas.</string>
+    <string name="pref_provider_title">Provedor de localización</string>
+    <string name="pref_provider_summary">A localización pode proporcionala o provedor GPS, a rede ou os dous. Actuando en conxunto darán mellores resultados, pero usarán máis batería.</string>
+    <string name="pref_units_title">Unidades</string>
+    <string name="pref_units_summary">Unidades preferidas para mostrar o resumo da ruta</string>
+    <string name="pref_units_metric">Métrico</string>
+    <string name="pref_units_imperial">Imperial</string>
+    <string name="pref_units_nautical">Náutico</string>
+    <string name="pref_auto_name_title">Modelo do nome da ruta</string>
+    <string name="pref_auto_name_summary" formatted="false">Modelo para dar nome á ruta. Os seguintes elementos serán substituídos por partes reais da data: %y (ano), %m (mes), %d (día), %H (hora), %M (minuto), %S (segundo). Se precisas usar o caracter de porcentaxe usa %%.</string>
+    <string name="label_status">Estado</string>
+    <string name="label_location">Localización</string>
+    <string name="label_synchronization">Sincronización</string>
+    <string name="tracking_stopped">Detívose o rexistro</string>
+    <string name="tracking_started">Comezou o rexistro</string>
+    <string name="uploading_started">Comezou a subida</string>
+    <string name="nothing_to_synchronize">Nada que sincronizar</string>
+    <string name="no_positions">A ruta actual non ten posicións</string>
+    <string name="warning">Aviso</string>
+    <string name="notsync_warning">A ruta actual ten posicións sen sincronizar. Configurar unha nova ruta eliminará estes datos.</string>
+    <string name="clear_warning">Tes a certeza de querer eliminar do dispositivo a ruta actual e todos os seus datos? Non eliminarás datos do servidor.</string>
+    <string name="no_track_warning">Primeiro debes configurar unha nova ruta</string>
+    <string name="empty_trackname_warning">O nome da ruta non pode estar baleiro</string>
+    <string name="logger_running_warning">Primeiro debes deter a ruta actual</string>
+    <string name="about">Acerca de</string>
+    <string name="about_description">Un sinxelo gravador de localizacións con soporte para o seguimento ao vivo e subir as posicións ao teu propio <xliff:g id="server_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-server\">]]></xliff:g>servidor μlogger<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_description2">Para ter máis información podes ler o <xliff:g id="app_link_open"><![CDATA[<a href=\"https://github.com/bfabiszewski/ulogger-android\">]]></xliff:g>sitio web de μlogger<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>.</string>
+    <string name="about_version">Versión %s</string>
+    <string name="about_license">Licenza: GPL</string>
+    <string name="uploading_failed">Fallou a subida:</string>
+    <string name="uploading_done">Subida completada</string>
+    <string name="track_summary">Resumo da ruta</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="one">%d posición</item>
+        <item quantity="other">%d posicións</item>
+    </plurals>
+    <string name="summary_duration">%1$d h %2$d min</string>
+    <string name="unit_kilometer">km</string>
+    <string name="unit_mile">mi.</string>
+    <string name="provide_valid_url">Escribe un URL válido para o servidor</string>
+    <string name="provide_user_pass_url">Primeiro debes escribir identificador, contrasinal e URL do servidor</string>
+    <string name="e_illegal_state">Erro de estado non permitido: %s</string>
+    <string name="e_illegal_redirect">Redirección non permitida: %d</string>
+    <string name="e_auth_failure">Fallou na autorización: %d</string>
+    <string name="e_http_code">Código HTTP do erro: %d</string>
+    <string name="e_server_response">Erro de resposta do servidor</string>
+    <string name="e_unknown_host">Hóspede descoñecido: %s</string>
+    <string name="e_bad_url">URL non válido: %s</string>
+    <string name="e_connect">Erro de conexión: %s</string>
+    <string name="gps_disabled_warning">Aviso: o provedor GPS está desactivado</string>
+    <string name="net_disabled_warning">Aviso: o provedor de rede está desactivado</string>
+    <string name="location_disabled">Debes activar polo menos un provedor de localización</string>
+    <string name="location_permission_denied">Debes conceder o permiso de localización para as actualizacións</string>
+    <string name="using_network">Usar provedor de rede</string>
+    <string name="using_gps">Usar provedor GPS</string>
+    <string name="export">Exportar a GPX</string>
+    <string name="waypoint">Punto de interese</string>
+    <string name="nothing_to_export">Nada que exportar</string>
+    <string name="export_done">Ruta gardada correctamente</string>
+    <string name="export_failed">Fallou a exportación</string>
+    <string name="unknown_track">Ruta descoñecida</string>
+    <string name="export_started">Iniciou a exportación</string>
+    <plurals name="label_positions_behind">
+        <item quantity="one">%d posición de retraso</item>
+        <item quantity="other">%d posicións de retraso</item>
+    </plurals>
+    <string name="track_server_setup_warning">Se cambias os axustes do servidor pode que non poidas sincronizar a ruta actual.</string>
+    <string name="pref_mintime_other">Tempo mínimo para o intervalo en segundos</string>
+    <string name="pref_mindistance_other">Distancia mínima en metros</string>
+    <string name="pref_minaccuracy_other">Precisión mínima en metros</string>
+    <string name="pref_imagesize_other">Tamaño máximo da imaxe en píxeles ancho/alto</string>
+    <string name="unit_nmile">nm</string>
+    <string name="pref_cat_location">Gravando</string>
+    <string name="pref_cat_server">Servidor</string>
+    <string name="pref_cat_other">Outro</string>
+    <string name="illegal_template_warning">O modelo contén caracteres non permitidos</string>
+    <string name="cannot_open_picker">Non se puido abrir o selector de ficheiros</string>
+    <string name="e_open_out_stream">Fallou a apertura do fluxo de saída</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Rede</string>
+    <string name="provider_gps_network">Rede e GPS</string>
+    <string name="logger_task_failure">Non se obtivo a posición</string>
+    <string name="take_photo">Facer foto</string>
+    <string name="from_library">Escoller na galería</string>
+    <string name="accuracy_meters">precisión %d m</string>
+    <string name="meters_asl">%s m s.n.m.</string>
+    <string name="label_position">Posición</string>
+    <string name="label_waypoint_description">Descrición do punto de interese</string>
+    <string name="label_add_photo">Engadir foto</string>
+    <string name="button_save">Gardar</string>
+    <string name="tracking">Gravando</string>
+    <string name="clear">Limpar ruta</string>
+    <string name="share_link">Compartir ligazón da ruta</string>
+    <string name="image_task_failed">Fallou o escalado da imaxe</string>
+    <string name="background_location_rationale">Só se precisa o permiso de localización en segundo plano cando a gravación se inicia sen interacción da usuaria: a través de ordes externas ou cando a aplicación se inicia automáticamente ao iniciar o sistema.\nPara que isto funcione debes escoller a opción \"%s\" no diálogo de permiso de localización.\nQueres conceder o permiso?</string>
+    <string name="background_location_required">Requírese o permiso de localización en segundo plano</string>
+    <string name="label_self_check">Auto-comprobación</string>
+    <string name="self_check_approximate_location_rationale">Requerido. Sen este permiso a aplicación non poderá obter a localización</string>
+    <string name="self_check_precise_location_rationale">Optativo. Hai que activalo para usar a localización precisa do GPS</string>
+    <string name="self_check_background_location_rationale">Optativo. Requerido só se a aplicación se inicia de xeito automático*</string>
+    <string name="self_check_storage_rationale">Optativo. Só preciso se queres adxuntar imaxes da cámara aos puntos de interese.</string>
+    <string name="self_check_notifications_rationale">Optativo. Se o permites recibirás unha notificación cando a aplicación funcione en segundo plano.</string>
+    <string name="self_check_battery_unrestricted_rationale">Optativo. É moi recomendable para a fiabilidade. Se non o permites o sistema podería deter a apliación mentras funciona en segundo plano para poder aforrar batería. Requerido para uso automatizado*</string>
+    <string name="self_check_battery_unrestricted_title">Uso da batería sen restricións</string>
+    <string name="self_check_permissions_title">Permisos</string>
+    <string name="self_check_providers_title">Provedores de localización</string>
+    <string name="self_check_server_configured">Servidor configurado</string>
+    <string name="self_check_server_reachable">Servidor accesible</string>
+    <string name="self_check_valid_server_account">Conta validada no servidor</string>
+    <string name="self_check_automated_usage">* Uso automatizado: iniciar a gravación sen precisar a interacción da usuaria desde unha aplicación externa ou inicio do sistema</string>
+</resources>
