@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -197,8 +198,7 @@ public class WebSyncService extends Service {
                 params.put(WebHelper.PARAM_TRACKID, String.valueOf(trackId));
                 web.postPosition(params);
                 db.setSynced(getApplicationContext(), rowId);
-                Intent intent = new Intent(BROADCAST_SYNC_DONE);
-                sendBroadcast(intent);
+                BroadcastHelper.sendBroadcast(this, BROADCAST_SYNC_DONE);
             }
         } catch (IOException e) {
             // handle web errors
@@ -246,9 +246,11 @@ public class WebSyncService extends Service {
         if (Logger.DEBUG) { Log.d(TAG, "[handleError: retry: " + message + "]"); }
 
         db.setError(message);
-        Intent intent = new Intent(BROADCAST_SYNC_FAILED);
-        intent.putExtra("message", message);
-        sendBroadcast(intent);
+
+        Bundle extras = new Bundle();
+        extras.putString("message", message);
+        BroadcastHelper.sendBroadcast(this, BROADCAST_SYNC_FAILED, extras);
+
         // retry only if tracking is on
         if (LoggerService.isRunning()) {
             setPending();
