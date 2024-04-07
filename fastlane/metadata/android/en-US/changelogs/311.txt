@@ -1,0 +1,9 @@
+3.11: μlogger
+
+Changes:
+- Some fixes for Android 14: broken internal broadcasts, crash on missing permission
+- Allow to install on devices that do not feature network provider
+
+Translations:
+- Added Galician translation (pikamoku)
+- Updated French translation (Thieume)

@@ -1,0 +1,9 @@
+3.11: μlogger
+
+Zmiany:
+- Poprawki dla Androida 14: popsute wewnętrzne broadcasty, zatrzymanie aplikacji przy braku udzielonej zgody na lokalizację
+- Umożliwienie instalacji na urządzeniach, które nie obsługują lokalizacji z sieci
+
+Tłumaczenia:
+- Dodany galicyjski (pikamoku)
+- Zaktualizowany francuski (Thieume)
