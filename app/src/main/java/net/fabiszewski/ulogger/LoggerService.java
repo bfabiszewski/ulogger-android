@@ -127,8 +127,16 @@ public class LoggerService extends Service {
             handlePrefsUpdated();
         } else {
             final Notification notification = notificationHelper.showNotification();
-            startForeground(notificationHelper.getId(), notification);
-            if (!initializeLocationUpdates()) {
+            boolean isForeground = false;
+            try {
+                startForeground(notificationHelper.getId(), notification);
+                isForeground = true;
+            } catch (SecurityException e) {
+                if (Logger.DEBUG) { Log.d(TAG, "[SecurityException on startForeground: " + e.getMessage() + "]"); }
+                BroadcastHelper.sendBroadcast(this, BROADCAST_LOCATION_PERMISSION_DENIED);
+            }
+
+            if (!isForeground || !initializeLocationUpdates()) {
                 setRunning(false);
                 stopSelf();
             }
