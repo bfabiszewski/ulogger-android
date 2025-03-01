@@ -94,7 +94,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Permis
             // update web helper settings, remove session cookies
             WebHelper.updatePreferences(preference.getContext());
             // disable live synchronization if any server preference is removed
-            if (newValue.toString().trim().length() == 0) {
+            if (newValue.toString().trim().isEmpty()) {
                 disableLiveSync(preference.getContext());
             }
             return true;

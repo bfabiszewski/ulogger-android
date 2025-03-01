@@ -92,6 +92,7 @@ public class AutoNamePreferenceDialogFragment extends EditTextPreferenceDialogFr
     @Override
     public void afterTextChanged(Editable editable) {
         updatePreview(editable.toString());
+        //noinspection SizeReplaceableByIsEmpty
         if (editable.length() == 0) {
             setError(getString(R.string.empty_trackname_warning));
         }

@@ -277,7 +277,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
         int trackId = DbAccess.getTrackId(context);
         MainActivity activity = (MainActivity) requireActivity();
         String host = activity.preferenceHost;
-        if (trackId > 0 && host.length() > 0) {
+        if (trackId > 0 && !host.isEmpty()) {
             String trackUrl = host + "/#" + trackId;
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
