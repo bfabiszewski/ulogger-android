@@ -1,0 +1,154 @@
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="button_upload">上传</string>
+    <string name="is_running" comment="substituted app_name">%s 正在运行</string>
+    <string name="is_uploading" comment="substituted app_name">%s 正在上传位置</string>
+    <string name="title_newtrack">新轨迹</string>
+    <string name="label_track">当前轨迹</string>
+    <string name="label_newtrack_name">新轨迹名称</string>
+    <string name="label_name">名称</string>
+    <string name="label_last_update">最后更新：%s</string>
+    <string name="label_synchronized">已同步</string>
+    <string name="cancel">取消</string>
+    <string name="submit">提交</string>
+    <string name="ok">确定</string>
+    <string name="settings">设置</string>
+    <string name="pref_username_title">用户名</string>
+    <string name="pref_username_summary">远程服务器上的用户登录名</string>
+    <string name="pref_pass_title">密码</string>
+    <string name="pref_pass_summary">远程服务器上的用户密码</string>
+    <string name="pref_host_title">服务器 URL</string>
+    <string name="pref_host_summary">远程服务器的基本 URL</string>
+    <string name="pref_mintime_title">最短时间</string>
+    <string name="pref_mintime_summary">位置更新之间的最短时间</string>
+    <string name="pref_mindistance_title">最短距离</string>
+    <string name="pref_mindistance_summary">位置更新之间的最短距离</string>
+    <string name="pref_minaccuracy_title">最小精度</string>
+    <string name="pref_minaccuracy_summary">位置的最小精度</string>
+    <string name="pref_imagesize_title">图像大小</string>
+    <string name="pref_imagesize_summary">上传图像的最大宽度/高度（以像素为单位）。如果需要降采样，调整大小的图像副本将在上传前临时存储在应用程序文件夹中。如果选择“实际大小”选项，则不会创建副本，因此在上传期间必须提供原始文件。</string>
+    <string name="pref_livesync_title">实时同步</string>
+    <string name="pref_livesync_summary">实时上传位置到服务器。需要有效的用户名、密码和服务器 URL。</string>
+    <string name="pref_autostart_title">自动启动</string>
+    <string name="pref_autostart_summary">应用程序将在系统启动时启动</string>
+    <string name="pref_external_title">允许外部命令</string>
+    <string name="pref_external_summary">允许从其它应用程序接收命令以便于自动化和任务调度。</string>
+    <string name="pref_provider_title">位置提供者</string>
+    <string name="pref_provider_summary">位置可以由 GPS 提供者、网络或两者提供。两者提供将获得最佳结果，但会消耗更多电量。</string>
+    <string name="pref_units_title">单位</string>
+    <string name="pref_units_summary">显示轨迹摘要的首选单位</string>
+    <string name="pref_units_metric">公制</string>
+    <string name="pref_units_imperial">英制</string>
+    <string name="pref_units_nautical">航海</string>
+    <string name="pref_auto_name_title">轨迹名称模板</string>
+    <string name="pref_auto_name_summary" formatted="false">新轨迹名称的模板。以下模式将替换为当前日期元素：%y（年）、%m（月）、%d（日）、%H（小时）、%M（分钟）、%S（秒）。如果需要文字百分号字符，请使用 %%。</string>
+    <string name="label_status">状态</string>
+    <string name="label_location">位置</string>
+    <string name="label_synchronization">同步</string>
+    <string name="tracking_stopped">跟踪已停止</string>
+    <string name="tracking_started">跟踪已开始</string>
+    <string name="uploading_started">上传已开始</string>
+    <string name="nothing_to_synchronize">没有需要同步的内容</string>
+    <string name="no_positions">当前轨迹没有位置</string>
+    <string name="warning">警告</string>
+    <string name="notsync_warning">当前轨迹包含未同步的位置。设置新轨迹将删除所有这些数据。</string>
+    <string name="clear_warning">您确定要从设备中删除当前轨迹及其所有数据吗？这不会删除服务器上的任何数据。</string>
+    <string name="no_track_warning">请先设置新轨迹</string>
+    <string name="empty_trackname_warning">轨迹名称不能为空</string>
+    <string name="logger_running_warning">请先停止当前跟踪</string>
+    <string name="about">关于</string>
+    <string name="about_description">简单的位置记录器，支持实时跟踪和位置上传到自己的<xliff:g id="server_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-server">]]></xliff:g>μlogger 服务器<xliff:g id="server_link_close"><![CDATA[</a>]]></xliff:g>。</string>
+    <string name="about_description2">有关更多信息和帮助，请参见<xliff:g id="app_link_open"><![CDATA[<a href="https://github.com/bfabiszewski/ulogger-android">]]></xliff:g>μlogger主页<xliff:g id="app_link_close"><![CDATA[</a>]]></xliff:g>。</string>
+    <string name="about_version">版本 %s</string>
+    <string name="about_license">许可证：GPL</string>
+    <string name="uploading_failed">上传失败：</string>
+    <string name="uploading_done">上传完成</string>
+    <string name="track_summary">轨迹摘要</string>
+    <string name="summary_distance" comment="1-distance, 2-unit name">%1$s %2$s</string>
+    <plurals name="summary_positions">
+        <item quantity="other">%d 位</item>
+    </plurals>
+    <string name="summary_duration">%1$d 小时 %2$d 分钟</string>
+    <string name="unit_kilometer">公里</string>
+    <string name="unit_mile">英里</string>
+    <string name="provide_valid_url">请提供有效的服务器 URL</string>
+    <string name="provide_user_pass_url">请先输入用户、密码和服务器 URL</string>
+    <string name="e_illegal_state">非法状态错误：%s</string>
+    <string name="e_illegal_redirect">非法重定向：%d</string>
+    <string name="e_auth_failure">授权失败：%d</string>
+    <string name="e_http_code">HTTP 错误代码：%d</string>
+    <string name="e_server_response">服务器响应错误</string>
+    <string name="e_unknown_host">未知主机：%s</string>
+    <string name="e_bad_url">错误的 URL：%s</string>
+    <string name="e_connect">连接错误：%s</string>
+    <string name="gps_disabled_warning">警告：GPS 提供程序已禁用</string>
+    <string name="net_disabled_warning">警告：网络提供程序已禁用</string>
+    <string name="location_disabled">您必须启用至少一个位置提供程序</string>
+    <string name="location_permission_denied">您必须接受位置更新的权限</string>
+    <string name="using_network">使用网络提供程序</string>
+    <string name="using_gps">使用 GPS 提供程序</string>
+    <string name="export">导出为 GPX</string>
+    <string name="waypoint">航点</string>
+    <string name="nothing_to_export">没有可导出的内容</string>
+    <string name="export_done">轨迹已成功保存</string>
+    <string name="export_failed">导出失败</string>
+    <string name="unknown_track">未知轨迹</string>
+    <string name="export_started">导出已开始</string>
+    <plurals name="label_positions_behind">
+        <item quantity="other">落后 %d 位</item>
+    </plurals>
+    <string name="track_server_setup_warning">如果您更改服务器设置，可能无法同步当前轨迹。</string>
+    <string name="pref_mintime_other">最小时间间隔（秒）</string>
+    <string name="pref_mindistance_other">最小距离（米）</string>
+    <string name="pref_minaccuracy_other">最小精度（米）</string>
+    <string name="pref_imagesize_other">最大图像宽度/高度（像素）</string>
+    <string name="unit_nmile">海里</string>
+    <string name="pref_cat_location">跟踪</string>
+    <string name="pref_cat_server">服务器</string>
+    <string name="pref_cat_other">其它</string>
+    <string name="illegal_template_warning">模板包含非法字符</string>
+    <string name="cannot_open_picker">无法打开文件选择器</string>
+    <string name="e_open_out_stream">打开输出流失败</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">网络</string>
+    <string name="provider_gps_network">网络和 GPS</string>
+    <string name="logger_task_failure">无法获取位置</string>
+    <string name="take_photo">拍照</string>
+    <string name="from_library">从图库选择</string>
+    <string name="accuracy_meters">精度 %d 米</string>
+    <string name="meters_asl">%s 米 海拔</string>
+    <string name="label_position">位置</string>
+    <string name="label_waypoint_description">航点描述</string>
+    <string name="label_add_photo">添加照片</string>
+    <string name="button_save">保存</string>
+    <string name="tracking">跟踪</string>
+    <string name="clear">清除轨迹</string>
+    <string name="share_link">分享轨迹链接</string>
+    <string name="image_task_failed">图像重新采样失败</string>
+    <string name="background_location_rationale">后台位置权限仅在以下情况下需要：通过外部命令启动跟踪或应用程序在系统启动时自动启动。
+要使此功能正常工作，您必须在位置权限对话框中选择“%s”选项。
+前往应用程序权限？</string>
+    <string name="background_location_required">需要后台位置权限</string>
+    <string name="label_self_check">自检</string>
+    <string name="self_check_approximate_location_rationale">必需。没有此权限，应用程序将无法获取位置</string>
+    <string name="self_check_precise_location_rationale">可选。必须启用以使用来自 GPS 的精确位置</string>
+    <string name="self_check_background_location_rationale">可选。仅在应用程序以自动化方式启动时需要*</string>
+    <string name="self_check_storage_rationale">可选。仅当您希望将相机图像附加到航点时才需要。</string>
+    <string name="self_check_notifications_rationale">可选。如果允许，您将收到有关应用程序在后台运行的通知。</string>
+    <string name="self_check_battery_unrestricted_rationale">可选。强烈建议以确保可靠运行。如果不允许，系统可能会在后台运行时停止应用程序以节省电池。自动化使用时必需*</string>
+    <string name="self_check_battery_unrestricted_title">无限制的电池使用</string>
+    <string name="self_check_permissions_title">权限</string>
+    <string name="self_check_providers_title">位置提供者</string>
+    <string name="self_check_server_configured">服务器已配置</string>
+    <string name="self_check_server_reachable">服务器可访问</string>
+    <string name="self_check_valid_server_account">有效的服务器账号</string>
+    <string name="self_check_automated_usage">* 自动化使用：从外部应用程序或系统启动时无需用户交互即可开始记录</string>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+    <string-array name="minTimeEntries">
+        <item>10 秒</item>
+        <item>30 秒</item>
+        <item>1 分钟</item>
+        <item>5 分钟</item>
+        <item>15 分钟</item>
+        <item>30 分钟</item>
+        <item>1 小时</item>
+        <item>其它</item>
+    </string-array>
+
+    <string-array name="minDistanceEntries">
+        <item>无下限</item>
+        <item>50 米</item>
+        <item>100 米</item>
+        <item>250 米</item>
+        <item>500 米</item>
+        <item>1 千米</item>
+        <item>5 千米</item>
+        <item>其它</item>
+    </string-array>
+
+    <string-array name="minAccuracyEntries">
+        <item>10 米</item>
+        <item>25 米</item>
+        <item>50 米</item>
+        <item>100 米</item>
+        <item>250 米</item>
+        <item>500 米</item>
+        <item>1 千米</item>
+        <item>5 千米</item>
+        <item>其它</item>
+    </string-array>
+
+    <string-array name="imageSizeEntries">
+        <item>实际尺寸</item>
+        <item>800 像素</item>
+        <item>1080 像素</item>
+        <item>1280 像素</item>
+        <item>1920 像素</item>
+        <item>其它</item>
+    </string-array>
+
+    </resources>

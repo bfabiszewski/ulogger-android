@@ -1,6 +1,6 @@
 [main]
 host     = https://www.transifex.com
-lang_map = pt_BR: pt-rBR, fi_FI: fi
+lang_map = pt_BR: pt-rBR, fi_FI: fi, zh-Hans: zh-rCN
 
 [o:bfabiszewski:p:ulogger:r:arrays-xml]
 file_filter  = ./app/src/main/res/values-<lang>/arrays.xml
