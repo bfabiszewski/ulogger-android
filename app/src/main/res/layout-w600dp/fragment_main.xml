@@ -131,7 +131,7 @@
                     tools:text="Auto_2020.06.18_19.42.17" />
             </LinearLayout>
 
-            <net.fabiszewski.ulogger.SwipeSwitch
+            <net.fabiszewski.ulogger.ui.SwipeSwitch
                 android:id="@+id/switchLogger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

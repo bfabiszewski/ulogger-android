@@ -15,7 +15,7 @@ import android.content.Intent;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
-class CreateGpxDocument extends ActivityResultContracts.CreateDocument {
+public class CreateGpxDocument extends ActivityResultContracts.CreateDocument {
 
     public static final String GPX_MIME = "application/gpx+xml";
 

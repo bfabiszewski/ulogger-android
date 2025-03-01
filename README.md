@@ -32,11 +32,11 @@ In case of problems, you may go to Self-check menu. It will check whether all ne
 ## Help
 - μlogger's current status is shown by two leds, one for location tracking and one for web synchronization: 
 
-led | tracking | synchronization
--|-------- | ---------------
-![status green](https://dummyimage.com/10/00ff00) |  on, recently updated | synchronized
-![status yellow](https://dummyimage.com/10/ffe600) | on, long time since last update | synchronization delay
-![status red](https://dummyimage.com/10/ff0000) | off | synchronization error
+| led                                                | tracking                        | synchronization       |
+|----------------------------------------------------|---------------------------------|-----------------------|
+| ![status green](https://dummyimage.com/10/00ff00)  | on, recently updated            | synchronized          |
+| ![status yellow](https://dummyimage.com/10/ffe600) | on, long time since last update | synchronization delay |
+| ![status red](https://dummyimage.com/10/ff0000)    | off                             | synchronization error |
 
 - clicking on current track's name will show track statistics
 

@@ -15,7 +15,7 @@
     <PreferenceCategory
         android:title="@string/pref_cat_location"
         android:icon="@drawable/ic_location_on_blue_24dp">
-        <net.fabiszewski.ulogger.ListWithEditTextPreference
+        <net.fabiszewski.ulogger.ui.ListWithEditTextPreference
             android:key="prefMinTime"
             android:title="@string/pref_mintime_title"
             android:dialogMessage="@string/pref_mintime_summary"
@@ -24,7 +24,7 @@
             android:defaultValue="@string/pref_mintime_default"
             ulogger:otherSummary="@string/pref_mintime_other"
             app:useSimpleSummaryProvider="true" />
-        <net.fabiszewski.ulogger.ListWithEditTextPreference
+        <net.fabiszewski.ulogger.ui.ListWithEditTextPreference
             android:key="prefMinDistance"
             android:title="@string/pref_mindistance_title"
             android:dialogMessage="@string/pref_mindistance_summary"
@@ -33,7 +33,7 @@
             android:defaultValue="@string/pref_mindistance_default"
             ulogger:otherSummary="@string/pref_mindistance_other"
             app:useSimpleSummaryProvider="true" />
-        <net.fabiszewski.ulogger.ListWithEditTextPreference
+        <net.fabiszewski.ulogger.ui.ListWithEditTextPreference
             android:key="prefMinAccuracy"
             android:title="@string/pref_minaccuracy_title"
             android:dialogMessage="@string/pref_minaccuracy_summary"
@@ -59,22 +59,22 @@
     <PreferenceCategory
         android:title="@string/pref_cat_server"
         android:icon="@drawable/ic_cloud_upload_blue_24dp">
-        <net.fabiszewski.ulogger.TrimmedEditTextPreference
+        <net.fabiszewski.ulogger.ui.TrimmedEditTextPreference
             android:key="prefUsername"
             android:title="@string/pref_username_title"
             android:dialogMessage="@string/pref_username_summary"
             app:useSimpleSummaryProvider="true" />
-        <net.fabiszewski.ulogger.PasswordPreference
+        <net.fabiszewski.ulogger.ui.PasswordPreference
             android:key="prefPass"
             android:title="@string/pref_pass_title"
             android:dialogMessage="@string/pref_pass_summary"
             app:useSimpleSummaryProvider="true" />
-        <net.fabiszewski.ulogger.TrimmedEditTextPreference
+        <net.fabiszewski.ulogger.ui.TrimmedEditTextPreference
             android:key="prefHost"
             android:title="@string/pref_host_title"
             android:dialogMessage="@string/pref_host_summary"
             app:useSimpleSummaryProvider="true" />
-        <net.fabiszewski.ulogger.ListWithEditTextPreference
+        <net.fabiszewski.ulogger.ui.ListWithEditTextPreference
             android:key="prefImageSize"
             android:title="@string/pref_imagesize_title"
             android:dialogMessage="@string/pref_imagesize_summary"
@@ -109,7 +109,7 @@
             android:defaultValue="@string/pref_units_metric"
             app:useSimpleSummaryProvider="true" />
 
-        <net.fabiszewski.ulogger.AutoNamePreference
+        <net.fabiszewski.ulogger.ui.AutoNamePreference
             android:key="prefAutoName"
             android:title="@string/pref_auto_name_title"
             android:dialogMessage="@string/pref_auto_name_summary"

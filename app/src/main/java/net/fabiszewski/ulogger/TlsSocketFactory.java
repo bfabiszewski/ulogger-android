@@ -39,12 +39,12 @@ import javax.net.ssl.SSLSocketFactory;
 
 @SuppressWarnings("RedundantThrows")
 @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-class TlsSocketFactory extends SSLSocketFactory {
+public class TlsSocketFactory extends SSLSocketFactory {
 
     private static final String TAG = TlsSocketFactory.class.getSimpleName();
     private static SSLSocketFactory factory;
 
-    TlsSocketFactory() throws NoSuchAlgorithmException, KeyManagementException {
+    public TlsSocketFactory() throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
         sslContext.init(null, null, null);
         factory = sslContext.getSocketFactory();

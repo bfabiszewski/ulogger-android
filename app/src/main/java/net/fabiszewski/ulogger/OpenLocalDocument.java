@@ -19,7 +19,7 @@ import android.content.Intent;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
-class OpenLocalDocument extends ActivityResultContracts.OpenDocument {
+public class OpenLocalDocument extends ActivityResultContracts.OpenDocument {
     @NonNull
     @Override
     public Intent createIntent(@NonNull Context context, @NonNull String[] input) {

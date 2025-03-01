@@ -17,6 +17,10 @@ import android.content.SharedPreferences;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
+import net.fabiszewski.ulogger.db.DbAccess;
+import net.fabiszewski.ulogger.services.LoggerService;
+import net.fabiszewski.ulogger.ui.SettingsActivity;
+
 /**
  * Receiver for app restart broadcast
  */

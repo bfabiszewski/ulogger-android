@@ -14,7 +14,7 @@ package net.fabiszewski.ulogger;
  *
  */
 
-class WebAuthException extends Exception {
+public class WebAuthException extends Exception {
 
     public WebAuthException(String message) {
         super(message);

@@ -49,7 +49,7 @@
         android:enableOnBackInvokedCallback="true"
         android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,15 +57,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".ui.SettingsActivity" />
 
         <service
-            android:name=".LoggerService"
+            android:name=".services.LoggerService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location" />
         <service
-            android:name=".WebSyncService"
+            android:name=".services.WebSyncService"
             android:exported="false"
             android:foregroundServiceType="dataSync"/>
 

@@ -14,7 +14,7 @@ package net.fabiszewski.ulogger;
  *
  */
 
-class TrackSummary {
+public class TrackSummary {
     /**
      * Track distance in meters
      */
@@ -34,7 +34,7 @@ class TrackSummary {
      * @param mDuration Duration (seconds)
      * @param mPositionsCount Number of positions
      */
-    TrackSummary(long mDistance, long mDuration, long mPositionsCount) {
+    public TrackSummary(long mDistance, long mDuration, long mPositionsCount) {
         distance = mDistance;
         duration = mDuration;
         positionsCount = mPositionsCount;
@@ -44,7 +44,7 @@ class TrackSummary {
      * Get track distance
      * @return Distance in meters
      */
-    long getDistance() {
+    public long getDistance() {
         return distance;
     }
 
@@ -52,13 +52,13 @@ class TrackSummary {
      * Get track duration
      * @return Duration in seconds
      */
-    long getDuration() { return duration; }
+    public long getDuration() { return duration; }
 
     /**
      * Get count of positions
      * @return Count
      */
-    long getPositionsCount() {
+    public long getPositionsCount() {
         return positionsCount;
     }
 }

@@ -17,6 +17,12 @@ import android.content.SharedPreferences;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
+import net.fabiszewski.ulogger.db.DbAccess;
+import net.fabiszewski.ulogger.services.LoggerService;
+import net.fabiszewski.ulogger.services.WebSyncService;
+import net.fabiszewski.ulogger.ui.AutoNamePreference;
+import net.fabiszewski.ulogger.ui.SettingsActivity;
+
 public class ExternalCommandReceiver extends BroadcastReceiver {
 
     private static final String START_LOGGER = "start logger";
