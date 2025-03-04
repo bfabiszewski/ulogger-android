@@ -403,7 +403,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
         if (submit != null) {
             submit.setOnClickListener(v -> {
                 String trackName = editText.getText().toString();
-                if (trackName.length() == 0) {
+                if (trackName.isEmpty()) {
                     showToast(getString(R.string.empty_trackname_warning));
                 }
                 DbAccess.newTrack(v.getContext(), trackName);

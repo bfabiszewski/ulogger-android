@@ -48,9 +48,9 @@ android {
 configurations.configureEach {
     resolutionStrategy {
         eachDependency {
-            // fix duplicate class in kotlin-stdlib dependencies
+            // fix duplicate class in kotlin-stdlib in dependencies
             if ((requested.group == "org.jetbrains.kotlin") && (requested.name.startsWith("kotlin-stdlib"))) {
-                useVersion("1.8.0")
+                useVersion("1.8.22")
             }
         }
     }
