@@ -18,6 +18,7 @@ android {
         targetSdkVersion 35
         versionCode 311
         versionName '3.11'
+        resConfigs "en", "ca", "cs", "de", "el", "es", "eu", "fi", "fr", "gl", "it", "ja", "pl", "pt-rBR", "ru", "sk", "zh-rCN"
     }
 
     buildTypes {
@@ -41,9 +42,6 @@ android {
     namespace 'net.fabiszewski.ulogger'
     buildFeatures {
         buildConfig true
-    }
-    androidResources {
-        generateLocaleConfig true
     }
 }
 
