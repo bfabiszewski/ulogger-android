@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -143,6 +144,8 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
         commentEditText = layout.findViewById(R.id.waypointComment);
         saveButton = layout.findViewById(R.id.waypointButton);
         thumbnailImageView = layout.findViewById(R.id.waypointThumbnail);
+        thumbnailImageView.setClipToOutline(true);
+        thumbnailImageView.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
         swipe = (SwipeRefreshLayout) layout;
         swipe.setOnRefreshListener(this::reloadTask);
 
@@ -384,7 +387,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      */
     private void setThumbnail(@Nullable Bitmap thumbnail) {
         if (thumbnail == null) {
-            thumbnailImageView.setImageResource(R.drawable.ic_photo_camera_gray_24dp);
+            thumbnailImageView.setImageResource(R.drawable.ic_photo_camera_gray_200dp);
         } else {
             thumbnailImageView.setImageBitmap(thumbnail);
         }

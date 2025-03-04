@@ -25,10 +25,14 @@
             style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimaryDark"
-            android:divider="@drawable/separator"
+            android:layout_marginStart="@dimen/main_margin_start"
+            android:layout_marginTop="@dimen/button_bar_margin_top"
+            android:layout_marginEnd="@dimen/main_margin_end"
+            android:background="@drawable/round_corners_background"
+            android:backgroundTint="@color/colorBlack"
             android:orientation="horizontal"
-            android:showDividers="middle">
+            android:paddingTop="@dimen/button_bar_padding_top"
+            android:paddingBottom="@dimen/button_bar_padding_bottom">
 
             <Button
                 android:id="@+id/buttonWaypoint"
@@ -38,11 +42,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_background"
                 android:drawableTop="@drawable/ic_add_location_white_24dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="@dimen/button_padding_top"
+                android:paddingBottom="@dimen/button_padding_bottom"
                 android:text="@string/waypoint"
-                android:textColor="?android:attr/textColorAlertDialogListItem"
-                android:textStyle="bold" />
+                android:textAllCaps="false"
+                android:textColor="?android:attr/textColorAlertDialogListItem" />
 
             <Button
                 android:id="@+id/buttonUpload"
@@ -52,11 +56,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_background"
                 android:drawableTop="@drawable/ic_cloud_upload_white_24dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="@dimen/button_padding_bottom"
+                android:paddingBottom="@dimen/button_padding_bottom"
                 android:text="@string/button_upload"
-                android:textColor="?android:attr/textColorAlertDialogListItem"
-                android:textStyle="bold" />
+                android:textAllCaps="false"
+                android:textColor="?android:attr/textColorAlertDialogListItem" />
 
             <Button
                 android:id="@+id/buttonNewTrack"
@@ -66,113 +70,135 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_background"
                 android:drawableTop="@drawable/ic_library_add_white_24dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="@dimen/button_padding_bottom"
+                android:paddingBottom="@dimen/button_padding_bottom"
                 android:text="@string/title_newtrack"
-                android:textColor="?android:attr/textColorAlertDialogListItem"
-                android:textStyle="bold" />
+                android:textAllCaps="false"
+                android:textColor="?android:attr/textColorAlertDialogListItem" />
         </LinearLayout>
 
-        <GridLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:columnCount="2"
-            android:maxWidth="600dp"
-            android:rowCount="2">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/layoutSummary"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:clickable="true"
-                android:focusable="true"
                 android:orientation="vertical">
+
+                <net.fabiszewski.ulogger.ui.SwipeSwitch
+                    android:id="@+id/switchLogger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/main_margin_start"
+                    android:layout_marginEnd="@dimen/main_margin_end"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:checked="false"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/swipe_padding_top"
+                    android:paddingBottom="@dimen/swipe_padding_bottom"
+                    android:text="@string/tracking"
+                    android:textIsSelectable="false"
+                    android:textSize="16sp"
+                    android:thumb="@drawable/thumb_selector"
+                    app:switchMinWidth="@dimen/switch_min_width"
+                    app:switchPadding="@dimen/switch_padding"
+                    app:track="@drawable/track_selector" />
 
                 <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:drawablePadding="5dp"
-                        android:paddingTop="26dp"
-                        android:text="@string/label_track"
-                        android:textSize="@dimen/label_font_size"
-                        android:textStyle="bold"
-                        app:drawableStartCompat="@drawable/ic_directions_walk_white_24dp" />
-
-                    <Button
-                        android:id="@+id/buttonShare"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/share_button_inset"
-                        android:contentDescription="@string/share_link"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:visibility="gone"
-                        tools:ignore="UnusedAttribute"
-                        tools:targetApi="m"
-                        tools:visibility="visible" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/newtrack_label"
+                    android:id="@+id/layoutSummary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/status_indent"
-                    android:text=""
-                    android:textColor="@color/colorBlue"
-                    android:textSize="@dimen/label_font_size"
-                    tools:text="Auto_2020.06.18_19.42.17" />
+                    android:layout_marginStart="@dimen/main_margin_start"
+                    android:background="@drawable/round_corners_background"
+                    android:backgroundTint="@color/colorGray"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/block_padding_x"
+                    android:paddingTop="@dimen/block_padding_y"
+                    android:paddingEnd="@dimen/block_padding_x"
+                    android:paddingBottom="@dimen/block_padding_y">
+
+                    <LinearLayout
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:drawablePadding="5dp"
+                            android:text="@string/label_track"
+                            android:textSize="@dimen/label_font_size"
+                            android:textStyle="bold"
+                            app:drawableStartCompat="@drawable/ic_directions_walk_white_24dp" />
+
+                        <Button
+                            android:id="@+id/buttonShare"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/share_button_inset"
+                            android:contentDescription="@string/share_link"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:visibility="gone"
+                            tools:ignore="UnusedAttribute"
+                            tools:targetApi="m"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/newtrack_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/block_indent"
+                        android:text=""
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/label_font_size"
+                        tools:text="Auto_2020.06.18_19.42.17" />
+                </LinearLayout>
+
             </LinearLayout>
 
-            <net.fabiszewski.ulogger.ui.SwipeSwitch
-                android:id="@+id/switchLogger"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:checked="false"
-                android:minHeight="48dp"
-                android:text="@string/tracking"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textIsSelectable="false"
-                android:textSize="16sp"
-                android:thumb="@drawable/thumb_selector"
-                app:switchMinWidth="200dp"
-                app:switchPadding="20dp"
-                app:track="@drawable/track_selector" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:layout_marginTop="20dp"
-                android:drawablePadding="5dp"
-                android:text="@string/label_status"
-                android:textSize="@dimen/label_font_size"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_favorite_border_white_24dp" />
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:orientation="vertical">
+                android:layout_marginStart="@dimen/main_margin_start"
+                android:layout_marginEnd="@dimen/main_margin_end"
+                android:background="@drawable/round_corners_background"
+                android:backgroundTint="@color/colorGray"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/block_padding_x"
+                android:paddingTop="@dimen/block_padding_y"
+                android:paddingEnd="@dimen/block_padding_x"
+                android:paddingBottom="@dimen/block_padding_y">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:text="@string/label_status"
+                    android:textSize="@dimen/label_font_size"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_favorite_border_white_24dp" />
 
                 <TextView
                     android:id="@+id/loc_led"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="7dp"
-                    android:paddingStart="3dip"
-                    android:paddingLeft="3dip"
-                    android:paddingRight="3dip"
+                    android:layout_marginTop="10dp"
+                    android:drawablePadding="@dimen/block_padding_led_end"
+                    android:paddingStart="@dimen/block_padding_led_start"
+                    android:paddingEnd="@dimen/block_padding_led_start"
                     android:text="@string/label_location"
                     android:textSize="@dimen/label_font_size"
                     app:drawableStartCompat="@drawable/led" />
@@ -181,26 +207,19 @@
                     android:id="@+id/location_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/status_indent"
+                    android:layout_marginStart="@dimen/block_indent"
                     android:text="@string/dash"
                     android:textColor="@color/colorBlue"
                     android:textSize="@dimen/label_font_size"
                     tools:text="Last update: 2020-06-18 22.09" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/sync_led"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="7dp"
-                    android:paddingStart="3dip"
-                    android:paddingLeft="3dip"
-                    android:paddingRight="3dip"
+                    android:drawablePadding="@dimen/block_padding_led_end"
+                    android:paddingStart="@dimen/block_padding_led_start"
+                    android:paddingEnd="@dimen/block_padding_led_start"
                     android:text="@string/label_synchronization"
                     android:textSize="@dimen/label_font_size"
                     app:drawableStartCompat="@drawable/led" />
@@ -209,7 +228,7 @@
                     android:id="@+id/sync_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/status_indent"
+                    android:layout_marginStart="@dimen/block_indent"
                     android:text="@string/dash"
                     android:textColor="@color/colorBlue"
                     android:textSize="@dimen/label_font_size"
@@ -219,7 +238,7 @@
                     android:id="@+id/sync_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/status_indent"
+                    android:layout_marginStart="@dimen/block_indent"
                     android:maxWidth="300dp"
                     android:text=""
                     android:textColor="@color/colorPink"
@@ -227,6 +246,7 @@
                     tools:text="Connection error: Failed to connect to /10.0.0.15:80" />
             </LinearLayout>
 
-        </GridLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

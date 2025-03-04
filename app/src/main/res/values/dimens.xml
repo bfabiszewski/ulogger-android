@@ -9,8 +9,32 @@
   -->
 
 <resources>
-    <dimen name="label_font_size">18sp</dimen>
-    <dimen name="status_indent">22dp</dimen>
-    <dimen name="thumbnail_size">100dp</dimen>
+    <!-- main fragment -->
+    <dimen name="label_font_size">17sp</dimen>
     <dimen name="dialog_padding_top">18dp</dimen>
+    <dimen name="button_bar_padding_top">5dp</dimen>
+    <dimen name="button_bar_padding_bottom">5dp</dimen>
+    <dimen name="main_margin_start">10dp</dimen>
+    <dimen name="main_margin_end">10dp</dimen>
+    <dimen name="block_indent">29dp</dimen>
+    <dimen name="block_padding_y">10dp</dimen>
+    <dimen name="block_padding_x">10dp</dimen>
+    <dimen name="block_padding_drawable">5dp</dimen>
+    <dimen name="block_padding_led_end">10dp</dimen>
+    <dimen name="block_padding_led_start">4dp</dimen>
+    <dimen name="block_padding_share_start">0dp</dimen>
+    <dimen name="block_distance">10dp</dimen>
+    <dimen name="button_bar_margin_top">5dp</dimen>
+    <dimen name="button_padding_top">5dp</dimen>
+    <dimen name="button_padding_bottom">5dp</dimen>
+    <dimen name="swipe_padding_top">20dp</dimen>
+    <dimen name="swipe_padding_bottom">10dp</dimen>
+    <dimen name="switch_padding">10dp</dimen>
+    <dimen name="switch_min_width">200dp</dimen>
+    <dimen name="switch_margin_top">0dp</dimen>
+    <!-- waypoint fragment -->
+    <dimen name="waypoint_button_min_height">40dp</dimen>
+    <dimen name="waypoint_comment_padding">12dp</dimen>
+    <dimen name="waypoint_camera_margin_y">30dp</dimen>
+    <dimen name="waypoint_thumbnail_size">100dp</dimen>
 </resources>

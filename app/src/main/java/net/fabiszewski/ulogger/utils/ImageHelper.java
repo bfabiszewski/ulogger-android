@@ -206,7 +206,7 @@ public class ImageHelper {
      * @return Size in pixels
      */
     private static int getThumbnailSize(@NonNull Context context) {
-        int sizeDp = (int) context.getResources().getDimension(R.dimen.thumbnail_size);
+        int sizeDp = (int) context.getResources().getDimension(R.dimen.waypoint_thumbnail_size);
         int sizePx = sizeDp * (int) Resources.getSystem().getDisplayMetrics().density;
         if (Logger.DEBUG) { Log.d(TAG, "[getThumbnailSize: " + sizePx + "]" ); }
         return sizePx;

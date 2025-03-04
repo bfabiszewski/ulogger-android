@@ -13,6 +13,14 @@
     <color name="colorRed">#ffff0000</color>
     <color name="colorYellow">#ffffe600</color>
     <color name="colorPink">#fff48787</color>
-    <color name="colorBlue">#ff80cbc4</color>
     <color name="colorWhite">#ffffffff</color>
+    <!-- colorAccent-->
+    <color name="colorBlue">#ff80cbc4</color>
+    <!-- colorPrimary-->
+    <color name="colorGray">#ff212121</color>
+    <!-- colorPrimaryDark-->
+    <color name="colorBlack">#ff0A0A0A</color>
+    <!-- colorButtonNormal-->
+    <color name="colorGrayLight">#ff5a595b</color>
+    <color name="colorGrayLighter">#ff8b8b8c</color>
 </resources>

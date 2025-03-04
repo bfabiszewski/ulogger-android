@@ -77,47 +77,73 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginBottom="20dp"
                     android:textAlignment="center"
                     android:textSize="15sp"
                     tools:text="121 m a.s.l. • 65 m accuracy (GPS)" />
 
                 <EditText
                     android:id="@+id/waypointComment"
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/round_corners_background_outline"
+                    android:layout_marginStart="@dimen/block_padding_x"
+                    android:layout_marginEnd="@dimen/block_padding_x"
+                    android:padding="@dimen/waypoint_comment_padding"
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/label_waypoint_description"
                     android:inputType="textMultiLine|textCapSentences"
-                    android:textAlignment="viewStart"
+                    android:textAlignment="center"
                     tools:targetApi="o" />
 
-                <ImageView
-                    android:id="@+id/waypointThumbnail"
-                    android:layout_width="@dimen/thumbnail_size"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp"
-                    android:contentDescription="@string/label_add_photo"
-                    android:minHeight="@dimen/thumbnail_size"
-                    android:src="@drawable/ic_photo_camera_gray_24dp" />
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/waypointThumbnail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/waypoint_camera_margin_y"
+                        android:layout_marginTop="@dimen/waypoint_camera_margin_y"
+                        android:background="@drawable/round_corners_background"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/label_add_photo"
+                        android:src="@drawable/ic_photo_camera_gray_200dp"
+                        android:maxWidth="@dimen/waypoint_thumbnail_size"
+                        tools:clipToOutline="true"
+                        tools:outlineProvider="background"/>
+                </LinearLayout>
+
+
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
         <Button
             android:id="@+id/waypointButton"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/block_padding_x"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/block_padding_x"
             android:layout_marginBottom="8dp"
+            android:background="@drawable/round_corners_background"
+            android:backgroundTint="@color/colorGrayLight"
+            android:drawableTop="@drawable/selector_baseline_save_alt_24"
             android:enabled="false"
-            android:minHeight="60dp"
-            android:text="@string/button_save" />
+            android:minHeight="@dimen/waypoint_button_min_height"
+            android:paddingTop="@dimen/button_padding_bottom"
+            android:paddingBottom="@dimen/button_padding_bottom"
+            android:text="@string/button_save"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 

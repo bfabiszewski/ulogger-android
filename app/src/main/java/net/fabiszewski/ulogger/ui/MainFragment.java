@@ -9,6 +9,8 @@
 
 package net.fabiszewski.ulogger.ui;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static net.fabiszewski.ulogger.ui.Alert.showAlert;
 import static net.fabiszewski.ulogger.ui.Alert.showConfirm;
 
@@ -533,9 +535,9 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
             return;
         }
         if (DbAccess.getTrackId(context) > 0) {
-            buttonShare.setVisibility(View.VISIBLE);
+            buttonShare.setVisibility(VISIBLE);
         } else {
-            buttonShare.setVisibility(View.GONE);
+            buttonShare.setVisibility(GONE);
         }
     }
 
@@ -586,6 +588,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
     private void setSyncError(String message) {
         syncError = true;
         syncErrorLabel.setText(message);
+        syncErrorLabel.setVisibility(VISIBLE);
     }
 
     /**
@@ -595,6 +598,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
         if (syncError) {
             syncErrorLabel.setText(null);
             syncError = false;
+            syncErrorLabel.setVisibility(GONE);
         }
     }
 
@@ -676,8 +680,8 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
                         showToast(getString(R.string.uploading_done));
                         isUploading = false;
                     }
-                    if (buttonShare.getVisibility() == View.GONE) {
-                        buttonShare.setVisibility(View.VISIBLE);
+                    if (buttonShare.getVisibility() == GONE) {
+                        buttonShare.setVisibility(VISIBLE);
                     }
                 }
                 case (WebSyncService.BROADCAST_SYNC_FAILED) -> {

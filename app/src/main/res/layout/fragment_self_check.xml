@@ -59,7 +59,7 @@
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -105,7 +105,7 @@
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -148,7 +148,7 @@
                 tools:visibility="visible">
 
                 <LinearLayout
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
@@ -193,7 +193,7 @@
                 tools:visibility="visible">
 
                 <LinearLayout
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
@@ -238,7 +238,7 @@
                 tools:visibility="visible">
 
                 <LinearLayout
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
@@ -285,7 +285,7 @@
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -343,7 +343,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
@@ -374,7 +374,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:text="@string/provider_network"
                     android:textSize="18sp"
                     android:labelFor="@id/providerNetResult" />
@@ -412,7 +412,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:text="@string/self_check_server_configured"
                     android:textSize="18sp"
                     android:labelFor="@id/serverConfiguredResult" />
@@ -439,7 +439,7 @@
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -484,7 +484,7 @@
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView

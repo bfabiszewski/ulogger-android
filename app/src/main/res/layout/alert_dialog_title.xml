@@ -24,9 +24,9 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="32dip"
-            android:layout_height="32dip"
-            android:layout_marginEnd="8dip"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
             android:scaleType="fitCenter"
             android:visibility="gone"
             android:src="@null"

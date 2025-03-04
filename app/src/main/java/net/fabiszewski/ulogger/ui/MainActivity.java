@@ -86,8 +86,16 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         updatePreferences();
         setContentView(R.layout.activity_main);
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final int toolbarHeight = toolbar.getLayoutParams().height;
+        ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView().getRootView(), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
+            toolbar.setPadding(0, systemBars.top, 0, 0);
+            toolbar.getLayoutParams().height = toolbarHeight + systemBars.top;
+            return WindowInsetsCompat.CONSUMED;
+        });
         if (savedInstanceState == null) {
             MainFragment fragment = MainFragment.newInstance();
             getSupportFragmentManager().beginTransaction()

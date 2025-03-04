@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- main fragment -->
+    <dimen name="block_distance">20dp</dimen>
+    <dimen name="block_padding_y">20dp</dimen>
+    <dimen name="switch_margin_top">10dp</dimen>
+    <dimen name="swipe_padding_top">30dp</dimen>
+    <dimen name="swipe_padding_bottom">20dp</dimen>
+    <!-- waypoint fragment -->
+    <dimen name="waypoint_comment_padding">30dp</dimen>
+    <dimen name="waypoint_button_min_height">60dp</dimen>
+    <dimen name="waypoint_thumbnail_size">200dp</dimen>
+</resources>

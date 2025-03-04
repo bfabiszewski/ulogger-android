@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="switch_padding">20dp</dimen>
+    <dimen name="label_font_size">18sp</dimen>
+    <dimen name="main_margin_start">15dp</dimen>
+    <dimen name="main_margin_end">15dp</dimen>
+    <dimen name="block_indent">29dp</dimen>
+    <dimen name="block_padding_y">20dp</dimen>
+    <dimen name="block_padding_x">20dp</dimen>
+    <dimen name="block_padding_share_start">10dp</dimen>
+</resources>

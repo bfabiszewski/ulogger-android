@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dip">
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/about_description"
@@ -32,7 +32,7 @@
         android:id="@+id/about_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dip"
+        android:paddingTop="15dp"
         android:text="@string/about_version"
         android:textSize="16sp" />
 
@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
-        android:paddingTop="15dip"
+        android:paddingTop="15dp"
         android:text="@string/about_credits"
         android:textSize="16sp" />
 
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:orientation="horizontal"
-        android:paddingTop="30dip"
+        android:paddingTop="30dp"
         style="?android:attr/buttonBarStyle" >
 
         <Button

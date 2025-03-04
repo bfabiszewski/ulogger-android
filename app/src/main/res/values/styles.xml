@@ -8,11 +8,7 @@
   -->
 
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar"/>
     <declare-styleable name="AlertDialog">
         <attr format="reference" name="singleChoiceItemLayout"/>
     </declare-styleable>
