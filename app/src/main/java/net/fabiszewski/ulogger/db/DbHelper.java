@@ -14,6 +14,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import net.fabiszewski.ulogger.Logger;
 
 /**
@@ -123,7 +125,7 @@ class DbHelper extends SQLiteOpenHelper {
      *
      * @param context Context
      */
-    private DbHelper(Context context) {
+    private DbHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -133,7 +135,8 @@ class DbHelper extends SQLiteOpenHelper {
      * @param context Context
      * @return DbHelper instance
      */
-    static DbHelper getInstance(Context context) {
+    @NonNull
+    static DbHelper getInstance(@NonNull Context context) {
 
         if (instance == null) {
             instance = new DbHelper(context.getApplicationContext());
@@ -146,7 +149,7 @@ class DbHelper extends SQLiteOpenHelper {
      *
      * @param db Database handle
      */
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(@NonNull SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_POSITIONS);
         db.execSQL(SQL_POS_CREATE_INDEX_TIME);
         db.execSQL(SQL_POS_CREATE_INDEX_SYNCED);
@@ -160,7 +163,7 @@ class DbHelper extends SQLiteOpenHelper {
      * @param oldVersion Old version number
      * @param newVersion New version number
      */
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         if (Logger.DEBUG) { Log.d(TAG, "[onUpgrade: from " + oldVersion + " to " + newVersion + "]"); }
         switch (oldVersion) {
             case 1:
@@ -179,7 +182,7 @@ class DbHelper extends SQLiteOpenHelper {
      *
      * @param db Database handle
      */
-    private void dropAndCreate(SQLiteDatabase db) {
+    private void dropAndCreate(@NonNull SQLiteDatabase db) {
         db.execSQL(SQL_DROP_POSITIONS);
         db.execSQL(SQL_DROP_TRACK);
         onCreate(db);
@@ -190,7 +193,7 @@ class DbHelper extends SQLiteOpenHelper {
      *
      * @param db Database handle
      */
-    private void migrateToVersion2(SQLiteDatabase db) {
+    private void migrateToVersion2(@NonNull SQLiteDatabase db) {
         if (Logger.DEBUG) { Log.d(TAG, "[migrateToVersion2]"); }
 
         // only affects positions schema
@@ -204,7 +207,7 @@ class DbHelper extends SQLiteOpenHelper {
      *
      * @param db Database handle
      */
-    private void migrateToVersion3(SQLiteDatabase db) {
+    private void migrateToVersion3(@NonNull SQLiteDatabase db) {
         if (Logger.DEBUG) { Log.d(TAG, "[migrateToVersion3]"); }
 
         // migrate track
@@ -231,7 +234,7 @@ class DbHelper extends SQLiteOpenHelper {
      * @param oldVersion Old version number
      * @param newVersion New version number
      */
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onDowngrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         if (Logger.DEBUG) { Log.d(TAG, "[onDowngrade: from " + oldVersion + " to " + newVersion + "]"); }
         dropAndCreate(db);
     }

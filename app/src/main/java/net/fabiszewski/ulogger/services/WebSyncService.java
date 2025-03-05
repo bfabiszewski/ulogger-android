@@ -238,7 +238,7 @@ public class WebSyncService extends Service {
      *
      * @param e Exception
      */
-    private void handleError(Exception e) {
+    private void handleError(@NonNull Exception e) {
         String message;
         String reason = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
         if (e instanceof UnknownHostException) {
@@ -311,7 +311,8 @@ public class WebSyncService extends Service {
      * @param cursor Cursor
      * @return Map of parameters
      */
-    private Map<String, String> cursorToMap(Cursor cursor) {
+    @NonNull
+    private Map<String, String> cursorToMap(@NonNull Cursor cursor) {
         Map<String, String> params = new HashMap<>();
         params.put(WebHelper.PARAM_TIME, DbAccess.getTime(cursor));
         params.put(WebHelper.PARAM_LAT, DbAccess.getLatitude(cursor));

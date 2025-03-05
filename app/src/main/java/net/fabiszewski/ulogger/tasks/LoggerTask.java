@@ -55,7 +55,7 @@ public class LoggerTask implements LocationListener, Runnable {
 
     private int error = LocationHelper.LoggerException.E_OK;
 
-    public LoggerTask(LoggerTaskCallback callback) {
+    public LoggerTask(@NonNull LoggerTaskCallback callback) {
         weakCallback = new WeakReference<>(callback);
         locationHelper = LocationHelper.getInstance(callback.getActivity());
     }
@@ -86,6 +86,7 @@ public class LoggerTask implements LocationListener, Runnable {
      * Requests location update, waits in loop
      * @return Location or null if none
      */
+    @Nullable
     @WorkerThread
     private Location doInBackground() {
         if (Logger.DEBUG) { Log.d(TAG, "[doInBackground]"); }
@@ -151,7 +152,7 @@ public class LoggerTask implements LocationListener, Runnable {
      * @param location Location
      */
     @UiThread
-    private void onPostExecute(Location location) {
+    private void onPostExecute(@Nullable Location location) {
         LoggerTaskCallback callback = weakCallback.get();
         if (callback != null && callback.getActivity() != null) {
             if (error == E_OK && location != null) {

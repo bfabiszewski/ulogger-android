@@ -47,16 +47,18 @@ public class LocationFormatter {
         separator = dfs.getDecimalSeparator();
     }
 
+    @NonNull
     public String getLatitudeDMS() {
         return getDMS(lat, latHemisphere);
     }
 
+    @NonNull
     public String getLongitudeDMS() {
         return getDMS(lon, lonHemisphere);
     }
 
     @NonNull
-    private static String getDMS(int[] coordinate, char hemisphere) {
+    private static String getDMS(@NonNull int[] coordinate, char hemisphere) {
         return String.format(Locale.US, "%d°%d′%d%c%04d″%c", coordinate[0], coordinate[1], coordinate[2], separator, coordinate[3], hemisphere);
     }
 
@@ -66,7 +68,7 @@ public class LocationFormatter {
      * @return Text
      */
     @NonNull
-    public String getDetails(Context context) {
+    public String getDetails(@NonNull Context context) {
         String details = "";
         if (!location.hasAccuracy() && !location.hasAltitude() && location.getProvider() == null) {
             return details;
@@ -99,7 +101,7 @@ public class LocationFormatter {
      * @return Text
      */
     @Nullable
-    private String getProvider(Context context) {
+    private String getProvider(@NonNull Context context) {
         String provider;
         if (LocationHelper.isGps(location)) {
             provider = context.getString(R.string.provider_gps);
@@ -116,7 +118,7 @@ public class LocationFormatter {
      * @return Text
      */
     @Nullable
-    private String getAccuracy(Context context) {
+    private String getAccuracy(@NonNull Context context) {
         String accuracy = null;
         if (location.hasAccuracy()) {
             accuracy = String.format(Locale.getDefault(),
@@ -130,7 +132,7 @@ public class LocationFormatter {
      * @return Text
      */
     @Nullable
-    private String getAltitude(Context context) {
+    private String getAltitude(@NonNull Context context) {
         String altitude = null;
         if (location.hasAltitude()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && location.hasVerticalAccuracy()) {

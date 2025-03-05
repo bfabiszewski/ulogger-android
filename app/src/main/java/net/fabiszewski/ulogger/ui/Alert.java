@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import net.fabiszewski.ulogger.R;
@@ -28,7 +29,7 @@ public class Alert {
      * @param message Message
      * @param yesCallback Positive button callback
      */
-    public static void showConfirm(Context context, CharSequence title, CharSequence message,
+    public static void showConfirm(@NonNull Context context, @NonNull CharSequence title, @NonNull CharSequence message,
                                    DialogInterface.OnClickListener yesCallback) {
         AlertDialog alertDialog = initDialog(context, title, message);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), yesCallback);
@@ -43,7 +44,7 @@ public class Alert {
      * @param title Title
      * @param message Message
      */
-    static void showInfo(Context context, CharSequence title, CharSequence message) {
+    static void showInfo(@NonNull Context context, @NonNull CharSequence title, @NonNull CharSequence message) {
         AlertDialog alertDialog = initDialog(context, title, message);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, context.getString(R.string.ok),
                 (dialog, which) -> dialog.dismiss());
@@ -57,7 +58,8 @@ public class Alert {
      * @param message Message
      * @return AlertDialog Dialog
      */
-    private static AlertDialog initDialog(Context context, CharSequence title, CharSequence message) {
+    @NonNull
+    private static AlertDialog initDialog(@NonNull Context context, @NonNull CharSequence title, @NonNull CharSequence message) {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
@@ -72,7 +74,8 @@ public class Alert {
      * @param iconResource Icon resource id
      * @return AlertDialog Dialog
      */
-    static AlertDialog showAlert(Activity context, CharSequence title, int layoutResource, int iconResource) {
+    @NonNull
+    static AlertDialog showAlert(@NonNull Activity context, @NonNull CharSequence title, int layoutResource, int iconResource) {
         @SuppressLint("InflateParams")
         View view = context.getLayoutInflater().inflate(layoutResource, null, false);
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
@@ -92,7 +95,8 @@ public class Alert {
      * @param layoutResource Layout resource id
      * @return AlertDialog Dialog
      */
-    static AlertDialog showAlert(Activity context, CharSequence title, int layoutResource) {
+    @NonNull
+    static AlertDialog showAlert(@NonNull Activity context, @NonNull CharSequence title, int layoutResource) {
         return showAlert(context, title, layoutResource, 0);
     }
 }

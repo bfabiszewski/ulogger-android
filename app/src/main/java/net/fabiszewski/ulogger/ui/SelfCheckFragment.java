@@ -325,6 +325,7 @@ public class SelfCheckFragment extends Fragment implements PermissionHelper.Perm
         });
     }
 
+    @NonNull
     private CharSequence getPermissionLabel(@NonNull String permission) {
         try {
             PackageManager pm = requireContext().getPackageManager();

@@ -99,13 +99,13 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         ScrollView layout = (ScrollView) inflater.inflate(R.layout.fragment_main, container, false);
 
         switchLogger = layout.findViewById(R.id.switchLogger);
@@ -192,7 +192,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      * Called when the user swipes tracking switch
      * @param view View
      */
-    private void toggleLogging(View view, boolean isChecked) {
+    private void toggleLogging(@NonNull View view, boolean isChecked) {
         if (isChecked && !LoggerService.isRunning()) {
             startLogger(view.getContext());
         } else if (!isChecked && LoggerService.isRunning()) {
@@ -203,7 +203,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
     /**
      * Start logger service
      */
-    private void startLogger(Context context) {
+    private void startLogger(@NonNull Context context) {
         // start tracking
         if (DbAccess.getTrackName(context) != null) {
             Intent intent = new Intent(context, LoggerService.class);
@@ -219,7 +219,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
     /**
      * Stop logger service
      */
-    private void stopLogger(Context context) {
+    private void stopLogger(@NonNull Context context) {
         // stop tracking
         Intent intent = new Intent(context, LoggerService.class);
         context.stopService(intent);
@@ -228,7 +228,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
     /**
      * Start waypoint activity
      */
-    private void addWaypoint(View view) {
+    private void addWaypoint(@NonNull View view) {
         if (DbAccess.getTrackName(view.getContext()) != null) {
             WaypointFragment fragment = WaypointFragment.newInstance();
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -246,7 +246,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      * Called when the user clicks the New track button
      * @param view View
      */
-    private void newTrack(@SuppressWarnings("UnusedParameters") View view) {
+    private void newTrack(@SuppressWarnings("UnusedParameters") @NonNull View view) {
         if (LoggerService.isRunning()) {
             showToast(getString(R.string.logger_running_warning));
         } else if (DbAccess.needsSync(view.getContext())) {
@@ -260,7 +260,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      * Show toast
      * @param text Text
      */
-    private void showToast(String text) {
+    private void showToast(@NonNull String text) {
         Context context = getContext();
         if (context != null) {
             Toast toast = Toast.makeText(requireContext(), text, Toast.LENGTH_LONG);
@@ -273,7 +273,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      * Called when the user clicks the share button
      * @param view View
      */
-    private void shareURL(View view) {
+    private void shareURL(@NonNull View view) {
         Context context = view.getContext();
         String trackName = DbAccess.getTrackName(context);
         int trackId = DbAccess.getTrackId(context);
@@ -298,7 +298,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      * Called when the user clicks the Upload button
      * @param view View
      */
-    private void uploadData(View view) {
+    private void uploadData(@NonNull View view) {
         Context context = view.getContext();
         if (!SettingsFragment.isValidServerSetup(context)) {
             showToast(getString(R.string.provide_user_pass_url));
@@ -316,7 +316,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      * Called when the user clicks the track text view
      * @param view View
      */
-    private void trackSummary(View view) {
+    private void trackSummary(@NonNull View view) {
         Context context = view.getContext();
         final TrackSummary summary = DbAccess.getTrackSummary(context);
         if (summary == null) {
@@ -546,7 +546,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      * @param led Led text view
      * @param color Color (red, yellow or green)
      */
-    private void setLedColor(TextView led, int color) {
+    private void setLedColor(@NonNull TextView led, int color) {
         Drawable l = TextViewCompat.getCompoundDrawablesRelative(led)[0];
         switch (color) {
             case LED_RED -> l.setColorFilter(redFilter);
@@ -585,7 +585,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      * Set sync error flag and label
      * @param message Error message
      */
-    private void setSyncError(String message) {
+    private void setSyncError(@Nullable String message) {
         syncError = true;
         syncErrorLabel.setText(message);
         syncErrorLabel.setVisibility(VISIBLE);
@@ -655,7 +655,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
      */
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(@NonNull Context context, @Nullable Intent intent) {
             if (Logger.DEBUG) { Log.d(TAG, "[broadcast received " + intent + "]"); }
             if (intent == null || intent.getAction() == null) {
                 return;

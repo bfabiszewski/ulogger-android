@@ -16,25 +16,26 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 
 class PasswordPreference extends EditTextPreference implements EditTextPreference.OnBindEditTextListener {
-    public PasswordPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public PasswordPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setOnBindEditTextListener(this);
     }
 
-    public PasswordPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PasswordPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setOnBindEditTextListener(this);
     }
 
-    public PasswordPreference(Context context, AttributeSet attrs) {
+    public PasswordPreference(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setOnBindEditTextListener(this);
     }
 
-    public PasswordPreference(Context context) {
+    public PasswordPreference(@NonNull Context context) {
         super(context);
         setOnBindEditTextListener(this);
     }
@@ -45,6 +46,7 @@ class PasswordPreference extends EditTextPreference implements EditTextPreferenc
      *
      * @return The summary
      */
+    @Nullable
     @Override
     public CharSequence getSummary() {
         if ((getSummaryProvider() != null)) {
@@ -61,7 +63,8 @@ class PasswordPreference extends EditTextPreference implements EditTextPreferenc
      * @param text Input string
      * @return Masked string
      */
-    private static String getMaskedText(String text) {
+    @NonNull
+    private static String getMaskedText(@NonNull String text) {
         return new String(new char[text.length()]).replace("\0", "*");
     }
 

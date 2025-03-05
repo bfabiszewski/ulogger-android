@@ -25,6 +25,7 @@ import android.widget.CheckedTextView;
 import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceManager;
@@ -167,7 +168,7 @@ public class ProviderPreferenceDialogFragment extends ListPreferenceDialogWithMe
 
         @NonNull
         @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(requireActivity()).inflate(resourceId, parent, false);
                 if (!isEnabled(position)) {

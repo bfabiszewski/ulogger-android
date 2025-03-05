@@ -158,7 +158,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
     }
 
     @SuppressWarnings({"deprecation", "RedundantSuppression"})
-    private void restoreState(Bundle savedInstanceState) {
+    private void restoreState(@NonNull Bundle savedInstanceState) {
         if (Logger.DEBUG) { Log.d(TAG, "[restoreState]"); }
         if (savedInstanceState.containsKey(KEY_WAITING)) {
             isWaitingForCamera = true;
@@ -335,7 +335,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * Save waypoint action
      * @param view View
      */
-    private void saveWaypoint(View view) {
+    private void saveWaypoint(@NonNull View view) {
         if (hasLocation()) {
             if (photoUri != null) {
                 photoUri = ImageHelper.moveCachedToAppStorage(view.getContext(), photoUri);
@@ -410,7 +410,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
      * Add image action
      * @param view View
      */
-    private void addImage(View view) {
+    private void addImage(@NonNull View view) {
         clearImage();
         if (requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());

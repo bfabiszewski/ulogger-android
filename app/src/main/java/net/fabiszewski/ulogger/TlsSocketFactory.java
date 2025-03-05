@@ -13,6 +13,8 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -50,8 +52,9 @@ public class TlsSocketFactory extends SSLSocketFactory {
         factory = sslContext.getSocketFactory();
     }
 
+    @NonNull
     @Override
-    public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
+    public Socket createSocket(@NonNull Socket socket, String host, int port, boolean autoClose) throws IOException {
         socket = factory.createSocket(socket, host, port, autoClose);
 
         if (socket instanceof SSLSocket sslSocket) {

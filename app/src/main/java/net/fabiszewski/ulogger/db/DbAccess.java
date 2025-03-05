@@ -55,6 +55,7 @@ public class DbAccess implements AutoCloseable {
      *
      * @return DbAccess singleton
      */
+    @NonNull
     public static synchronized DbAccess getInstance() {
         if (instance == null) {
             instance = new DbAccess();
@@ -68,7 +69,8 @@ public class DbAccess implements AutoCloseable {
      *
      * @return DbAccess singleton
      */
-    public static synchronized DbAccess getOpenInstance(Context context) {
+    @NonNull
+    public static synchronized DbAccess getOpenInstance(@NonNull Context context) {
         if (instance == null) {
             instance = new DbAccess();
         }
@@ -81,7 +83,7 @@ public class DbAccess implements AutoCloseable {
      *
      * @param context Context
      */
-    public void open(Context context) {
+    public void open(@NonNull Context context) {
         synchronized (DbAccess.class) {
             if (openCount++ == 0) {
                 if (Logger.DEBUG) {
@@ -103,7 +105,7 @@ public class DbAccess implements AutoCloseable {
      * @param comment  Comment
      * @param imageUri Image URI
      */
-    private void writeLocation(Location loc, String comment, String imageUri) {
+    private void writeLocation(@NonNull Location loc, @Nullable String comment, @Nullable String imageUri) {
         if (Logger.DEBUG) {
             Log.d(TAG, "[writeLocation]");
         }
@@ -136,10 +138,10 @@ public class DbAccess implements AutoCloseable {
     /**
      * Write location to database.
      *
-     * @param loc Location
+     * @param location Location
      */
-    public static void writeLocation(Context context, Location loc) {
-        writeLocation(context, loc, null, null);
+    public static void writeLocation(@NonNull Context context, @NonNull Location location) {
+        writeLocation(context, location, null, null);
     }
 
     /**
@@ -150,7 +152,7 @@ public class DbAccess implements AutoCloseable {
      * @param comment Comment
      * @param imageUri Image URI
      */
-    public static void writeLocation(Context context, Location location, String comment, String imageUri) {
+    public static void writeLocation(@NonNull Context context, @NonNull Location location, @Nullable String comment, @Nullable String imageUri) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             dbAccess.writeLocation(location, comment, imageUri);
         }
@@ -161,6 +163,7 @@ public class DbAccess implements AutoCloseable {
      *
      * @return Result set
      */
+    @NonNull
     public Cursor getPositions() {
         return db.query(DbContract.Positions.TABLE_NAME,
                 new String[]{ "*" },
@@ -197,6 +200,7 @@ public class DbAccess implements AutoCloseable {
      *
      * @return Result set
      */
+    @NonNull
     public Cursor getUnsynced() {
         return db.query(DbContract.Positions.TABLE_NAME,
                 new String[]{ "*" },
@@ -232,7 +236,7 @@ public class DbAccess implements AutoCloseable {
      * @return Error message or null if none
      */
     @Nullable
-    public static String getError(Context context) {
+    public static String getError(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             return dbAccess.getError();
         }
@@ -262,7 +266,7 @@ public class DbAccess implements AutoCloseable {
      *
      * @param id Position id
      */
-    public void setSynced(Context context, int id) {
+    public void setSynced(@NonNull Context context, int id) {
         ContentValues values = new ContentValues();
         values.put(DbContract.Positions.COLUMN_SYNCED, "1");
         db.update(DbContract.Positions.TABLE_NAME,
@@ -300,7 +304,7 @@ public class DbAccess implements AutoCloseable {
      * @param context Context
      * @return Count
      */
-    public static int countUnsynced(Context context) {
+    public static int countUnsynced(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             return dbAccess.countUnsynced();
         }
@@ -322,7 +326,7 @@ public class DbAccess implements AutoCloseable {
      * @param context Context
      * @return Count
      */
-    public static int countImages(Context context) {
+    public static int countImages(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             return dbAccess.countImages();
         }
@@ -345,7 +349,7 @@ public class DbAccess implements AutoCloseable {
      * @param context Context
      * @return True if synchronization needed, false otherwise
      */
-    public static boolean needsSync(Context context) {
+    public static boolean needsSync(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             return dbAccess.needsSync();
         }
@@ -395,7 +399,7 @@ public class DbAccess implements AutoCloseable {
      * @param context Context
      * @return UTC timestamp in seconds
      */
-    public static long getLastTimestamp(Context context) {
+    public static long getLastTimestamp(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             return dbAccess.getLastTimestamp();
         }
@@ -445,7 +449,8 @@ public class DbAccess implements AutoCloseable {
      * @param context Context
      * @return Track name, null if no track in database
      */
-    public static String getTrackName(Context context) {
+    @Nullable
+    public static String getTrackName(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             return dbAccess.getTrackName();
         }
@@ -457,7 +462,7 @@ public class DbAccess implements AutoCloseable {
      * @param context Context
      * @return Track id, zero if no track with valid id in database
      */
-    public static int getTrackId(Context context) {
+    public static int getTrackId(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             return dbAccess.getTrackId();
         }
@@ -480,7 +485,7 @@ public class DbAccess implements AutoCloseable {
      *
      * @param name New track name
      */
-    private void newTrack(String name) {
+    private void newTrack(@NonNull String name) {
         clear();
         ContentValues values = new ContentValues();
         values.put(DbContract.Track.COLUMN_NAME, name);
@@ -494,7 +499,7 @@ public class DbAccess implements AutoCloseable {
      * @param context Context
      * @param name New track name
      */
-    public static void newTrack(Context context, String name) {
+    public static void newTrack(@NonNull Context context, @NonNull String name) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             ImageHelper.clearTrackImages(context);
             dbAccess.newTrack(name);
@@ -515,7 +520,7 @@ public class DbAccess implements AutoCloseable {
      *
      * @param context Context
      */
-    public static void clearTrack(Context context) {
+    public static void clearTrack(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
             ImageHelper.clearTrackImages(context);
             dbAccess.clear();
@@ -529,7 +534,7 @@ public class DbAccess implements AutoCloseable {
      *
      * @param context Context
      */
-    public static void newAutoTrack(Context context) {
+    public static void newAutoTrack(@NonNull Context context) {
         if (getTrackName(context) == null) {
             newTrack(context, AutoNamePreference.getAutoTrackName(context));
         }
@@ -541,7 +546,7 @@ public class DbAccess implements AutoCloseable {
      * @return TrackSummary object, null if no positions
      */
     @Nullable
-    public static TrackSummary getTrackSummary(Context context) {
+    public static TrackSummary getTrackSummary(@NonNull Context context) {
         try (DbAccess dbAccess = getOpenInstance(context);
             Cursor positions = dbAccess.getPositions()) {
             TrackSummary summary = null;
@@ -614,7 +619,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String accuracy
      */
-    public static String getAccuracy(Cursor cursor) {
+    @Nullable
+    public static String getAccuracy(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_ACCURACY);
     }
 
@@ -624,7 +630,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return True if has accuracy data
      */
-    public static boolean hasAccuracy(Cursor cursor) {
+    public static boolean hasAccuracy(@NonNull Cursor cursor) {
         return isColumnNotNull(cursor, DbContract.Positions.COLUMN_ACCURACY);
     }
 
@@ -634,7 +640,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String speed
      */
-    public static String getSpeed(Cursor cursor) {
+    @Nullable
+    public static String getSpeed(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_SPEED);
     }
 
@@ -644,7 +651,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return True if has speed data
      */
-    public static boolean hasSpeed(Cursor cursor) {
+    public static boolean hasSpeed(@NonNull Cursor cursor) {
         return isColumnNotNull(cursor, DbContract.Positions.COLUMN_SPEED);
     }
 
@@ -654,7 +661,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String bearing
      */
-    public static String getBearing(Cursor cursor) {
+    @Nullable
+    public static String getBearing(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_BEARING);
     }
 
@@ -664,7 +672,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return True if has bearing data
      */
-    public static boolean hasBearing(Cursor cursor) {
+    public static boolean hasBearing(@NonNull Cursor cursor) {
         return isColumnNotNull(cursor, DbContract.Positions.COLUMN_BEARING);
     }
 
@@ -674,7 +682,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String altitude
      */
-    public static String getAltitude(Cursor cursor) {
+    @Nullable
+    public static String getAltitude(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_ALTITUDE);
     }
 
@@ -684,7 +693,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return True if has altitude data
      */
-    public static boolean hasAltitude(Cursor cursor) {
+    public static boolean hasAltitude(@NonNull Cursor cursor) {
         return isColumnNotNull(cursor, DbContract.Positions.COLUMN_ALTITUDE);
     }
 
@@ -694,7 +703,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String provider
      */
-    public static String getProvider(Cursor cursor) {
+    @Nullable
+    public static String getProvider(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_PROVIDER);
     }
 
@@ -704,7 +714,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return True if has provider data
      */
-    public static boolean hasProvider(Cursor cursor) {
+    public static boolean hasProvider(@NonNull Cursor cursor) {
         return isColumnNotNull(cursor, DbContract.Positions.COLUMN_PROVIDER);
     }
 
@@ -714,7 +724,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String comment
      */
-    public static String getComment(Cursor cursor) {
+    @Nullable
+    public static String getComment(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_COMMENT);
     }
 
@@ -724,7 +735,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return True if has image URI
      */
-    public static boolean hasImageUri(Cursor cursor) {
+    public static boolean hasImageUri(@NonNull Cursor cursor) {
         return isColumnNotNull(cursor, DbContract.Positions.COLUMN_IMAGE_URI);
     }
 
@@ -734,7 +745,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String URI
      */
-    public static String getImageUri(Cursor cursor) {
+    @Nullable
+    public static String getImageUri(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_IMAGE_URI);
     }
 
@@ -744,7 +756,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return True if has comment data
      */
-    public static boolean hasComment(Cursor cursor) {
+    public static boolean hasComment(@NonNull Cursor cursor) {
         return isColumnNotNull(cursor, DbContract.Positions.COLUMN_COMMENT);
     }
 
@@ -754,7 +766,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String latitude
      */
-    public static String getLatitude(Cursor cursor) {
+    @Nullable
+    public static String getLatitude(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_LATITUDE);
     }
 
@@ -764,7 +777,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String longitude
      */
-    public static String getLongitude(Cursor cursor) {
+    @Nullable
+    public static String getLongitude(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_LONGITUDE);
     }
 
@@ -774,7 +788,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return Longitude
      */
-    private static double getLongitudeAsDouble(Cursor cursor) {
+    private static double getLongitudeAsDouble(@NonNull Cursor cursor) {
         return getColumnAsDouble(cursor, DbContract.Positions.COLUMN_LONGITUDE);
     }
 
@@ -784,7 +798,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return Longitude
      */
-    private static double getLatitudeAsDouble(Cursor cursor) {
+    private static double getLatitudeAsDouble(@NonNull Cursor cursor) {
         return getColumnAsDouble(cursor, DbContract.Positions.COLUMN_LATITUDE);
     }
 
@@ -794,7 +808,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String time
      */
-    public static String getTime(Cursor cursor) {
+    @Nullable
+    public static String getTime(@NonNull Cursor cursor) {
         return getColumnAsString(cursor, DbContract.Positions.COLUMN_TIME);
     }
 
@@ -804,7 +819,8 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String time
      */
-    public static String getTimeISO8601(Cursor cursor) {
+    @NonNull
+    public static String getTimeISO8601(@NonNull Cursor cursor) {
         long timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_TIME));
         return getTimeISO8601(timestamp);
     }
@@ -815,7 +831,7 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return Time
      */
-    private static long getTimeAsLong(Cursor cursor) {
+    private static long getTimeAsLong(@NonNull Cursor cursor) {
         return cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_TIME));
     }
 
@@ -825,8 +841,10 @@ public class DbAccess implements AutoCloseable {
      * @param cursor Cursor
      * @return String ID
      */
-    public static String getID(Cursor cursor) {
-        return getColumnAsString(cursor, DbContract.Positions._ID);
+    @NonNull
+    public static String getID(@NonNull Cursor cursor) {
+        String id = getColumnAsString(cursor, DbContract.Positions._ID);
+        return id == null ? "0" : id;
     }
 
     /**
@@ -835,6 +853,7 @@ public class DbAccess implements AutoCloseable {
      * @param timestamp Timestamp
      * @return Formatted time
      */
+    @NonNull
     public static String getTimeISO8601(long timestamp) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -848,7 +867,7 @@ public class DbAccess implements AutoCloseable {
      * @param column Column name
      * @return Column value
      */
-    private static double getColumnAsDouble(Cursor cursor, String column) {
+    private static double getColumnAsDouble(@NonNull Cursor cursor, @NonNull String column) {
         return cursor.getDouble(cursor.getColumnIndexOrThrow(column));
     }
 
@@ -859,7 +878,8 @@ public class DbAccess implements AutoCloseable {
      * @param column Column name
      * @return Column value
      */
-    private static String getColumnAsString(Cursor cursor, String column) {
+    @Nullable
+    private static String getColumnAsString(@NonNull Cursor cursor, @NonNull String column) {
         return cursor.getString(cursor.getColumnIndexOrThrow(column));
     }
 
@@ -870,7 +890,7 @@ public class DbAccess implements AutoCloseable {
      * @param column Column name
      * @return True if not null
      */
-    private static boolean isColumnNotNull(Cursor cursor, String column) {
+    private static boolean isColumnNotNull(@NonNull Cursor cursor, @NonNull String column) {
         return !cursor.isNull(cursor.getColumnIndexOrThrow(column));
     }
 }

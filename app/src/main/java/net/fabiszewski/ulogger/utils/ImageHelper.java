@@ -147,6 +147,7 @@ public class ImageHelper {
      * @param context Context
      * @return URI
      */
+    @Nullable
     public static Uri createImageUri(@NonNull Context context) {
         ContentValues values = new ContentValues();
         long timeMillis = System.currentTimeMillis();
@@ -172,6 +173,7 @@ public class ImageHelper {
      * @return Thumbnail
      * @throws IOException IO exception on failure
      */
+    @NonNull
     public static Bitmap getThumbnail(@NonNull Context context, @NonNull Uri uri) throws IOException {
         int sizePx = getThumbnailSize(context);
         Bitmap bitmap;
@@ -182,7 +184,9 @@ public class ImageHelper {
             try (InputStream is = cr.openInputStream(uri)) {
                 bitmap = BitmapFactory.decodeStream(is, null, null);
             }
-
+            if (bitmap == null) {
+                throw new IOException("Decoding stream failed");
+            }
             bitmap = ThumbnailUtils.extractThumbnail(bitmap, sizePx, sizePx);
         }
         bitmap = fixImageOrientation(context, uri, bitmap);
@@ -195,6 +199,7 @@ public class ImageHelper {
      * @param bitmap Bitmap
      * @return Thumbnail
      */
+    @NonNull
     public static Bitmap getThumbnail(@NonNull Context context, @NonNull Bitmap bitmap) {
         int sizePx = getThumbnailSize(context);
         return ThumbnailUtils.extractThumbnail(bitmap, sizePx, sizePx);
@@ -219,6 +224,7 @@ public class ImageHelper {
      * @param bitmap Bitmap to be rotated
      * @return Resulting bitmap
      */
+    @NonNull
     private static Bitmap fixImageOrientation(@NonNull Context context, @NonNull Uri uri, @NonNull Bitmap bitmap) {
         try {
             int orientation = ImageHelper.getOrientation(context, uri);
@@ -294,6 +300,7 @@ public class ImageHelper {
      * @return Resampled bitmap
      * @throws IOException IO exception on error
      */
+    @NonNull
     public static Bitmap getResampledBitmap(@NonNull Context context, @NonNull Uri uri, int dstWidth) throws IOException {
         ContentResolver cr = context.getContentResolver();
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -345,6 +352,7 @@ public class ImageHelper {
      * @return URI of saved image
      * @throws IOException IO exception on failure
      */
+    @NonNull
     public static Uri saveToCache(@NonNull Context context, @NonNull Bitmap bitmap) throws IOException {
         String filename = getUniqueName() + EXT_JPG;
         File outFile = new File(context.getCacheDir(), filename);
@@ -361,6 +369,7 @@ public class ImageHelper {
      * @param inUri Source URI
      * @return Destination URI
      */
+    @Nullable
     public static Uri moveCachedToAppStorage(@NonNull Context context, @NonNull Uri inUri) {
         Uri outUri = null;
         String path = inUri.getPath();

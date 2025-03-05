@@ -14,6 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
@@ -31,7 +33,7 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
     private static final String START_UPLOAD = "start upload";
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(@NonNull Context context, @Nullable Intent intent) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean allowExternal = prefs.getBoolean(SettingsActivity.KEY_ALLOW_EXTERNAL, false);
         if (!allowExternal) {
@@ -55,7 +57,7 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
      * Start logger service forcing new track
      * @param context Context
      */
-    private void startNewLoggerService(Context context, boolean overwrite) {
+    private void startNewLoggerService(@NonNull Context context, boolean overwrite) {
         if (overwrite || !DbAccess.needsSync(context)) {
             DbAccess.newTrack(context, AutoNamePreference.getAutoTrackName(context));
             Intent intent = new Intent(context, LoggerService.class);
@@ -67,7 +69,7 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
      * Start logger service
      * @param context Context
      */
-    private void startLoggerService(Context context) {
+    private void startLoggerService(@NonNull Context context) {
         DbAccess.newAutoTrack(context);
         Intent intent = new Intent(context, LoggerService.class);
         ContextCompat.startForegroundService(context, intent);
@@ -77,7 +79,7 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
      * Stop logger service
      * @param context Context
      */
-    private void stopLogger(Context context) {
+    private void stopLogger(@NonNull Context context) {
         Intent intent = new Intent(context, LoggerService.class);
         context.stopService(intent);
     }
@@ -86,7 +88,7 @@ public class ExternalCommandReceiver extends BroadcastReceiver {
      * Start logger service
      * @param context Context
      */
-    private void uploadData(Context context) {
+    private void uploadData(@NonNull Context context) {
         if (DbAccess.needsSync(context)) {
             Intent intent = new Intent(context, WebSyncService.class);
             ContextCompat.startForegroundService(context, intent);

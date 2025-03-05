@@ -14,19 +14,21 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 
 public class SwipeSwitch extends SwitchCompat {
 
-    public SwipeSwitch(Context context) {
+    public SwipeSwitch(@NonNull Context context) {
         super(context);
     }
 
-    public SwipeSwitch(Context context, AttributeSet attrs) {
+    public SwipeSwitch(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SwipeSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SwipeSwitch(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -38,7 +40,7 @@ public class SwipeSwitch extends SwitchCompat {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onTouchEvent(@NonNull MotionEvent ev) {
         final boolean ret = super.onTouchEvent(ev);
         final int action = ev.getActionMasked();
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {

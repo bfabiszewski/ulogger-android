@@ -11,6 +11,7 @@ package net.fabiszewski.ulogger.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -41,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_AUTO_NAME = "prefAutoName";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView().getRootView(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

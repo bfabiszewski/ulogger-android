@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity
      * @param savedInstanceState Saved state
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         updatePreferences();
         setContentView(R.layout.activity_main);
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity
      * @return Always true
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -259,7 +260,7 @@ public class MainActivity extends AppCompatActivity
      * Display toast message
      * @param text Message
      */
-    private void showToast(CharSequence text) {
+    private void showToast(@NonNull CharSequence text) {
         showToast(text, Toast.LENGTH_SHORT);
     }
 
@@ -268,7 +269,7 @@ public class MainActivity extends AppCompatActivity
      * @param text Message
      * @param duration Duration
      */
-    private void showToast(CharSequence text, int duration) {
+    private void showToast(@NonNull CharSequence text, int duration) {
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
@@ -366,6 +367,7 @@ public class MainActivity extends AppCompatActivity
         showToast(message);
     }
 
+    @NonNull
     @Override
     public Activity getActivity() {
         return this;

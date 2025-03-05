@@ -14,6 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
@@ -39,7 +41,7 @@ public class RestartBroadcastReceiver extends BroadcastReceiver {
      * @param intent  Intent
      */
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(@NonNull Context context, @Nullable Intent intent) {
         if (intent != null && intent.getAction() != null) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             switch (intent.getAction()) {
@@ -64,7 +66,7 @@ public class RestartBroadcastReceiver extends BroadcastReceiver {
      * Start logger service
      * @param context Context
      */
-    private void startLoggerService(Context context) {
+    private void startLoggerService(@NonNull Context context) {
         DbAccess.newAutoTrack(context);
         Intent intent = new Intent(context, LoggerService.class);
         ContextCompat.startForegroundService(context, intent);

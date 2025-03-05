@@ -90,7 +90,7 @@ public class AutoNamePreferenceDialogFragment extends EditTextPreferenceDialogFr
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) { }
 
     @Override
-    public void afterTextChanged(Editable editable) {
+    public void afterTextChanged(@NonNull Editable editable) {
         updatePreview(editable.toString());
         //noinspection SizeReplaceableByIsEmpty
         if (editable.length() == 0) {

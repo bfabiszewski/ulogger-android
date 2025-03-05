@@ -27,6 +27,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import net.fabiszewski.ulogger.utils.BroadcastHelper;
@@ -127,7 +128,7 @@ public class LoggerService extends Service {
      * @return Always returns START_STICKY
      */
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         if (Logger.DEBUG) { Log.d(TAG, "[onStartCommand]"); }
 
         if (intent != null && intent.getBooleanExtra(UPDATED_PREFS, false)) {
@@ -277,7 +278,7 @@ public class LoggerService extends Service {
          * @param location Location
          * @return True if matches
          */
-        private boolean meetsCriteria(Location location) {
+        private boolean meetsCriteria(@NonNull Location location) {
             // skip if distance is below user criterion
             if (!locationHelper.hasRequiredDistance(location, lastLocation)) {
                 return false;

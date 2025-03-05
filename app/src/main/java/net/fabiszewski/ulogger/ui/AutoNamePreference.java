@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import net.fabiszewski.ulogger.R;
@@ -44,19 +45,19 @@ public class AutoNamePreference extends TrimmedEditTextPreference {
         );
     }
 
-    public AutoNamePreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AutoNamePreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public AutoNamePreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public AutoNamePreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public AutoNamePreference(Context context, AttributeSet attrs) {
+    public AutoNamePreference(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public AutoNamePreference(Context context) {
+    public AutoNamePreference(@NonNull Context context) {
         super(context);
     }
 
@@ -68,6 +69,7 @@ public class AutoNamePreference extends TrimmedEditTextPreference {
      * @see #setSummary(CharSequence)
      * @see #setSummaryProvider(SummaryProvider)
      */
+    @Nullable
     @Override
     public CharSequence getSummary() {
         if ((getSummaryProvider() != null)) {
@@ -133,7 +135,7 @@ public class AutoNamePreference extends TrimmedEditTextPreference {
      * @return Track name
      */
     @NonNull
-    public static String getAutoTrackName(Context context) {
+    public static String getAutoTrackName(@NonNull Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String template = prefs.getString(SettingsActivity.KEY_AUTO_NAME, context.getString(R.string.pref_auto_name_default));
         return getAutoName(template, Calendar.getInstance().getTime());

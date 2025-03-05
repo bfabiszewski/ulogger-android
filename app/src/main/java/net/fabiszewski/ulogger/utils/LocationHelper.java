@@ -69,6 +69,7 @@ public class LocationHelper {
      * @param context Context
      * @return LocationHelper instance
      */
+    @NonNull
     public static LocationHelper getInstance(@NonNull Context context) {
         synchronized(LocationHelper.class) {
             if (instance == null) {
@@ -210,7 +211,7 @@ public class LocationHelper {
      * Remove all location updates for listener
      * @param listener Listener
      */
-    public void removeUpdates(LocationListener listener) {
+    public void removeUpdates(@NonNull LocationListener listener) {
         if (Logger.DEBUG) { Log.d(TAG, "[removeUpdates]"); }
         locationManager.removeUpdates(listener);
     }

@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.BidiFormatter;
 import androidx.preference.ListPreference;
@@ -40,24 +41,24 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
     private static final String OTHER = "other";
 
 
-    public ListWithEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ListWithEditTextPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public ListWithEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ListWithEditTextPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr, 0);
 
     }
 
-    public ListWithEditTextPreference(Context context, AttributeSet attrs) {
+    public ListWithEditTextPreference(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs, 0, 0);
 
     }
 
-    public ListWithEditTextPreference(Context context) {
+    public ListWithEditTextPreference(@NonNull Context context) {
         super(context);
         init(context, null, 0, 0);
 
@@ -65,7 +66,7 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
 
     @SuppressWarnings("resource")
     // Don't use auto-closable, breaks lower APIs
-    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    private void init(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         setOnPreferenceChangeListener(this);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ListWithEditTextPreference, defStyleAttr, defStyleRes);
         otherSummary = a.getText(R.styleable.ListWithEditTextPreference_otherSummary);
@@ -82,7 +83,7 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
      * @return {@code true} to update the state of the preference with the new value
      */
     @Override
-    public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
+    public boolean onPreferenceChange(@NonNull Preference preference, @NonNull Object newValue) {
         if (newValue.toString().equals(OTHER)) {
             showOtherDialog(preference);
             return false;
@@ -90,6 +91,7 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
         return true;
     }
 
+    @Nullable
     @Override
     public CharSequence getSummary() {
         if ((getSummaryProvider() != null) && (findIndexOfValue(getValue()) == findIndexOfValue(OTHER))) {
@@ -109,7 +111,7 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
      * @return The index of the value, or -1 if not found
      */
     @Override
-    public int findIndexOfValue(String value) {
+    public int findIndexOfValue(@NonNull String value) {
         int index = super.findIndexOfValue(value);
         if (index == -1) {
             return super.findIndexOfValue(OTHER);
@@ -122,14 +124,15 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
      * Show dialog with EditText
      * @param preference Preference
      */
-    private void showOtherDialog(Preference preference) {
+    private void showOtherDialog(@NonNull Preference preference) {
         Activity context = getActivity();
         if (context == null) {
             return;
         }
         final String key = preference.getKey();
+        final CharSequence title = preference.getTitle();
         final AlertDialog dialog = showAlert(context,
-                preference.getTitle(),
+                title == null ? "" : title,
                 R.layout.other_dialog);
         final TextView textView = dialog.findViewById(R.id.other_textview);
         final EditText editText = dialog.findViewById(R.id.other_edittext);
@@ -162,6 +165,7 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
      * Get Activity from context
      * @return Activity
      */
+    @Nullable
     private Activity getActivity() {
         Context context = getContext();
         if (context instanceof Activity) {

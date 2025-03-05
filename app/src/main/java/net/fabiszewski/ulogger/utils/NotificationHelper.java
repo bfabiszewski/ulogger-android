@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationChannelCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -65,6 +66,7 @@ public class NotificationHelper {
     /**
      * Show notification
      */
+    @NonNull
     public Notification showNotification() {
         if (Logger.DEBUG) { Log.d(TAG, "[showNotification " + notificationId + "]"); }
         int priority = NotificationCompat.PRIORITY_LOW;
@@ -110,7 +112,7 @@ public class NotificationHelper {
      * Create notification channel
      * @param channelId Channel Id
      */
-    private void createNotificationChannel(String channelId) {
+    private void createNotificationChannel(@NonNull String channelId) {
         final int importance = notificationId != NOTIFICATION_LOGGER_ID ? NotificationManagerCompat.IMPORTANCE_NONE : NotificationManagerCompat.IMPORTANCE_LOW;
         NotificationChannelCompat channel = new NotificationChannelCompat.Builder(channelId, importance)
                 .setName(context.getString(R.string.app_name))

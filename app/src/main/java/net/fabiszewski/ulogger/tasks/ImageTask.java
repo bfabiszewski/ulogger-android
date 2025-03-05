@@ -86,6 +86,7 @@ public class ImageTask implements Runnable {
         return isRunning;
     }
 
+    @Nullable
     @WorkerThread
     private ImageTaskResult doInBackground() {
         if (Logger.DEBUG) { Log.d(TAG, "[doInBackground]"); }
@@ -116,9 +117,8 @@ public class ImageTask implements Runnable {
                     bitmap.recycle();
                 }
             }
-            if (savedUri != null && thumbnail != null) {
-                result = new ImageTaskResult(savedUri, thumbnail);
-            }
+            result = new ImageTaskResult(savedUri, thumbnail);
+
         } catch (IOException e) {
             if (e.getMessage() != null) {
                 errorMessage = e.getMessage();
@@ -152,7 +152,7 @@ public class ImageTask implements Runnable {
      * Try to clean image cache
      * @param result Task result
      */
-    private void cleanUp(ImageTaskResult result) {
+    private void cleanUp(@Nullable ImageTaskResult result) {
         Activity activity = getActivity();
         if (result != null && activity != null) {
             clearImageCache(activity.getApplicationContext());

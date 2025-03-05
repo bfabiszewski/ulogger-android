@@ -120,12 +120,12 @@ public class WebHelper {
 
     /**
      * Constructor
-     * @param ctx Context
+     * @param context Context
      */
-    public WebHelper(Context ctx) {
-        context = ctx;
-        loadPreferences(ctx);
-        userAgent = context.getString(R.string.app_name_ascii) + "/" + BuildConfig.VERSION_NAME + "; " + System.getProperty("http.agent");
+    public WebHelper(@NonNull Context context) {
+        this.context = context;
+        loadPreferences(context);
+        userAgent = this.context.getString(R.string.app_name_ascii) + "/" + BuildConfig.VERSION_NAME + "; " + System.getProperty("http.agent");
 
         if (cookieManager == null) {
             cookieManager = new CookieManager();
@@ -152,11 +152,12 @@ public class WebHelper {
      * @throws IOException Connection error
      * @throws WebAuthException Authorization error
      */
-    private String postWithParams(Map<String, String> params) throws IOException, WebAuthException {
+    @NonNull
+    private String postWithParams(@NonNull Map<String, String> params) throws IOException, WebAuthException {
         return postForm(params, null);
     }
 
-    private byte[] getUrlencodedData(Map<String, String> params) throws UnsupportedEncodingException {
+    private byte[] getUrlencodedData(@NonNull Map<String, String> params) throws UnsupportedEncodingException {
         StringBuilder dataString = new StringBuilder();
         for (Map.Entry<String, String> p : params.entrySet()) {
             String key = p.getKey();
@@ -183,6 +184,7 @@ public class WebHelper {
      * @throws IOException Connection error
      * @throws WebAuthException Authorization error
      */
+    @NonNull
     private String postForm(@NonNull Map<String, String> params, @Nullable Uri uri) throws IOException, WebAuthException {
         boolean isMultipart = uri != null;
         URL url = new URL(host + "/" + CLIENT_SCRIPT);
@@ -299,7 +301,7 @@ public class WebHelper {
      * @param data Text part data
      * @return Length in bytes
      */
-    private long getMultipartLength(@NonNull Uri uri, byte[] data) {
+    private long getMultipartLength(@NonNull Uri uri, @NonNull byte[] data) {
         long length = 0;
         String fileMime = ImageHelper.getFileMime(context, uri);
         if (fileMime != null) {
@@ -362,7 +364,7 @@ public class WebHelper {
      * @return Multipart body for text parameters
      * @throws IOException Exception on failure
      */
-    private byte[] getMultipartTextPart(Map<String, String> params) throws IOException {
+    private byte[] getMultipartTextPart(@NonNull Map<String, String> params) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         for (Map.Entry<String, String> p : params.entrySet()) {
             out.write(delimiter);
@@ -376,6 +378,7 @@ public class WebHelper {
      * Generate random boundary for multipart form
      * @return Boundary
      */
+    @NonNull
     private static String generateBoundary() {
         byte[] token = new byte[12];
         random.nextBytes(token);
@@ -389,7 +392,7 @@ public class WebHelper {
      * @throws IOException Connection error
      * @throws WebAuthException Authorization error
      */
-    public void postPosition(Map<String, String> params) throws IOException, WebAuthException {
+    public void postPosition(@NonNull Map<String, String> params) throws IOException, WebAuthException {
         if (Logger.DEBUG) { Log.d(TAG, "[postPosition]"); }
         params.put(PARAM_ACTION, ACTION_ADDPOS);
         String response;
@@ -417,7 +420,7 @@ public class WebHelper {
      * @throws IOException Connection error
      * @throws WebAuthException Authorization error
      */
-    public int startTrack(String name) throws IOException, WebAuthException {
+    public int startTrack(@NonNull String name) throws IOException, WebAuthException {
         if (Logger.DEBUG) { Log.d(TAG, "[startTrack: " + name + "]"); }
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_ACTION, ACTION_ADDTRACK);
@@ -537,7 +540,7 @@ public class WebHelper {
     }
 
     @SuppressWarnings({"deprecation", "RedundantSuppression"})
-    private boolean isNetworkAvailableApi21(ConnectivityManager connectivityManager) {
+    private boolean isNetworkAvailableApi21(@NonNull ConnectivityManager connectivityManager) {
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         return info != null && info.isAvailable() && info.isConnected();
     }
@@ -546,7 +549,7 @@ public class WebHelper {
      * Get settings from shared preferences
      * @param context Context
      */
-    private static void loadPreferences(Context context) {
+    private static void loadPreferences(@NonNull Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         user = prefs.getString(SettingsActivity.KEY_USERNAME, "NULL");
         pass = prefs.getString(SettingsActivity.KEY_PASS, "NULL");
@@ -557,7 +560,7 @@ public class WebHelper {
      * Reload settings from shared preferences.
      * @param context Context
      */
-     public static void updatePreferences(Context context) {
+     public static void updatePreferences(@NonNull Context context) {
         loadPreferences(context);
         deauthorize();
     }
@@ -568,7 +571,7 @@ public class WebHelper {
      * @param url URL
      * @return True if valid, false otherwise
      */
-    public static boolean isValidURL(String url) {
+    public static boolean isValidURL(@NonNull String url) {
         return WebPatterns.WEB_URL_RELAXED.matcher(url).matches();
     }
 

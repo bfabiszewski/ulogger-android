@@ -12,6 +12,8 @@ package net.fabiszewski.ulogger.ui;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 
 /**
@@ -20,24 +22,24 @@ import androidx.preference.EditTextPreference;
  */
 class TrimmedEditTextPreference extends EditTextPreference {
 
-    public TrimmedEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public TrimmedEditTextPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public TrimmedEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TrimmedEditTextPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public TrimmedEditTextPreference(Context context, AttributeSet attrs) {
+    public TrimmedEditTextPreference(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TrimmedEditTextPreference(Context context) {
+    public TrimmedEditTextPreference(@NonNull Context context) {
         super(context);
     }
 
     @Override
-    public void setText(String text) {
+    public void setText(@Nullable String text) {
         if (text != null) {
             text = text.trim();
         }

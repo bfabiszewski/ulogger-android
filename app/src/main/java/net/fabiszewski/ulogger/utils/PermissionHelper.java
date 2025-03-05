@@ -196,7 +196,7 @@ public class PermissionHelper {
      * @param requestCode Request code which will be returned with callback
      */
     @RequiresApi(api = Build.VERSION_CODES.R)
-    private void requestPermissionOnRationaleAccepted(List<String> permissions, @Nullable String requestCode) {
+    private void requestPermissionOnRationaleAccepted(@NonNull List<String> permissions, @Nullable String requestCode) {
         final Context ctx = getContext();
         if (ctx == null) {
             if (Logger.DEBUG) { Log.d(TAG, "[requestBackgroundLocationPermission: missing context]"); }
@@ -302,6 +302,7 @@ public class PermissionHelper {
      */
     @SuppressLint("AppBundleLocaleChanges")
     @RequiresApi(api = Build.VERSION_CODES.R)
+    @NonNull
     private CharSequence getBackgroundPermissionOptionLabel(@NonNull Context ctx) {
         CharSequence label = ctx.getPackageManager().getBackgroundPermissionOptionLabel();
         CharSequence defaultLabel = "Allow all the time";

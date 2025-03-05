@@ -215,26 +215,32 @@ public class GpxExportTask implements Runnable {
                 serializer.attribute(null, "lat", DbAccess.getLatitude(cursor));
                 serializer.attribute(null, "lon", DbAccess.getLongitude(cursor));
                 if (DbAccess.hasAltitude(cursor)) {
+                    //noinspection DataFlowIssue
                     writeTag(serializer, "ele", DbAccess.getAltitude(cursor));
                 }
                 writeTag(serializer, "time", DbAccess.getTimeISO8601(cursor));
                 writeTag(serializer, "name", DbAccess.getID(cursor));
                 if (DbAccess.hasComment(cursor)) {
+                    //noinspection DataFlowIssue
                     writeTag(serializer, "desc", DbAccess.getComment(cursor));
                 }
 
                 // ulogger extensions (accuracy, speed, bearing, provider)
                 serializer.startTag(null, "extensions");
                 if (DbAccess.hasAccuracy(cursor)) {
+                    //noinspection DataFlowIssue
                     writeTag(serializer, "accuracy", DbAccess.getAccuracy(cursor), ns_ulogger);
                 }
                 if (DbAccess.hasSpeed(cursor)) {
+                    //noinspection DataFlowIssue
                     writeTag(serializer, "speed", DbAccess.getSpeed(cursor), ns_ulogger);
                 }
                 if (DbAccess.hasBearing(cursor)) {
+                    //noinspection DataFlowIssue
                     writeTag(serializer, "bearing", DbAccess.getBearing(cursor), ns_ulogger);
                 }
                 if (DbAccess.hasProvider(cursor)) {
+                    //noinspection DataFlowIssue
                     writeTag(serializer, "provider", DbAccess.getProvider(cursor), ns_ulogger);
                 }
                 serializer.endTag(null, "extensions");
