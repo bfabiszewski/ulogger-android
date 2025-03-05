@@ -1,0 +1,9 @@
+3.12: μlogger
+
+Changes:
+- Optimized for Android 15
+- Minor UI tweaks, adjust for edge-to-edge display
+- Added support for per-app language preference (in system settings)
+
+Translations:
+- Add Chinese (China) translation (Poesty Li)
