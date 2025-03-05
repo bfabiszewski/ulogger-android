@@ -27,7 +27,7 @@ Together they make a complete self owned and controlled client–server solution
 ## Self-check
 In case of problems, you may go to Self-check menu. It will check whether all necessary permissions are granted and all settings are properly configured.
 
-<img alt="self-check" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot7.png" width="30%">
+<img alt="self-check" src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot4.png" width="30%">
 
 ## Help
 - μlogger's current status is shown by two leds, one for location tracking and one for web synchronization: 
