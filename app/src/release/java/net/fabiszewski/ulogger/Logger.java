@@ -9,6 +9,6 @@
 
 package net.fabiszewski.ulogger;
 
-class Logger {
-    static final boolean DEBUG = false;
+public class Logger {
+    public static final boolean DEBUG = false;
 }
