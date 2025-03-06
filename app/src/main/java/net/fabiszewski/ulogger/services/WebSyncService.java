@@ -14,6 +14,7 @@ import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
 import android.app.AlarmManager;
+import android.app.ForegroundServiceStartNotAllowedException;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -145,7 +146,19 @@ public class WebSyncService extends Service {
             return START_NOT_STICKY;
         }
         final Notification notification = notificationHelper.showNotification();
-        startForeground(notificationHelper.getId(), notification);
+        try {
+            startForeground(notificationHelper.getId(), notification);
+        } catch (Exception e) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                    && e instanceof ForegroundServiceStartNotAllowedException) {
+                // In an unlikely case the app reaches data-sync time limit, continue without declaring foreground service.
+                // There is still 5 second time period for non-foreground operation, which should be enough for posting data.
+                // More: https://developer.android.com/about/versions/15/behavior-changes-15#datasync-timeout
+                if (Logger.DEBUG) { Log.d(TAG, "[Foreground start not allowed: " + e.getMessage() + "]"); }
+            } else {
+                throw e;
+            }
+        }
 
         Message msg = serviceHandler.obtainMessage();
         msg.arg1 = startId;
@@ -358,6 +371,13 @@ public class WebSyncService extends Service {
         }
     }
 
+
+    @Override
+    public void onTimeout(int startId, int fgsType) {
+        super.onTimeout(startId, fgsType);
+        if (Logger.DEBUG) { Log.d(TAG, "[Give up on system timeout]"); }
+        stopSelf();
+    }
 
     @Nullable
     @Override
