@@ -30,12 +30,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
-import net.fabiszewski.ulogger.utils.BroadcastHelper;
-import net.fabiszewski.ulogger.db.DbAccess;
-import net.fabiszewski.ulogger.utils.LocationHelper;
 import net.fabiszewski.ulogger.Logger;
-import net.fabiszewski.ulogger.utils.NotificationHelper;
+import net.fabiszewski.ulogger.db.DbAccess;
 import net.fabiszewski.ulogger.ui.SettingsActivity;
+import net.fabiszewski.ulogger.utils.BroadcastHelper;
+import net.fabiszewski.ulogger.utils.LocationHelper;
+import net.fabiszewski.ulogger.utils.NotificationHelper;
 
 /**
  * Background service logging positions to database

@@ -42,15 +42,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import net.fabiszewski.ulogger.db.DbAccess;
-import net.fabiszewski.ulogger.utils.ImageHelper;
-import net.fabiszewski.ulogger.tasks.ImageTask;
-import net.fabiszewski.ulogger.utils.LocationFormatter;
 import net.fabiszewski.ulogger.Logger;
-import net.fabiszewski.ulogger.tasks.LoggerTask;
 import net.fabiszewski.ulogger.OpenLocalDocument;
-import net.fabiszewski.ulogger.utils.PermissionHelper;
 import net.fabiszewski.ulogger.R;
+import net.fabiszewski.ulogger.db.DbAccess;
+import net.fabiszewski.ulogger.tasks.ImageTask;
+import net.fabiszewski.ulogger.tasks.LoggerTask;
+import net.fabiszewski.ulogger.utils.ImageHelper;
+import net.fabiszewski.ulogger.utils.LocationFormatter;
+import net.fabiszewski.ulogger.utils.PermissionHelper;
 
 import java.util.concurrent.ExecutorService;
 

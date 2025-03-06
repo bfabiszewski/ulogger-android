@@ -24,8 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 
-import net.fabiszewski.ulogger.utils.LocationHelper;
 import net.fabiszewski.ulogger.Logger;
+import net.fabiszewski.ulogger.utils.LocationHelper;
 
 import java.lang.ref.WeakReference;
 

@@ -11,8 +11,6 @@ package net.fabiszewski.ulogger.ui;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static net.fabiszewski.ulogger.ui.Alert.showAlert;
-import static net.fabiszewski.ulogger.ui.Alert.showConfirm;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -44,13 +42,13 @@ import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import net.fabiszewski.ulogger.db.DbAccess;
 import net.fabiszewski.ulogger.Logger;
-import net.fabiszewski.ulogger.services.LoggerService;
-import net.fabiszewski.ulogger.utils.PermissionHelper;
 import net.fabiszewski.ulogger.R;
 import net.fabiszewski.ulogger.TrackSummary;
+import net.fabiszewski.ulogger.db.DbAccess;
+import net.fabiszewski.ulogger.services.LoggerService;
 import net.fabiszewski.ulogger.services.WebSyncService;
+import net.fabiszewski.ulogger.utils.PermissionHelper;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -326,7 +324,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
 
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
-            final AlertDialog dialog = showAlert(activity,
+            final AlertDialog dialog = Alert.showAlert(activity,
                     getString(R.string.track_summary),
                     R.layout.summary,
                     R.drawable.ic_equalizer_white_24dp);
@@ -370,7 +368,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
     private void showNotSyncedWarning() {
         Context context = getContext();
         if (context != null) {
-            showConfirm(context,
+            Alert.showConfirm(context,
                     context.getString(R.string.warning),
                     context.getString(R.string.notsync_warning),
                     (dialog, which) -> {
@@ -389,7 +387,7 @@ public class MainFragment extends Fragment implements PermissionHelper.Permissio
         if (activity == null) {
             return;
         }
-        final AlertDialog dialog = showAlert(activity,
+        final AlertDialog dialog = Alert.showAlert(activity,
                 getString(R.string.title_newtrack),
                 R.layout.newtrack_dialog);
         final EditText editText = dialog.findViewById(R.id.newtrack_edittext);

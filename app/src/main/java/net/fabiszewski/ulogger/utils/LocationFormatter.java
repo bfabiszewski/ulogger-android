@@ -9,6 +9,10 @@
 
 package net.fabiszewski.ulogger.utils;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.floor;
+import static java.lang.Math.round;
+
 import android.content.Context;
 import android.location.Location;
 import android.os.Build;
@@ -16,14 +20,10 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import net.fabiszewski.ulogger.R;
+
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
-
-import static java.lang.Math.abs;
-import static java.lang.Math.floor;
-import static java.lang.Math.round;
-
-import net.fabiszewski.ulogger.R;
 
 
 public class LocationFormatter {

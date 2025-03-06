@@ -34,10 +34,10 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.TwoStatePreference;
 
-import net.fabiszewski.ulogger.db.DbAccess;
 import net.fabiszewski.ulogger.Logger;
-import net.fabiszewski.ulogger.utils.PermissionHelper;
 import net.fabiszewski.ulogger.R;
+import net.fabiszewski.ulogger.db.DbAccess;
+import net.fabiszewski.ulogger.utils.PermissionHelper;
 import net.fabiszewski.ulogger.utils.WebHelper;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements PermissionHelper.PermissionRequester {

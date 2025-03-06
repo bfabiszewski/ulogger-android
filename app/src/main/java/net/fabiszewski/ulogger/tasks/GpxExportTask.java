@@ -24,9 +24,9 @@ import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 
 import net.fabiszewski.ulogger.BuildConfig;
-import net.fabiszewski.ulogger.db.DbAccess;
 import net.fabiszewski.ulogger.Logger;
 import net.fabiszewski.ulogger.R;
+import net.fabiszewski.ulogger.db.DbAccess;
 
 import org.xmlpull.v1.XmlSerializer;
 

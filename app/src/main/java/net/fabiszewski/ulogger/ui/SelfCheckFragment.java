@@ -45,9 +45,9 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import net.fabiszewski.ulogger.Logger;
-import net.fabiszewski.ulogger.utils.PermissionHelper;
 import net.fabiszewski.ulogger.R;
 import net.fabiszewski.ulogger.WebAuthException;
+import net.fabiszewski.ulogger.utils.PermissionHelper;
 import net.fabiszewski.ulogger.utils.WebHelper;
 
 import org.json.JSONException;

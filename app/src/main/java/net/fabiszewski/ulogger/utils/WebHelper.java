@@ -9,6 +9,10 @@
 
 package net.fabiszewski.ulogger.utils;
 
+import static android.util.Base64.NO_PADDING;
+import static android.util.Base64.NO_WRAP;
+import static android.util.Base64.URL_SAFE;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,6 +27,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
+
+import net.fabiszewski.ulogger.BuildConfig;
+import net.fabiszewski.ulogger.Logger;
+import net.fabiszewski.ulogger.R;
+import net.fabiszewski.ulogger.TlsSocketFactory;
+import net.fabiszewski.ulogger.WebAuthException;
+import net.fabiszewski.ulogger.services.WebSyncService;
+import net.fabiszewski.ulogger.ui.SettingsActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,18 +60,6 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import static android.util.Base64.NO_PADDING;
-import static android.util.Base64.NO_WRAP;
-import static android.util.Base64.URL_SAFE;
-
-import net.fabiszewski.ulogger.BuildConfig;
-import net.fabiszewski.ulogger.Logger;
-import net.fabiszewski.ulogger.R;
-import net.fabiszewski.ulogger.TlsSocketFactory;
-import net.fabiszewski.ulogger.WebAuthException;
-import net.fabiszewski.ulogger.services.WebSyncService;
-import net.fabiszewski.ulogger.ui.SettingsActivity;
 
 /**
  * Web server communication

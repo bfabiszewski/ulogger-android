@@ -28,8 +28,6 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 
-import static net.fabiszewski.ulogger.ui.Alert.showAlert;
-
 import net.fabiszewski.ulogger.Logger;
 import net.fabiszewski.ulogger.R;
 
@@ -131,7 +129,7 @@ class ListWithEditTextPreference extends ListPreference implements Preference.On
         }
         final String key = preference.getKey();
         final CharSequence title = preference.getTitle();
-        final AlertDialog dialog = showAlert(context,
+        final AlertDialog dialog = Alert.showAlert(context,
                 title == null ? "" : title,
                 R.layout.other_dialog);
         final TextView textView = dialog.findViewById(R.id.other_textview);

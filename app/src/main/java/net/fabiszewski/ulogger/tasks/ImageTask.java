@@ -23,18 +23,13 @@ import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 import androidx.preference.PreferenceManager;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-
-import static net.fabiszewski.ulogger.utils.ImageHelper.clearImageCache;
-import static net.fabiszewski.ulogger.utils.ImageHelper.getPersistablePermission;
-import static net.fabiszewski.ulogger.utils.ImageHelper.getResampledBitmap;
-import static net.fabiszewski.ulogger.utils.ImageHelper.getThumbnail;
-import static net.fabiszewski.ulogger.utils.ImageHelper.saveToCache;
-
 import net.fabiszewski.ulogger.Logger;
 import net.fabiszewski.ulogger.R;
 import net.fabiszewski.ulogger.ui.SettingsActivity;
+import net.fabiszewski.ulogger.utils.ImageHelper;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 
 /**
@@ -102,18 +97,18 @@ public class ImageTask implements Runnable {
 
             if (onlyThumbnail) {
                 savedUri = uri;
-                thumbnail = getThumbnail(activity, uri);
+                thumbnail = ImageHelper.getThumbnail(activity, uri);
             } else {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
                 int dstWidth = Integer.parseInt(prefs.getString(SettingsActivity.KEY_IMAGE_SIZE, activity.getString(R.string.pref_imagesize_default)));
                 if (dstWidth == 0) {
                     savedUri = uri;
-                    getPersistablePermission(activity, uri);
-                    thumbnail = getThumbnail(activity, uri);
+                    ImageHelper.getPersistablePermission(activity, uri);
+                    thumbnail = ImageHelper.getThumbnail(activity, uri);
                 } else {
-                    Bitmap bitmap = getResampledBitmap(activity, uri, dstWidth);
-                    savedUri = saveToCache(activity, bitmap);
-                    thumbnail = getThumbnail(activity, bitmap);
+                    Bitmap bitmap = ImageHelper.getResampledBitmap(activity, uri, dstWidth);
+                    savedUri = ImageHelper.saveToCache(activity, bitmap);
+                    thumbnail = ImageHelper.getThumbnail(activity, bitmap);
                     bitmap.recycle();
                 }
             }
@@ -155,7 +150,7 @@ public class ImageTask implements Runnable {
     private void cleanUp(@Nullable ImageTaskResult result) {
         Activity activity = getActivity();
         if (result != null && activity != null) {
-            clearImageCache(activity.getApplicationContext());
+            ImageHelper.clearImageCache(activity.getApplicationContext());
         }
     }
 

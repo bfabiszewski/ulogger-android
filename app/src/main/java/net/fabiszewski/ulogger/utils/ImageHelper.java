@@ -32,9 +32,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.exifinterface.media.ExifInterface;
 
-import net.fabiszewski.ulogger.db.DbAccess;
 import net.fabiszewski.ulogger.Logger;
 import net.fabiszewski.ulogger.R;
+import net.fabiszewski.ulogger.db.DbAccess;
 
 import java.io.File;
 import java.io.FileOutputStream;

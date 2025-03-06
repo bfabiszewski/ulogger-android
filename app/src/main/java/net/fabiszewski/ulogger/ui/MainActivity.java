@@ -10,8 +10,6 @@
 package net.fabiszewski.ulogger.ui;
 
 import static androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
-import static net.fabiszewski.ulogger.ui.Alert.showAlert;
-import static net.fabiszewski.ulogger.ui.Alert.showConfirm;
 import static net.fabiszewski.ulogger.tasks.GpxExportTask.GPX_EXTENSION;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -48,11 +46,11 @@ import androidx.preference.PreferenceManager;
 
 import net.fabiszewski.ulogger.BuildConfig;
 import net.fabiszewski.ulogger.CreateGpxDocument;
-import net.fabiszewski.ulogger.db.DbAccess;
-import net.fabiszewski.ulogger.tasks.GpxExportTask;
 import net.fabiszewski.ulogger.Logger;
-import net.fabiszewski.ulogger.services.LoggerService;
 import net.fabiszewski.ulogger.R;
+import net.fabiszewski.ulogger.db.DbAccess;
+import net.fabiszewski.ulogger.services.LoggerService;
+import net.fabiszewski.ulogger.tasks.GpxExportTask;
 
 import java.util.concurrent.ExecutorService;
 
@@ -240,7 +238,7 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         if (DbAccess.getTrackName(MainActivity.this) != null) {
-            showConfirm(MainActivity.this,
+            Alert.showConfirm(MainActivity.this,
                     getString(R.string.warning),
                     getString(R.string.clear_warning),
                     (dialog, which) -> {
@@ -279,7 +277,7 @@ public class MainActivity extends AppCompatActivity
      * Display About dialog
      */
     private void showAbout() {
-        final AlertDialog dialog = showAlert(MainActivity.this,
+        final AlertDialog dialog = Alert.showAlert(MainActivity.this,
                 getString(R.string.app_name),
                 R.layout.about,
                 R.drawable.ic_ulogger_logo_24dp);

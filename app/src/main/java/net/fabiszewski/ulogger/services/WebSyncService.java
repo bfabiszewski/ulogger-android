@@ -33,13 +33,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import net.fabiszewski.ulogger.utils.BroadcastHelper;
-import net.fabiszewski.ulogger.db.DbAccess;
-import net.fabiszewski.ulogger.db.DbContract;
 import net.fabiszewski.ulogger.Logger;
-import net.fabiszewski.ulogger.utils.NotificationHelper;
 import net.fabiszewski.ulogger.R;
 import net.fabiszewski.ulogger.WebAuthException;
+import net.fabiszewski.ulogger.db.DbAccess;
+import net.fabiszewski.ulogger.db.DbContract;
+import net.fabiszewski.ulogger.utils.BroadcastHelper;
+import net.fabiszewski.ulogger.utils.NotificationHelper;
 import net.fabiszewski.ulogger.utils.WebHelper;
 
 import org.json.JSONException;
