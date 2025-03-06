@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Bartek Fabiszewski
+  ~ http://www.fabiszewski.net
+  ~
+  ~ This file is part of μlogger-android.
+  ~ Licensed under GPL, either version 3, or any later.
+  ~ See <http://www.gnu.org/licenses/>
+  -->
+
 <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
-    <locale android:name="en"/>
-    <locale android:name="ca"/>
-    <locale android:name="cs"/>
-    <locale android:name="de"/>
-    <locale android:name="el"/>
-    <locale android:name="es"/>
-    <locale android:name="eu"/>
-    <locale android:name="fi"/>
-    <locale android:name="fr"/>
-    <locale android:name="gl"/>
-    <locale android:name="it"/>
-    <locale android:name="ja"/>
-    <locale android:name="pl"/>
-    <locale android:name="pt-BR"/>
-    <locale android:name="ru"/>
-    <locale android:name="sk"/>
-    <locale android:name="zh-CN"/>
+    <locale android:name="en" />
+    <locale android:name="ca" />
+    <locale android:name="cs" />
+    <locale android:name="de" />
+    <locale android:name="el" />
+    <locale android:name="es" />
+    <locale android:name="eu" />
+    <locale android:name="fi" />
+    <locale android:name="fr" />
+    <locale android:name="gl" />
+    <locale android:name="it" />
+    <locale android:name="ja" />
+    <locale android:name="pl" />
+    <locale android:name="pt-BR" />
+    <locale android:name="ru" />
+    <locale android:name="sk" />
+    <locale android:name="zh-CN" />
 </locale-config>

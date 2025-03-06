@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 Bartek Fabiszewski
   ~ http://www.fabiszewski.net
   ~
@@ -7,8 +8,7 @@
   ~ See <http://www.gnu.org/licenses/>
   -->
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,30 +16,31 @@
     tools:context=".ui.SelfCheckFragment">
 
     <ScrollView
-        android:fillViewport="true"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:fillViewport="true">
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp">
 
             <TextView
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:text="@string/label_self_check"
                 android:textAlignment="viewStart"
                 android:textSize="25sp" />
+
             <TextView
                 android:id="@+id/permissionsLabel"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
                 android:text="@string/self_check_permissions_title"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorBlue"
@@ -49,32 +50,32 @@
 
             <LinearLayout
                 android:id="@+id/permissionApproximateLocation"
-                android:gravity="top"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 tools:visibility="visible">
 
                 <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/permissionApproximateLocationLabel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:textSize="18sp"
-                        tools:text="Access approximate location in foreground"
                         android:labelFor="@id/permissionApproximateLocationResult"
-                        tools:ignore="LabelFor"/>
+                        android:textSize="18sp"
+                        tools:ignore="LabelFor"
+                        tools:text="Access approximate location in foreground" />
 
                     <TextView
-                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/self_check_approximate_location_rationale"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -94,33 +95,33 @@
 
             <LinearLayout
                 android:id="@+id/permissionPreciseLocation"
-                android:gravity="top"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
+                android:gravity="top"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 tools:visibility="visible">
 
                 <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/permissionPreciseLocationLabel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:textSize="18sp"
-                        tools:text="Access precise location in foreground"
                         android:labelFor="@id/permissionPreciseLocationResult"
-                        tools:ignore="LabelFor" />
+                        android:textSize="18sp"
+                        tools:ignore="LabelFor"
+                        tools:text="Access precise location in foreground" />
 
                     <TextView
-                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/self_check_precise_location_rationale"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -158,10 +159,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:textSize="18sp"
-                        tools:text="Access location in background"
                         android:labelFor="@id/permissionBackgroundLocationResult"
-                        tools:ignore="LabelFor"/>
+                        android:textSize="18sp"
+                        tools:ignore="LabelFor"
+                        tools:text="Access location in background" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -203,10 +204,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:textSize="18sp"
-                        tools:text="Write external storage"
                         android:labelFor="@id/permissionStorageResult"
-                        tools:ignore="LabelFor"/>
+                        android:textSize="18sp"
+                        tools:ignore="LabelFor"
+                        tools:text="Write external storage" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -223,8 +224,8 @@
                     android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -248,10 +249,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:textSize="18sp"
-                        tools:text="Access location in background"
                         android:labelFor="@id/permissionNotificationsResult"
-                        tools:ignore="LabelFor"/>
+                        android:textSize="18sp"
+                        tools:ignore="LabelFor"
+                        tools:text="Access location in background" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -268,50 +269,51 @@
                     android:gravity="top"
                     android:minHeight="48dp"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/batteryUnrestrictedSelfCheck"
-                android:gravity="top"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
+                android:gravity="top"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 tools:visibility="visible">
 
                 <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
+                        android:labelFor="@id/batteryUnrestrictedUsageResult"
                         android:text="@string/self_check_battery_unrestricted_title"
-                        android:textSize="18sp"
-                        android:labelFor="@id/batteryUnrestrictedUsageResult" />
+                        android:textSize="18sp" />
 
                     <TextView
-                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/self_check_battery_unrestricted_rationale"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/batteryUnrestrictedUsageResult"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:gravity="top"
-                    android:minHeight="48dp"                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp" />
+                    android:minHeight="48dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp" />
 
             </LinearLayout>
 
@@ -326,20 +328,21 @@
                 android:textAlignment="textStart"
                 android:textSize="12sp"
                 android:visibility="gone" />
+
             <TextView
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
                 android:text="@string/self_check_providers_title"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorBlue"
                 android:textSize="13sp" />
 
             <LinearLayout
-                android:gravity="top"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
                 android:orientation="horizontal">
 
                 <TextView
@@ -365,19 +368,19 @@
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="top"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:labelFor="@id/providerNetResult"
                     android:text="@string/provider_network"
-                    android:textSize="18sp"
-                    android:labelFor="@id/providerNetResult" />
+                    android:textSize="18sp" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/providerNetResult"
@@ -393,29 +396,29 @@
             </LinearLayout>
 
             <TextView
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
                 android:text="@string/pref_cat_server"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorBlue"
                 android:textSize="13sp" />
 
             <LinearLayout
-                android:gravity="top"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:labelFor="@id/serverConfiguredResult"
                     android:text="@string/self_check_server_configured"
-                    android:textSize="18sp"
-                    android:labelFor="@id/serverConfiguredResult" />
+                    android:textSize="18sp" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/serverConfiguredResult"
@@ -431,24 +434,24 @@
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="top"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
+                        android:labelFor="@id/serverReachableResult"
                         android:text="@string/self_check_server_reachable"
-                        android:textSize="18sp"
-                        android:labelFor="@id/serverReachableResult" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/serverReachableDetails"
@@ -476,15 +479,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="top"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -497,14 +500,14 @@
 
                     <TextView
                         android:id="@+id/validAccountDetails"
-                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:textColor="@color/colorPink"
-                        tools:text="Authorization failed: 401"
-                        tools:visibility="visible"
                         android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:text="Authorization failed: 401"
+                        tools:visibility="visible" />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat

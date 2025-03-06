@@ -84,8 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/main_margin_start"
-            android:layout_marginEnd="@dimen/main_margin_end"
             android:layout_marginTop="@dimen/switch_margin_top"
+            android:layout_marginEnd="@dimen/main_margin_end"
             android:checked="false"
             android:maxLines="1"
             android:paddingTop="@dimen/swipe_padding_top"
@@ -102,15 +102,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/main_margin_start"
-            android:layout_marginEnd="@dimen/main_margin_end"
             android:layout_marginTop="@dimen/block_distance"
-            android:paddingBottom="@dimen/block_padding_y"
-            android:paddingTop="@dimen/block_padding_y"
-            android:paddingStart="@dimen/block_padding_x"
-            android:paddingEnd="@dimen/block_padding_x"
+            android:layout_marginEnd="@dimen/main_margin_end"
             android:background="@drawable/round_corners_background"
             android:backgroundTint="@color/colorGray"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/block_padding_x"
+            android:paddingTop="@dimen/block_padding_y"
+            android:paddingEnd="@dimen/block_padding_x"
+            android:paddingBottom="@dimen/block_padding_y">
 
             <LinearLayout
                 android:id="@+id/layoutSummary"
@@ -161,15 +161,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/main_margin_start"
-            android:layout_marginEnd="@dimen/main_margin_end"
             android:layout_marginTop="@dimen/block_distance"
-            android:paddingBottom="@dimen/block_padding_y"
-            android:paddingTop="@dimen/block_padding_y"
-            android:paddingStart="@dimen/block_padding_x"
-            android:paddingEnd="@dimen/block_padding_x"
+            android:layout_marginEnd="@dimen/main_margin_end"
             android:background="@drawable/round_corners_background"
             android:backgroundTint="@color/colorGray"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="@dimen/block_padding_x"
+            android:paddingTop="@dimen/block_padding_y"
+            android:paddingEnd="@dimen/block_padding_x"
+            android:paddingBottom="@dimen/block_padding_y">
 
             <TextView
                 android:layout_width="match_parent"
@@ -230,11 +230,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/block_indent"
                 android:text=""
-                android:visibility="gone"
                 android:textColor="@color/colorPink"
                 android:textSize="@dimen/label_font_size"
+                android:visibility="gone"
                 tools:text="Connection error: Failed to connect to /10.0.0.15:80"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
         </LinearLayout>
 
     </LinearLayout>

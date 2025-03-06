@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2017 Bartek Fabiszewski
   ~ http://www.fabiszewski.net
   ~
@@ -9,111 +8,111 @@
   -->
 
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ulogger="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ulogger="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:title="@string/pref_cat_location"
-        android:icon="@drawable/ic_location_on_blue_24dp">
+        android:icon="@drawable/ic_location_on_blue_24dp"
+        android:title="@string/pref_cat_location">
         <net.fabiszewski.ulogger.ui.ListWithEditTextPreference
-            android:key="prefMinTime"
-            android:title="@string/pref_mintime_title"
+            android:defaultValue="@string/pref_mintime_default"
             android:dialogMessage="@string/pref_mintime_summary"
             android:entries="@array/minTimeEntries"
             android:entryValues="@array/minTimeValues"
-            android:defaultValue="@string/pref_mintime_default"
-            ulogger:otherSummary="@string/pref_mintime_other"
-            app:useSimpleSummaryProvider="true" />
+            android:key="prefMinTime"
+            android:title="@string/pref_mintime_title"
+            app:useSimpleSummaryProvider="true"
+            ulogger:otherSummary="@string/pref_mintime_other" />
         <net.fabiszewski.ulogger.ui.ListWithEditTextPreference
-            android:key="prefMinDistance"
-            android:title="@string/pref_mindistance_title"
+            android:defaultValue="@string/pref_mindistance_default"
             android:dialogMessage="@string/pref_mindistance_summary"
             android:entries="@array/minDistanceEntries"
             android:entryValues="@array/minDistanceValues"
-            android:defaultValue="@string/pref_mindistance_default"
-            ulogger:otherSummary="@string/pref_mindistance_other"
-            app:useSimpleSummaryProvider="true" />
+            android:key="prefMinDistance"
+            android:title="@string/pref_mindistance_title"
+            app:useSimpleSummaryProvider="true"
+            ulogger:otherSummary="@string/pref_mindistance_other" />
         <net.fabiszewski.ulogger.ui.ListWithEditTextPreference
-            android:key="prefMinAccuracy"
-            android:title="@string/pref_minaccuracy_title"
+            android:defaultValue="@string/pref_minaccuracy_default"
             android:dialogMessage="@string/pref_minaccuracy_summary"
             android:entries="@array/minAccuracyEntries"
             android:entryValues="@array/minAccuracyValues"
-            android:defaultValue="@string/pref_minaccuracy_default"
-            ulogger:otherSummary="@string/pref_minaccuracy_other"
-            app:useSimpleSummaryProvider="true" />
+            android:key="prefMinAccuracy"
+            android:title="@string/pref_minaccuracy_title"
+            app:useSimpleSummaryProvider="true"
+            ulogger:otherSummary="@string/pref_minaccuracy_other" />
         <ListPreference
-            android:key="prefProvider"
-            android:title="@string/pref_provider_title"
             android:dialogMessage="@string/pref_provider_summary"
             android:entries="@array/providersEntries"
             android:entryValues="@array/providersValues"
+            android:key="prefProvider"
+            android:title="@string/pref_provider_title"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreferenceCompat
+            android:defaultValue="@string/pref_livesync_default"
             android:key="prefLiveSync"
-            android:title="@string/pref_livesync_title"
             android:summary="@string/pref_livesync_summary"
-            android:defaultValue="@string/pref_livesync_default" />
+            android:title="@string/pref_livesync_title" />
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/pref_cat_server"
-        android:icon="@drawable/ic_cloud_upload_blue_24dp">
+        android:icon="@drawable/ic_cloud_upload_blue_24dp"
+        android:title="@string/pref_cat_server">
         <net.fabiszewski.ulogger.ui.TrimmedEditTextPreference
+            android:dialogMessage="@string/pref_username_summary"
             android:key="prefUsername"
             android:title="@string/pref_username_title"
-            android:dialogMessage="@string/pref_username_summary"
             app:useSimpleSummaryProvider="true" />
         <net.fabiszewski.ulogger.ui.PasswordPreference
+            android:dialogMessage="@string/pref_pass_summary"
             android:key="prefPass"
             android:title="@string/pref_pass_title"
-            android:dialogMessage="@string/pref_pass_summary"
             app:useSimpleSummaryProvider="true" />
         <net.fabiszewski.ulogger.ui.TrimmedEditTextPreference
+            android:dialogMessage="@string/pref_host_summary"
             android:key="prefHost"
             android:title="@string/pref_host_title"
-            android:dialogMessage="@string/pref_host_summary"
             app:useSimpleSummaryProvider="true" />
         <net.fabiszewski.ulogger.ui.ListWithEditTextPreference
-            android:key="prefImageSize"
-            android:title="@string/pref_imagesize_title"
+            android:defaultValue="@string/pref_imagesize_default"
             android:dialogMessage="@string/pref_imagesize_summary"
             android:entries="@array/imageSizeEntries"
             android:entryValues="@array/imageSizeValues"
-            android:defaultValue="@string/pref_imagesize_default"
-            ulogger:otherSummary="@string/pref_imagesize_other"
-            app:useSimpleSummaryProvider="true" />
+            android:key="prefImageSize"
+            android:title="@string/pref_imagesize_title"
+            app:useSimpleSummaryProvider="true"
+            ulogger:otherSummary="@string/pref_imagesize_other" />
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/pref_cat_other"
-        android:icon="@drawable/ic_build_blue_24dp">
+        android:icon="@drawable/ic_build_blue_24dp"
+        android:title="@string/pref_cat_other">
         <SwitchPreferenceCompat
+            android:defaultValue="@string/pref_autostart_default"
             android:key="prefAutoStart"
-            android:title="@string/pref_autostart_title"
             android:summary="@string/pref_autostart_summary"
-            android:defaultValue="@string/pref_autostart_default" />
+            android:title="@string/pref_autostart_title" />
 
         <SwitchPreferenceCompat
+            android:defaultValue="@string/pref_external_default"
             android:key="prefAllowExternal"
-            android:title="@string/pref_external_title"
             android:summary="@string/pref_external_summary"
-            android:defaultValue="@string/pref_external_default" />
+            android:title="@string/pref_external_title" />
 
         <ListPreference
-            android:key="prefUnits"
-            android:title="@string/pref_units_title"
+            android:defaultValue="@string/pref_units_metric"
             android:dialogMessage="@string/pref_units_summary"
             android:entries="@array/unitsEntries"
             android:entryValues="@array/unitsEntries"
-            android:defaultValue="@string/pref_units_metric"
+            android:key="prefUnits"
+            android:title="@string/pref_units_title"
             app:useSimpleSummaryProvider="true" />
 
         <net.fabiszewski.ulogger.ui.AutoNamePreference
+            android:defaultValue="@string/pref_auto_name_default"
+            android:dialogMessage="@string/pref_auto_name_summary"
             android:key="prefAutoName"
             android:title="@string/pref_auto_name_title"
-            android:dialogMessage="@string/pref_auto_name_summary"
-            android:defaultValue="@string/pref_auto_name_default"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

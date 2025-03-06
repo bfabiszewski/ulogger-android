@@ -20,24 +20,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:clickable="true"
         android:drawablePadding="15dp"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:text="@string/take_photo"
         android:textSize="18sp"
-        android:clickable="true"
-        app:drawableStartCompat="@drawable/ic_baseline_photo_camera_48dp"
-        android:focusable="true" />
+        app:drawableStartCompat="@drawable/ic_baseline_photo_camera_48dp" />
 
     <TextView
         android:id="@+id/action_library"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:drawablePadding="15dp"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:text="@string/from_library"
         android:textSize="18sp"
-        android:clickable="true"
-        app:drawableStartCompat="@drawable/ic_baseline_photo_library_48dp"
-        android:focusable="true" />
+        app:drawableStartCompat="@drawable/ic_baseline_photo_library_48dp" />
 
 </LinearLayout>

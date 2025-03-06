@@ -10,48 +10,48 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="20dp">
 
     <TextView
         android:id="@+id/other_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dash"
         android:contentDescription="@string/dash"
-        android:labelFor="@+id/other_edittext" />
+        android:labelFor="@+id/other_edittext"
+        android:text="@string/dash" />
 
     <EditText
         android:id="@+id/other_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:ems="10"
         android:importantForAutofill="no"
+        android:inputType="number"
         tools:targetApi="o" />
 
     <LinearLayout
-        android:orientation="horizontal"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        style="?android:attr/buttonBarStyle" >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/other_button_cancel"
-            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/cancel" />
 
         <Button
             android:id="@+id/other_button_submit"
-            android:text="@string/submit"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/submit" />
 
     </LinearLayout>
 </LinearLayout>

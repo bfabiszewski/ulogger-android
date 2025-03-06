@@ -10,12 +10,12 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingLeft="?attr/dialogPreferredPadding"
-    android:paddingRight="?attr/dialogPreferredPadding"
-    android:paddingTop="@dimen/dialog_padding_top">
+    android:paddingTop="@dimen/dialog_padding_top"
+    android:paddingRight="?attr/dialogPreferredPadding">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,8 +28,8 @@
             android:layout_height="32dp"
             android:layout_marginEnd="8dp"
             android:scaleType="fitCenter"
-            android:visibility="gone"
             android:src="@null"
+            android:visibility="gone"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -38,20 +38,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
+            android:gravity="start"
             android:singleLine="true"
             android:textAlignment="viewStart"
-            android:gravity="start"
             tools:text="Preference title" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/customMessage"
         style="?android:attr/textAppearanceSmall"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:textColor="?android:attr/textColorSecondary"
-        tools:text="Message describing preference. Maybe be several lines long."/>
+        tools:text="Message describing preference. Maybe be several lines long." />
 
 </LinearLayout>
 

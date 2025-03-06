@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2019 Bartek Fabiszewski
   ~ http://www.fabiszewski.net
   ~
@@ -8,8 +9,7 @@
   -->
 
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -87,40 +87,39 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/round_corners_background_outline"
                     android:layout_marginStart="@dimen/block_padding_x"
                     android:layout_marginEnd="@dimen/block_padding_x"
-                    android:padding="@dimen/waypoint_comment_padding"
                     android:autofillHints=""
+                    android:background="@drawable/round_corners_background_outline"
                     android:ems="10"
                     android:hint="@string/label_waypoint_description"
                     android:inputType="textMultiLine|textCapSentences"
+                    android:padding="@dimen/waypoint_comment_padding"
                     android:textAlignment="center"
                     tools:targetApi="o" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <ImageView
                         android:id="@+id/waypointThumbnail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/waypoint_camera_margin_y"
                         android:layout_marginTop="@dimen/waypoint_camera_margin_y"
-                        android:background="@drawable/round_corners_background"
+                        android:layout_marginBottom="@dimen/waypoint_camera_margin_y"
                         android:adjustViewBounds="true"
-                        android:scaleType="fitCenter"
+                        android:background="@drawable/round_corners_background"
                         android:contentDescription="@string/label_add_photo"
-                        android:src="@drawable/ic_photo_camera_gray_200dp"
                         android:maxWidth="@dimen/waypoint_thumbnail_size"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_photo_camera_gray_200dp"
                         tools:clipToOutline="true"
-                        tools:outlineProvider="background"/>
+                        tools:outlineProvider="background" />
                 </LinearLayout>
-
-
 
             </LinearLayout>
 
