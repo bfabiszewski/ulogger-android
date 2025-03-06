@@ -44,15 +44,15 @@ public class RestartBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(@NonNull Context context, @Nullable Intent intent) {
         if (intent != null && intent.getAction() != null) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean wasRunning = prefs.getBoolean(SettingsActivity.KEY_LOGGER_RUNNING, false);
+            boolean autoStart = prefs.getBoolean(SettingsActivity.KEY_AUTO_START, false);
             switch (intent.getAction()) {
                 case BOOT_COMPLETED, QUICKBOOT_POWERON -> {
-                    boolean autoStart = prefs.getBoolean(SettingsActivity.KEY_AUTO_START, false);
-                    if (autoStart) {
+                    if (autoStart || wasRunning) {
                         startLoggerService(context);
                     }
                 }
                 case MY_PACKAGE_REPLACED -> {
-                    boolean wasRunning = prefs.getBoolean(SettingsActivity.KEY_LOGGER_RUNNING, false);
                     if (wasRunning) {
                         startLoggerService(context);
                     }
