@@ -86,7 +86,6 @@ They may not be optimal, depending on your feelings, and you will have to adapt 
 ## Donate
 [![Donate paypal](https://img.shields.io/badge/donate-paypal-green.svg)](https://www.paypal.me/bfabiszewski)  
 ![Donate bitcoin](https://img.shields.io/badge/donate-bitcoin-green.svg) `bc1qt3uwhze9x8tj6v73c587gprhufg9uur0rzxhvh`  
-![Donate ethereum](https://img.shields.io/badge/donate-ethereum-green.svg) `0x100C31C781C8124661413ed6d1AA9B1e2328fFA2`  
 [![Donate dash](https://img.shields.io/badge/donate-dash-green.svg)](https://explorer.mydashwallet.org/address/Xb6X3zwLMgc3QQDNbeYmsqSwn2pofH2vXT) `Xb6X3zwLMgc3QQDNbeYmsqSwn2pofH2vXT`  
 
 ## License
