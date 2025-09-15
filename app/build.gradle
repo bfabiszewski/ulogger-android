@@ -10,12 +10,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId 'net.fabiszewski.ulogger'
         minSdkVersion 21
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode 312
         versionName '3.12'
         resourceConfigurations += ['en', 'ca', 'cs', 'de', 'el', 'es', 'eu', 'fi', 'fr', 'gl', 'it', 'ja', 'pl', 'pt-rBR', 'ru', 'sk', 'zh-rCN']
@@ -58,8 +58,8 @@ configurations.configureEach {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.preference:preference:1.2.1'
-    implementation 'androidx.exifinterface:exifinterface:1.4.0'
+    implementation 'androidx.exifinterface:exifinterface:1.4.1'
     testImplementation 'junit:junit:4.13.2'
 }
