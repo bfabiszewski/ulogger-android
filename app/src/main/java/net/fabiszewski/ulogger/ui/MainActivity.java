@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity
             clearTrack();
             return true;
         } else if (id == android.R.id.home) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
