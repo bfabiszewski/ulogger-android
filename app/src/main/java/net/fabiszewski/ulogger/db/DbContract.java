@@ -34,9 +34,11 @@ public final class DbContract {
         static final String COLUMN_COMMENT = "comment";
         static final String COLUMN_IMAGE_URI = "imageUri";
         static final String COLUMN_SYNCED = "synced";
+        static final String COLUMN_WAYPOINT = "waypoint";
 
         static final String INDEX_TIME = "timeIdx";
         static final String INDEX_SYNCED = "syncedIdx";
+        static final String INDEX_WAYPOINT = "waypointIdx";
     }
 
     /** Track table */

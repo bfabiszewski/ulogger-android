@@ -29,7 +29,7 @@ class DbHelper extends SQLiteOpenHelper {
 
     private static final String TAG = DbHelper.class.getSimpleName();
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "ulogger.db";
     private static final String BACKUP_SUFFIX = "_backup";
 
@@ -46,6 +46,7 @@ class DbHelper extends SQLiteOpenHelper {
             DbContract.Positions.COLUMN_PROVIDER + " TEXT," +
             DbContract.Positions.COLUMN_COMMENT + " TEXT DEFAULT NULL," +
             DbContract.Positions.COLUMN_IMAGE_URI + " TEXT DEFAULT NULL," +
+            DbContract.Positions.COLUMN_WAYPOINT + " INTEGER DEFAULT 0," +
             DbContract.Positions.COLUMN_SYNCED + " INTEGER DEFAULT 0)";
 
     private static final String SQL_POS_CREATE_INDEX_SYNCED =
@@ -55,6 +56,10 @@ class DbHelper extends SQLiteOpenHelper {
     private static final String SQL_POS_CREATE_INDEX_TIME =
             "CREATE INDEX " + DbContract.Positions.INDEX_TIME + " " +
             "ON " + DbContract.Positions.TABLE_NAME +  "(" + DbContract.Positions.COLUMN_TIME + ")";
+
+    private static final String SQL_POS_CREATE_INDEX_WAYPOINT =
+            "CREATE INDEX " + DbContract.Positions.INDEX_WAYPOINT + " " +
+                    "ON " + DbContract.Positions.TABLE_NAME +  "(" + DbContract.Positions.COLUMN_WAYPOINT + ")";
 
     private static final String SQL_POS_DROP_INDEX_SYNCED =
             "DROP INDEX IF EXISTS " + DbContract.Positions.INDEX_SYNCED;
@@ -81,6 +86,10 @@ class DbHelper extends SQLiteOpenHelper {
     private static final String SQL_POS_ADD_COLUMN_IMAGE_URI =
             "ALTER TABLE " + DbContract.Positions.TABLE_NAME + " ADD COLUMN " +
             DbContract.Positions.COLUMN_COMMENT + " TEXT DEFAULT NULL";
+
+    private static final String SQL_POS_ADD_COLUMN_WAYPOINT =
+            "ALTER TABLE " + DbContract.Positions.TABLE_NAME + " ADD COLUMN " +
+                    DbContract.Positions.COLUMN_WAYPOINT + " INTEGER DEFAULT 0";
 
     private static final String SQL_TRACK_ADD_COLUMN_ERROR =
             "ALTER TABLE " + DbContract.Track.TABLE_NAME + " ADD COLUMN " +
@@ -153,6 +162,7 @@ class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_POSITIONS);
         db.execSQL(SQL_POS_CREATE_INDEX_TIME);
         db.execSQL(SQL_POS_CREATE_INDEX_SYNCED);
+        db.execSQL(SQL_POS_CREATE_INDEX_WAYPOINT);
         db.execSQL(SQL_CREATE_TRACK);
     }
 
@@ -171,6 +181,9 @@ class DbHelper extends SQLiteOpenHelper {
                 // fallthrough
             case 2:
                 migrateToVersion3(db);
+                break;
+            case 3:
+                migrateToVersion4(db);
                 break;
             default:
                 dropAndCreate(db);
@@ -224,6 +237,19 @@ class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_POS_CREATE_INDEX_SYNCED);
         db.execSQL(SQL_COPY_POSITIONS_FROM_V2);
         db.execSQL(SQL_DROP_POSITIONS_BACKUP);
+    }
+
+    /**
+     * Migrates base from version 3 to 4
+     *
+     * @param db Database handle
+     */
+    private void migrateToVersion4(@NonNull SQLiteDatabase db) {
+        if (Logger.DEBUG) { Log.d(TAG, "[migrateToVersion4]"); }
+
+        // only affects positions schema
+        db.execSQL(SQL_POS_ADD_COLUMN_WAYPOINT);
+        db.execSQL(SQL_POS_CREATE_INDEX_WAYPOINT);
     }
 
     /**

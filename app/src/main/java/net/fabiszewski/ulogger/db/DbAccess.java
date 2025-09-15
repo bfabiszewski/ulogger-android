@@ -104,8 +104,9 @@ public class DbAccess implements AutoCloseable {
      * @param loc      Location
      * @param comment  Comment
      * @param imageUri Image URI
+     * @param isWaypoint Waypoint if true, trackpoint otherwise
      */
-    private void writeLocation(@NonNull Location loc, @Nullable String comment, @Nullable String imageUri) {
+    private void writeLocation(@NonNull Location loc, @Nullable String comment, @Nullable String imageUri, boolean isWaypoint) {
         if (Logger.DEBUG) {
             Log.d(TAG, "[writeLocation]");
         }
@@ -132,6 +133,9 @@ public class DbAccess implements AutoCloseable {
         if (imageUri != null && !imageUri.isEmpty()) {
             values.put(DbContract.Positions.COLUMN_IMAGE_URI, imageUri);
         }
+        if (isWaypoint) {
+            values.put(DbContract.Positions.COLUMN_WAYPOINT, 1);
+        }
         db.insert(DbContract.Positions.TABLE_NAME, null, values);
     }
 
@@ -141,7 +145,20 @@ public class DbAccess implements AutoCloseable {
      * @param location Location
      */
     public static void writeLocation(@NonNull Context context, @NonNull Location location) {
-        writeLocation(context, location, null, null);
+        writeLocation(context, location, null, null, false);
+    }
+
+    /**
+     * Write waypoint to database.
+     *
+     * @param context Context
+     * @param location Location
+     * @param comment Comment
+     * @param imageUri Image URI
+     */
+    public static void writeWaypoint(@NonNull Context context, @NonNull Location location, @Nullable String comment, @Nullable String imageUri) {
+        writeLocation(context, location, comment, imageUri, true);
+
     }
 
     /**
@@ -151,10 +168,11 @@ public class DbAccess implements AutoCloseable {
      * @param location Location
      * @param comment Comment
      * @param imageUri Image URI
+     * @param isWaypoint Waypoint if true, trackpoint otherwise
      */
-    public static void writeLocation(@NonNull Context context, @NonNull Location location, @Nullable String comment, @Nullable String imageUri) {
+    public static void writeLocation(@NonNull Context context, @NonNull Location location, @Nullable String comment, @Nullable String imageUri, boolean isWaypoint) {
         try (DbAccess dbAccess = getOpenInstance(context)) {
-            dbAccess.writeLocation(location, comment, imageUri);
+            dbAccess.writeLocation(location, comment, imageUri, isWaypoint);
         }
     }
 
@@ -206,6 +224,21 @@ public class DbAccess implements AutoCloseable {
                 new String[]{ "*" },
                 DbContract.Positions.COLUMN_SYNCED + " = ?",
                 new String[]{ "0" },
+                null, null,
+                DbContract.Positions.COLUMN_TIME);
+    }
+
+    /**
+     * Get result set containing waypoints.
+     *
+     * @return Result set
+     */
+    @NonNull
+    public Cursor getWaypoints() {
+        return db.query(DbContract.Positions.TABLE_NAME,
+                new String[]{ "*" },
+                DbContract.Positions.COLUMN_WAYPOINT + " = ?",
+                new String[]{ "1" },
                 null, null,
                 DbContract.Positions.COLUMN_TIME);
     }
@@ -268,7 +301,7 @@ public class DbAccess implements AutoCloseable {
      */
     public void setSynced(@NonNull Context context, int id) {
         ContentValues values = new ContentValues();
-        values.put(DbContract.Positions.COLUMN_SYNCED, "1");
+        values.put(DbContract.Positions.COLUMN_SYNCED, 1);
         db.update(DbContract.Positions.TABLE_NAME,
                 values,
                 DbContract.Positions._ID + " = ?",
@@ -758,6 +791,16 @@ public class DbAccess implements AutoCloseable {
      */
     public static boolean hasComment(@NonNull Cursor cursor) {
         return isColumnNotNull(cursor, DbContract.Positions.COLUMN_COMMENT);
+    }
+
+    /**
+     * Check if cursor data is waypoint
+     *
+     * @param cursor Cursor
+     * @return True if it is waypoint
+     */
+    public static boolean isWaypoint(@NonNull Cursor cursor) {
+        return cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Positions.COLUMN_WAYPOINT)) == 1;
     }
 
     /**

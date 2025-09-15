@@ -342,7 +342,7 @@ public class WaypointFragment extends Fragment implements LoggerTask.LoggerTaskC
             }
             String comment = commentEditText.getText().toString();
             String uri = (photoUri == null) ? null : photoUri.toString();
-            DbAccess.writeLocation(view.getContext(), location, comment, uri);
+            DbAccess.writeWaypoint(view.getContext(), location, comment, uri);
             photoUri = null;
             if (Logger.DEBUG) { Log.d(TAG, "[saveWaypoint: " + location + ", " + comment + ", " + uri + "]"); }
         }
