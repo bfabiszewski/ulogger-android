@@ -186,6 +186,9 @@ public class GpxExportTask implements Runnable {
         writeTag(serializer, "time", trackTime);
         serializer.endTag(null, "metadata");
 
+        // waypoints
+        writeWaypoints(serializer);
+
         // track
         serializer.startTag(null, "trk");
         writeTag(serializer, "name", trackName);
@@ -211,44 +214,75 @@ public class GpxExportTask implements Runnable {
         try (Cursor cursor = db.getPositions()) {
             serializer.startTag(null, "trkseg");
             while (cursor.moveToNext()) {
-                serializer.startTag(null, "trkpt");
-                serializer.attribute(null, "lat", DbAccess.getLatitude(cursor));
-                serializer.attribute(null, "lon", DbAccess.getLongitude(cursor));
-                if (DbAccess.hasAltitude(cursor)) {
-                    //noinspection DataFlowIssue
-                    writeTag(serializer, "ele", DbAccess.getAltitude(cursor));
-                }
-                writeTag(serializer, "time", DbAccess.getTimeISO8601(cursor));
-                writeTag(serializer, "name", DbAccess.getID(cursor));
-                if (DbAccess.hasComment(cursor)) {
-                    //noinspection DataFlowIssue
-                    writeTag(serializer, "desc", DbAccess.getComment(cursor));
-                }
-
-                // ulogger extensions (accuracy, speed, bearing, provider)
-                serializer.startTag(null, "extensions");
-                if (DbAccess.hasAccuracy(cursor)) {
-                    //noinspection DataFlowIssue
-                    writeTag(serializer, "accuracy", DbAccess.getAccuracy(cursor), ns_ulogger);
-                }
-                if (DbAccess.hasSpeed(cursor)) {
-                    //noinspection DataFlowIssue
-                    writeTag(serializer, "speed", DbAccess.getSpeed(cursor), ns_ulogger);
-                }
-                if (DbAccess.hasBearing(cursor)) {
-                    //noinspection DataFlowIssue
-                    writeTag(serializer, "bearing", DbAccess.getBearing(cursor), ns_ulogger);
-                }
-                if (DbAccess.hasProvider(cursor)) {
-                    //noinspection DataFlowIssue
-                    writeTag(serializer, "provider", DbAccess.getProvider(cursor), ns_ulogger);
-                }
-                serializer.endTag(null, "extensions");
-
-                serializer.endTag(null, "trkpt");
+                writePoint(serializer, cursor, false);
             }
             serializer.endTag(null, "trkseg");
         }
+    }
+
+    /**
+     * Write <wpt> list
+     *
+     * @param serializer XmlSerializer
+     * @throws IOException IO exception
+     * @throws IllegalArgumentException Xml illegal argument
+     * @throws IllegalStateException Xml illegal state
+     */
+    private void writeWaypoints(@NonNull XmlSerializer serializer)
+            throws IOException, IllegalArgumentException, IllegalStateException {
+
+        try (Cursor cursor = db.getWaypoints()) {
+            while (cursor.moveToNext()) {
+                writePoint(serializer, cursor, true);
+            }
+        }
+    }
+
+    private void writePoint(@NonNull XmlSerializer serializer, Cursor cursor, boolean isWaypoint) throws IOException {
+        String element = isWaypoint ? "wpt" : "trkpt";
+        serializer.startTag(null, element);
+        serializer.attribute(null, "lat", DbAccess.getLatitude(cursor));
+        serializer.attribute(null, "lon", DbAccess.getLongitude(cursor));
+        if (DbAccess.hasAltitude(cursor)) {
+            //noinspection DataFlowIssue
+            writeTag(serializer, "ele", DbAccess.getAltitude(cursor));
+        }
+        writeTag(serializer, "time", DbAccess.getTimeISO8601(cursor));
+
+        String name = DbAccess.getID(cursor);
+        String comment = DbAccess.getComment(cursor);
+
+        if (isWaypoint && comment != null) {
+            // if comment contains newlines use first line as name, otherwise use whole comment as name
+            String[] lines = comment.split("\n", 2);
+            name = lines[0];
+        }
+
+        writeTag(serializer, "name", name);
+        if (comment != null) {
+            writeTag(serializer, "desc", comment);
+        }
+
+        // ulogger extensions (accuracy, speed, bearing, provider)
+        serializer.startTag(null, "extensions");
+        if (DbAccess.hasAccuracy(cursor)) {
+            //noinspection DataFlowIssue
+            writeTag(serializer, "accuracy", DbAccess.getAccuracy(cursor), ns_ulogger);
+        }
+        if (DbAccess.hasSpeed(cursor)) {
+            //noinspection DataFlowIssue
+            writeTag(serializer, "speed", DbAccess.getSpeed(cursor), ns_ulogger);
+        }
+        if (DbAccess.hasBearing(cursor)) {
+            //noinspection DataFlowIssue
+            writeTag(serializer, "bearing", DbAccess.getBearing(cursor), ns_ulogger);
+        }
+        if (DbAccess.hasProvider(cursor)) {
+            //noinspection DataFlowIssue
+            writeTag(serializer, "provider", DbAccess.getProvider(cursor), ns_ulogger);
+        }
+        serializer.endTag(null, "extensions");
+        serializer.endTag(null, element);
     }
 
     /**
