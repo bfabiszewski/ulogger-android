@@ -1,0 +1,7 @@
+3.13: μlogger
+
+Zmiany:
+- Podniesienie docelowego API na Android 16
+- Rozróżnianie waypointów przy eksporcie GPX poprzez zastosowanie elementu <wpt>
+- Automatyczny restart logowania po awaryjnym wyłączeniu systemu, wyczerpaniu baterii
+- Uporządkowanie kodu

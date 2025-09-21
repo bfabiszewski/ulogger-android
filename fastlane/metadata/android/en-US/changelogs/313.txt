@@ -1,0 +1,8 @@
+3.13: μlogger
+
+Changes:
+- Target Android 16
+- Distinguish waypoints in GPX export using <wpt> element
+- Restart logging after system crash, battery shutdown
+- Code cleanup
+
