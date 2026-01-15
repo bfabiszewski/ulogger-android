@@ -95,6 +95,8 @@ public class WebHelper {
     public static final String PARAM_PROVIDER = "provider";
     public static final String PARAM_COMMENT = "comment";
     public static final String PARAM_IMAGE = "image";
+    // New: battery percent parameter
+    public static final String PARAM_BATTERY = "battery";
     public static final String PARAM_TRACKID = "trackid";
 
     // auth

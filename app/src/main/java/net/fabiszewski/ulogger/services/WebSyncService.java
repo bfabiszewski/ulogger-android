@@ -41,6 +41,7 @@ import net.fabiszewski.ulogger.db.DbContract;
 import net.fabiszewski.ulogger.utils.BroadcastHelper;
 import net.fabiszewski.ulogger.utils.NotificationHelper;
 import net.fabiszewski.ulogger.utils.WebHelper;
+import net.fabiszewski.ulogger.utils.BatteryUtil;
 
 import org.json.JSONException;
 
@@ -351,6 +352,13 @@ public class WebSyncService extends Service {
         if (DbAccess.hasImageUri(cursor)) {
             params.put(WebHelper.PARAM_IMAGE, DbAccess.getImageUri(cursor));
         }
+
+        // Read battery percent only at send-time and add it if available (0..100)
+        int battery = BatteryUtil.getBatteryPercent(getApplicationContext());
+        if (battery >= 0) {
+            params.put(WebHelper.PARAM_BATTERY, String.valueOf(battery));
+        }
+
         return params;
     }
 
